@@ -1,0 +1,28 @@
+rpm:
+  version: 1.0.0
+  spec_repository: mattamior/rpm
+
+project:
+  name: "<project-name>"
+  primary_type: generic
+  profiles:
+    - generic
+
+memory:
+  root: docs/project-memory
+  state: PROJECT_STATE.md
+  next_steps: NEXT_STEPS.md
+  decisions: DECISIONS.md
+  sessions: sessions
+
+policy:
+  checkpoint: event-driven
+  session_logs: meaningful-only
+  raw_transcripts: false
+
+# Add profile-specific paths only when they are useful.
+# Example:
+# extensions:
+#   software:
+#     architecture: docs/architecture
+#     adr: docs/decisions
