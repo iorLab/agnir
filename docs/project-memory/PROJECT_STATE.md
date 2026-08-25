@@ -13,7 +13,11 @@ The repository is the canonical source of truth for RPM rules. ChatGPT Project c
 - Domain profiles live under `profiles/`.
 - Consumer templates live under `templates/`.
 - Example manifests live under `examples/`.
-- This repository now uses RPM for its own durable project state via `.chatgpt/project-memory.yaml`.
+- This repository uses RPM for its own durable maintenance state via `.chatgpt/project-memory.yaml`.
+- A dedicated ChatGPT Project is now configured as the RPM maintenance workspace.
+- The RPM maintenance Project uses Project-only memory.
+- Maintainer-focused Project Instructions identify `mattamior/rpm` as the authoritative specification repository and require repository bootstrap at the first substantive turn.
+- The original RPM design conversation has been moved into the RPM maintenance Project for design provenance only; it is not an authoritative state source.
 
 ## Scope
 
@@ -25,5 +29,6 @@ It does not store durable state for consuming projects such as application repos
 
 - Normative RPM behavior belongs in this repository.
 - Changes to RPM rules should be reflected in the relevant specification or template files and versioned according to `spec/VERSIONING.md`.
-- The ChatGPT Project used to maintain RPM should preferably use Project-only memory so unrelated project conversations do not become implicit context.
+- The dedicated ChatGPT Project is a maintenance workspace, not a second source of truth.
 - Consumer projects may use Project-only memory independently; cross-project continuity should come from repositories and RPM artifacts, not implicit ChatGPT memory sharing.
+- Historical design conversations may be consulted for rationale or regression analysis, but confirmed durable rules and state must live in the repository.
