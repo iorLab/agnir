@@ -1,51 +1,55 @@
-# RPM Decisions
+# iorMemory Decisions
 
 ## D-001 — Repository-backed canonical memory
 
-RPM treats the repository as the canonical source of truth for durable project knowledge. Chat conversations are working memory and are not authoritative durable storage.
+RPM v1 treated the repository as canonical durable memory.
 
-**Status:** Superseded in scope by D-009. Repository-backed canonical memory remains the current implementation strategy, but is not a requirement of the future platform- and storage-agnostic protocol.
+**Status:** Historical for RPM v1; retained by the PPM repository backend, not by the iorMemory protocol.
 
 ## D-002 — Unified Core plus composable profiles
 
-Every RPM project uses the shared Core memory layer. Domain profiles extend Core and are selected conservatively based on recurring or structurally important project work.
+Every iorMemory project uses the shared Core semantic layer. Domain profiles extend Core and are selected conservatively based on recurring or structurally important work.
 
 ## D-003 — Per-project manifest
 
-Initialized consuming projects declare RPM configuration in `.chatgpt/project-memory.yaml` and normally keep Core memory under `docs/project-memory/`.
+RPM v1 required `.chatgpt/project-memory.yaml`.
 
-**Status:** Superseded in scope by D-009. The `.chatgpt/` path is ChatGPT-specific and repository-relative paths belong to the repository-backed implementation, not the platform-agnostic protocol.
+**Status:** Superseded at protocol level. iorMemory v2 requires configuration semantics but not a file path or serialization. The path remains a PPM ChatGPT + repository convention.
 
 ## D-004 — Project isolation
 
-ChatGPT Projects may use Project-only memory. RPM must not rely on implicit cross-project memory for durable continuity; repositories and RPM artifacts provide the durable bridge.
+Durable continuity MUST NOT depend on implicit model memory. ChatGPT Project-only memory is adapter-specific behavior.
 
-**Status:** Superseded in scope by D-009. Durable continuity remains a protocol concern; ChatGPT Project isolation and its recovery mechanics belong to a ChatGPT adapter.
+## D-005 — Self-hosting
 
-## D-005 — RPM self-hosting
+This specification repository uses the repository-backed PPM workflow to maintain its own durable maintenance state. Self-hosted maintenance files do not duplicate or override normative specification files.
 
-The `mattamior/rpm` specification repository uses RPM to track its own project state. Self-hosted project-memory artifacts describe maintenance state only and do not duplicate or supersede normative specification files under `spec/`, `profiles/`, or `templates/`.
+## D-006 — Conservative classification
 
-## D-006 — Conservative self-classification
+The maintenance project uses `generic` unless recurring maintenance work justifies a specialized profile.
 
-The RPM specification repository initially uses the `generic` profile. A specialized profile should be added only if recurring maintenance work clearly benefits from it.
+## D-007 — Website is non-normative
 
-## D-007 — Website as a non-normative presentation layer
-
-RPM's public website lives in the specification repository and reads canonical `VERSION`, `spec/`, `profiles/`, and `templates/` files at build time. The website may add navigation, explanation, rendering, and copy controls, but it must not silently become an independent source of RPM semantics.
+The public website may explain and render iorMemory material but MUST NOT become an independent source of protocol semantics.
 
 ## D-008 — Static Cloudflare deployment
 
-The initial RPM website uses Astro static generation and Cloudflare Workers Static Assets. GitHub-integrated Workers Builds is the intended deployment path so repository changes can produce preview and production deployments without a separate website content store or application backend.
+The public site uses Astro static generation and Cloudflare Workers Static Assets with GitHub-integrated builds.
 
-## D-009 — Separate protocol, implementation, and platform adapters
+## D-009 — Separate protocol, implementation, backends, and adapters
 
-The next architecture direction separates the current RPM design into three conceptual layers:
+The architecture separates platform/storage-neutral protocol semantics from implementation behavior, persistence technology, and platform integration.
 
-1. **PPMP — Persistent Project Memory Protocol**: the platform-agnostic and storage-agnostic protocol for durable AI project memory. Persistence is a protocol requirement, but no particular persistence mechanism such as Git or a repository is required.
-2. **iorMemory**: the planned reference implementation / Skill implementing PPMP. Its initial persistence strategy may remain repository-backed because that is currently the preferred implementation, without making repositories part of PPMP semantics.
-3. **Platform adapters**: platform-specific integration behavior such as ChatGPT Project bootstrap triggers, `.chatgpt/` conventions, and isolation constraints. Future adapters may target other AI project or agent environments.
+## D-010 — iorMemory is the protocol identity
 
-Under this separation, PPMP defines durable project-memory semantics and behavior; iorMemory defines a concrete implementation; repository storage is a backend choice; and ChatGPT is one supported platform rather than part of the protocol identity.
+The public standard/protocol identity is **iorMemory**. The earlier proposed name **PPMP — Persistent Project Memory Protocol** is retired before normative release and MUST NOT be used as the current protocol name.
 
-The existing RPM v1.0.0 specification is treated as the repository- and ChatGPT-oriented prototype from which PPMP and iorMemory will be extracted. This decision records the architecture direction only; normative PPMP specifications, migration rules, repository naming, and release/version changes remain to be designed and must not be inferred solely from this decision.
+Rationale: iorMemory is more distinctive and avoids acronym friction while still allowing the specification to define project-memory semantics clearly.
+
+## D-011 — Persistent Project Memory is the reference Skill
+
+The initial reference Skill/implementation is **Persistent Project Memory (PPM)**. It implements iorMemory and may initially use repository-backed persistence plus a ChatGPT adapter.
+
+## D-012 — iorMemory v2.0.0 is a major migration from RPM v1
+
+The shift from repository/ChatGPT-bound RPM semantics to platform- and storage-agnostic iorMemory semantics is incompatible at the protocol/configuration level. The first normative iorMemory release in this lineage is therefore version **2.0.0**, and RPM v1 projects require explicit migration.

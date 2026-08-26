@@ -1,65 +1,23 @@
 # Versioning
 
-Version: 1.0.0
+Version: 2.0.0
 
-RPM follows Semantic Versioning for the specification.
+iorMemory follows Semantic Versioning.
 
-## 1. Version format
+- **MAJOR** — incompatible changes to Core semantics, required configuration semantics, conformance, or normative behavior.
+- **MINOR** — backward-compatible profiles, optional fields, extension points, or capabilities.
+- **PATCH** — clarifications and backward-compatible corrections.
 
-```text
-MAJOR.MINOR.PATCH
-```
+The repository root `VERSION` declares the current protocol version.
 
-- **MAJOR** — incompatible changes to manifest semantics, Core requirements, or normative behavior.
-- **MINOR** — backward-compatible new profiles, optional fields, templates, or capabilities.
-- **PATCH** — clarifications, typo fixes, and backward-compatible corrections that do not change intended behavior materially.
+A project MUST record the iorMemory version it conforms to. An implementation MUST NOT silently reinterpret a project using a newer incompatible major version.
 
-The repository root `VERSION` file declares the current specification version.
+For the same supported MAJOR, an implementation may accept an equal/older MINOR. A newer unknown MINOR may be accepted only when unknown optional fields can be safely ignored. A different MAJOR requires explicit migration.
 
-## 2. Consuming-project version
+Upgrades MUST preserve durable project knowledge and MUST update the declared version only after the project conforms to the target semantics.
 
-Every initialized consuming project MUST record the RPM version it was initialized against in `.chatgpt/project-memory.yaml`.
+Implementation, backend, and adapter versions MAY evolve independently, but they MUST state which iorMemory protocol versions they support.
 
-An implementation MUST NOT silently reinterpret a project using a newer incompatible major specification.
+## Historical boundary
 
-## 3. Compatibility behavior
-
-When loading a manifest:
-
-- same supported MAJOR and equal/older MINOR: proceed using compatible behavior;
-- newer MINOR not understood by the implementation: proceed only when unknown fields can be safely ignored; otherwise surface the incompatibility;
-- different MAJOR: require an explicit migration before applying the new semantics.
-
-## 4. Upgrades
-
-RPM upgrades are intentional project changes.
-
-Before upgrading a consuming project:
-
-1. read the target version's migration notes when available;
-2. compare manifest and Core requirements;
-3. preserve existing durable knowledge;
-4. update the manifest version only after the repository conforms to the new version;
-5. commit the migration as a distinct change.
-
-## 5. Profile evolution
-
-Profiles may add optional domain artifacts in MINOR releases. Existing projects are not required to create newly introduced optional artifacts unless they become useful.
-
-Removal or semantic redefinition of required profile behavior requires a MAJOR release.
-
-## 6. Central specification source
-
-A manifest SHOULD declare the specification repository. The declared version is authoritative for intended semantics.
-
-If the specification repository's root `VERSION` does not match the manifest's requested version, the implementation SHOULD surface the mismatch rather than silently applying unknown rules.
-
-For RPM v1, the reference implementation source is:
-
-```text
-mattamior/rpm
-```
-
-## 7. Version history
-
-Version history SHOULD be recorded in repository Git history and may additionally be summarized in a changelog in future releases.
+RPM v1.0.0 is the predecessor design. iorMemory v2.0.0 is an intentional incompatible protocol transition because repository/Git and ChatGPT-specific requirements are removed from the protocol layer. See `MIGRATION.md`.

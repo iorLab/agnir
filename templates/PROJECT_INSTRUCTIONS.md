@@ -1,13 +1,15 @@
-This project uses RPM (Repository Project Memory).
+This Project uses **Persistent Project Memory (PPM)**, the reference implementation of the **iorMemory** protocol.
 
-At the first substantive turn of every new conversation, check `.chatgpt/project-memory.yaml` in the associated repository.
+At the first substantive turn of every new conversation:
 
-If it is missing, tell me RPM is not initialized and offer to initialize it.
+1. Check `.chatgpt/project-memory.yaml` in the associated repository.
+2. If missing, offer PPM initialization.
+3. If present, validate the declared iorMemory version and load the configured Current State and Next Steps.
+4. Read Decisions when prior decisions are relevant.
+5. Load profile-specific or checkpoint history only as required by the current task.
 
-If it exists, read the manifest and follow the declared RPM specification and profiles before substantive work. Load `PROJECT_STATE.md` and `NEXT_STEPS.md` first; load `DECISIONS.md`, profile artifacts, and session history only when relevant.
+For this repository-backed setup, durable project knowledge in the repository is authoritative; chats are working context only.
 
-The repository is the canonical source of truth; chats are working memory. Persist meaningful durable project knowledge according to RPM.
+Persist meaningful durable changes according to iorMemory and PPM. Do not archive raw conversations.
 
-Do not store raw chat transcripts or trivial discussion.
-
-When I say “收尾”, “结束”, “先到这里”, “checkpoint”, “save progress”, or equivalent, perform a final RPM checkpoint before finishing.
+When I say “收尾”, “结束”, “先到这里”, “checkpoint”, “save progress”, or equivalent, perform a final PPM checkpoint before finishing.

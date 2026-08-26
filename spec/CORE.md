@@ -1,93 +1,80 @@
-# RPM Core Specification
+# iorMemory Core Specification
 
-Version: 1.0.0
+Version: 2.0.0
 
 ## 1. Purpose
 
-RPM defines a durable memory layer for long-running projects that use conversational AI. The repository is the canonical source of truth for durable project knowledge. Chat conversations are working memory and MUST NOT be the only location of information whose loss would materially impair project continuity.
+iorMemory defines durable Project Memory for long-running AI-assisted projects. Durable knowledge MUST remain recoverable when conversational context, model memory, or a particular AI session is unavailable.
 
 The keywords MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative.
 
-## 2. Core memory layer
+## 2. Project
 
-Every initialized RPM project MUST have a memory root. The default is:
+A Project is a continuing body of work with an identity, durable state, and a boundary within which prior knowledge affects future work. A Project does not require a Git repository, source-code repository, or any specific AI product feature.
 
-```text
-docs/project-memory/
-```
+## 3. Project Memory
 
-The Core consists of:
+A conforming Project Memory MUST provide durable representations of:
 
-```text
-PROJECT_STATE.md
-NEXT_STEPS.md
-DECISIONS.md
-sessions/
-```
+- **Current State** — the authoritative current summary needed to continue the project;
+- **Next Steps** — actionable outstanding work, priorities, blockers, and deferred items;
+- **Decisions** — confirmed durable decisions and material rationale;
+- **Checkpoint History** — optional concise chronological evidence when meaningful work occurred.
 
-### PROJECT_STATE.md
+Implementations MAY serialize these concepts as files, records, documents, objects, or another persistent representation.
 
-`PROJECT_STATE.md` is the current authoritative summary of the project. It SHOULD answer: "What would a competent agent need to know to continue this project if all chat history disappeared?"
+## 4. Current state versus history
 
-It MUST prefer current truth over history. Stale state SHOULD be replaced rather than appended indefinitely.
+Current State MUST prefer present truth over accumulated chronology. Stale state SHOULD be replaced rather than appended indefinitely.
 
-### NEXT_STEPS.md
+Checkpoint History MUST NOT become the only location of a fact that is required to understand current state.
 
-`NEXT_STEPS.md` contains actionable outstanding work, priorities, blockers, and deferred items. Completed items SHOULD be removed or moved to a historical record rather than left as active tasks.
+Raw conversational transcripts are not Project Memory by default and MUST NOT be required for conformance.
 
-### DECISIONS.md
+## 5. State vocabulary
 
-`DECISIONS.md` records confirmed durable decisions, their rationale, and material rejected alternatives when useful. Speculative ideas MUST NOT be recorded as accepted decisions.
-
-### sessions/
-
-Session logs are concise checkpoint records. They MUST NOT be raw chat transcripts. A session file SHOULD be created only when meaningful work occurred. The recommended naming convention is `YYYY-MM-DD.md`; multiple same-day checkpoints MAY be appended to the same file.
-
-## 3. State vocabulary
-
-RPM uses the following status terms consistently:
+iorMemory uses these status terms consistently:
 
 - **Completed** — implementation or work has been performed.
-- **Verified** — completion has been independently checked by tests, inspection, deployment evidence, or equivalent validation.
+- **Verified** — completion has independent evidence such as tests, inspection, deployment evidence, or equivalent validation.
 - **In Progress** — work has started but is not complete.
-- **Planned** — work is approved and intended, but not started.
+- **Planned** — work is approved and intended but not started.
 - **Proposed** — an option or idea under consideration and not yet accepted.
 - **Blocked** — work cannot proceed until a stated dependency or condition changes.
 
 A claim MUST NOT be upgraded from Completed to Verified without evidence.
 
-## 4. Authority hierarchy
+## 6. Authority hierarchy
 
-When sources conflict, RPM SHOULD reconcile them using this order:
+When sources conflict, an implementation SHOULD reconcile them in this order:
 
-1. Directly observed current repository state and current external system state relevant to the task.
-2. Explicit, current user instruction.
-3. Current RPM memory documents.
-4. Older session logs and historical documents.
-5. Conversational recollection or model memory.
+1. directly observed current project or relevant external-system state;
+2. explicit current user instruction;
+3. current durable Project Memory;
+4. older checkpoint or historical records;
+5. conversational recollection or model memory.
 
-If a conflict cannot be resolved safely, the uncertainty MUST be recorded instead of guessed.
+Unresolved material uncertainty MUST be surfaced rather than guessed.
 
-## 5. Core invariants
+## 7. Core invariants
 
-An RPM implementation MUST:
+A conforming implementation MUST:
 
-- preserve durable project knowledge outside chat;
-- avoid inventing implementation state;
+- preserve durable project knowledge outside ephemeral conversational context;
+- avoid inventing project state;
 - distinguish current state from history;
-- avoid duplicating the same canonical fact across multiple files unless cross-reference is useful;
-- load only the minimum additional profile material needed for the current task;
-- preserve useful existing repository content when updating memory;
-- keep project-specific facts in the consuming repository, not in the central RPM specification repository.
+- avoid unnecessary duplication of canonical facts;
+- preserve useful existing durable content when updating memory;
+- classify inferred facts conservatively;
+- keep project-specific state within the project's own durable-memory boundary;
+- support intentional checkpoints when durable state changes materially.
 
-## 6. Lazy expansion
+## 8. Profiles
 
-Profiles extend the Core. Optional profile files and directories SHOULD be created lazily, only when the information has durable value that is not well represented by the Core files.
+Profiles extend the Core with domain-specific durable concepts. Profiles SHOULD be composable and SHOULD be activated only when they represent recurring or structurally important work.
 
-Initialization MUST NOT create large trees of empty placeholder documentation.
+Optional profile artifacts SHOULD be materialized lazily rather than as large empty structures.
 
-## 7. Source-of-truth rule
+## 9. Persistence requirement
 
-Repository content is durable state. Chat is ephemeral state.
-
-If an important fact exists only in chat and meets the persistence criteria in `PERSISTENCE.md`, it is not considered safely preserved until it has been written to the repository.
+Persistence is a protocol requirement; a particular persistence technology is not. A conforming implementation MUST use storage durable enough for the project's continuity expectations and MUST be able to recover the Core semantic state without relying on the original conversation.

@@ -1,135 +1,58 @@
-# RPM — Repository Project Memory
+# iorMemory
 
-RPM is a repository-backed persistence standard for long-running ChatGPT projects.
+iorMemory is a platform-agnostic protocol for durable project memory in AI-assisted work.
 
-Its core principle is simple:
-
-> The repository is the canonical source of truth for durable project knowledge; chat conversations are working memory.
-
-RPM defines:
-
-- a small, stable Core memory layer shared by every project;
-- project classification and composable domain profiles;
-- a per-project manifest at `.chatgpt/project-memory.yaml`;
-- rules for deciding what should and should not be persisted;
-- checkpoint and bootstrap behavior for new conversations;
-- versioned templates and examples.
+Its core principle is simple: important project knowledge MUST survive the loss of conversational context. The protocol defines what durable project memory means, how it is classified, when it is checkpointed, and how compatible implementations identify the version they support. It does not require Git, a repository, ChatGPT, or any particular storage layout.
 
 ## Status
 
-Current specification: **RPM v1.0.0**
+Current protocol version: **iorMemory v2.0.0**.
 
-The authoritative version is also recorded in the root `VERSION` file.
+RPM (Repository Project Memory) v1.0.0 is the historical repository- and ChatGPT-oriented predecessor. The v2 transition deliberately separates protocol semantics from implementation, storage backend, and platform integration.
+
+## Architecture
+
+- **iorMemory protocol** — normative semantics under `spec/`, reusable profiles under `profiles/`, and conformance/versioning rules.
+- **Persistent Project Memory (PPM)** — the initial reference Skill/implementation described under `implementations/`.
+- **Persistence backends** — concrete durable-storage strategies such as repository/Git persistence, described under `backends/`.
+- **Platform adapters** — environment-specific discovery and bootstrap behavior, beginning with ChatGPT under `adapters/`.
+
+## Core model
+
+Every conforming project has durable representations for:
+
+- current project state;
+- actionable next steps and blockers;
+- confirmed durable decisions;
+- optional meaningful checkpoint history;
+- profile-specific durable knowledge when useful.
+
+The representation MAY be files, database records, documents, API objects, or another durable medium. Implementations MUST preserve the semantic distinction between current state and history.
 
 ## Repository layout
 
 ```text
-rpm/
-├── README.md
-├── VERSION
-├── spec/
-│   ├── CORE.md
-│   ├── MANIFEST.md
-│   ├── CLASSIFICATION.md
-│   ├── PERSISTENCE.md
-│   ├── BOOTSTRAP.md
-│   └── VERSIONING.md
-├── profiles/
-│   ├── software.md
-│   ├── product.md
-│   ├── content.md
-│   ├── research.md
-│   ├── planning.md
-│   └── generic.md
-├── templates/
-│   ├── project-memory.yaml
-│   ├── PROJECT_STATE.md
-│   ├── NEXT_STEPS.md
-│   ├── DECISIONS.md
-│   ├── SESSION.md
-│   └── PROJECT_INSTRUCTIONS.md
-├── examples/
-│   ├── software-project.yaml
-│   ├── content-project.yaml
-│   └── mixed-project.yaml
-└── site/
-    └── public presentation layer for RPM
+spec/              normative iorMemory protocol
+profiles/          composable domain profiles
+templates/         reference serialization/templates
+examples/          example configurations
+implementations/   reference implementation behavior
+backends/          persistence backend behavior
+adapters/          platform-specific integration behavior
+site/              non-normative public presentation layer
+docs/project-memory/ maintenance state for this repository
 ```
 
-## Core memory
+## Reference implementation
 
-Every initialized RPM project maintains a Core memory layer, normally under `docs/project-memory/`:
+**Persistent Project Memory (PPM)** is the first reference implementation. Its initial ChatGPT adapter and repository backend preserve the practical workflow proven by RPM v1 while keeping those mechanics outside protocol requirements.
 
-- `PROJECT_STATE.md` — current authoritative state;
-- `NEXT_STEPS.md` — actionable priorities, blockers, and outstanding work;
-- `DECISIONS.md` — confirmed durable decisions and rationale;
-- `sessions/` — concise checkpoint logs, never raw chat transcripts.
+## Migration from RPM v1
 
-Profiles extend this Core without replacing it.
-
-## Profiles
-
-RPM v1 includes:
-
-- `software`
-- `product`
-- `content`
-- `research`
-- `planning`
-- `generic`
-
-A project has one `primary_type` and may activate multiple profiles when each represents a recurring or structurally important mode of work.
-
-## Quick start for a consuming project
-
-### 1. Add the Project Instructions hook
-
-Copy `templates/PROJECT_INSTRUCTIONS.md` into the ChatGPT Project's Project Instructions.
-
-### 2. Start working normally
-
-At the first substantive turn, the assistant checks:
-
-```text
-.chatgpt/project-memory.yaml
-```
-
-If it does not exist, the assistant offers RPM initialization.
-
-### 3. Initialize RPM
-
-After approval, the assistant should:
-
-1. inspect the repository;
-2. classify the project;
-3. create the manifest;
-4. initialize the Core memory files using actual repository state;
-5. create only justified profile-specific artifacts;
-6. commit the initialization.
-
-### 4. Continue normally
-
-On later conversations, the assistant loads the manifest, `PROJECT_STATE.md`, and `NEXT_STEPS.md` first, then reads decisions, profile artifacts, and session history only when relevant.
-
-During substantive work, meaningful durable state changes are checkpointed back to the repository according to `spec/PERSISTENCE.md`.
-
-## Website
-
-The `site/` directory contains the public presentation layer for RPM. It is intentionally non-normative and reads the repository's `VERSION`, `spec/`, `profiles/`, and `templates/` files directly at build time so there is no second hand-maintained copy of the standard.
-
-The initial site uses Astro static generation and is configured for Cloudflare Workers Static Assets. See `site/README.md` for local development and deployment settings.
+RPM v1 projects are not silently reinterpreted as iorMemory v2 projects. Migration is explicit because v2 removes repository paths and ChatGPT-specific bootstrap behavior from protocol-level requirements. See `spec/MIGRATION.md`.
 
 ## Design goals
 
-RPM is designed to be:
+iorMemory is designed to be durable, explicit, lightweight, composable, storage-agnostic, platform-agnostic, auditable, and conservative about what becomes persistent state.
 
-- **durable** — important project knowledge survives chat deletion or memory loss;
-- **explicit** — project state is inspectable and version controlled;
-- **lightweight** — only durable knowledge is persisted;
-- **composable** — projects may use more than one profile;
-- **lazy** — optional files are created only when they become useful;
-- **auditable** — state changes and decisions are traceable through Git history.
-
-## Key rule
-
-Do not use RPM to archive conversations. RPM stores durable project knowledge: current state, confirmed decisions, actionable next steps, meaningful findings, and domain-specific artifacts that would be expensive to rediscover.
+It is not a transcript archive. Persist durable project knowledge, not raw conversations.

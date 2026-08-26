@@ -1,105 +1,37 @@
 # Persistence Rules
 
-Version: 1.0.0
+Version: 2.0.0
 
-## 1. Persistence model
+## 1. Model
 
-RPM uses event-driven persistence, not message-driven persistence. A repository checkpoint SHOULD occur when durable project state changes materially, not after every conversational turn.
+iorMemory uses event-driven persistence. A checkpoint SHOULD occur when durable project state changes materially, not after every conversational turn.
 
 ## 2. Persist when
 
-Persist information when one or more of the following occurs:
-
-- a meaningful implementation or work milestone is completed;
-- a completed item becomes verified;
-- an architectural, product, editorial, research, or planning decision is confirmed;
-- project status changes materially;
-- a significant problem, root cause, or resolution is established;
-- deployment, CI, infrastructure, schema, migration, configuration, or release state changes;
-- a blocker, risk, dependency, or new next step is established;
-- durable constraints or requirements become clear;
-- important evidence changes the current understanding of the project;
-- the user explicitly requests a checkpoint or indicates the work session is ending.
-
-Typical explicit checkpoint phrases include "收尾", "结束", "先到这里", "checkpoint", "save progress", and equivalents.
+Persist when a meaningful milestone is completed or verified; a durable decision is confirmed; project status, deployment, schema, configuration, or release state changes materially; a significant problem or resolution is established; a blocker, risk, dependency, requirement, or next step becomes durable; important evidence changes current understanding; or the user explicitly requests a checkpoint/end-of-session save.
 
 ## 3. Do not persist
 
-Do not persist:
+Do not persist casual discussion, raw transcripts, transient debugging chatter without a durable conclusion, unaccepted speculation, redundant facts, unverified claims presented as verified, or secrets/credentials.
 
-- casual discussion;
-- raw chat transcripts;
-- transient debugging chatter that has no durable conclusion;
-- speculative ideas that remain unaccepted;
-- abandoned intermediate approaches unless the rejection itself is important;
-- duplicate facts already accurately represented in a canonical file;
-- unverified claims presented as verified facts;
-- secrets, credentials, tokens, private keys, or sensitive transient values.
+## 4. Routing
 
-## 4. Routing durable knowledge
-
-Route information to the narrowest canonical location that fits:
-
-| Information | Canonical destination |
-| --- | --- |
-| Current overall state | `PROJECT_STATE.md` |
-| Outstanding work, priorities, blockers | `NEXT_STEPS.md` |
-| Confirmed decision and rationale | `DECISIONS.md` |
-| Important chronological checkpoint | `sessions/YYYY-MM-DD.md` |
-| Domain-specific durable knowledge | Profile-defined artifact |
-
-A session log MAY reference changes made to canonical files but SHOULD NOT become the only copy of current state.
+Route information to the narrowest canonical semantic destination: Current State, Next Steps, Decisions, Checkpoint History, or a profile-defined durable concept.
 
 ## 5. Checkpoint procedure
 
-Before writing a checkpoint:
+Before a checkpoint, read the relevant current durable state, reconcile it with observed reality, replace stale statements, preserve useful content, apply the state vocabulary accurately, write the smallest coherent update, and record verification evidence for Verified claims.
 
-1. Read the existing relevant canonical documents.
-2. Reconcile new information with repository and external state.
-3. Remove or replace stale statements when appropriate.
-4. Preserve useful existing content.
-5. Distinguish status using the RPM state vocabulary.
-6. Write the smallest coherent set of updates.
-7. Avoid creating redundant documents.
-8. Record verification evidence when a claim is marked Verified.
+## 6. Storage transactions
 
-## 6. Git behavior
+An implementation SHOULD make a checkpoint atomic when its backend supports atomic writes or transactions. It MUST NOT claim persistence succeeded until the backend confirms the durable write.
 
-Documentation-only RPM persistence MAY be committed directly when the project instructions authorize it.
-
-Recommended commit messages include:
-
-```text
-docs: checkpoint project state
-docs: record project decision
-docs: update next steps
-docs: record research findings
-```
-
-RPM persistence MUST NOT modify production code merely to create a documentation checkpoint. Code changes follow the normal development and validation workflow.
+Version-control commits, database transactions, document revisions, and API writes are implementation/backend behavior rather than protocol requirements.
 
 ## 7. End-of-session behavior
 
-When the user explicitly ends or pauses a substantive work session, the assistant SHOULD perform a final reconciliation:
+When a user explicitly ends or pauses substantive work, an implementation SHOULD reconcile whether durable state changed since the last checkpoint, persist missing durable knowledge, and ensure active next steps/blockers are current. If nothing durable changed, no write is required.
 
-- confirm whether durable state changed since the last checkpoint;
-- persist missing durable knowledge if needed;
-- ensure active next steps and blockers are current;
-- report briefly which files changed and, if applicable, the commit SHA.
+## 8. Checkpoint-history discipline
 
-If no durable state changed, no repository write is required.
-
-## 8. Session-log discipline
-
-Session logs are evidence and chronology, not canonical current state.
-
-A session log SHOULD contain only meaningful items such as:
-
-- work completed;
-- decisions made;
-- findings or root causes;
-- verification performed;
-- remaining work;
-- links or references to relevant commits, issues, PRs, or external evidence.
-
-Multiple trivial session files SHOULD NOT be created merely because a conversation occurred.
+Checkpoint History is evidence and chronology, not canonical current state. It SHOULD record only meaningful work, decisions, findings, verification, remaining work, and useful references. It MUST NOT be a raw conversation archive.
