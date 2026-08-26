@@ -48,10 +48,12 @@ rpm/
 │   ├── DECISIONS.md
 │   ├── SESSION.md
 │   └── PROJECT_INSTRUCTIONS.md
-└── examples/
-    ├── software-project.yaml
-    ├── content-project.yaml
-    └── mixed-project.yaml
+├── examples/
+│   ├── software-project.yaml
+│   ├── content-project.yaml
+│   └── mixed-project.yaml
+└── site/
+    └── public presentation layer for RPM
 ```
 
 ## Core memory
@@ -110,6 +112,12 @@ After approval, the assistant should:
 On later conversations, the assistant loads the manifest, `PROJECT_STATE.md`, and `NEXT_STEPS.md` first, then reads decisions, profile artifacts, and session history only when relevant.
 
 During substantive work, meaningful durable state changes are checkpointed back to the repository according to `spec/PERSISTENCE.md`.
+
+## Website
+
+The `site/` directory contains the public presentation layer for RPM. It is intentionally non-normative and reads the repository's `VERSION`, `spec/`, `profiles/`, and `templates/` files directly at build time so there is no second hand-maintained copy of the standard.
+
+The initial site uses Astro static generation and is configured for Cloudflare Workers Static Assets. See `site/README.md` for local development and deployment settings.
 
 ## Design goals
 
