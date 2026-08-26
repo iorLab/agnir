@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CopyBlock from '../components/CopyBlock.astro';
+import { getGroups, projectInstructions, version } from '../lib/rpm.mjs';
+
+const groups = getGroups();
+---
+<BaseLayout>
+  <section class="hero shell">
+    <div class="hero-copy">
+      <p class="eyebrow">RPM v{version}</p>
+      <h1>Durable project memory,<br />backed by your repository.</h1>
+      <p class="lede">RPM gives long-running ChatGPT Projects a small, explicit, version-controlled memory layer. Chats stay working memory; durable project knowledge lives with the code and documents it describes.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="/quick-start">Get started</a>
+        <a class="button secondary" href="/reference">Read the reference</a>
+      </div>
+    </div>
+    <div class="terminal-card" aria-label="RPM bootstrap flow">
+      <div class="terminal-dots"><i></i><i></i><i></i></div>
+      <pre><code>$ start new conversation
+
+RPM → .chatgpt/project-memory.yaml
+
+      ├─ missing → offer initialization
+      └─ found   → load durable context
+
+repo = canonical source of truth
+chat = working memory</code></pre>
+    </div>
+  </section>
+
+  <section class="section shell" id="copy-setup">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="eyebrow">01 · Copy setup</p>
+        <h2>One hook in Project Instructions.</h2>
+      </div>
+      <p>Paste this into a ChatGPT Project associated with a GitHub repository. RPM handles the bootstrap check on the first substantive turn.</p>
+    </div>
+    <CopyBlock value={projectInstructions} title="RPM Project Instructions" language="markdown" label="Copy instructions" />
+  </section>
+
+  <section class="section shell">
+    <div class="section-heading">
+      <p class="eyebrow">02 · How it works</p>
+      <h2>A small protocol, not a transcript archive.</h2>
+    </div>
+    <div class="principle-grid">
+      <article>
+        <span>01</span>
+        <h3>Bootstrap</h3>
+        <p>On a new conversation, RPM checks the project manifest and loads only the durable context needed to continue.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h3>Work normally</h3>
+        <p>The conversation remains working memory. The repository remains the authoritative durable record.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h3>Checkpoint</h3>
+        <p>Confirmed decisions, state changes, next steps, and expensive-to-reconstruct findings are persisted intentionally.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="eyebrow">03 · Reference</p>
+        <h2>Readable website. Repository-owned truth.</h2>
+      </div>
+      <p>The site reads the RPM files directly at build time. There is no second hand-maintained copy of the specification.</p>
+    </div>
+    <div class="reference-grid">
+      {groups.map((group) => (
+        <article class="reference-card">
+          <p class="eyebrow">{group.label}</p>
+          <p>{group.description}</p>
+          <ul>
+            {group.documents.slice(0, 6).map((doc) => (
+              <li><a href={`/${doc.kind}/${doc.slug}`}>{doc.title}<span>→</span></a></li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section shell callout">
+    <p class="eyebrow">Design principle</p>
+    <blockquote>“The repository is the canonical source of truth for durable project knowledge; chat conversations are working memory.”</blockquote>
+    <a href="/spec/core">Read the Core specification →</a>
+  </section>
+</BaseLayout>

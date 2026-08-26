@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CopyBlock from '../../components/CopyBlock.astro';
+import { getAllDocuments, getGroups, renderMarkdown } from '../../lib/rpm.mjs';
+
+export function getStaticPaths() {
+  return getAllDocuments().map((doc) => ({
+    params: { kind: doc.kind, slug: doc.slug },
+    props: { doc }
+  }));
+}
+
+const { doc } = Astro.props;
+const groups = getGroups();
+const group = groups.find((item) => item.kind === doc.kind);
+const isTemplate = doc.kind === 'templates';
+const html = isTemplate ? '' : renderMarkdown(doc.source);
+---
+<BaseLayout title={`${doc.title} · RPM`}>
+  <section class="doc-shell shell">
+    <aside class="doc-sidebar">
+      <a class="back-link" href="/reference">← Reference</a>
+      <p class="eyebrow">{group?.label}</p>
+      <nav aria-label={`${group?.label} documents`}>
+        {group?.documents.map((item) => (
+          <a class:list={[{ active: item.slug === doc.slug }]} href={`/${item.kind}/${item.slug}`}>{item.title}</a>
+        ))}
+      </nav>
+    </aside>
+
+    <article class="doc-content">
+      <div class="doc-heading">
+        <div>
+          <p class="eyebrow">{isTemplate ? 'Copy-ready template' : 'Repository source'}</p>
+          <h1>{doc.title}</h1>
+          <p class="file-path">{doc.path}</p>
+        </div>
+        <span class:list={['authority-badge', { normative: doc.kind === 'spec' }]}>{doc.kind === 'spec' ? 'Normative' : doc.kind === 'profiles' ? 'Profile' : 'Template'}</span>
+      </div>
+
+      {isTemplate ? (
+        <CopyBlock value={doc.source} title={doc.filename} language={doc.filename.endsWith('.yaml') ? 'yaml' : 'markdown'} label="Copy" />
+      ) : (
+        <div class="markdown" set:html={html} />
+      )}
+    </article>
+  </section>
+</BaseLayout>

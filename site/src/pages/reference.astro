@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGroups } from '../lib/rpm.mjs';
+const groups = getGroups();
+---
+<BaseLayout title="Reference · RPM">
+  <section class="page-hero shell">
+    <p class="eyebrow">Reference</p>
+    <h1>The RPM source, presented for humans.</h1>
+    <p class="lede">Specification pages are normative only because their repository files are normative. This website renders those files directly at build time.</p>
+  </section>
+
+  <section class="section shell reference-index">
+    {groups.map((group) => (
+      <div class="reference-group">
+        <div>
+          <p class="eyebrow">{group.label}</p>
+          <h2>{group.label}</h2>
+          <p>{group.description}</p>
+        </div>
+        <div class="doc-list">
+          {group.documents.map((doc) => (
+            <a href={`/${doc.kind}/${doc.slug}`}>
+              <div><strong>{doc.title}</strong><small>{doc.path}</small></div>
+              <span>→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+</BaseLayout>

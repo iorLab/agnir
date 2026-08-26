@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import { version } from '../lib/rpm.mjs';
+
+const {
+  title = 'RPM — Repository Project Memory',
+  description = 'Repository-backed durable memory for long-running ChatGPT projects.'
+} = Astro.props;
+const pathname = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b1020" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="RPM home">
+          <span class="brand-mark">R</span>
+          <span>
+            <strong>RPM</strong>
+            <small>Repository Project Memory</small>
+          </span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <a class:list={[{ active: pathname === '/quick-start' }]} href="/quick-start">Quick Start</a>
+          <a class:list={[{ active: pathname === '/reference' || pathname.startsWith('/spec/') || pathname.startsWith('/profiles/') || pathname.startsWith('/templates/') }]} href="/reference">Reference</a>
+          <span class="version-pill">v{version}</span>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <p>RPM v{version} · Repository-backed durable memory for ChatGPT Projects.</p>
+        <p class="muted">The website is a presentation layer. Files under <code>spec/</code>, <code>profiles/</code>, and <code>templates/</code> remain authoritative.</p>
+      </div>
+    </footer>
+  </body>
+</html>
