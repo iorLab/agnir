@@ -3,8 +3,7 @@
 ## Immediate
 
 1. Validate the deployed RPM website in a browser, including Home, Quick Start, Reference, and copy interactions.
-2. Validate a non-production branch preview so the GitHub-to-Cloudflare preview workflow is confirmed end to end.
-3. Continue validating the self-hosted RPM bootstrap and checkpoint flow during normal maintenance conversations.
+2. Continue validating the self-hosted RPM bootstrap and checkpoint flow during normal maintenance conversations.
 
 ## Near term
 
