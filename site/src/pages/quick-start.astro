@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CopyBlock from '../components/CopyBlock.astro';
+import { projectInstructions, manifestTemplate } from '../lib/rpm.mjs';
+
+const manualPrompt = 'Initialize RPM in this repository according to mattamior/rpm.';
+---
+<BaseLayout title="Quick Start · RPM">
+  <section class="page-hero shell narrow">
+    <p class="eyebrow">Quick Start</p>
+    <h1>Initialize a project in minutes.</h1>
+    <p class="lede">The normal path needs only one copied block. RPM then discovers whether the repository is already initialized and continues from durable state.</p>
+  </section>
+
+  <section class="section shell narrow steps">
+    <article class="step">
+      <div class="step-number">1</div>
+      <div>
+        <h2>Add the Project Instructions hook</h2>
+        <p>Copy the block below into the ChatGPT Project's Project Instructions.</p>
+        <CopyBlock value={projectInstructions} title="Project Instructions" language="markdown" label="Copy" />
+      </div>
+    </article>
+
+    <article class="step">
+      <div class="step-number">2</div>
+      <div>
+        <h2>Start a normal conversation</h2>
+        <p>At the first substantive turn, RPM checks <code>.chatgpt/project-memory.yaml</code>. If it exists, the assistant loads the declared Core state. If it is missing, the assistant offers initialization.</p>
+        <div class="note"><strong>No special opening prompt is required.</strong> The bootstrap hook is designed to make RPM part of normal project work.</div>
+      </div>
+    </article>
+
+    <article class="step">
+      <div class="step-number">3</div>
+      <div>
+        <h2>Approve initialization when offered</h2>
+        <p>RPM inspects the repository, classifies the project conservatively, creates the manifest and Core memory files from actual repository state, and commits the initialization.</p>
+        <p class="muted">If you ever want to trigger the flow explicitly, this short prompt is sufficient:</p>
+        <CopyBlock value={manualPrompt} title="Manual bootstrap prompt" language="text" label="Copy" />
+      </div>
+    </article>
+
+    <article class="step">
+      <div class="step-number">4</div>
+      <div>
+        <h2>Continue working normally</h2>
+        <p>Future conversations bootstrap from repository state. Meaningful durable changes can be checkpointed as work progresses, and an explicit checkpoint can be triggered with phrases such as <code>checkpoint</code>, <code>save progress</code>, or <code>收尾</code>.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="section shell narrow">
+    <div class="section-heading">
+      <p class="eyebrow">Manifest</p>
+      <h2>What RPM creates</h2>
+      <p>The exact values depend on the repository classification. This template is the source used by RPM v1.0.0.</p>
+    </div>
+    <CopyBlock value={manifestTemplate} title=".chatgpt/project-memory.yaml" language="yaml" label="Copy template" />
+  </section>
+</BaseLayout>
