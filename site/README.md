@@ -2,6 +2,8 @@
 
 This directory contains the public presentation layer for RPM. It is intentionally non-normative: the site reads `../VERSION`, `../spec/`, `../profiles/`, and `../templates/` directly during the Astro build so the repository remains the single source of truth.
 
+Production: `https://rpm.mattamior.workers.dev`
+
 ## Local development
 
 ```bash
