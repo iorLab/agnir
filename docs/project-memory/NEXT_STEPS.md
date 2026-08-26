@@ -2,12 +2,13 @@
 
 ## Immediate
 
-1. Connect `mattamior/rpm` to Cloudflare Workers Builds with `site` as the root directory, `main` as the production branch, `npm run build` as the build command, and `npx wrangler deploy` as the deploy command.
-2. Validate the first Cloudflare production build, then validate a non-production branch preview before treating the website deployment workflow as complete.
+1. Validate the deployed RPM website in a browser, including Home, Quick Start, Reference, and copy interactions.
+2. Validate a non-production branch preview so the GitHub-to-Cloudflare preview workflow is confirmed end to end.
 3. Continue validating the self-hosted RPM bootstrap and checkpoint flow during normal maintenance conversations.
 
 ## Near term
 
+- Decide whether to attach a custom domain after the default Cloudflare deployment is validated.
 - Decide the public release posture for RPM, including repository visibility and an explicit LICENSE before making the specification repository public.
 - Use the first consuming-project upgrade or maintenance case to test whether RPM v1.0.0 instructions are sufficient without relying on cross-project chat memory.
 - Capture confirmed specification defects or reusable compatibility requirements in the appropriate normative files rather than only in chat.
