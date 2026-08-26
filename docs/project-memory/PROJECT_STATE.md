@@ -20,6 +20,7 @@ The repository is the canonical source of truth for RPM rules. ChatGPT Project c
 - A public-facing website implementation lives under `site/`. It is a non-normative presentation layer that reads `VERSION`, `spec/`, `profiles/`, and `templates/` directly at build time.
 - The website is configured as a static Astro build for Cloudflare Workers Static Assets, with GitHub-integrated Workers Builds as the deployment path.
 - The first production Cloudflare Workers build from `main` completed successfully on 2026-08-26 using `site` as the root directory, `npm run build` as the build command, and `npx wrangler deploy` as the deploy command.
+- The production website URL is `https://rpm.mattamior.workers.dev`.
 - The original RPM design conversation has been moved into the RPM maintenance Project for design provenance only; it is not an authoritative state source.
 
 ## Scope
