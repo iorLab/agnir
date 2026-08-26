@@ -3,8 +3,8 @@ import '../styles/global.css';
 import { version } from '../lib/rpm.mjs';
 
 const {
-  title = 'RPM — Repository Project Memory',
-  description = 'Repository-backed durable memory for long-running ChatGPT projects.'
+  title = 'iorMemory — Durable Project Memory Protocol',
+  description = 'Platform-agnostic durable project memory for AI-assisted work.'
 } = Astro.props;
 const pathname = Astro.url.pathname;
 ---
@@ -21,29 +21,22 @@ const pathname = Astro.url.pathname;
   <body>
     <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label="RPM home">
-          <span class="brand-mark">R</span>
-          <span>
-            <strong>RPM</strong>
-            <small>Repository Project Memory</small>
-          </span>
+        <a class="brand" href="/" aria-label="iorMemory home">
+          <span class="brand-mark">i</span>
+          <span><strong>iorMemory</strong><small>Durable Project Memory Protocol</small></span>
         </a>
         <nav aria-label="Primary navigation">
           <a class:list={[{ active: pathname === '/quick-start' }]} href="/quick-start">Quick Start</a>
-          <a class:list={[{ active: pathname === '/reference' || pathname.startsWith('/spec/') || pathname.startsWith('/profiles/') || pathname.startsWith('/templates/') }]} href="/reference">Reference</a>
+          <a class:list={[{ active: pathname === '/reference' || pathname.startsWith('/spec/') || pathname.startsWith('/profiles/') || pathname.startsWith('/implementations/') || pathname.startsWith('/backends/') || pathname.startsWith('/adapters/') || pathname.startsWith('/templates/') }]} href="/reference">Reference</a>
           <span class="version-pill">v{version}</span>
         </nav>
       </div>
     </header>
-
-    <main>
-      <slot />
-    </main>
-
+    <main><slot /></main>
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <p>RPM v{version} · Repository-backed durable memory for ChatGPT Projects.</p>
-        <p class="muted">The website is a presentation layer. Files under <code>spec/</code>, <code>profiles/</code>, and <code>templates/</code> remain authoritative.</p>
+        <p>iorMemory v{version} · Persistent project memory without platform or storage lock-in.</p>
+        <p class="muted">The website is non-normative. Repository specification files remain authoritative.</p>
       </div>
     </footer>
   </body>

@@ -1,23 +1,9 @@
 # Generic Profile
 
-Version: 1.0.0
+Version: 2.0.0
 
-Use the Generic profile when no specialized profile clearly adds durable value, or when a project is still too early to classify safely.
+Use Generic when no specialized profile clearly adds durable value or when classification evidence is insufficient.
 
-Generic projects use RPM Core without mandatory domain-specific extensions.
+Generic projects use iorMemory Core without mandatory domain-specific extensions. Maintain Current State, Next Steps, Decisions, and meaningful checkpoints; create additional durable artifacts only when Core becomes insufficient.
 
-## Behavior
-
-- Maintain `PROJECT_STATE.md`, `NEXT_STEPS.md`, `DECISIONS.md`, and meaningful session logs.
-- Create additional documents only when durable information no longer fits cleanly in the Core.
-- Prefer later reclassification into a specialized profile over inventing ad hoc structure prematurely.
-
-## Persistence triggers
-
-Use the general persistence rules in `spec/PERSISTENCE.md`.
-
-## Reclassification
-
-When recurring work patterns become clear, update the manifest to add or replace profiles according to `spec/CLASSIFICATION.md`.
-
-Reclassification SHOULD preserve useful existing documents and SHOULD NOT move files solely for cosmetic consistency unless the benefit outweighs churn.
+Use the general persistence rules in `spec/PERSISTENCE.md`. Reclassify conservatively when recurring work patterns justify a specialized profile, preserving useful existing durable knowledge.

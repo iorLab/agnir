@@ -1,28 +1,22 @@
-rpm:
-  version: 1.0.0
-  spec_repository: mattamior/rpm
-
+iormemory:
+  version: 2.0.0
+implementation:
+  name: persistent-project-memory
+backend:
+  name: repository
+adapter:
+  name: chatgpt
 project:
-  name: editorial-project
+  name: Example Content Project
   primary_type: content
-  profiles:
-    - content
-
+  profiles: [content, research]
 memory:
   root: docs/project-memory
   state: PROJECT_STATE.md
   next_steps: NEXT_STEPS.md
   decisions: DECISIONS.md
-  sessions: sessions
-
+  checkpoints: sessions
 policy:
   checkpoint: event-driven
   session_logs: meaningful-only
   raw_transcripts: false
-
-extensions:
-  content:
-    style_guide: docs/content/STYLE_GUIDE.md
-    strategy: docs/content/CONTENT_STRATEGY.md
-    topic_backlog: docs/content/TOPIC_BACKLOG.md
-    publishing_log: docs/content/PUBLISHING_LOG.md
