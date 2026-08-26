@@ -1,0 +1,45 @@
+---
+const { value, label = 'Copy', title, language = 'text' } = Astro.props;
+const id = `copy-${Math.random().toString(36).slice(2)}`;
+---
+<div class="copy-block">
+  <div class="copy-toolbar">
+    <div>
+      {title && <strong>{title}</strong>}
+      <span>{language}</span>
+    </div>
+    <button class="copy-button" type="button" data-copy-button={id}>{label}</button>
+  </div>
+  <pre><code id={id}>{value}</code></pre>
+</div>
+
+<script>
+  function installCopyButtons() {
+    document.querySelectorAll('[data-copy-button]').forEach((button) => {
+      if (button.dataset.copyReady === 'true') return;
+      button.dataset.copyReady = 'true';
+      button.addEventListener('click', async () => {
+        const target = button.getAttribute('data-copy-button');
+        const code = target ? document.getElementById(target) : null;
+        if (!code) return;
+
+        const text = code.textContent ?? '';
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = button.textContent;
+          button.textContent = 'Copied';
+          setTimeout(() => { button.textContent = original; }, 1400);
+        } catch {
+          const range = document.createRange();
+          range.selectNodeContents(code);
+          const selection = window.getSelection();
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+        }
+      });
+    });
+  }
+
+  installCopyButtons();
+  document.addEventListener('astro:page-load', installCopyButtons);
+</script>
