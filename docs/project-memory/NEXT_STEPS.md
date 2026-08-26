@@ -2,21 +2,23 @@
 
 ## Immediate
 
-1. Update the public website presentation from RPM v1 language to iorMemory v2 / Persistent Project Memory terminology while keeping it non-normative.
-2. Migrate remaining profile and example headers/configuration to iorMemory v2 and remove stale RPM-v1-only normative wording.
-3. Validate the repository-backed PPM bootstrap/checkpoint flow using the v2 manifest/template in this maintenance project.
-4. Decide whether and when to rename the GitHub repository from `mattamior/rpm`; repository naming is now operational branding, not protocol semantics.
+1. Validate the Cloudflare production build and live website after the iorMemory v2 migration, including Home, Quick Start, Reference, and copy interactions.
+2. Validate one real consuming-project migration from RPM v1 to iorMemory v2 / PPM using `spec/MIGRATION.md`.
+3. Validate this repository's next fresh-conversation bootstrap using the v2 self-hosted manifest and ChatGPT adapter instructions.
 
 ## Near term
 
+- Decide whether and when to rename the GitHub repository from `mattamior/rpm`; repository naming is operational branding and no longer protocol semantics.
 - Add an explicit LICENSE before broader public promotion.
-- Consider a dedicated iorMemory domain after website content and repository identity are aligned.
-- Add conformance metadata/version declarations for future PPM releases.
-- Add additional persistence backends or platform adapters only when there is a concrete implementation need.
-- Preserve RPM v1 history and migration rationale without archiving raw conversations.
+- Decide on the public domain/Worker naming after the site migration is validated.
+- Add machine-readable conformance metadata if multiple PPM versions or implementations emerge.
+- Add additional persistence backends or platform adapters only when driven by concrete implementation needs.
 
-## Validation
+## Completed in v2 migration
 
-- Confirm all normative v2 files agree on version 2.0.0 and layer boundaries.
-- Confirm no protocol-level requirement depends on Git, repository paths, `.chatgpt/`, or ChatGPT-specific lifecycle events.
-- Confirm RPM v1 projects are treated as requiring explicit migration.
+- Established **iorMemory** as the protocol identity.
+- Established **Persistent Project Memory (PPM)** as the initial reference Skill/implementation.
+- Released the protocol lineage as **v2.0.0**, an explicit MAJOR migration from RPM v1.0.0.
+- Separated protocol, implementation, repository backend, and ChatGPT adapter behavior.
+- Migrated Core specification, profiles, examples, templates, self-hosted manifest, and public website content to v2 terminology and semantics.
+- Preserved RPM v1 as historical predecessor and documented explicit migration behavior.
