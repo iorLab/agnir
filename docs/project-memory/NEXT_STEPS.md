@@ -2,10 +2,9 @@
 
 ## Immediate
 
-1. Review and merge the initial RPM website implementation.
-2. Connect `mattamior/rpm` to Cloudflare Workers Builds with `site` as the root directory, `main` as the production branch, `npm run build` as the build command, and `npx wrangler deploy` as the deploy command.
-3. Validate a non-production preview build and the first production deployment before advertising the website publicly.
-4. Continue validating the self-hosted RPM bootstrap and checkpoint flow during normal maintenance conversations.
+1. Connect `mattamior/rpm` to Cloudflare Workers Builds with `site` as the root directory, `main` as the production branch, `npm run build` as the build command, and `npx wrangler deploy` as the deploy command.
+2. Validate the first Cloudflare production build, then validate a non-production branch preview before treating the website deployment workflow as complete.
+3. Continue validating the self-hosted RPM bootstrap and checkpoint flow during normal maintenance conversations.
 
 ## Near term
 
