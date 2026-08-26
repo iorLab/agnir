@@ -1,8 +1,8 @@
-# RPM website
+# iorMemory website
 
-This directory contains the public presentation layer for RPM. It is intentionally non-normative: the site reads `../VERSION`, `../spec/`, `../profiles/`, and `../templates/` directly during the Astro build so the repository remains the single source of truth.
+This directory contains the non-normative public presentation layer for iorMemory. The site reads canonical protocol, profile, implementation, backend, adapter, and template files directly during the Astro build so the repository remains the single source of truth.
 
-Production: `https://rpm.mattamior.workers.dev`
+Production currently remains at `https://rpm.mattamior.workers.dev`; the legacy Worker/repository deployment name is operational infrastructure and does not define the protocol identity.
 
 ## Local development
 
