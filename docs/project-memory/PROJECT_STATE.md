@@ -12,6 +12,7 @@ This repository is the historical RPM repository and the current canonical devel
 - Public product brand for the reference implementation: **Sandminni**.
 - Reference implementation machine identity: `persistent-project-memory`.
 - Sandminni's brand metaphor is memory accumulated grain by grain; future visual identity should explore sand/grains, convergence or accumulation, and memory/durable continuity.
+- The non-normative public website now presents **Sandminni** as the product brand while keeping **PPM** as the technical implementation identity and **PPMP** as the protocol; the historical `rpm` Worker/domain naming remains infrastructure only.
 - RPM (Repository Project Memory) v1.0.0 is the historical repository- and ChatGPT-oriented predecessor.
 - The v2 architecture separates protocol semantics, implementation behavior, persistence backends, and platform adapters.
 - PPMP is platform-agnostic and storage-agnostic. Persistence is required; Git/repository storage is not.
