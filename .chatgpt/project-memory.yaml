@@ -8,7 +8,7 @@ compatibility:
 
 project:
   name: Agnir
-  repository: mattamior/rpm
+  repository: iorLab/agnir
 
 files:
   state: .agnir/state.md
