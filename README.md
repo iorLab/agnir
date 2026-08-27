@@ -19,18 +19,16 @@ spec/MIGRATION_PPMP_V2.md      # explicit predecessor migration rules
 profiles/REPOSITORY_FILESYSTEM.md
 schemas/agnir-manifest.schema.json
 conformance/                   # executable conformance pressure
+history/PREDECESSOR.md         # locator to preserved predecessor lineage
 ```
+
+Predecessor implementation/backend/adapter/site/template material is deliberately absent from active `main`; it remains available on the legacy branch.
 
 `AGNIR.yaml` is a rule of the repository/filesystem profile, not Agnir Core. Core remains storage-, VCS-, platform-, host-, and execution-surface-neutral.
 
 ## Core memory semantics
 
-Agnir requires durable recovery of:
-
-- Current State;
-- Next Actions;
-- Decisions;
-- Evidence / Checkpoints.
+Agnir requires durable recovery of Current State, Next Actions, Decisions, and Evidence / Checkpoints.
 
 A fresh Executor given only an authorized Project Entry Point must be able to resolve the Project's Discovery Record and required durable state without replaying predecessor-private context.
 
@@ -38,7 +36,7 @@ A fresh Executor given only an authorized Project Entry Point must be able to re
 
 For the repository/filesystem profile, cold start begins at the Project root and resolves top-level `AGNIR.yaml`. The manifest identifies the Agnir line, Project identity, and authoritative memory locators.
 
-Run the initial self-hosting check with:
+Run the active self-hosting check with:
 
 ```bash
 python conformance/check_agnir_0_1.py
@@ -46,15 +44,7 @@ python conformance/check_agnir_0_1.py
 
 ## Layer model
 
-Agnir separates:
-
-1. Core;
-2. Profiles;
-3. Implementations;
-4. Backends;
-5. Adapters.
-
-Git, repositories, databases, local files, APIs, ChatGPT, CLIs, IDEs, CI systems, and cloud stores can implement these layers without becoming Core requirements.
+Agnir separates Core, Profiles, Implementations, Backends, and Adapters. Those lower layers are intentionally empty/minimal on the new main line until Agnir-native implementations are introduced and validated.
 
 ## Svif
 

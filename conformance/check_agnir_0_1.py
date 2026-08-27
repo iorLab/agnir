@@ -41,7 +41,7 @@ def locator_exists(locator: str | None, key: str) -> None:
             fail(f"required memory locator {key} is null or missing")
         return
     if "://" in locator:
-        return  # External locator resolution belongs to a backend-specific fixture.
+        return
     target = ROOT / locator
     if not target.exists():
         fail(f"memory locator {key} does not resolve: {locator}")
@@ -77,13 +77,44 @@ def main() -> None:
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
     except Exception as exc:
         fail(f"manifest schema is not valid JSON: {exc}")
-    try:
-        version_const = schema["properties"]["agnir"]["properties"]["version"]["const"]
-        profile_const = schema["properties"]["agnir"]["properties"]["discovery_profile"]["const"]
-    except KeyError as exc:
-        fail(f"manifest schema is missing required constants: {exc}")
+    version_const = schema["properties"]["agnir"]["properties"]["version"]["const"]
+    profile_const = schema["properties"]["agnir"]["properties"]["discovery_profile"]["const"]
     if version_const != version or profile_const != profile:
         fail("manifest and JSON Schema version/profile declarations diverge")
+
+    required_active = [
+        "spec/AGNIR_CORE.md",
+        "spec/AGNIR_DISCOVERY.md",
+        "spec/MIGRATION_PPMP_V2.md",
+        "profiles/REPOSITORY_FILESYSTEM.md",
+        "history/PREDECESSOR.md",
+    ]
+    for path in required_active:
+        if not (ROOT / path).exists():
+            fail(f"missing active Agnir artifact: {path}")
+
+    forbidden = [
+        "docs",
+        "adapters",
+        "backends",
+        "examples",
+        "implementations",
+        "site",
+        "templates",
+        "spec/AGNIR_CORE_DRAFT.md",
+        "spec/AGNIR_DISCOVERY_DRAFT.md",
+        "spec/AGNIR_MIGRATION_DRAFT.md",
+        "spec/CORE.md",
+        "spec/BOOTSTRAP.md",
+        "spec/MANIFEST.md",
+        "profiles/REPOSITORY_FILESYSTEM_DRAFT.md",
+        "profiles/generic.md",
+        ".chatgpt/PROJECT_INSTRUCTIONS.md",
+        ".github/workflows/site-ci.yml",
+    ]
+    for path in forbidden:
+        if (ROOT / path).exists():
+            fail(f"predecessor artifact remains active on main: {path}")
 
     print(f"PASS: Agnir {version} repository/filesystem cold-start structure for {identity}")
 
