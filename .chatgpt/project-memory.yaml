@@ -22,6 +22,8 @@ memory:
   state: PROJECT_STATE.md
   next_steps: NEXT_STEPS.md
   decisions: DECISIONS.md
+  transition_decisions:
+    - decisions/2026-08-27-agnir-core-transition.md
   checkpoints: sessions
 
 policy:
@@ -33,6 +35,9 @@ transition:
   target_protocol: Agnir Core
   target_line: "0.1"
   architecture_draft: spec/AGNIR_CORE_DRAFT.md
+  discovery_draft: spec/AGNIR_DISCOVERY_DRAFT.md
+  migration_draft: spec/AGNIR_MIGRATION_DRAFT.md
+  repository_filesystem_profile_draft: profiles/REPOSITORY_FILESYSTEM_DRAFT.md
   note: >-
     This project's maintenance memory is still persisted through the PPMP v2 / PPM
     predecessor implementation during the explicit Agnir migration. That does not
