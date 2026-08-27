@@ -21,6 +21,12 @@ ChatGPT Project-only memory MAY be used, but durable continuity MUST NOT depend 
 
 When the user says “收尾”, “结束”, “先到这里”, “checkpoint”, “save progress”, or an equivalent explicit end/save instruction, the adapter SHOULD invoke a final PPM checkpoint before finishing substantive work.
 
-## Minimal Project Instructions
+## Project Instructions configuration
 
-The reference text lives in `templates/PROJECT_INSTRUCTIONS.md`. Project Instructions should remain a small bootstrap hook; full normative behavior belongs in the PPMP specification and PPM implementation documentation.
+The reference bootstrap text lives in `templates/PROJECT_INSTRUCTIONS.md`. Project Instructions should remain a small bootstrap hook; full normative behavior belongs in the PPMP specification and PPM implementation documentation.
+
+ChatGPT Project Instructions are external platform configuration. Updating a repository manifest, template, PPM implementation, or PPMP documentation does **not** update the actual Project Instructions configured in ChatGPT.
+
+After a migration or implementation/adapter change that affects bootstrap wording, naming, discovery, or checkpoint behavior, acceptance SHOULD verify the actual ChatGPT Project Instructions against the intended current configuration and SHOULD exercise a fresh conversation to confirm first-substantive-turn discovery and restore behavior.
+
+A repository-backed project MAY keep a project-specific snapshot of its intended ChatGPT Project Instructions so configuration drift is reviewable and recoverable. Such a snapshot is adapter/project configuration, not PPMP protocol semantics, and it does not replace the actual Project Instructions configured on the platform.
