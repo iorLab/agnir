@@ -2,86 +2,97 @@
 
 ## Purpose
 
-This repository is the historical RPM repository, the current PPMP v2 / PPM / Sandminni development repository, and the canonical project that will evolve into **Agnir**.
+This repository is the historical RPM repository, the released PPMP v2 / PPM / Sandminni predecessor repository, and the canonical project evolving into **Agnir**.
 
-Agnir is project-owned durable memory/continuity. Its normative semantics must be independent of Git, GitHub, repository hosting, ChatGPT, conversational interfaces, any particular AI agent, local-vs-remote execution, and any single storage layout or backend.
+Agnir is project-owned durable memory/continuity. Its normative semantics are independent of Git, GitHub, repository hosting, ChatGPT, conversational interfaces, any particular AI agent, local-vs-remote execution, and any single storage layout or backend.
 
 ## Current status
 
-- Current released protocol lineage: **PPMP v2.0.0**.
-- Current reference implementation lineage: **Persistent Project Memory (PPM)**.
-- Current public product brand: **Sandminni**.
-- New target project identity: **Agnir**.
-- Repository: `mattamior/rpm` (repository rename is pending and is not required for the architecture decision).
-- The Agnir transition is an explicit architecture/naming migration, not a silent relabeling of PPMP v2 claims.
-- PPMP v2 already separates protocol semantics, implementation behavior, persistence backends, and platform adapters and already states that Git/repository storage and ChatGPT are not protocol requirements. That work is retained as the immediate architectural predecessor.
-- The new Agnir definition strengthens the stable ownership model: durable memory belongs to the **project**, not to an agent, chat, IDE, repository host, VCS, or execution environment.
-- Any compatible reader/executor may consume Agnir if it can discover and interpret the project's durable memory according to the applicable contract.
-- Discovery and resumability must generalize from ChatGPT-specific fresh-conversation behavior to **cold-start/fresh-executor discovery**.
-- A fresh executor must not require predecessor-private context to locate and interpret the project's durable state.
-- Git, repository files, databases, documents, APIs, local filesystems, cloud workspaces, or other durable media may be used by implementations/backends; no one of them is normative Core.
-- ChatGPT Projects, Project Instructions, Skills, local CLIs, IDE integrations, CI runners, and other execution surfaces belong in adapters/integrations rather than Agnir Core.
+- Current released predecessor protocol lineage: **PPMP v2.0.0**.
+- Current predecessor reference implementation lineage: **Persistent Project Memory (PPM)**.
+- Current predecessor public product brand: **Sandminni**.
+- New project/protocol identity: **Agnir**.
+- Target architecture line: **Agnir Core 0.1**.
+- Architecture draft: `spec/AGNIR_CORE_DRAFT.md`.
+- Repository: `mattamior/rpm` (repository rename remains deferred).
+- The repository's own maintenance memory still runs through PPMP v2 / PPM with the repository backend and ChatGPT adapter during migration. This is intentional predecessor self-hosting and is not an Agnir conformance claim.
+
+## Architecture decisions now established
+
+- **Agnir is the umbrella identity** for the new project/protocol lineage. The new architecture does not preserve a required PPMP-protocol / PPM-implementation / Sandminni-brand naming stack.
+- Agnir begins a **new explicit version namespace** with the target line `Agnir Core 0.1`; PPMP v2.0.0 remains historical predecessor evidence rather than being silently renumbered or relabeled.
+- The layer model is: **Agnir Core -> Profiles -> Implementations -> Backends -> Adapters**.
+- Durable memory belongs to the **Project**, not to an Executor, execution environment, repository host, VCS, or chat.
+- The neutral authority/execution vocabulary is **Principal** and **Executor**.
+- Core durable-memory semantics include **Current State**, **Next Actions**, **Decisions**, and **Evidence / Checkpoints**.
+- Discovery is modeled through a **Project Entry Point**, **Discovery Record**, and resolvable **Locator Chain**.
+- No top-level filename such as `AGNIR.yaml` is currently required by Core. A filesystem/repository discovery profile may standardize one later if conformance evidence justifies it.
+- Externally stored Agnir state is allowed only when the Project has a durable, authorized route from its Project Entry Point to that state.
+- A fresh Executor with no predecessor-private context must be able to resolve the Locator Chain, validate the Agnir version line, load required current memory, surface inconsistencies, and resume safely. This is the **cold-start discovery invariant**.
+- Agnir Core does not universally prohibit secrets from durable storage; confidentiality is governed by Project policy and consuming profiles/protocols. Svif may impose a stricter protected-secret rule.
 
 ## Relationship to Svif
 
 - **Svif** is a separate project evolving from ZeroLocal in `iorLab/zerolocal`.
-- Svif builds on Agnir-compatible durable project continuity.
-- Dependency direction is **Svif -> Agnir**.
-- Agnir does not depend on Svif and must remain useful to projects that do not use Svif or software-delivery workflows at all.
-- The exact versioned compatibility/dependency contract between Svif and Agnir is not yet frozen and is a priority design task.
+- Dependency direction remains **Svif -> Agnir**.
+- Svif should normatively depend on a **compatible Agnir Core protocol version**, not on a specific Agnir implementation/backend/adapter.
+- The current draft dependency target is the **Agnir Core 0.1 line**; the exact release compatibility expression is intentionally not frozen until the Core draft stabilizes.
+- Agnir remains independently useful outside software delivery, provider workflows, CI/CD, or Svif.
 
 ## Multi-project workspace model
 
-- One ChatGPT Project or other execution workspace may contain multiple related projects.
-- The workspace is not a project identity and is not an authoritative shared memory store.
-- Each project owns independent Agnir state.
-- Cross-project decisions are persisted separately in each affected project according to their local meaning.
-- Workspace-level configuration should be a thin registry/locator only and must not duplicate mutable project state.
-- Project-scoped work should load only the target project's Agnir. Explicitly cross-project work may load both/all affected projects.
-- This shared-workspace/separate-memory pattern is a candidate future Agnir conformance scenario for testing multi-project operation without durable context bleed.
+- One ChatGPT Project or other execution workspace may coordinate multiple Projects.
+- The workspace is not a Project identity and is not an authoritative shared mutable memory store.
+- Each Project owns independent Agnir state.
+- Cross-project decisions are persisted separately in each affected Project according to their local meaning.
+- Workspace-level configuration should remain locator/registry metadata only.
+- This Svif/Agnir workspace is a candidate future multi-project conformance case for proving isolated continuity without durable context bleed.
 
 ## Historical PPMP v2 architecture retained as evidence
 
-The current repository still contains and should preserve until the explicit migration is implemented:
+The repository still preserves the predecessor architecture and evidence:
 
-- `spec/` — PPMP v2 normative semantics;
-- `profiles/` — composable profiles;
-- `templates/` and `examples/` — reference serialization/examples;
-- `implementations/` — PPM reference implementation behavior;
-- `backends/` — persistence backend behavior, including repository/Git;
-- `adapters/` — platform-specific integrations, including ChatGPT;
-- `site/` — non-normative public presentation layer;
-- `docs/project-memory/` — this repository's own maintenance state.
+- `spec/` PPMP v2 normative documents;
+- `profiles/` composable predecessor profiles;
+- `templates/` and `examples/` predecessor serialization/examples;
+- `implementations/` PPM reference implementation behavior;
+- `backends/` persistence behavior, including repository/Git;
+- `adapters/` platform integrations, including ChatGPT;
+- `site/` predecessor public presentation;
+- `docs/project-memory/` current self-hosted maintenance state.
 
-The earlier `mattamior/tree-hole` migration, repository-backend CI/CD side-effect finding, site CI evidence, and ChatGPT adapter Project Instructions drift findings remain useful implementation evidence. They must not be discarded merely because the public/project identity changes.
+The earlier `mattamior/tree-hole` migration, repository-backend CI/CD side-effect finding, site CI evidence, and ChatGPT adapter Project Instructions drift findings remain useful implementation evidence and must not be discarded.
 
 ## Current focus
 
-Design the explicit PPMP/PPM/Sandminni -> Agnir migration while preserving the useful v2 layer separation. Define Agnir's platform/storage/executor-neutral Core, project-owned discovery semantics, vocabulary, versioning/compatibility policy, and the Svif dependency boundary before performing broad repository/file/site renames.
+Turn `spec/AGNIR_CORE_DRAFT.md` from an architecture draft into a testable Core contract without collapsing implementation/backend/adapter behavior back into Core. In parallel, define an explicit PPMP v2 -> Agnir 0.1 migration mapping and a first repository/filesystem discovery profile, then freeze the exact Svif compatibility declaration.
 
-## Open questions
+## Remaining open questions
 
-- Whether Agnir becomes the single umbrella name for protocol + reference implementation family, or whether a subordinate technical protocol/implementation identity remains useful under the Agnir project brand.
-- What versioning scheme best preserves PPMP v2 lineage while making the Agnir architecture transition explicit rather than cosmetic.
-- What exact discovery invariant is normative when Agnir state is external to the project's immediate filesystem/store.
-- Whether a top-level discovery anchor such as `AGNIR.yaml` should be a reference serialization convention or a normative profile requirement; Core must not require a particular path unless evidence justifies it.
-- What neutral role names should be standardized for readers/executors/authorities without implying AI or conversation.
-- What minimum contract Svif should depend on and how Agnir version compatibility should be declared.
-- How to model workspace registries without allowing them to become a second mutable project-memory store.
+- What exact normative fields and error semantics belong in the Agnir 0.1 Discovery Record.
+- Whether the first repository/filesystem discovery profile standardizes a top-level `AGNIR.yaml`, `.agnir/` layout, or another locator convention.
+- How external-memory Locator Chains authenticate/authorize resolution without making a particular identity system normative.
+- What migration guarantees are required when converting PPMP v2 Current State / Next Steps / Decisions / checkpoints into Agnir 0.1 semantics.
+- What exact release version identifier and compatibility range Svif should declare once Agnir Core 0.1 is frozen.
+- Which conformance fixtures best demonstrate storage/execution neutrality rather than merely restating it.
 
 ## Deferred predecessor tasks
 
-The previous PPMP v2 maintenance tasks remain valid evidence/work items but are temporarily secondary to the Agnir architecture transition:
+The previous PPMP v2 maintenance tasks remain valid evidence/work items but are secondary during the architecture transition:
 
 - fresh-conversation acceptance of the current PPMP/PPM ChatGPT adapter;
 - synchronizing and testing the Tree Hole external ChatGPT Project Instructions;
-- optional release-quality browser acceptance for the Sandminni site;
+- optional release-quality browser acceptance for the predecessor Sandminni site;
 - public repository/domain naming cleanup, license, and site lockfile improvements.
 
-Where useful, these tasks should be resumed only after deciding whether their expected naming/configuration should target the predecessor PPMP/PPM/Sandminni layer or the new Agnir layer.
+These should be resumed only when it is clear whether their acceptance target is predecessor PPMP/PPM behavior or the Agnir line.
+
+## Latest architecture progress
+
+- Added `spec/AGNIR_CORE_DRAFT.md` defining the Agnir 0.1 target architecture, neutral roles, discovery model, cold-start invariant, new version namespace, and Svif dependency boundary.
+- Updated `.chatgpt/project-memory.yaml` so the self-hosted maintenance project identifies itself as Agnir while explicitly declaring that PPMP v2 / PPM remains the current predecessor persistence implementation during migration.
 
 ## Checkpoint
 
-- Saved: **2026-08-27T17:58:00+08:00**.
-- Reason: adopt Agnir as the new project identity, clarify project-owned/platform-neutral semantics, establish the independent Svif -> Agnir relationship, and adopt a shared-workspace/separate-durable-memory model.
-- Resumability: repository state is persisted. The external ChatGPT workspace bootstrap still needs a later multi-project registry update before fresh-context multi-project resumability can be claimed as fully synchronized.
+- Last full checkpoint: **2026-08-27T17:58:00+08:00**.
+- Architecture work has advanced since that checkpoint; the next explicit checkpoint should capture the new Agnir Core draft and corresponding Svif transition draft after any review/refinement.
