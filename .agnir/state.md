@@ -8,20 +8,20 @@ Agnir is the active project/protocol identity on `main`. PPMP v2.0.0 / Persisten
 - Repository/filesystem discovery profile: `repository-filesystem/0.1`.
 - Authoritative discovery anchor for this Project: top-level `AGNIR.yaml`.
 - Authoritative mutable continuity state: `.agnir/` as resolved by `AGNIR.yaml`.
-- `.chatgpt/project-memory.yaml` is a ChatGPT bootstrap compatibility shim only; it is not Agnir Core and is not authoritative over `AGNIR.yaml`.
+- No execution-surface-specific bootstrap file is part of the active Project structure.
 
 ## Core invariants
 
 - Durable continuity belongs to the Project, not an Executor, execution environment, VCS, repository host, or conversation.
 - A fresh Executor given only an authorized Project Entry Point must be able to resolve the Discovery Record and required durable state without predecessor-private context.
 - Required durable memory semantics are Current State, Next Actions, Decisions, and Evidence / Checkpoints.
-- Agnir Core is storage-, platform-, VCS-, repository-, and execution-surface-neutral.
+- Agnir Core is storage-, platform-, VCS-, repository-, agent-, and execution-surface-neutral.
 - Project identity mismatch, broken locators, unsupported versions, authorization failures, cycles, ambiguity, stale locators, and materially inconsistent memory are explicit discovery failures.
 - Profiles, implementations, backends, and adapters remain outside Core unless their semantics are independently generalized.
 
 ## Relationship to Svif
 
-Svif is a separate Project at `iorLab/svif`. Dependency direction is `Svif -> Agnir`. Svif consumes the Agnir Core protocol contract, not this repository's storage layout, implementation, backend, or ChatGPT shim.
+Svif is a separate Project at `iorLab/svif`. Dependency direction is `Svif -> Agnir`. Svif consumes the Agnir Core protocol contract, not this repository's storage layout, implementation, backend, or any execution-surface integration.
 
 ## Branch governance
 
@@ -31,7 +31,9 @@ Svif is a separate Project at `iorLab/svif`. Dependency direction is `Svif -> Ag
 
 ## Current implementation status
 
-The first real Agnir main-line structure is active: `AGNIR.yaml`, `.agnir/`, normative Core/Discovery/Profile documents, a manifest JSON Schema, and an executable cold-start structural conformance check exist on `main`.
+The active Agnir main line contains `AGNIR.yaml`, `.agnir/`, normative Core/Discovery/Profile documents, a manifest JSON Schema, and an executable cold-start structural conformance check.
+
+The former ChatGPT-specific bootstrap shim has been removed from active `main`. Cold start for this repository now begins directly at `AGNIR.yaml`, matching the repository/filesystem profile and keeping execution-surface integration outside the Project structure.
 
 This is a working `0.1` development contract, not yet a final release. Repository/filesystem conformance is concrete enough for this repository to self-host through Agnir discovery rather than PPMP/PPM maintenance memory.
 
@@ -41,15 +43,13 @@ At the 2026-08-27 checkpoint, the pre-checkpoint `main` head was `6537fe56157d26
 
 The coordinated repository identity transition is complete.
 
-Actual canonical mapping:
+Canonical repositories relevant to this workspace are now:
 
-- `mattamior/rpm` -> `iorLab/agnir` (renamed and transferred into the `iorLab` organization)
-- `iorLab/zerolocal` -> `iorLab/svif`
-- `iorLab/zerolocal-cloudflare-starter` -> `iorLab/svif-cloudflare-starter`
+- Agnir: `iorLab/agnir` (renamed from `mattamior/rpm` and transferred into the `iorLab` organization)
+- Svif: `iorLab/svif`
+- Svif Cloudflare reference: `iorLab/svif-cloudflare-reference`
 
-The predecessor branch `legacy/ppmp-v2.0.0` remains unchanged because it intentionally preserves predecessor identity.
-
-GitHub redirects from predecessor repository names are compatibility behavior only. `AGNIR.yaml` and this Project's bootstrap shim now use `iorLab/agnir` as the durable canonical repository identity.
+The predecessor branch `legacy/ppmp-v2.0.0` remains unchanged because it intentionally preserves predecessor identity. Repository redirects from predecessor names are compatibility behavior only.
 
 ## Known gaps
 

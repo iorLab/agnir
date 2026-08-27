@@ -1,6 +1,6 @@
 # Agnir Next Actions
 
-1. Run and harden `conformance/check_agnir_0_1.py` against the repository/filesystem cold-start contract on the renamed canonical repository `iorLab/agnir`.
+1. Harden `conformance/check_agnir_0_1.py` against the repository/filesystem cold-start contract on `iorLab/agnir`, including the invariant that active Project structure does not depend on execution-surface-specific bootstrap files.
 2. Add negative fixtures for broken locator, unsupported version, Project identity mismatch, and ambiguous/nested Project boundaries.
 3. Add one materially non-repository backend fixture to demonstrate storage neutrality.
 4. Add an external-memory locator fixture that distinguishes authorization failure from not-found without exposing secret values.
@@ -12,5 +12,6 @@
 
 ## Completed in the current implementation sequence
 
-- Repository identity transition completed: `mattamior/rpm` was renamed and transferred to `iorLab/agnir`; `iorLab/zerolocal` became `iorLab/svif`; `iorLab/zerolocal-cloudflare-starter` became `iorLab/svif-cloudflare-starter`.
-- Canonical Agnir repository references were reconciled to `iorLab/agnir` in `AGNIR.yaml`, the ChatGPT bootstrap shim, and durable Project state.
+- Repository identity transition completed: `mattamior/rpm` was renamed and transferred to `iorLab/agnir`; `iorLab/zerolocal` became `iorLab/svif`; the Cloudflare implementation is now `iorLab/svif-cloudflare-reference`.
+- Canonical Agnir repository references were reconciled to `iorLab/agnir`.
+- The active ChatGPT-specific bootstrap shim was removed; `AGNIR.yaml` is now the direct repository/filesystem cold-start entry point.

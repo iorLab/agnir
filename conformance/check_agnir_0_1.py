@@ -109,12 +109,12 @@ def main() -> None:
         "spec/MANIFEST.md",
         "profiles/REPOSITORY_FILESYSTEM_DRAFT.md",
         "profiles/generic.md",
-        ".chatgpt/PROJECT_INSTRUCTIONS.md",
+        ".chatgpt",
         ".github/workflows/site-ci.yml",
     ]
     for path in forbidden:
         if (ROOT / path).exists():
-            fail(f"predecessor artifact remains active on main: {path}")
+            fail(f"predecessor or execution-surface-specific artifact remains active on main: {path}")
 
     print(f"PASS: Agnir {version} repository/filesystem cold-start structure for {identity}")
 
