@@ -21,7 +21,7 @@ Agnir is the active project/protocol identity on `main`. PPMP v2.0.0 / Persisten
 
 ## Relationship to Svif
 
-Svif is a separate Project in `iorLab/zerolocal`. Dependency direction is `Svif -> Agnir`. Svif consumes the Agnir Core protocol contract, not this repository's storage layout, implementation, backend, or ChatGPT shim.
+Svif is a separate Project, currently in `iorLab/zerolocal` until its approved rename to `iorLab/svif`. Dependency direction is `Svif -> Agnir`. Svif consumes the Agnir Core protocol contract, not this repository's storage layout, implementation, backend, or ChatGPT shim.
 
 ## Branch governance
 
@@ -33,10 +33,25 @@ Svif is a separate Project in `iorLab/zerolocal`. Dependency direction is `Svif 
 
 The first real Agnir main-line structure is active: `AGNIR.yaml`, `.agnir/`, normative Core/Discovery/Profile documents, a manifest JSON Schema, and an executable cold-start structural conformance check exist on `main`.
 
-This is a working `0.1` development contract, not yet a final release. Repository/filesystem conformance is now concrete enough for this repository to self-host through Agnir discovery rather than PPMP/PPM maintenance memory.
+This is a working `0.1` development contract, not yet a final release. Repository/filesystem conformance is concrete enough for this repository to self-host through Agnir discovery rather than PPMP/PPM maintenance memory.
+
+At the 2026-08-27 checkpoint, the pre-checkpoint `main` head was `6537fe56157d2673c0ddc8b205919c73fdda117e`; Agnir conformance run `33081100118` completed successfully for that head.
+
+## Repository identity transition
+
+The repository/public name is now approved to change from `mattamior/rpm` to `mattamior/agnir` as the immediate next execution step. This rename should happen before the coordinated Svif and Cloudflare starter renames:
+
+1. `mattamior/rpm` -> `mattamior/agnir`
+2. `iorLab/zerolocal` -> `iorLab/svif`
+3. `iorLab/zerolocal-cloudflare-starter` -> `iorLab/svif-cloudflare-starter`
+
+The predecessor branch `legacy/ppmp-v2.0.0` remains unchanged because it intentionally preserves predecessor identity.
+
+Until the GitHub rename actually occurs, `mattamior/rpm` remains the resolvable canonical repository location for this checkpoint. Immediately after the rename, update `AGNIR.yaml`, the ChatGPT bootstrap shim, README/documentation, Svif cross-project references, and CI/reference URLs. GitHub redirect behavior is compatibility only and must not substitute for durable canonical identity.
 
 ## Known gaps
 
+- Repository rename and durable reference reconciliation are the immediate next work.
 - Non-repository persistence conformance fixture is not yet implemented.
 - Multi-project workspace isolation fixture is not yet executable.
 - External-memory authorization fixture is not yet implemented.

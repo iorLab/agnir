@@ -17,3 +17,12 @@
 
 - Svif consumes Agnir Core, not the Agnir reference repository layout or any specific backend/adapter.
 - Agnir remains independently useful without Svif.
+
+## 2026-08-27 — Repository identity transition
+
+- The repository/public-name rename is no longer deferred until late-stage completion. The active `main` structure now implements Agnir directly, so retaining the predecessor repository name `rpm` creates unnecessary identity debt.
+- Rename `mattamior/rpm` to `mattamior/agnir` first, before the coordinated Svif and Cloudflare starter renames.
+- The broader sequence is `mattamior/rpm` -> `mattamior/agnir`, `iorLab/zerolocal` -> `iorLab/svif`, then `iorLab/zerolocal-cloudflare-starter` -> `iorLab/svif-cloudflare-starter`.
+- The predecessor branch `legacy/ppmp-v2.0.0` is intentionally not renamed; it preserves predecessor identity and history.
+- GitHub redirects may preserve navigation after a rename, but redirects are compatibility behavior rather than canonical Project identity. `AGNIR.yaml`, repository extensions, the bootstrap shim, documentation, cross-project references, and CI/reference URLs must be reconciled immediately after the rename.
+- Repository naming is a discovery/profile metadata concern, not an Agnir Core storage or execution dependency.
