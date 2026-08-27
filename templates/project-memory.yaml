@@ -1,8 +1,8 @@
-iormemory:
+ppmp:
   version: 2.0.0
 
 implementation:
-  name: persistent-project-memory
+  name: iormemory
 
 backend:
   name: repository

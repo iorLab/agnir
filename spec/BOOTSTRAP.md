@@ -9,7 +9,7 @@ Bootstrap is the process by which an implementation discovers a Project's durabl
 At the start of a new working context, an implementation SHOULD:
 
 1. identify the Project boundary;
-2. discover iorMemory configuration using implementation/platform conventions;
+2. discover PPMP configuration using implementation/platform conventions;
 3. validate the declared protocol version;
 4. load Current State and Next Steps;
 5. load Decisions when relevant to the current task;
@@ -24,4 +24,4 @@ Initialization SHOULD inspect existing durable evidence, classify conservatively
 
 The protocol does not define an 'open project' UI event, a repository path, or a particular first-message trigger. Those belong to platform adapters and implementations.
 
-For the reference ChatGPT behavior, see `adapters/CHATGPT.md`.
+For the reference iorMemory ChatGPT behavior, see `implementations/IORMEMORY.md` and `adapters/CHATGPT.md`.

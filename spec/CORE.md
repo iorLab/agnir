@@ -1,10 +1,10 @@
-# iorMemory Core Specification
+# PPMP Core Specification
 
 Version: 2.0.0
 
 ## 1. Purpose
 
-iorMemory defines durable Project Memory for long-running AI-assisted projects. Durable knowledge MUST remain recoverable when conversational context, model memory, or a particular AI session is unavailable.
+PPMP defines durable Project Memory for long-running AI-assisted projects. Durable knowledge MUST remain recoverable when conversational context, model memory, or a particular AI session is unavailable.
 
 The keywords MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative.
 
@@ -33,7 +33,7 @@ Raw conversational transcripts are not Project Memory by default and MUST NOT be
 
 ## 5. State vocabulary
 
-iorMemory uses these status terms consistently:
+PPMP uses these status terms consistently:
 
 - **Completed** — implementation or work has been performed.
 - **Verified** — completion has independent evidence such as tests, inspection, deployment evidence, or equivalent validation.

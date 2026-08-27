@@ -2,15 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CopyBlock from '../components/CopyBlock.astro';
 import { projectInstructions, manifestTemplate } from '../lib/rpm.mjs';
-const manualPrompt = 'Initialize Persistent Project Memory in this repository according to iorMemory v2.';
+const manualPrompt = 'Initialize iorMemory in this repository according to PPMP v2.';
 ---
-<BaseLayout title="Quick Start · iorMemory">
-  <section class="page-hero shell narrow"><p class="eyebrow">Quick Start</p><h1>Initialize the reference PPM stack.</h1><p class="lede">iorMemory is platform- and storage-agnostic. This quick start uses Persistent Project Memory with the repository backend and ChatGPT adapter.</p></section>
+<BaseLayout title="Quick Start · PPMP">
+  <section class="page-hero shell narrow"><p class="eyebrow">Quick Start</p><h1>Initialize the iorMemory reference stack.</h1><p class="lede">PPMP is platform- and storage-agnostic. This quick start uses iorMemory with the repository backend and ChatGPT adapter.</p></section>
   <section class="section shell narrow steps">
     <article class="step"><div class="step-number">1</div><div><h2>Add the Project Instructions hook</h2><p>Copy this into the ChatGPT Project's Project Instructions.</p><CopyBlock value={projectInstructions} title="Project Instructions" language="markdown" label="Copy" /></div></article>
-    <article class="step"><div class="step-number">2</div><div><h2>Start a normal conversation</h2><p>At the first substantive turn, the ChatGPT adapter checks <code>.chatgpt/project-memory.yaml</code>. If present, PPM restores durable context; if missing, it offers initialization.</p></div></article>
-    <article class="step"><div class="step-number">3</div><div><h2>Approve initialization</h2><p>PPM inspects durable project evidence, classifies conservatively, creates the repository-backed Core representation, and persists it coherently.</p><CopyBlock value={manualPrompt} title="Manual bootstrap prompt" language="text" label="Copy" /></div></article>
+    <article class="step"><div class="step-number">2</div><div><h2>Start a normal conversation</h2><p>At the first substantive turn, the ChatGPT adapter checks <code>.chatgpt/project-memory.yaml</code>. If present, iorMemory restores durable context; if missing, it offers initialization.</p></div></article>
+    <article class="step"><div class="step-number">3</div><div><h2>Approve initialization</h2><p>iorMemory inspects durable project evidence, classifies conservatively, creates the repository-backed Core representation, and persists it coherently.</p><CopyBlock value={manualPrompt} title="Manual bootstrap prompt" language="text" label="Copy" /></div></article>
     <article class="step"><div class="step-number">4</div><div><h2>Work normally</h2><p>Meaningful durable changes are checkpointed event-by-event. Explicit phrases such as <code>checkpoint</code>, <code>save progress</code>, or <code>收尾</code> trigger final reconciliation.</p></div></article>
   </section>
-  <section class="section shell narrow"><div class="section-heading"><p class="eyebrow">Reference serialization</p><h2>Repository manifest template</h2><p>This YAML is a PPM repository-backend convention, not a mandatory iorMemory protocol file format.</p></div><CopyBlock value={manifestTemplate} title=".chatgpt/project-memory.yaml" language="yaml" label="Copy template" /></section>
+  <section class="section shell narrow"><div class="section-heading"><p class="eyebrow">Reference serialization</p><h2>Repository manifest template</h2><p>This YAML is an iorMemory repository-backend convention, not a mandatory PPMP file format.</p></div><CopyBlock value={manifestTemplate} title=".chatgpt/project-memory.yaml" language="yaml" label="Copy template" /></section>
 </BaseLayout>

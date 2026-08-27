@@ -4,7 +4,7 @@ Version: 2.0.0
 
 ## 1. Model
 
-iorMemory uses event-driven persistence. A checkpoint SHOULD occur when durable project state changes materially, not after every conversational turn.
+PPMP uses event-driven persistence. A checkpoint SHOULD occur when durable project state changes materially, not after every conversational turn.
 
 ## 2. Persist when
 

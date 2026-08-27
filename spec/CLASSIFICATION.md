@@ -2,7 +2,7 @@
 
 Version: 2.0.0
 
-Classification selects composable domain profiles that extend iorMemory Core. It MUST organize durable knowledge without forcing a Project into a rigid single category.
+Classification selects composable domain profiles that extend PPMP Core. It MUST organize durable knowledge without forcing a Project into a rigid single category.
 
 Each Project has a `primary_type` and one or more active `profiles`.
 

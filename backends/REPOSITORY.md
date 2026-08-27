@@ -1,9 +1,9 @@
 # Repository Persistence Backend
 
-Status: Reference backend for Persistent Project Memory
-Protocol: iorMemory v2.0.0
+Status: Reference backend used by iorMemory
+Protocol: PPMP v2.0.0
 
-This backend serializes iorMemory Project Memory into files within a repository and may use Git commits as durable checkpoint evidence.
+This backend serializes PPMP Project Memory into files within a repository and may use Git commits as durable checkpoint evidence.
 
 ## Reference layout
 
@@ -16,9 +16,9 @@ docs/project-memory/
   sessions/
 ```
 
-These paths are backend conventions, not iorMemory protocol requirements.
+These paths are backend conventions, not PPMP protocol requirements.
 
-The YAML manifest SHOULD identify `iormemory.version`, implementation, backend, adapter, project classification, file locators, and policy.
+The YAML manifest SHOULD identify `ppmp.version`, implementation, backend, adapter, project classification, file locators, and policy.
 
 Repository content is the canonical durable representation for this backend. Chats and model memory are working context only.
 

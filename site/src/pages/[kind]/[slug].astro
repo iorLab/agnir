@@ -15,8 +15,9 @@ const groups = getGroups();
 const group = groups.find((item) => item.kind === doc.kind);
 const isTemplate = doc.kind === 'templates';
 const html = isTemplate ? '' : renderMarkdown(doc.source);
+const badge = doc.kind === 'spec' ? 'Normative' : doc.kind === 'profiles' ? 'Profile' : doc.kind === 'implementations' ? 'Implementation' : doc.kind === 'backends' ? 'Backend' : doc.kind === 'adapters' ? 'Adapter' : 'Template';
 ---
-<BaseLayout title={`${doc.title} · RPM`}>
+<BaseLayout title={`${doc.title} · PPMP`}>
   <section class="doc-shell shell">
     <aside class="doc-sidebar">
       <a class="back-link" href="/reference">← Reference</a>
@@ -35,7 +36,7 @@ const html = isTemplate ? '' : renderMarkdown(doc.source);
           <h1>{doc.title}</h1>
           <p class="file-path">{doc.path}</p>
         </div>
-        <span class:list={['authority-badge', { normative: doc.kind === 'spec' }]}>{doc.kind === 'spec' ? 'Normative' : doc.kind === 'profiles' ? 'Profile' : 'Template'}</span>
+        <span class:list={['authority-badge', { normative: doc.kind === 'spec' }]}>{badge}</span>
       </div>
 
       {isTemplate ? (

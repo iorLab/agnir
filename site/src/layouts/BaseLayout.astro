@@ -3,7 +3,7 @@ import '../styles/global.css';
 import { version } from '../lib/rpm.mjs';
 
 const {
-  title = 'iorMemory — Durable Project Memory Protocol',
+  title = 'PPMP — Persistent Project Memory Protocol',
   description = 'Platform-agnostic durable project memory for AI-assisted work.'
 } = Astro.props;
 const pathname = Astro.url.pathname;
@@ -21,9 +21,9 @@ const pathname = Astro.url.pathname;
   <body>
     <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label="iorMemory home">
-          <span class="brand-mark">i</span>
-          <span><strong>iorMemory</strong><small>Durable Project Memory Protocol</small></span>
+        <a class="brand" href="/" aria-label="PPMP home">
+          <span class="brand-mark">P</span>
+          <span><strong>PPMP</strong><small>Persistent Project Memory Protocol</small></span>
         </a>
         <nav aria-label="Primary navigation">
           <a class:list={[{ active: pathname === '/quick-start' }]} href="/quick-start">Quick Start</a>
@@ -35,8 +35,8 @@ const pathname = Astro.url.pathname;
     <main><slot /></main>
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <p>iorMemory v{version} · Persistent project memory without platform or storage lock-in.</p>
-        <p class="muted">The website is non-normative. Repository specification files remain authoritative.</p>
+        <p>PPMP v{version} · Persistent project memory without platform or storage lock-in.</p>
+        <p class="muted">iorMemory is the reference Skill implementation. The website is non-normative; repository specification files remain authoritative.</p>
       </div>
     </footer>
   </body>

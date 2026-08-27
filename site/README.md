@@ -1,8 +1,10 @@
-# iorMemory website
+# PPMP website
 
-This directory contains the non-normative public presentation layer for iorMemory. The site reads canonical protocol, profile, implementation, backend, adapter, and template files directly during the Astro build so the repository remains the single source of truth.
+This directory contains the public presentation layer for **PPMP — Persistent Project Memory Protocol** and its first reference Skill implementation, **iorMemory**. It is intentionally non-normative: the site reads `../VERSION`, `../spec/`, `../profiles/`, `../implementations/`, `../backends/`, `../adapters/`, and `../templates/` directly during the Astro build so the repository remains the single source of truth.
 
-Production currently remains at `https://rpm.mattamior.workers.dev`; the legacy Worker/repository deployment name is operational infrastructure and does not define the protocol identity.
+Production: `https://rpm.mattamior.workers.dev`
+
+The existing Worker/domain name is historical infrastructure and does not define protocol identity.
 
 ## Local development
 

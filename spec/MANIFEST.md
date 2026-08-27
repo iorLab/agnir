@@ -2,14 +2,14 @@
 
 Version: 2.0.0
 
-iorMemory defines configuration semantics, not a mandatory file path or serialization format.
+PPMP defines configuration semantics, not a mandatory file path or serialization format.
 
 ## Required semantic fields
 
 A conforming project configuration MUST identify:
 
 ```yaml
-iormemory:
+ppmp:
   version: 2.0.0
 
 project:
@@ -28,15 +28,15 @@ policy:
   raw_transcripts: false
 ```
 
-`iormemory.version` identifies the protocol version. `project.primary_type` and `project.profiles` follow `CLASSIFICATION.md`. Memory locators identify implementation-specific durable representations and MUST be resolvable by the implementation.
+`ppmp.version` identifies the protocol version. `project.primary_type` and `project.profiles` follow `CLASSIFICATION.md`. Memory locators identify implementation-specific durable representations and MUST be resolvable by the implementation.
 
-`policy.checkpoint` is `event-driven` in v2. `policy.raw_transcripts` MUST be `false` unless a separate explicit transcript/archive feature is being used outside iorMemory Project Memory.
+`policy.checkpoint` is `event-driven` in v2. `policy.raw_transcripts` MUST be `false` unless a separate explicit transcript/archive feature is being used outside PPMP Project Memory.
 
 ## Serialization
 
-Implementations MAY add fields for backends, adapters, paths, namespaces, repositories, databases, or credentials references. Such fields MUST NOT be treated as protocol requirements.
+Implementations MAY add fields for implementation identity, backends, adapters, paths, namespaces, repositories, databases, or credentials references. Such fields MUST NOT be treated as protocol requirements.
 
-The PPM repository backend uses a YAML file convention for interoperability; see `backends/REPOSITORY.md` and `templates/project-memory.yaml`.
+The iorMemory reference Skill uses a YAML file convention with its repository backend for interoperability; see `implementations/IORMEMORY.md`, `backends/REPOSITORY.md`, and `templates/project-memory.yaml`.
 
 ## Validation
 
