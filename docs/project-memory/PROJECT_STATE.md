@@ -23,7 +23,10 @@ This repository is the historical RPM repository and the current canonical devel
 - The public website remains a non-normative presentation layer and is deployed through Cloudflare Workers from the repository.
 - The first real consuming-project migration has been exercised against `mattamior/tree-hole`: its RPM v1 memory was migrated explicitly to PPMP v2 / PPM while preserving the existing root-level durable files. Repository/build validation succeeded and no executable application source changed during the migration.
 - That consuming migration exposed a reusable repository-backend hazard: memory-only commits can trigger unrelated production CI/CD in repositories that deploy every successful main push. The reference repository backend now instructs implementations to minimize those side effects, coalesce logical checkpoints when practical, and keep persistence verification distinct from release verification.
-- The repository now has path-scoped GitHub **Site CI** at `.github/workflows/site-ci.yml`. Run `33050210045` on commit `13a8bbce8801a1b9c6201b11284e5081988d8ada` completed successfully, including dependency installation, Astro build, and `wrangler deploy --dry-run`. This verifies site build and Worker packaging, but not live Cloudflare production availability or browser interactions.
+- The repository now has path-scoped GitHub **Site CI** at `.github/workflows/site-ci.yml`. Run `33050210045` on commit `13a8bbce8801a1b9c6201b11284e5081988d8ada` completed successfully, including dependency installation, Astro build, and `wrangler deploy --dry-run`. Adapter-change run `33050497784` on commit `164329dc75904cb3c4dfddcc5303433d04bff956` also completed successfully. This verifies site build and Worker packaging, but not live Cloudflare production availability or browser interactions.
+- The ChatGPT adapter now treats actual ChatGPT Project Instructions as external platform configuration that can drift independently of repository manifests/templates. A repository-backed snapshot MAY make intended configuration reviewable, but it does not update the platform setting automatically.
+- This maintenance repository now stores its intended ChatGPT Project Instructions at `.chatgpt/PROJECT_INSTRUCTIONS.md`. The current conversation successfully exercised v2 manifest discovery and durable-state loading at the first substantive turn, but the externally configured Project Instructions still contain legacy RPM naming, so full adapter acceptance remains pending until the external setting is synchronized and another fresh conversation verifies it.
+- `mattamior/tree-hole` likewise stores an intended current snapshot at `.chatgpt/PROJECT_INSTRUCTIONS.md`; its actual external ChatGPT Project setting remains to be synchronized and fresh-conversation tested.
 
 ## Architectural boundary
 
@@ -32,13 +35,13 @@ This repository is the historical RPM repository and the current canonical devel
 3. **Persistence backends** provide durable storage. The first backend uses repository files and Git.
 4. **Platform adapters** map environment-specific lifecycle/discovery behavior. The first adapter targets ChatGPT Projects.
 
-Repository paths, `.chatgpt/` conventions, Git commits, ChatGPT first-substantive-turn behavior, product branding, repository CI/CD suppression mechanics, and website CI are not PPMP protocol requirements.
+Repository paths, `.chatgpt/` conventions, Git commits, ChatGPT first-substantive-turn behavior, external Project Instructions, product branding, repository CI/CD suppression mechanics, and website CI are not PPMP protocol requirements.
 
 ## Compatibility posture
 
 PPMP v2.0.0 is an intentional MAJOR transition from RPM v1.0.0. Existing RPM v1 projects require explicit migration and MUST NOT be silently reinterpreted as v2.
 
-The Tree Hole migration confirms that an RPM v1 repository can migrate without forced memory-file relocation: existing durable files may remain in place when the selected backend records valid locators and the migration preserves their knowledge. End-to-end ChatGPT-adapter acceptance still requires updating the consuming Project's external Project Instructions and verifying a fresh-conversation restore.
+The Tree Hole migration confirms that an RPM v1 repository can migrate without forced memory-file relocation: existing durable files may remain in place when the selected backend records valid locators and the migration preserves their knowledge. End-to-end ChatGPT-adapter acceptance additionally requires synchronizing actual external Project Instructions and verifying a fresh-conversation restore.
 
 ## Operating model
 

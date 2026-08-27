@@ -98,3 +98,11 @@ The repository maintains path-scoped GitHub Site CI for changes that can affect 
 Site CI runs the actual site dependency installation and `npm run check:deploy`, which performs the Astro build and a Wrangler deploy dry-run. A successful run is durable evidence that the repository revision builds and packages for the configured Worker target.
 
 Site CI does **not** prove that Cloudflare production deployment completed, that the public origin is reachable, or that browser-only interactions work. Those remain separate live-production acceptance claims.
+
+## D-017 — ChatGPT Project Instructions are external adapter configuration
+
+Actual ChatGPT Project Instructions are platform-side configuration and can drift independently of repository manifests, templates, and implementation/adapter documentation. Updating repository state does not automatically migrate that external setting.
+
+After a migration or adapter/implementation change that affects bootstrap naming, discovery, or checkpoint behavior, acceptance includes verifying the actual external Project Instructions and exercising a fresh conversation. A repository-backed project-specific snapshot MAY be maintained to make the intended setting reviewable and recoverable, but that snapshot does not replace or prove the actual platform configuration.
+
+This is ChatGPT-adapter behavior rather than PPMP Core semantics, so it does not change the PPMP protocol version.
