@@ -23,6 +23,7 @@ This repository is the historical RPM repository and the current canonical devel
 - The public website remains a non-normative presentation layer and is deployed through Cloudflare Workers from the repository.
 - The first real consuming-project migration has been exercised against `mattamior/tree-hole`: its RPM v1 memory was migrated explicitly to PPMP v2 / PPM while preserving the existing root-level durable files. Repository/build validation succeeded and no executable application source changed during the migration.
 - That consuming migration exposed a reusable repository-backend hazard: memory-only commits can trigger unrelated production CI/CD in repositories that deploy every successful main push. The reference repository backend now instructs implementations to minimize those side effects, coalesce logical checkpoints when practical, and keep persistence verification distinct from release verification.
+- The repository now has path-scoped GitHub **Site CI** at `.github/workflows/site-ci.yml`. Run `33050210045` on commit `13a8bbce8801a1b9c6201b11284e5081988d8ada` completed successfully, including dependency installation, Astro build, and `wrangler deploy --dry-run`. This verifies site build and Worker packaging, but not live Cloudflare production availability or browser interactions.
 
 ## Architectural boundary
 
@@ -31,7 +32,7 @@ This repository is the historical RPM repository and the current canonical devel
 3. **Persistence backends** provide durable storage. The first backend uses repository files and Git.
 4. **Platform adapters** map environment-specific lifecycle/discovery behavior. The first adapter targets ChatGPT Projects.
 
-Repository paths, `.chatgpt/` conventions, Git commits, ChatGPT first-substantive-turn behavior, product branding, and repository CI/CD suppression mechanics are not PPMP protocol requirements.
+Repository paths, `.chatgpt/` conventions, Git commits, ChatGPT first-substantive-turn behavior, product branding, repository CI/CD suppression mechanics, and website CI are not PPMP protocol requirements.
 
 ## Compatibility posture
 

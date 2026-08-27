@@ -90,3 +90,11 @@ A real RPM v1 → PPMP v2 / PPM migration in `mattamior/tree-hole` showed that m
 The reference repository backend therefore treats CI/CD side-effect minimization as backend operational behavior: memory-only checkpoints SHOULD use repository-supported non-deploying mechanisms when project policy permits; a logical checkpoint SHOULD be coalesced into one coherent commit when practical; and persistence verification MUST remain distinct from application/release verification.
 
 This decision does not change PPMP Core semantics or conformance. Under `spec/VERSIONING.md`, backend behavior may evolve independently, so the PPMP protocol remains **v2.0.0**.
+
+## D-016 — Site CI verifies build/packageability, not live production
+
+The repository maintains path-scoped GitHub Site CI for changes that can affect the generated public site: `site/`, `VERSION`, protocol/profile/implementation/backend/adapter material, templates, and the workflow itself.
+
+Site CI runs the actual site dependency installation and `npm run check:deploy`, which performs the Astro build and a Wrangler deploy dry-run. A successful run is durable evidence that the repository revision builds and packages for the configured Worker target.
+
+Site CI does **not** prove that Cloudflare production deployment completed, that the public origin is reachable, or that browser-only interactions work. Those remain separate live-production acceptance claims.

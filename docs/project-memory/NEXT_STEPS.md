@@ -2,7 +2,7 @@
 
 ## Immediate
 
-1. Validate the Cloudflare production build and live website after the Sandminni public-site and repository-backend reference updates, including Home, Quick Start, Reference, and copy interactions.
+1. Complete **live production acceptance** of the Sandminni public website: verify the deployed Home, Quick Start, Reference, and copy interactions against Cloudflare. Repository Site CI run `33050210045` has already verified dependency installation, Astro build, and Wrangler dry-run packaging successfully.
 2. Complete end-to-end acceptance of the migrated `mattamior/tree-hole` consuming project by updating its external ChatGPT Project Instructions to current PPM / PPMP v2 wording and verifying a fresh-conversation restore. Repository migration, durable-state preservation, application-source comparison, and CI/build validation are complete.
 3. Validate this repository's next fresh-conversation bootstrap using the v2 self-hosted manifest and ChatGPT adapter instructions.
 
@@ -12,6 +12,7 @@
 - Decide whether and when to rename the GitHub repository from `mattamior/rpm`; repository naming is operational branding and no longer protocol semantics.
 - Add an explicit LICENSE before broader public promotion.
 - Decide on the public domain/Worker naming after the site migration is validated.
+- Consider adding a committed site dependency lockfile so Site CI and Cloudflare builds resolve the same transitive dependency graph reproducibly; current top-level dependencies are pinned but `site/` has no lockfile.
 - Add machine-readable conformance metadata when PPM versions or additional PPMP implementations need it.
 - Add additional persistence backends or platform adapters only when driven by concrete implementation needs.
 
@@ -30,3 +31,4 @@
 - Preserved RPM v1 as historical predecessor and documented explicit migration behavior.
 - Migrated the real consuming repository `mattamior/tree-hole` from RPM v1 to PPMP v2 / PPM at the repository layer without relocating its durable memory files or changing executable application source.
 - Promoted a migration finding into the reference repository backend: memory-only checkpoints should avoid unrelated CI/CD side effects when repository policy supports that, should be coalesced when practical, and must not conflate persistence verification with release verification.
+- Added path-scoped Site CI and verified the Sandminni site builds and packages successfully for Cloudflare Workers via successful run `33050210045`.
