@@ -65,3 +65,18 @@ The first reference Skill/implementation is **Persistent Project Memory**, abbre
 Reference manifests use the stable machine identifier `persistent-project-memory` rather than the bare acronym `ppm`.
 
 PPMP conformance MUST NOT depend on PPM-specific implementation conventions.
+
+## D-014 — Sandminni is the public product brand
+
+**Sandminni** is the public-facing product brand for the Persistent Project Memory (PPM) reference implementation.
+
+The layer identities remain distinct:
+
+- **PPMP** is the protocol and normative standard;
+- **Persistent Project Memory (PPM)** remains the technical name and abbreviation for the reference Skill/implementation;
+- `persistent-project-memory` remains the stable implementation machine identifier;
+- **Sandminni** is the product/brand identity presented to users.
+
+The brand metaphor is memory accumulated grain by grain. Future visual identity and logo exploration SHOULD draw from three related motifs: **sand/grains**, **convergence or accumulation**, and **memory/durable continuity**.
+
+This is a branding decision, not a change to PPMP semantics or conformance behavior, and therefore does not require a PPMP protocol version change.
