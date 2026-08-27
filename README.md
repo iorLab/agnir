@@ -13,7 +13,7 @@ RPM (Repository Project Memory) v1.0.0 is the historical repository- and ChatGPT
 ## Architecture
 
 - **PPMP protocol** — normative semantics under `spec/`, reusable profiles under `profiles/`, and conformance/versioning rules.
-- **Persistent Project Memory (PPM)** — the first reference Skill/implementation of PPMP, described under `implementations/`.
+- **Persistent Project Memory (PPM)** — the first reference Skill/implementation of PPMP, publicly branded as **Sandminni**, described under `implementations/`.
 - **Persistence backends** — concrete durable-storage strategies such as repository/Git persistence, described under `backends/`.
 - **Platform adapters** — environment-specific discovery and bootstrap behavior, beginning with ChatGPT under `adapters/`.
 
@@ -45,7 +45,9 @@ docs/project-memory/ maintenance state for this repository
 
 ## Reference implementation
 
-**Persistent Project Memory (PPM)** is the first reference Skill implementation of PPMP. Its initial ChatGPT adapter and repository backend preserve the practical workflow proven by RPM v1 while keeping those mechanics outside protocol requirements.
+**Persistent Project Memory (PPM)** is the first reference Skill implementation of PPMP and is publicly branded as **Sandminni**. Its initial ChatGPT adapter and repository backend preserve the practical workflow proven by RPM v1 while keeping those mechanics outside protocol requirements.
+
+The Sandminni brand is inspired by durable memory accumulating grain by grain. Brand presentation is non-normative and does not alter PPMP conformance semantics.
 
 ## Migration from RPM v1
 
