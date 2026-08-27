@@ -18,6 +18,8 @@ Agnir is project-owned durable memory/continuity. Its normative semantics are in
 - PPMP v2 -> Agnir migration draft: `spec/AGNIR_MIGRATION_DRAFT.md`.
 - Repository/filesystem discovery profile draft: `profiles/REPOSITORY_FILESYSTEM_DRAFT.md`.
 - Repository: `mattamior/rpm` (repository rename remains deferred).
+- Predecessor PPMP v2.0.0 / PPM / Sandminni is preserved on branch `legacy/ppmp-v2.0.0` at commit `3bd3938ea00276eb51ca51c6c7ee1264d862acd4`.
+- `main` is the active Agnir development line.
 - The repository's own maintenance memory still runs through PPMP v2 / PPM with the repository backend and ChatGPT adapter during migration. This is intentional predecessor self-hosting and is not an Agnir conformance claim.
 
 ## Architecture decisions now established
@@ -39,6 +41,7 @@ Agnir is project-owned durable memory/continuity. Its normative semantics are in
 - Discovery Records should use authorization/credential references rather than embedded secret values.
 - PPMP v2 -> Agnir migration has three explicit states: predecessor PPMP v2 mode, migration mode, and Agnir 0.1 mode. A Project must not be silently promoted between them.
 - `.chatgpt/project-memory.yaml` may be recognized only as an explicit predecessor/migration fallback; its presence alone does not establish Agnir conformance.
+- The predecessor line is preserved outside main so the active development line can implement Agnir directly without preserving old naming/layout in-place.
 
 ## Relationship to Svif
 
@@ -75,7 +78,7 @@ The earlier `mattamior/tree-hole` migration, repository-backend CI/CD side-effec
 
 ## Current focus
 
-Convert the Agnir 0.1 Core, Discovery, Migration, and Repository/Filesystem Profile drafts into a coherent normative set. The next pressure point is executable conformance: prove cold-start discovery from only a Project root using `AGNIR.yaml`, then demonstrate a materially non-repository backend and a multi-project workspace without durable context bleed. Only after those semantics are stable should this repository self-migrate from predecessor PPMP/PPM mode to Agnir mode.
+Convert the Agnir 0.1 Core, Discovery, Migration, and Repository/Filesystem Profile drafts into a coherent normative set. The next pressure point is executable conformance: prove cold-start discovery from only a Project root using `AGNIR.yaml`, then demonstrate a materially non-repository backend and a multi-project workspace without durable context bleed. Since the predecessor line is now preserved on `legacy/ppmp-v2.0.0`, `main` may evolve directly toward Agnir rather than carrying long-lived predecessor compatibility in its primary structure. Only after those semantics are stable should this repository self-migrate from predecessor PPMP/PPM mode to Agnir mode.
 
 ## Resolved transition questions
 
@@ -86,6 +89,7 @@ Convert the Agnir 0.1 Core, Discovery, Migration, and Repository/Filesystem Prof
 - PPMP v2 projects require explicit migration; physical renames alone do not establish Agnir conformance.
 - Repository-backed self-hosting may remain in migration mode until Agnir discovery and conformance are concrete.
 - The first repository/filesystem profile uses top-level `AGNIR.yaml` as the discovery anchor; `.agnir/` remains an optional recommended colocated memory directory.
+- PPMP v2.0.0 is preserved on a dedicated legacy branch while `main` is the active Agnir line.
 
 ## Remaining open questions
 
@@ -114,8 +118,11 @@ These should be resumed only when it is clear whether their acceptance target is
 - Added `spec/AGNIR_MIGRATION_DRAFT.md` mapping PPMP v2 semantics/configuration into Agnir 0.1 and defining explicit predecessor / migration / Agnir modes.
 - Added `profiles/REPOSITORY_FILESYSTEM_DRAFT.md`, selecting top-level `AGNIR.yaml` as the first profile's cold-start discovery anchor while keeping `.agnir/` optional and Core storage-neutral.
 - Updated `.chatgpt/project-memory.yaml` so the self-hosted maintenance project identifies itself as Agnir while explicitly declaring that PPMP v2 / PPM remains the current predecessor persistence implementation during migration.
+- Preserved the predecessor line on `legacy/ppmp-v2.0.0` and established `main` as the active Agnir development line.
 
 ## Checkpoint
 
-- Last full checkpoint: **2026-08-27T17:58:00+08:00**.
-- Architecture work has advanced since that checkpoint; the next explicit checkpoint should capture the Core, Discovery, Migration, repository/filesystem profile, and corresponding Svif transition artifacts.
+- Saved: **2026-08-27T21:30:00+08:00**.
+- Evidence: `docs/project-memory/sessions/2026-08-27-svif-agnir-architecture.md`.
+- Reason: capture the Agnir Core/Discovery/Migration/repository-profile boundary, preserve PPMP v2.0.0 on a dedicated legacy branch, and establish `main` as the active Agnir development line coordinated with Svif.
+- Resumability: project state, transition decisions, predecessor boundary, drafts, and next actions are durably persisted.
