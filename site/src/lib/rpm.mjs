@@ -8,10 +8,10 @@ const repoRoot = resolve(process.cwd(), '..');
 const groups = [
   { kind: 'spec', label: 'Protocol', description: 'Normative PPMP protocol semantics and migration rules.', files: ['CORE.md','MANIFEST.md','CLASSIFICATION.md','PERSISTENCE.md','BOOTSTRAP.md','VERSIONING.md','MIGRATION.md'] },
   { kind: 'profiles', label: 'Profiles', description: 'Composable domain extensions layered on PPMP Core.', files: ['software.md','product.md','content.md','research.md','planning.md','generic.md'] },
-  { kind: 'implementations', label: 'Implementation', description: 'Persistent Project Memory (PPM) reference Skill behavior kept distinct from PPMP protocol requirements.', files: ['PERSISTENT_PROJECT_MEMORY.md'] },
+  { kind: 'implementations', label: 'Implementation', description: 'Sandminni / Persistent Project Memory (PPM) reference Skill behavior kept distinct from PPMP protocol requirements.', files: ['PERSISTENT_PROJECT_MEMORY.md'] },
   { kind: 'backends', label: 'Backends', description: 'Concrete durable-storage strategies.', files: ['REPOSITORY.md'] },
   { kind: 'adapters', label: 'Adapters', description: 'Platform-specific discovery and lifecycle integration.', files: ['CHATGPT.md'] },
-  { kind: 'templates', label: 'Templates', description: 'Copy-ready reference serialization and ChatGPT setup for PPM.', files: ['PROJECT_INSTRUCTIONS.md','project-memory.yaml','PROJECT_STATE.md','NEXT_STEPS.md','DECISIONS.md','SESSION.md'] }
+  { kind: 'templates', label: 'Templates', description: 'Copy-ready reference serialization and ChatGPT setup for Sandminni / PPM.', files: ['PROJECT_INSTRUCTIONS.md','project-memory.yaml','PROJECT_STATE.md','NEXT_STEPS.md','DECISIONS.md','SESSION.md'] }
 ];
 
 function readRepoFile(relativePath) { return readFileSync(resolve(repoRoot, relativePath), 'utf8').trimEnd(); }
