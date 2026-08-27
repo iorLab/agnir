@@ -26,7 +26,9 @@ This specification repository uses PPM with the repository backend and ChatGPT a
 
 ## D-006 — Conservative classification
 
-The maintenance project uses `generic` unless recurring maintenance work justifies a specialized profile.
+**Status:** Updated for current repository reality.
+
+The maintenance project is classified as `software` because its recurring work now includes specification tooling, implementation/backend contracts, website code, build/deployment integration, and technical validation. Classification remains conservative: a specialized profile is used only because these activities are structurally recurring rather than incidental.
 
 ## D-007 — Website is non-normative
 
@@ -80,3 +82,11 @@ The layer identities remain distinct:
 The brand metaphor is memory accumulated grain by grain. Future visual identity and logo exploration SHOULD draw from three related motifs: **sand/grains**, **convergence or accumulation**, and **memory/durable continuity**.
 
 This is a branding decision, not a change to PPMP semantics or conformance behavior, and therefore does not require a PPMP protocol version change.
+
+## D-015 — Repository memory checkpoints minimize CI/CD side effects
+
+A real RPM v1 → PPMP v2 / PPM migration in `mattamior/tree-hole` showed that memory-only commits can accidentally trigger production deployment when a consuming repository deploys every successful `main` push.
+
+The reference repository backend therefore treats CI/CD side-effect minimization as backend operational behavior: memory-only checkpoints SHOULD use repository-supported non-deploying mechanisms when project policy permits; a logical checkpoint SHOULD be coalesced into one coherent commit when practical; and persistence verification MUST remain distinct from application/release verification.
+
+This decision does not change PPMP Core semantics or conformance. Under `spec/VERSIONING.md`, backend behavior may evolve independently, so the PPMP protocol remains **v2.0.0**.

@@ -2,8 +2,8 @@
 
 ## Immediate
 
-1. Validate the Cloudflare production build and live website after the Sandminni public-site integration, including Home, Quick Start, Reference, and copy interactions.
-2. Validate one real consuming-project migration from RPM v1 to PPMP v2 using PPM and `spec/MIGRATION.md`.
+1. Validate the Cloudflare production build and live website after the Sandminni public-site and repository-backend reference updates, including Home, Quick Start, Reference, and copy interactions.
+2. Complete end-to-end acceptance of the migrated `mattamior/tree-hole` consuming project by updating its external ChatGPT Project Instructions to current PPM / PPMP v2 wording and verifying a fresh-conversation restore. Repository migration, durable-state preservation, application-source comparison, and CI/build validation are complete.
 3. Validate this repository's next fresh-conversation bootstrap using the v2 self-hosted manifest and ChatGPT adapter instructions.
 
 ## Near term
@@ -28,3 +28,5 @@
 - Corrected the temporary naming inversion that had incorrectly described iorMemory as the protocol.
 - Superseded the short-lived iorMemory implementation name with PPM before production validation.
 - Preserved RPM v1 as historical predecessor and documented explicit migration behavior.
+- Migrated the real consuming repository `mattamior/tree-hole` from RPM v1 to PPMP v2 / PPM at the repository layer without relocating its durable memory files or changing executable application source.
+- Promoted a migration finding into the reference repository backend: memory-only checkpoints should avoid unrelated CI/CD side effects when repository policy supports that, should be coalesced when practical, and must not conflate persistence verification with release verification.

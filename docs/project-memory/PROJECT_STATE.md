@@ -19,8 +19,10 @@ This repository is the historical RPM repository and the current canonical devel
 - The initial PPM stack uses the repository backend and ChatGPT adapter to preserve the practical RPM v1 workflow.
 - Normative protocol files live under `spec/`; reusable profiles under `profiles/`; reference serialization under `templates/` and `examples/`.
 - Implementation, backend, and adapter contracts live under `implementations/`, `backends/`, and `adapters/`.
-- This repository uses PPM with the repository backend and ChatGPT adapter for its own maintenance memory under `docs/project-memory/`.
+- This repository uses PPM with the repository backend and ChatGPT adapter for its own maintenance memory under `docs/project-memory/` and is classified as `software` because recurring work includes specification tooling, website code, build/deployment integration, and implementation/backend maintenance.
 - The public website remains a non-normative presentation layer and is deployed through Cloudflare Workers from the repository.
+- The first real consuming-project migration has been exercised against `mattamior/tree-hole`: its RPM v1 memory was migrated explicitly to PPMP v2 / PPM while preserving the existing root-level durable files. Repository/build validation succeeded and no executable application source changed during the migration.
+- That consuming migration exposed a reusable repository-backend hazard: memory-only commits can trigger unrelated production CI/CD in repositories that deploy every successful main push. The reference repository backend now instructs implementations to minimize those side effects, coalesce logical checkpoints when practical, and keep persistence verification distinct from release verification.
 
 ## Architectural boundary
 
@@ -29,11 +31,13 @@ This repository is the historical RPM repository and the current canonical devel
 3. **Persistence backends** provide durable storage. The first backend uses repository files and Git.
 4. **Platform adapters** map environment-specific lifecycle/discovery behavior. The first adapter targets ChatGPT Projects.
 
-Repository paths, `.chatgpt/` conventions, Git commits, ChatGPT first-substantive-turn behavior, and product branding are not PPMP protocol requirements.
+Repository paths, `.chatgpt/` conventions, Git commits, ChatGPT first-substantive-turn behavior, product branding, and repository CI/CD suppression mechanics are not PPMP protocol requirements.
 
 ## Compatibility posture
 
 PPMP v2.0.0 is an intentional MAJOR transition from RPM v1.0.0. Existing RPM v1 projects require explicit migration and MUST NOT be silently reinterpreted as v2.
+
+The Tree Hole migration confirms that an RPM v1 repository can migrate without forced memory-file relocation: existing durable files may remain in place when the selected backend records valid locators and the migration preserves their knowledge. End-to-end ChatGPT-adapter acceptance still requires updating the consuming Project's external Project Instructions and verifying a fresh-conversation restore.
 
 ## Operating model
 
