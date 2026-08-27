@@ -9,7 +9,9 @@ This repository is the historical RPM repository and the current canonical devel
 - Current protocol version: **PPMP 2.0.0**.
 - Public protocol identity: **PPMP — Persistent Project Memory Protocol**.
 - Initial reference Skill/implementation: **Persistent Project Memory (PPM)**.
+- Public product brand for the reference implementation: **Sandminni**.
 - Reference implementation machine identity: `persistent-project-memory`.
+- Sandminni's brand metaphor is memory accumulated grain by grain; future visual identity should explore sand/grains, convergence or accumulation, and memory/durable continuity.
 - RPM (Repository Project Memory) v1.0.0 is the historical repository- and ChatGPT-oriented predecessor.
 - The v2 architecture separates protocol semantics, implementation behavior, persistence backends, and platform adapters.
 - PPMP is platform-agnostic and storage-agnostic. Persistence is required; Git/repository storage is not.
@@ -22,11 +24,11 @@ This repository is the historical RPM repository and the current canonical devel
 ## Architectural boundary
 
 1. **PPMP** defines durable Project Memory semantics, lifecycle, classification, checkpoint behavior, profiles, and compatibility.
-2. **Persistent Project Memory (PPM)** is the first Skill/reference implementation of PPMP.
+2. **Persistent Project Memory (PPM)** is the first Skill/reference implementation of PPMP; **Sandminni** is its public product brand.
 3. **Persistence backends** provide durable storage. The first backend uses repository files and Git.
 4. **Platform adapters** map environment-specific lifecycle/discovery behavior. The first adapter targets ChatGPT Projects.
 
-Repository paths, `.chatgpt/` conventions, Git commits, and ChatGPT first-substantive-turn behavior are not PPMP protocol requirements.
+Repository paths, `.chatgpt/` conventions, Git commits, ChatGPT first-substantive-turn behavior, and product branding are not PPMP protocol requirements.
 
 ## Compatibility posture
 
