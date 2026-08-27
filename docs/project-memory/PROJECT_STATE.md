@@ -13,7 +13,9 @@ Agnir is project-owned durable memory/continuity. Its normative semantics are in
 - Current predecessor public product brand: **Sandminni**.
 - New project/protocol identity: **Agnir**.
 - Target architecture line: **Agnir Core 0.1**.
-- Architecture draft: `spec/AGNIR_CORE_DRAFT.md`.
+- Core architecture draft: `spec/AGNIR_CORE_DRAFT.md`.
+- Discovery contract draft: `spec/AGNIR_DISCOVERY_DRAFT.md`.
+- PPMP v2 -> Agnir migration draft: `spec/AGNIR_MIGRATION_DRAFT.md`.
 - Repository: `mattamior/rpm` (repository rename remains deferred).
 - The repository's own maintenance memory still runs through PPMP v2 / PPM with the repository backend and ChatGPT adapter during migration. This is intentional predecessor self-hosting and is not an Agnir conformance claim.
 
@@ -28,14 +30,16 @@ Agnir is project-owned durable memory/continuity. Its normative semantics are in
 - Discovery is modeled through a **Project Entry Point**, **Discovery Record**, and resolvable **Locator Chain**.
 - No top-level filename such as `AGNIR.yaml` is currently required by Core. A filesystem/repository discovery profile may standardize one later if conformance evidence justifies it.
 - Externally stored Agnir state is allowed only when the Project has a durable, authorized route from its Project Entry Point to that state.
-- A fresh Executor with no predecessor-private context must be able to resolve the Locator Chain, validate the Agnir version line, load required current memory, surface inconsistencies, and resume safely. This is the **cold-start discovery invariant**.
-- Agnir Core does not universally prohibit secrets from durable storage; confidentiality is governed by Project policy and consuming profiles/protocols. Svif may impose a stricter protected-secret rule.
+- A fresh Executor with no predecessor-private context must be able to resolve the Locator Chain, validate the Agnir version line, verify Project identity, load required current memory, surface inconsistencies, and resume safely. This is the **cold-start discovery invariant**.
+- Discovery failure semantics now have draft portable classes covering not-found, ambiguity, unsupported version, Project mismatch, unresolvable locator, authorization, cycle, stale locator, and inconsistent memory.
+- Agnir Core does not universally prohibit secrets from durable storage; confidentiality is governed by Project policy and consuming profiles/protocols. Discovery Records should use authorization/credential references rather than embedded secret values.
+- PPMP v2 -> Agnir migration has three explicit states: predecessor PPMP v2 mode, migration mode, and Agnir 0.1 mode. A Project must not be silently promoted between them.
 
 ## Relationship to Svif
 
 - **Svif** is a separate project evolving from ZeroLocal in `iorLab/zerolocal`.
 - Dependency direction remains **Svif -> Agnir**.
-- Svif should normatively depend on a **compatible Agnir Core protocol version**, not on a specific Agnir implementation/backend/adapter.
+- Svif normatively depends on a **compatible Agnir Core protocol version**, not on a specific Agnir implementation/backend/adapter.
 - The current draft dependency target is the **Agnir Core 0.1 line**; the exact release compatibility expression is intentionally not frozen until the Core draft stabilizes.
 - Agnir remains independently useful outside software delivery, provider workflows, CI/CD, or Svif.
 
@@ -65,16 +69,25 @@ The earlier `mattamior/tree-hole` migration, repository-backend CI/CD side-effec
 
 ## Current focus
 
-Turn `spec/AGNIR_CORE_DRAFT.md` from an architecture draft into a testable Core contract without collapsing implementation/backend/adapter behavior back into Core. In parallel, define an explicit PPMP v2 -> Agnir 0.1 migration mapping and a first repository/filesystem discovery profile, then freeze the exact Svif compatibility declaration.
+Convert the three Agnir 0.1 drafts into a coherent normative set. The next concrete architecture pressure point is the first repository/filesystem discovery profile: it must provide a simple cold-start anchor and migration path from `.chatgpt/project-memory.yaml` without turning a filename or Git repository into Core. After that, define executable discovery conformance cases and freeze the exact Svif compatibility declaration.
+
+## Resolved transition questions
+
+- Agnir uses one umbrella project/protocol identity rather than preserving a mandatory three-name protocol/implementation/brand stack.
+- Agnir starts a new `0.1` version line instead of inheriting PPMP's `2.x` number.
+- Principal and Executor are the neutral authority/execution roles.
+- Cold-start discovery is Core, not merely ChatGPT-adapter bootstrap behavior.
+- PPMP v2 projects require explicit migration; physical renames alone do not establish Agnir conformance.
+- Repository-backed self-hosting may remain in migration mode until Agnir discovery and conformance are concrete.
 
 ## Remaining open questions
 
-- What exact normative fields and error semantics belong in the Agnir 0.1 Discovery Record.
-- Whether the first repository/filesystem discovery profile standardizes a top-level `AGNIR.yaml`, `.agnir/` layout, or another locator convention.
-- How external-memory Locator Chains authenticate/authorize resolution without making a particular identity system normative.
-- What migration guarantees are required when converting PPMP v2 Current State / Next Steps / Decisions / checkpoints into Agnir 0.1 semantics.
+- Whether the first repository/filesystem discovery profile standardizes top-level `AGNIR.yaml`, `.agnir/manifest.yaml`, or another anchor convention.
+- How that profile represents an authoritative ref/version when Project memory is on a non-default VCS ref without making VCS a Core concept.
+- How external-memory Locator Chains authenticate/authorize resolution while keeping identity technology adapter-specific.
+- Exact schema/versioning for Discovery Record extensions and profile declarations.
+- What release-quality conformance fixture demonstrates a materially non-repository backend.
 - What exact release version identifier and compatibility range Svif should declare once Agnir Core 0.1 is frozen.
-- Which conformance fixtures best demonstrate storage/execution neutrality rather than merely restating it.
 
 ## Deferred predecessor tasks
 
@@ -89,10 +102,12 @@ These should be resumed only when it is clear whether their acceptance target is
 
 ## Latest architecture progress
 
-- Added `spec/AGNIR_CORE_DRAFT.md` defining the Agnir 0.1 target architecture, neutral roles, discovery model, cold-start invariant, new version namespace, and Svif dependency boundary.
+- Added `spec/AGNIR_CORE_DRAFT.md` defining the Agnir 0.1 target architecture, neutral roles, project-owned continuity, and Svif dependency boundary.
+- Added `spec/AGNIR_DISCOVERY_DRAFT.md` defining Discovery Record semantics, Locator Chain resolution, portable discovery failure classes, repair rules, and a cold-start conformance procedure.
+- Added `spec/AGNIR_MIGRATION_DRAFT.md` mapping PPMP v2 semantics/configuration into Agnir 0.1 and defining explicit predecessor / migration / Agnir modes.
 - Updated `.chatgpt/project-memory.yaml` so the self-hosted maintenance project identifies itself as Agnir while explicitly declaring that PPMP v2 / PPM remains the current predecessor persistence implementation during migration.
 
 ## Checkpoint
 
 - Last full checkpoint: **2026-08-27T17:58:00+08:00**.
-- Architecture work has advanced since that checkpoint; the next explicit checkpoint should capture the new Agnir Core draft and corresponding Svif transition draft after any review/refinement.
+- Architecture work has advanced since that checkpoint; the next explicit checkpoint should capture the new Core, Discovery, and migration drafts together with the corresponding Svif transition artifacts.
