@@ -114,3 +114,62 @@ The PPMP maintenance ChatGPT Project uses a concise external instruction set con
 Detailed governance and explanatory material remains in the repository rather than being duplicated into the external ChatGPT Project Instructions. The repository snapshot at `.chatgpt/PROJECT_INSTRUCTIONS.md` SHOULD mirror the intended concise platform configuration.
 
 This is project/adapter configuration, not PPMP Core semantics, and does not change the protocol version.
+
+## D-019 — Agnir is the new project identity and the PPMP/PPM/Sandminni lineage remains historical evidence
+
+**Agnir** is the new target identity for the project currently developed in `mattamior/rpm`.
+
+This supersedes the future-facing PPMP / PPM / Sandminni naming stack, but does **not** silently rewrite or invalidate PPMP v2.0.0 history. PPMP v2, PPM, Sandminni, and RPM v1 remain explicit predecessor identities and evidence until an intentional migration specifies how the new Agnir lineage relates to them.
+
+The Agnir transition is architectural as well as nominal. Broad file, repository, website, implementation-ID, and domain renames are deferred until the compatibility/versioning model is explicit.
+
+## D-020 — Agnir is project-owned, platform-neutral, storage-neutral, and executor-neutral durable memory
+
+Agnir is not `GitHub-backed Agent memory` and MUST NOT be defined by Git, GitHub, a repository host, ChatGPT, a conversational UI, an AI-agent identity, or a particular storage layout.
+
+The durable memory belongs to the **project**. Any compatible reader/executor may consume it if it can discover and interpret the project's Agnir state according to the applicable contract.
+
+The core properties include:
+
+- project ownership rather than executor ownership;
+- durability across executor loss or replacement;
+- portability across execution environments;
+- self-description sufficient for compatible interpretation;
+- discoverability from the project or a project-declared durable locator;
+- independence from predecessor-private conversational/model context.
+
+Git repositories, local filesystems, databases, documents, APIs, synced workspaces, cloud stores, and other persistence mechanisms are backends/implementations rather than Agnir Core requirements.
+
+## D-021 — Generalize fresh-conversation recovery into cold-start/fresh-executor discovery
+
+The important invariant behind prior RPM/PPMP ChatGPT bootstrap work is not ChatGPT-specific `fresh conversation` behavior.
+
+A compatible executor with no private predecessor context must be able to enter the project, discover the applicable Agnir state, interpret it, and resume safely.
+
+This generalized failure/recovery class is provisionally called **cold-start discovery** or **fresh-executor recovery**. ChatGPT Project Instructions, repository refs, local workspace files, IDE metadata, or other environment locators are adapter/backend mechanisms rather than the normative invariant itself.
+
+## D-022 — Agnir remains independent of Svif; Svif depends on Agnir-compatible continuity
+
+`iorLab/zerolocal` is evolving into the separate **Svif** project.
+
+- Agnir MAY be used by projects that do not use Svif.
+- Agnir MUST NOT depend on Svif software-delivery lifecycle semantics.
+- Svif builds on Agnir-compatible durable project continuity.
+- The dependency direction is **Svif -> Agnir**.
+- The exact versioned compatibility contract is not yet frozen and must be designed explicitly.
+
+This separation keeps durable project continuity reusable outside software delivery, cloud deployment, provider adapters, or any single execution surface.
+
+## D-023 — Shared workspace is allowed; durable project memory remains isolated
+
+A single ChatGPT Project or other execution workspace MAY be used to develop multiple related projects such as Svif and Agnir.
+
+The workspace is not a project identity and MUST NOT become an authoritative shared mutable memory store.
+
+Each project retains its own durable Agnir state and canonical project identity. Cross-project decisions are written independently into each affected project's memory according to their local meaning.
+
+Workspace-level configuration SHOULD be a thin registry/locator containing only enough information to discover the participating projects. It SHOULD NOT duplicate current state, decisions, blockers, or other mutable project memory.
+
+For project-scoped work, an executor SHOULD load only that project's Agnir. For explicitly cross-project work, it MAY load all affected projects.
+
+This shared-workspace/separate-memory arrangement is a candidate future conformance scenario for proving multi-project continuity without durable context bleed.
