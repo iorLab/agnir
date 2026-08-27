@@ -11,7 +11,8 @@ adapter:
   name: chatgpt
 
 project:
-  name: PPMP
+  name: Agnir
+  former_identity: PPMP / PPM / Sandminni
   primary_type: generic
   profiles:
     - generic
@@ -27,3 +28,13 @@ policy:
   checkpoint: event-driven
   session_logs: meaningful-only
   raw_transcripts: false
+
+transition:
+  target_protocol: Agnir Core
+  target_line: "0.1"
+  architecture_draft: spec/AGNIR_CORE_DRAFT.md
+  note: >-
+    This project's maintenance memory is still persisted through the PPMP v2 / PPM
+    predecessor implementation during the explicit Agnir migration. That does not
+    constitute Agnir conformance and does not make repository or ChatGPT semantics
+    part of Agnir Core.
