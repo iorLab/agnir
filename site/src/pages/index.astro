@@ -9,12 +9,12 @@ const groups = getGroups();
     <div class="hero-copy">
       <p class="eyebrow">PPMP v{version}</p>
       <h1>Durable project memory,<br />without platform lock-in.</h1>
-      <p class="lede">PPMP defines a small, explicit protocol for durable AI project memory. iorMemory is the first reference Skill implementation, with repository storage and ChatGPT as its initial backend and adapter.</p>
+      <p class="lede">PPMP defines a small, explicit protocol for durable AI project memory. Persistent Project Memory (PPM) is the first reference Skill implementation, with repository storage and ChatGPT as its initial backend and adapter.</p>
       <div class="hero-actions"><a class="button primary" href="/quick-start">Get started</a><a class="button secondary" href="/reference">Read the reference</a></div>
     </div>
     <div class="terminal-card" aria-label="PPMP architecture"><div class="terminal-dots"><i></i><i></i><i></i></div><pre><code>PPMP protocol
       ↓
-iorMemory Skill
+PPM Skill
       ↓
 backend + platform adapter
 
@@ -23,15 +23,15 @@ repository + ChatGPT</code></pre></div>
   </section>
 
   <section class="section shell" id="copy-setup">
-    <div class="section-heading split-heading"><div><p class="eyebrow">01 · Reference setup</p><h2>One small ChatGPT hook.</h2></div><p>The iorMemory reference stack preserves the simple repository-backed workflow while keeping those mechanics outside PPMP itself.</p></div>
-    <CopyBlock value={projectInstructions} title="iorMemory Project Instructions" language="markdown" label="Copy instructions" />
+    <div class="section-heading split-heading"><div><p class="eyebrow">01 · Reference setup</p><h2>One small ChatGPT hook.</h2></div><p>The PPM reference stack preserves the simple repository-backed workflow while keeping those mechanics outside PPMP itself.</p></div>
+    <CopyBlock value={projectInstructions} title="PPM Project Instructions" language="markdown" label="Copy instructions" />
   </section>
 
   <section class="section shell">
     <div class="section-heading"><p class="eyebrow">02 · Architecture</p><h2>Semantics separated from mechanics.</h2></div>
     <div class="principle-grid">
       <article><span>01</span><h3>Protocol</h3><p>PPMP defines current state, next steps, decisions, checkpoints, classification, persistence semantics, and compatibility.</p></article>
-      <article><span>02</span><h3>Implementation</h3><p>iorMemory turns PPMP semantics into operational Skill behavior without redefining the protocol.</p></article>
+      <article><span>02</span><h3>Implementation</h3><p>Persistent Project Memory (PPM) turns PPMP semantics into operational Skill behavior without redefining the protocol.</p></article>
       <article><span>03</span><h3>Backend + adapter</h3><p>Storage and platform integration are replaceable. Repository/Git and ChatGPT are the initial reference choices, not PPMP requirements.</p></article>
     </div>
   </section>

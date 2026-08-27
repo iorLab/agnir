@@ -1,6 +1,6 @@
 # PPMP website
 
-This directory contains the public presentation layer for **PPMP — Persistent Project Memory Protocol** and its first reference Skill implementation, **iorMemory**. It is intentionally non-normative: the site reads `../VERSION`, `../spec/`, `../profiles/`, `../implementations/`, `../backends/`, `../adapters/`, and `../templates/` directly during the Astro build so the repository remains the single source of truth.
+This directory contains the public presentation layer for **PPMP — Persistent Project Memory Protocol** and its first reference Skill implementation, **Persistent Project Memory (PPM)**. It is intentionally non-normative: the site reads `../VERSION`, `../spec/`, `../profiles/`, `../implementations/`, `../backends/`, `../adapters/`, and `../templates/` directly during the Astro build so the repository remains the single source of truth.
 
 Production: `https://rpm.mattamior.workers.dev`
 

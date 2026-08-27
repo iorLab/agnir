@@ -1,6 +1,6 @@
 # Repository Persistence Backend
 
-Status: Reference backend used by iorMemory
+Status: Reference backend used by Persistent Project Memory (PPM)
 Protocol: PPMP v2.0.0
 
 This backend serializes PPMP Project Memory into files within a repository and may use Git commits as durable checkpoint evidence.

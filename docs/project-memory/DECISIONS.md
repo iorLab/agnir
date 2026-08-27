@@ -4,7 +4,7 @@
 
 RPM v1 treated the repository as canonical durable memory.
 
-**Status:** Historical for RPM v1; retained by the iorMemory repository backend, not by the PPMP protocol.
+**Status:** Historical for RPM v1; retained by the PPM repository backend, not by the PPMP protocol.
 
 ## D-002 — Unified Core plus composable profiles
 
@@ -14,7 +14,7 @@ Every PPMP project uses the shared Core semantic layer. Domain profiles extend C
 
 RPM v1 required `.chatgpt/project-memory.yaml`.
 
-**Status:** Superseded at protocol level. PPMP v2 requires configuration semantics but not a file path or serialization. The path remains an iorMemory ChatGPT + repository convention.
+**Status:** Superseded at protocol level. PPMP v2 requires configuration semantics but not a file path or serialization. The path remains a PPM ChatGPT + repository convention.
 
 ## D-004 — Project isolation
 
@@ -22,7 +22,7 @@ Durable continuity MUST NOT depend on implicit model memory. ChatGPT Project-onl
 
 ## D-005 — Self-hosting
 
-This specification repository uses iorMemory with the repository backend and ChatGPT adapter to maintain its own durable maintenance state. Self-hosted maintenance files do not duplicate or override normative specification files.
+This specification repository uses PPM with the repository backend and ChatGPT adapter to maintain its own durable maintenance state. Self-hosted maintenance files do not duplicate or override normative specification files.
 
 ## D-006 — Conservative classification
 
@@ -30,7 +30,7 @@ The maintenance project uses `generic` unless recurring maintenance work justifi
 
 ## D-007 — Website is non-normative
 
-The public website may explain and render PPMP and iorMemory material but MUST NOT become an independent source of protocol semantics.
+The public website may explain and render PPMP and PPM material but MUST NOT become an independent source of protocol semantics.
 
 ## D-008 — Static Cloudflare deployment
 
@@ -46,12 +46,22 @@ The public standard/protocol identity is **PPMP — Persistent Project Memory Pr
 
 **Correction note:** an erroneous maintenance change on 2026-08-27 briefly inverted the names and described iorMemory as the protocol. That inversion was not the intended architecture and is superseded by this decision.
 
-## D-011 — iorMemory is the reference Skill
+## D-011 — iorMemory was a temporary reference-Skill name
 
-The first reference Skill/implementation is **iorMemory**. It implements PPMP and may initially use repository-backed persistence plus a ChatGPT adapter.
+After restoring PPMP as the protocol identity, **iorMemory** was briefly selected as the first reference Skill/implementation name.
 
-PPMP conformance MUST NOT depend on iorMemory-specific implementation conventions.
+**Status:** Superseded by D-013.
+
+Rationale for supersession: iorMemory has higher pronunciation, spelling, and explanation cost. Persistent Project Memory (PPM) has an immediate semantic relationship to PPMP and is easier to understand and propagate in technical documentation.
 
 ## D-012 — PPMP v2.0.0 is a major migration from RPM v1
 
 The shift from repository/ChatGPT-bound RPM semantics to platform- and storage-agnostic PPMP semantics is incompatible at the protocol/configuration level. The first normative PPMP release in this lineage is therefore version **2.0.0**, and RPM v1 projects require explicit migration.
+
+## D-013 — Persistent Project Memory (PPM) is the reference Skill
+
+The first reference Skill/implementation is **Persistent Project Memory**, abbreviated **PPM**. It implements PPMP and initially uses repository-backed persistence plus a ChatGPT adapter.
+
+Reference manifests use the stable machine identifier `persistent-project-memory` rather than the bare acronym `ppm`.
+
+PPMP conformance MUST NOT depend on PPM-specific implementation conventions.

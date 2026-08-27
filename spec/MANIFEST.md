@@ -36,7 +36,7 @@ policy:
 
 Implementations MAY add fields for implementation identity, backends, adapters, paths, namespaces, repositories, databases, or credentials references. Such fields MUST NOT be treated as protocol requirements.
 
-The iorMemory reference Skill uses a YAML file convention with its repository backend for interoperability; see `implementations/IORMEMORY.md`, `backends/REPOSITORY.md`, and `templates/project-memory.yaml`.
+The Persistent Project Memory (PPM) reference Skill uses a YAML file convention with its repository backend for interoperability; see `implementations/PERSISTENT_PROJECT_MEMORY.md`, `backends/REPOSITORY.md`, and `templates/project-memory.yaml`.
 
 ## Validation
 
