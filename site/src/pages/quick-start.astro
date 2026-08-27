@@ -2,10 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CopyBlock from '../components/CopyBlock.astro';
 import { projectInstructions, manifestTemplate } from '../lib/rpm.mjs';
-const manualPrompt = 'Initialize Persistent Project Memory (PPM) in this repository according to PPMP v2.';
+const manualPrompt = 'Initialize Sandminni using Persistent Project Memory (PPM) in this repository according to PPMP v2.';
 ---
-<BaseLayout title="Quick Start · PPMP">
-  <section class="page-hero shell narrow"><p class="eyebrow">Quick Start</p><h1>Initialize the PPM reference stack.</h1><p class="lede">PPMP is platform- and storage-agnostic. This quick start uses Persistent Project Memory (PPM) with the repository backend and ChatGPT adapter.</p></section>
+<BaseLayout title="Quick Start · Sandminni">
+  <section class="page-hero shell narrow"><p class="eyebrow">Quick Start</p><h1>Set up Sandminni.</h1><p class="lede">Sandminni is the public product brand for Persistent Project Memory (PPM), the reference Skill implementation of PPMP. This quick start uses PPM with the repository backend and ChatGPT adapter.</p></section>
   <section class="section shell narrow steps">
     <article class="step"><div class="step-number">1</div><div><h2>Add the Project Instructions hook</h2><p>Copy this into the ChatGPT Project's Project Instructions.</p><CopyBlock value={projectInstructions} title="Project Instructions" language="markdown" label="Copy" /></div></article>
     <article class="step"><div class="step-number">2</div><div><h2>Start a normal conversation</h2><p>At the first substantive turn, the ChatGPT adapter checks <code>.chatgpt/project-memory.yaml</code>. If present, PPM restores durable context; if missing, it offers initialization.</p></div></article>
