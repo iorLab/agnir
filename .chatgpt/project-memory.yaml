@@ -1,51 +1,22 @@
-ppmp:
-  version: 2.0.0
-
-implementation:
-  name: persistent-project-memory
-
-backend:
-  name: repository
-
-adapter:
-  name: chatgpt
+compatibility:
+  role: chatgpt-bootstrap-shim
+  authoritative_discovery: AGNIR.yaml
+  note: >-
+    This file exists only because the current ChatGPT workspace bootstrap convention
+    looks here first. Agnir authority begins at AGNIR.yaml; this shim must not become
+    a second mutable Project Memory root.
 
 project:
   name: Agnir
-  former_identity: PPMP / PPM / Sandminni
-  primary_type: generic
-  profiles:
-    - generic
+  repository: mattamior/rpm
 
-memory:
-  root: docs/project-memory
-  state: PROJECT_STATE.md
-  next_steps: NEXT_STEPS.md
-  decisions: DECISIONS.md
-  transition_decisions:
-    - decisions/2026-08-27-agnir-core-transition.md
-    - decisions/2026-08-27-branch-governance.md
-  checkpoints: sessions
-
-policy:
-  checkpoint: event-driven
-  session_logs: meaningful-only
-  raw_transcripts: false
+files:
+  state: .agnir/state.md
+  next_steps: .agnir/next-actions.md
+  decisions: .agnir/decisions.md
+  checkpoints: .agnir/evidence
 
 branch_governance:
   active: main
   predecessor: legacy/ppmp-v2.0.0
   cleanup: deferred-until-new-version-complete
-
-transition:
-  target_protocol: Agnir Core
-  target_line: "0.1"
-  architecture_draft: spec/AGNIR_CORE_DRAFT.md
-  discovery_draft: spec/AGNIR_DISCOVERY_DRAFT.md
-  migration_draft: spec/AGNIR_MIGRATION_DRAFT.md
-  repository_filesystem_profile_draft: profiles/REPOSITORY_FILESYSTEM_DRAFT.md
-  note: >-
-    This project's maintenance memory is still persisted through the PPMP v2 / PPM
-    predecessor implementation during the explicit Agnir migration. That does not
-    constitute Agnir conformance and does not make repository or ChatGPT semantics
-    part of Agnir Core.
