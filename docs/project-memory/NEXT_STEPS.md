@@ -2,12 +2,12 @@
 
 ## Immediate
 
-1. Complete **live production acceptance** of the Sandminni public website: verify the deployed Home, Quick Start, Reference, and copy interactions against Cloudflare. Repository Site CI runs `33050210045` and `33050497784` have verified dependency installation, Astro build, and Wrangler dry-run packaging successfully.
-2. Synchronize this maintenance ChatGPT Project's actual external Project Instructions with `.chatgpt/PROJECT_INSTRUCTIONS.md`, then verify one new conversation performs v2 first-substantive-turn discovery and restore without legacy RPM naming. The current conversation proved the mechanical manifest/state bootstrap but exposed configuration drift in the external wording.
-3. Synchronize the `mattamior/tree-hole` ChatGPT Project's actual external Project Instructions with its `.chatgpt/PROJECT_INSTRUCTIONS.md`, then verify a fresh conversation restores the migrated PPMP v2 / PPM state. Repository migration, durable-state preservation, application-source comparison, and CI/build validation are complete.
+1. Verify one **new conversation** in this maintenance ChatGPT Project performs v2 first-substantive-turn discovery and restore under the newly updated concise Project Instructions, without legacy RPM naming.
+2. Synchronize the `mattamior/tree-hole` ChatGPT Project's actual external Project Instructions with its `.chatgpt/PROJECT_INSTRUCTIONS.md`, then verify a fresh conversation restores the migrated PPMP v2 / PPM state. Repository migration, durable-state preservation, application-source comparison, and CI/build validation are complete.
 
 ## Near term
 
+- If release-quality browser acceptance is desired, explicitly verify the deployed Quick Start, Reference, and copy interactions; the user has already confirmed the live production site shows the new Sandminni presentation.
 - Explore Sandminni's visual identity and logo around **sand/grains**, **convergence or accumulation**, and **memory/durable continuity**.
 - Decide whether and when to rename the GitHub repository from `mattamior/rpm`; repository naming is operational branding and no longer protocol semantics.
 - Add an explicit LICENSE before broader public promotion.
@@ -32,5 +32,7 @@
 - Migrated the real consuming repository `mattamior/tree-hole` from RPM v1 to PPMP v2 / PPM at the repository layer without relocating its durable memory files or changing executable application source.
 - Promoted a migration finding into the reference repository backend: memory-only checkpoints should avoid unrelated CI/CD side effects when repository policy supports that, should be coalesced when practical, and must not conflate persistence verification with release verification.
 - Added path-scoped Site CI and verified the Sandminni site builds and packages successfully for Cloudflare Workers.
+- User-confirmed the deployed production site shows the new Sandminni presentation.
 - Made ChatGPT Project Instructions drift explicit in the adapter and added repository-backed intended-instructions snapshots for both the PPMP maintenance project and Tree Hole.
-- Mechanically validated this maintenance Project's v2 self-hosted bootstrap in the current fresh conversation: the manifest, Current State, Next Steps, and relevant Decisions were loaded before substantive work. External naming/configuration synchronization remains a separate acceptance item.
+- Manually synchronized this maintenance ChatGPT Project's external Instructions to the concise PPMP / PPM / Sandminni wording and aligned the repository snapshot to the same concise form.
+- Mechanically validated this maintenance Project's v2 self-hosted bootstrap in the earlier conversation; a new-conversation acceptance pass under the newly synchronized external configuration remains the final check.

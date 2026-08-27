@@ -106,3 +106,11 @@ Actual ChatGPT Project Instructions are platform-side configuration and can drif
 After a migration or adapter/implementation change that affects bootstrap naming, discovery, or checkpoint behavior, acceptance includes verifying the actual external Project Instructions and exercising a fresh conversation. A repository-backed project-specific snapshot MAY be maintained to make the intended setting reviewable and recoverable, but that snapshot does not replace or prove the actual platform configuration.
 
 This is ChatGPT-adapter behavior rather than PPMP Core semantics, so it does not change the PPMP protocol version.
+
+## D-018 — Keep maintenance Project Instructions concise
+
+The PPMP maintenance ChatGPT Project uses a concise external instruction set containing only the bootstrap, source-of-truth, layer-boundary, persistence, and checkpoint rules needed for reliable operation.
+
+Detailed governance and explanatory material remains in the repository rather than being duplicated into the external ChatGPT Project Instructions. The repository snapshot at `.chatgpt/PROJECT_INSTRUCTIONS.md` SHOULD mirror the intended concise platform configuration.
+
+This is project/adapter configuration, not PPMP Core semantics, and does not change the protocol version.
