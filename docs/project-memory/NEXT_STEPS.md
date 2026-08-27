@@ -53,3 +53,9 @@
 
 27. Defer broad rename work for repository name, website/domain/Worker, predecessor implementation IDs, templates, and public branding until Agnir 0.1 migration/compatibility is explicit.
 28. Do not treat ChatGPT Skill, CLI, SDK, or any other integration form as Agnir Core architecture. These are implementations/adapters built after the contract is stable enough to implement repeatedly.
+
+## Branch governance — cleanup deferred
+
+29. Treat `main` as the authoritative active Agnir line and `legacy/ppmp-v2.0.0` as the preserved predecessor line.
+30. Ignore temporary, redundant, or incidental branches during active architecture work unless one causes a real conflict or ambiguity.
+31. After the new Agnir version is substantially complete, review and delete non-authoritative branches in one deliberate cleanup pass.
