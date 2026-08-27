@@ -24,12 +24,18 @@ memory:
   decisions: DECISIONS.md
   transition_decisions:
     - decisions/2026-08-27-agnir-core-transition.md
+    - decisions/2026-08-27-branch-governance.md
   checkpoints: sessions
 
 policy:
   checkpoint: event-driven
   session_logs: meaningful-only
   raw_transcripts: false
+
+branch_governance:
+  active: main
+  predecessor: legacy/ppmp-v2.0.0
+  cleanup: deferred-until-new-version-complete
 
 transition:
   target_protocol: Agnir Core
