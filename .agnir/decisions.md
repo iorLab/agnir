@@ -162,3 +162,14 @@
 - Skill packaging is an Agent-facing distribution/operation surface outside Agnir Core. Core `0.1` remains Agent-, Skill-, platform-, repository-, and execution-surface-neutral.
 - This decision **supersedes** the earlier Quick Start bullets that suggested the user-facing existing-Project or initialization path should contain the detailed Agnir procedure. Existing initialized Projects require no recurring Agnir prompt; new Projects receive one short user intent and the Skill supplies the procedure.
 - Conformance MUST prevent the internal installation checklist from drifting back into the user-facing README Quick Start and MUST require root `SKILL.md` to retain the complete Agent procedure.
+
+## 2026-08-28 — Existing AGENTS.md is Project-owned and must be merged non-destructively
+
+- Agnir installation MUST treat a target Project's pre-existing root `AGENTS.md` as Project-owned instructions, not as a replaceable Agnir template.
+- If `AGENTS.md` is absent, the initializer creates only a minimal Agnir locator to README `Agnir Project Instructions`.
+- If `AGENTS.md` exists, unrelated existing content is preserved; Agnir adds only its minimal locator and does not delete, reorder, normalize, summarize, or silently rewrite existing rules.
+- An equivalent existing Agnir locator makes installation idempotent; the initializer MUST NOT add duplicates.
+- Agnir's full activation/checkpoint procedure MUST NOT be copied into `AGENTS.md`; README remains the canonical activation instruction and `AGENTS.md` remains locator-only.
+- The initializer MUST inspect for material instruction conflicts before writing. If existing rules contradict the activation route and resolving the contradiction would require overriding or reinterpreting existing Project instructions, the Agent MUST surface the exact conflict to the Principal rather than guessing.
+- A material conflict blocks completion: the Agent MUST NOT claim Agnir installation complete until the conflict is explicitly resolved and fresh activation passes.
+- `conformance/agents_merge_reference.py` and `conformance/test_agents_merge.py` are conformance-only executable pressure for preservation, minimal creation, idempotence, and explicit conflict failure; they are not promoted production installer code.
