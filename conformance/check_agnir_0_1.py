@@ -67,6 +67,8 @@ def main() -> None:
         "conformance/test_repository_filesystem_failures.py",
         "conformance/sqlite_backend_reference.py",
         "conformance/test_sqlite_backend.py",
+        "conformance/external_memory_reference.py",
+        "conformance/test_external_memory_authorization.py",
     ]
     for path in required_active:
         if not (ROOT / path).exists():
