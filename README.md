@@ -92,8 +92,13 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif curr
 
 ## Conformance
 
-Run the active self-hosting check with:
+Run the self-hosting structural check and the full executable pressure suite with:
 
 ```bash
 python conformance/check_agnir_0_1.py
+python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
+
+The suite currently covers repository/filesystem cold start and explicit discovery failures, a durable non-repository SQLite realization, external-memory authorization without plaintext credentials, multi-project isolation with locator-only registry metadata, generic Locator Chain cycle/stale/inconsistency semantics, symlink boundary behavior, and real Git worktree cold start.
+
+A real mount-boundary case remains intentionally unproven until a mount-capable test environment is available; Agnir does not treat an ordinary directory as fake mount evidence.
