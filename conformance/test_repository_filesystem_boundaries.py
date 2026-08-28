@@ -15,6 +15,10 @@ PROJECT = "urn:test:agnir-boundary-project"
 
 def write_project(root: Path, *, state_locator: str = ".agnir/state.md") -> None:
     (root / ".agnir/evidence").mkdir(parents=True)
+    (root / ".agnir/evidence/seed.md").write_text(
+        "# Evidence\nboundary fixture evidence\n",
+        encoding="utf-8",
+    )
     if state_locator == ".agnir/state.md":
         (root / ".agnir/state.md").write_text("# State\nboundary durable fact\n", encoding="utf-8")
     (root / ".agnir/next-actions.md").write_text("# Next\ncontinue boundary test\n", encoding="utf-8")
@@ -98,6 +102,7 @@ class RepositoryFilesystemBoundaryTests(unittest.TestCase):
 
             self.assertTrue((worktree / ".git").is_file())
             self.assertTrue((worktree / "AGNIR.yaml").is_file())
+            self.assertTrue((worktree / ".agnir/evidence/seed.md").is_file())
 
             snapshot = discover_repository_filesystem(
                 worktree,
@@ -107,6 +112,7 @@ class RepositoryFilesystemBoundaryTests(unittest.TestCase):
             self.assertEqual(snapshot.project_root, worktree.resolve())
             self.assertIn("boundary durable fact", snapshot.state)
             self.assertIn("continue boundary test", snapshot.next_actions)
+            self.assertIn("seed.md", snapshot.evidence)
 
 
 if __name__ == "__main__":
