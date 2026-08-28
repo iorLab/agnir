@@ -23,6 +23,7 @@ agnir/                                                    # Agnir Core / profile
 │       ├── 2026-08-28-main-only-branch-cleanup-checkpoint.md # 只保留 main、历史分支改由 commit SHA 索引的 checkpoint
 │       ├── 2026-08-28-multi-project-workspace-isolation.md # multi-project workspace isolation 证据
 │       ├── 2026-08-28-negative-discovery-fixtures.md     # discovery failure vocabulary negative fixtures 证据
+│       ├── 2026-08-28-readme-agent-quick-start-checkpoint.md # README-first Agent Quick Start、初始化路径与 conformance 约束 checkpoint
 │       ├── 2026-08-28-readme-diagram-localization-checkpoint.md # 双语 README / Mermaid 本地化 checkpoint
 │       └── 2026-08-28-sqlite-non-repository-backend.md   # SQLite 非 repository backend storage-neutrality 证据
 │
@@ -42,7 +43,7 @@ agnir/                                                    # Agnir Core / profile
 │
 ├── conformance/                                          # executable pressure：证明当前 Core / profile 语义可被实现并正确失败
 │   ├── agnir-0.1.md                                      # Agnir 0.1 stable conformance baseline
-│   ├── check_agnir_0_1.py                                # self-hosting cold start + stable release-readiness 结构/版本检查
+│   ├── check_agnir_0_1.py                                # self-hosting cold start + stable release-readiness / README Quick Start 检查
 │   ├── core_reference.py                                 # Core failure / shared semantics 的 conformance-only 参考定义
 │   ├── repository_filesystem_reference.py                # repository-filesystem profile 的 conformance-only resolver
 │   ├── external_memory_reference.py                      # external Discovery Record + authorization 的参考模型
@@ -63,14 +64,14 @@ agnir/                                                    # Agnir Core / profile
 │
 ├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；只引用当前 main
 ├── RELEASE.md                                            # 0.1.0 稳定版的版本模型、范围、已知限制与发布门槛
-├── README.md                                             # 英文项目入口：架构图、Continuity Flow、简略仓库树与 release status
-├── README.zh-CN.md                                       # 简体中文项目入口；与英文版保持同一 canonical protocol 语义
+├── README.md                                             # 英文项目入口：Quick Start、架构图、Continuity Flow、简略仓库树与 release status
+├── README.zh-CN.md                                       # 简体中文项目入口：30 秒 Quick Start 优先，并与英文版保持同一 canonical protocol 语义
 ├── REPOSITORY_TREE.md                                    # 本文件：当前 main 的完整文件级仓库结构与职责说明
 └── VERSION                                               # 仓库 SemVer；当前 0.1.0
 ```
 
 ## 如何使用这张树
 
-第一次理解 Agnir 时，README 中的简略树已经足够；当你需要定位某个 Core 规范、profile、reference model、negative fixture、evidence 或历史资料时，再查本页。
+第一次使用 Agnir 时，先看 README 开头的 Quick Start；第一次理解 Agnir 架构时，README 中的简略树已经足够。当你需要定位某个 Core 规范、profile、reference model、negative fixture、evidence 或历史资料时，再查本页。
 
 本页不是第二套协议定义。**当前 Core 语义只以 `spec/` 为准，具体 repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准，机器可读约束以 `schemas/` 为准；`history/` 仅保存 lineage 和可选历史参考，不定义当前协议。**
