@@ -16,6 +16,7 @@ Version layers remain distinct:
 
 ## Active contract
 
+- **Durable continuity belongs to the Project**, not an Executor, execution environment, repository host, or conversation.
 - Agnir Core remains storage-, platform-, VCS-, repository-, agent-, and execution-surface-neutral.
 - Required durable semantics are Current State, Next Actions, Decisions, and Evidence / Checkpoints.
 - A compatible Executor that already knows the applicable profile can cold-start from the authorized Project Entry Point through the Discovery Record and durable memory.
