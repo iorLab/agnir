@@ -36,7 +36,7 @@ Project root
 
 ## Agent Skill distribution baseline
 
-Agnir is now packaged as an **Agent Skill** through top-level `SKILL.md`.
+Agnir is packaged as an **Agent Skill** through top-level `SKILL.md`.
 
 The instruction surfaces are deliberately separated:
 
@@ -60,15 +60,31 @@ This supersedes the earlier Quick Start wording that placed a long self-containe
 
 After initialization, normal Project work does not depend on the Skill repository or original install conversation just to activate Agnir. The target Project is self-describing through its durable activation route.
 
+## Existing AGENTS.md safety baseline
+
+Agnir installation treats a target Project's pre-existing root `AGENTS.md` as Project-owned instruction content.
+
+Reference behavior is now explicit:
+
+- if `AGENTS.md` is absent, create only a minimal Agnir locator;
+- if it exists, preserve existing unrelated content and merge only the minimal locator;
+- if an equivalent locator already exists, remain idempotent and do not duplicate it;
+- never copy the full Agnir activation/checkpoint procedure into `AGENTS.md`;
+- inspect for material conflicts before writing;
+- when existing Project instructions materially contradict the Agnir activation route, do not delete, override, or reinterpret them silently—surface the conflict to the Principal and do not claim installation complete until it is explicitly resolved and fresh activation passes.
+
+`conformance/agents_merge_reference.py` and `conformance/test_agents_merge.py` provide executable pressure for preservation, minimal creation, idempotence, and explicit conflict failure. This reference is conformance-only; `SKILL.md` remains the Agent-facing procedure.
+
 ## Skill and activation conformance
 
 Current executable pressure includes:
 
 - `conformance/test_skill_package.py` — verifies Skill frontmatter, full Agent procedure, exact one-line bilingual user prompts, and absence of the internal checklist from Quick Start;
+- `conformance/agents_merge_reference.py` + `test_agents_merge.py` — verifies safe target `AGENTS.md` merge and conflict behavior;
 - `conformance/activation_reference.py` + `test_agent_activation.py` — verifies prompt-free target-Project activation and negative activation cases;
 - `conformance/check_agnir_0_1.py` — self-hosts Skill packaging, Agent activation, `AGNIR.yaml` discovery, version/profile agreement, release surface, and repository documentation structure.
 
-Skill packaging candidate `434f237dbcccfa8173a4d7f6be550ce9133bbc97` passed Agnir conformance run `33176730016`.
+Safe-merge implementation candidate `8b07f25b4ec3decbec0b2e410778db3b247cac47` passed the repository-filesystem CI job in workflow run `33185018378`.
 
 ## Conformance coverage
 
@@ -98,13 +114,13 @@ Svif remains a separate Project orchestration product at `iorLab/svif`. It consu
 
 ## Current resume point
 
-Development required for the initial Agnir `0.1.0` release is complete, including Agent Skill packaging and durable post-install activation.
+Development required for the initial Agnir `0.1.0` release is complete, including Agent Skill packaging, safe existing-`AGENTS.md` merge behavior, and durable post-install activation.
 
 Next operation is **publication only**:
 
 1. after explicit authorization, create tag `v0.1.0` on the intended publication commit and/or create the GitHub Release;
 2. after publication, keep Core `0.1` and `repository-filesystem/0.1` frozen compatibility lines and keep `0.1.x` maintenance non-breaking;
-3. preserve the user-prompt / Skill-procedure / target-Project-activation separation;
+3. preserve the user-prompt / Skill-procedure / target-Project-activation separation and the non-destructive `AGENTS.md` merge invariant;
 4. optionally add real mount-boundary evidence when a real mount-capable environment is available.
 
 ## Branch governance
