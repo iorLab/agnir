@@ -36,6 +36,11 @@ def require_skill_package() -> None:
         "description:",
         "Do not require the user to carry Agnir's implementation checklist",
         "## Install or initialize Agnir",
+        "### Merge existing AGENTS.md safely",
+        "preserve its existing unrelated content",
+        "equivalent Agnir locator already exists",
+        "do not guess and do not overwrite it",
+        "report the exact conflict to the Principal",
         "## Resume or use an existing Agnir Project",
         "## Checkpoint",
         "## Repair",
@@ -129,7 +134,9 @@ def require_full_repository_tree() -> None:
         "agnir-manifest.schema.json",
         "conformance/",
         "activation_reference.py",
+        "agents_merge_reference.py",
         "test_agent_activation.py",
+        "test_agents_merge.py",
         "test_skill_package.py",
         "repository_filesystem_reference.py",
         "external_memory_reference.py",
@@ -200,10 +207,12 @@ def main() -> None:
         fail("active repository/filesystem profile must not define predecessor bootstrap fallback")
     for marker in (
         "Agent-operable Project activation and initialization",
+        "Existing AGENTS.md merge and conflict behavior",
         "AGENTS.md",
         "Agnir Project Instructions",
         "fresh activation test",
         "SHOULD NOT need to repeat an Agnir bootstrap prompt",
+        "MUST NOT guess or silently overwrite it",
     ):
         if marker not in profile_text:
             fail(f"repository/filesystem profile missing activation contract marker: {marker}")
@@ -234,7 +243,9 @@ def main() -> None:
         "history/MIGRATION_PPMP_V2.md",
         "history/BRANCH_ARCHIVE.md",
         "conformance/activation_reference.py",
+        "conformance/agents_merge_reference.py",
         "conformance/test_agent_activation.py",
+        "conformance/test_agents_merge.py",
         "conformance/test_skill_package.py",
         "conformance/core_reference.py",
         "conformance/repository_filesystem_reference.py",
@@ -302,7 +313,7 @@ def main() -> None:
 
     print(
         f"PASS: Agnir Skill + Core {snapshot.version} / {snapshot.profile} repository release {repository_version} "
-        f"for {snapshot.project_identity}; user prompt / Agent procedure boundary enforced"
+        f"for {snapshot.project_identity}; user prompt / Agent procedure and safe AGENTS merge boundaries enforced"
     )
 
 
