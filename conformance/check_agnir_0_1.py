@@ -31,6 +31,20 @@ def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
             fail(f"{path} missing required diagram section: {heading}")
 
 
+def require_readme_repository_tree(path: str, heading: str) -> None:
+    text = (ROOT / path).read_text(encoding="utf-8")
+    for marker in (
+        heading,
+        "agnir/",
+        "├── spec/",
+        "├── profiles/",
+        "├── conformance/",
+        "├── .agnir/",
+    ):
+        if marker not in text:
+            fail(f"{path} missing required repository-structure marker: {marker}")
+
+
 def main() -> None:
     try:
         snapshot = discover_repository_filesystem(
@@ -81,6 +95,8 @@ def main() -> None:
 
     require_readme_diagrams("README.md", ("## Architecture Diagram", "## Continuity Flow"))
     require_readme_diagrams("README.zh-CN.md", ("## 架构图", "## 连续性流程"))
+    require_readme_repository_tree("README.md", "## Repository Structure")
+    require_readme_repository_tree("README.zh-CN.md", "## 仓库结构")
 
     forbidden = [
         "docs",
