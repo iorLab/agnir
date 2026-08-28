@@ -52,3 +52,12 @@
 - If the selected root identifies another Project, discovery MUST surface `AGNIR_DISCOVERY_PROJECT_MISMATCH`; it MUST NOT search a parent or child root for a more convenient identity.
 - Active negative fixtures now cover `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, pre-root-selection `AMBIGUOUS`, and nested selected-root isolation.
 - Conformance run `33143495855` succeeded with both self-hosting cold-start and negative discovery fixture steps; durable evidence is `.agnir/evidence/2026-08-28-negative-discovery-fixtures.md`.
+
+## 2026-08-28 — Non-repository backend conformance baseline
+
+- Agnir Core storage neutrality is now pressure-tested by a durable SQLite-style conformance fixture that does not use `AGNIR.yaml`, `.agnir/`, a repository root, Git, or GitHub for discovery or continuity retrieval.
+- The SQLite Project Entry Point is a database locator plus durable project key; this is a conformance realization of Core concepts, not a normative SQLite profile.
+- `conformance/sqlite_backend_reference.py` and `conformance/test_sqlite_backend.py` are conformance-only artifacts, not promoted production backend code.
+- The fixture proves cold start, version/identity validation, Current State / Next Actions / Decisions / Evidence retrieval, checkpoint persistence, and fresh-resolver resume on the database-backed path.
+- Shared semantic failure classes live in `conformance/core_reference.py` so repository/filesystem and SQLite fixtures preserve equivalent Core failure vocabulary without promoting either substrate into Core.
+- Conformance run `33143655399`, job `98759873676`, succeeded with the SQLite tests included in the negative/backend unittest discovery step; durable evidence is `.agnir/evidence/2026-08-28-sqlite-non-repository-backend.md`.
