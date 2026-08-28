@@ -31,3 +31,4 @@
 - `REPOSITORY_TREE.md` provides the complete tracked file-level repository map with responsibility annotations.
 - Self-hosting conformance enforces the documentation baseline without byte-for-byte prose locking.
 - `spec/` contains only current Agnir protocol material; PPMP migration guidance lives under `history/`.
+- Main-only branch governance is complete: retired branch tip SHAs are indexed in `history/BRANCH_ARCHIVE.md`, GitHub branch enumeration returns only `main`, and checkpoint evidence is `.agnir/evidence/2026-08-28-main-only-branch-cleanup-checkpoint.md`.
