@@ -1,6 +1,6 @@
 # Repository Tree / 目录树
 
-本页是 `iorLab/agnir` 当前 `main` 的**完整文件级仓库结构说明**。README 中的仓库树只用于快速导航；这里把当前 tracked 目录与文件全部展开，并在右侧说明它们在协议、profile、conformance 和本 Project continuity 中的职责。
+本页是 `iorLab/agnir` 当前 `main` 的**完整文件级仓库结构说明**。README 中的仓库树只用于快速导航；这里把当前 tracked 目录与文件全部展开，并在右侧说明它们在协议、profile、conformance、本 Project continuity 和历史参考中的职责。
 
 维护规则：只要仓库新增、删除、移动文件，或者某个目录 / 文件的职责发生实质变化，就必须在同一个 change set 中同步更新本页；README 中的简略目录树若受影响，也必须一起更新。
 
@@ -12,10 +12,10 @@ agnir/                                                    # Agnir Core / profile
 │   ├── state.md                                          # 当前 Project 状态与已验证事实
 │   ├── next-actions.md                                   # 下次恢复时继续推进的 durable work
 │   ├── decisions.md                                      # 已确认的协议、profile、conformance 与文档决策
-│   └── evidence/                                         # checkpoint、conformance 与迁移审计证据
+│   └── evidence/                                         # checkpoint、conformance 与历史审计证据
 │       ├── 2026-08-27-mainline-implementation.md         # 新 main-line Agnir 结构落地证据
 │       ├── 2026-08-27-repository-rename-checkpoint.md    # 仓库更名 / canonical identity checkpoint
-│       ├── 2026-08-28-conformance-and-migration-audit-checkpoint.md # conformance 与 predecessor migration 审计 checkpoint
+│       ├── 2026-08-28-conformance-and-migration-audit-checkpoint.md # 早期 conformance / predecessor 审计 checkpoint；历史记录
 │       ├── 2026-08-28-external-memory-authorization.md   # external-memory authorization 语义验证证据
 │       ├── 2026-08-28-filesystem-boundaries.md           # symlink / Git worktree 等 filesystem boundary 证据
 │       ├── 2026-08-28-locator-chain-failures.md          # CYCLE / STALE / INCONSISTENT Locator Chain 证据
@@ -28,10 +28,9 @@ agnir/                                                    # Agnir Core / profile
 │   └── workflows/
 │       └── conformance.yml                               # CI：self-host cold start + executable conformance suite
 │
-├── spec/                                                 # Agnir 协议层规范；不绑定具体 storage / execution surface
+├── spec/                                                 # 当前 Agnir 协议层规范；不绑定具体 storage / execution surface
 │   ├── AGNIR_CORE.md                                     # Core 0.1：durable continuity、identity、checkpoint 等核心语义
-│   ├── AGNIR_DISCOVERY.md                                # cold-start discovery、Locator Chain、failure vocabulary 等
-│   └── MIGRATION_PPMP_V2.md                              # PPMP v2 / predecessor → Agnir 的显式迁移要求
+│   └── AGNIR_DISCOVERY.md                                # cold-start discovery、Locator Chain、failure vocabulary 等
 │
 ├── profiles/                                             # 在 Core 之外定义具体 discovery / storage realization
 │   └── REPOSITORY_FILESYSTEM.md                          # 当前 `repository-filesystem/0.1` profile
@@ -39,7 +38,7 @@ agnir/                                                    # Agnir Core / profile
 ├── schemas/                                              # 具体 profile artifact 的机器可读 schema
 │   └── agnir-manifest.schema.json                        # 当前 repository/filesystem `AGNIR.yaml` manifest 的 JSON Schema
 │
-├── conformance/                                          # executable pressure：证明 Core / profile 语义可被实现并正确失败
+├── conformance/                                          # executable pressure：证明当前 Core / profile 语义可被实现并正确失败
 │   ├── agnir-0.1.md                                      # Agnir 0.1 conformance baseline 的人类可读说明
 │   ├── check_agnir_0_1.py                                # self-hosting cold start + active repository 结构检查
 │   ├── core_reference.py                                 # Core failure / shared semantics 的 conformance-only 参考定义
@@ -55,8 +54,9 @@ agnir/                                                    # Agnir Core / profile
 │   ├── test_sqlite_backend.py                            # 非 repository SQLite cold-start / checkpoint / fresh-resume 测试
 │   └── test_workspace_isolation.py                       # 多 Project 独立 authority 与 locator-only registry 隔离测试
 │
-├── history/                                              # predecessor lineage；只作历史，不属于 active Core
-│   └── PREDECESSOR.md                                    # PPMP / Persistent Project Memory / Sandminni 前身历史定位
+├── history/                                              # predecessor lineage 与可选历史指南；不属于 active Core
+│   ├── PREDECESSOR.md                                    # PPMP / Persistent Project Memory / Sandminni 前身历史定位
+│   └── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；不参与 Core / conformance / release gate
 │
 ├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；不是 Core 普遍要求
 ├── README.md                                             # 英文项目入口：架构图、Continuity Flow、简略仓库树
@@ -67,6 +67,6 @@ agnir/                                                    # Agnir Core / profile
 
 ## 如何使用这张树
 
-第一次理解 Agnir 时，README 中的简略树已经足够；当你需要定位某个 Core 规范、profile、reference model、negative fixture、evidence 或 migration 文件时，再查本页。
+第一次理解 Agnir 时，README 中的简略树已经足够；当你需要定位某个 Core 规范、profile、reference model、negative fixture、evidence 或历史资料时，再查本页。
 
-本页不是第二套协议定义。**Core 语义仍以 `spec/` 为准，具体 repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准，机器可读约束以 `schemas/` 为准；本页负责把这些职责映射回仓库中的实际文件位置。**
+本页不是第二套协议定义。**当前 Core 语义只以 `spec/` 为准，具体 repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准，机器可读约束以 `schemas/` 为准；`history/` 仅保存 lineage 和可选历史参考，不定义当前协议。**
