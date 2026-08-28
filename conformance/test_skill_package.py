@@ -20,6 +20,11 @@ class SkillPackageTests(unittest.TestCase):
         for marker in (
             "Do not require the user to carry Agnir's implementation checklist",
             "## Install or initialize Agnir",
+            "### Merge existing AGENTS.md safely",
+            "preserve its existing unrelated content",
+            "equivalent Agnir locator already exists",
+            "do not guess and do not overwrite it",
+            "report the exact conflict to the Principal",
             "AGNIR.yaml",
             ".agnir/state.md",
             ".agnir/next-actions.md",
