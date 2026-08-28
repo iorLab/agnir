@@ -150,3 +150,15 @@
 - This is a documentation UX choice, not a Core `0.1` semantic rule, profile compatibility rule, or publication gate.
 - Future work MAY revisit same-page language navigation only after an explicit Project decision; until then, do not change the current bilingual navigation behavior as unfinished cleanup.
 - Durable evidence: `.agnir/evidence/2026-08-28-readme-language-navigation-deferred-checkpoint.md`.
+
+## 2026-08-28 — Agnir is distributed as an Agent Skill; user intent and Agent procedure are separate
+
+- Root `SKILL.md` is the canonical Agent-facing Agnir Skill entrypoint for this repository.
+- The user-facing installation request MUST remain an intent-level, short instruction; the reference README form is one sentence plus the canonical Agnir repository URL.
+- The detailed install / initialize / resume / checkpoint / repair checklist belongs to `SKILL.md`, not to the user's prompt.
+- `SKILL.md` MUST be self-contained enough for an Agent that locates this repository from the user's short request to apply the current Agnir procedure safely.
+- After installation, the target Project MUST persist its own activation route (`AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → durable memory); normal future Project work does not depend on reopening the Skill repository or replaying the installation conversation.
+- Target `AGENTS.md` remains locator-only; target README owns the canonical Project activation instructions.
+- Skill packaging is an Agent-facing distribution/operation surface outside Agnir Core. Core `0.1` remains Agent-, Skill-, platform-, repository-, and execution-surface-neutral.
+- This decision **supersedes** the earlier Quick Start bullets that suggested the user-facing existing-Project or initialization path should contain the detailed Agnir procedure. Existing initialized Projects require no recurring Agnir prompt; new Projects receive one short user intent and the Skill supplies the procedure.
+- Conformance MUST prevent the internal installation checklist from drifting back into the user-facing README Quick Start and MUST require root `SKILL.md` to retain the complete Agent procedure.
