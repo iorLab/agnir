@@ -97,3 +97,11 @@
 - Exact external PPMP v2 migration validation remains separately unmet unless a qualifying historical Project is found.
 - Release criteria MUST state explicitly whether exact external PPMP v2 evidence is required or whether a clearly classified PPMP v2 conformance fixture plus real older-predecessor migration evidence is sufficient.
 - Migration validation MUST compare material Project knowledge, not only locator/file presence. The Svif audit's temporary loss of the durable `installable-plugin` product target is a concrete example of a migration regression that structural checks alone would miss.
+
+## 2026-08-28 — README repository structure tree
+
+- The README repository explanation uses a **plain-text tree**, not a third Mermaid architecture diagram and not a second abstract repository-map visualization.
+- The tree MUST follow the actual active repository closely enough to show where protocol definitions, profiles, schemas, conformance, Project continuity, and predecessor history live, while remaining selective rather than exhaustive.
+- Each documented directory or key file SHOULD include a short responsibility explanation directly in the tree.
+- If a documented directory is added, removed, moved, or materially changes responsibility, `README.md` and `README.zh-CN.md` MUST update the affected tree in the same change set.
+- Self-hosting conformance checks enforce the presence of the explanatory tree and key anchors without byte-for-byte locking the full presentation.
