@@ -60,18 +60,40 @@ Agnir 并不执行流程中间的 Project 工作。它负责让工作前后的 c
 
 `main` 实现 Agnir Core `0.1` development line。已发布的前身 PPMP v2.0.0 / Persistent Project Memory / Sandminni 保留在 `legacy/ppmp-v2.0.0`，不会被静默改名成 Agnir。
 
-当前结构：
+## 仓库结构
+
+下面这棵树就是仓库的实用导航。它重点解释“协议定义在哪里、具体 profile 在哪里、conformance 怎么验证、这个 Project 自己的连续性状态在哪里”，不会穷举每一个测试或 evidence 文件。
 
 ```text
-AGNIR.yaml                     # repository/filesystem discovery anchor
-.agnir/                        # 本 Project 的 authoritative colocated continuity
-spec/AGNIR_CORE.md             # Core 0.1 working specification
-spec/AGNIR_DISCOVERY.md        # cold-start discovery contract
-spec/MIGRATION_PPMP_V2.md      # predecessor migration rules
-profiles/REPOSITORY_FILESYSTEM.md
-schemas/agnir-manifest.schema.json
-conformance/                   # executable conformance pressure
-history/PREDECESSOR.md         # predecessor lineage locator
+agnir/
+├── spec/                              # 协议层定义；这里不绑定具体存储或执行环境
+│   ├── AGNIR_CORE.md                  # Core 0.1：durable continuity 的核心语义和 invariants
+│   ├── AGNIR_DISCOVERY.md             # cold start、Locator Chain、Project identity 和 failure semantics
+│   └── MIGRATION_PPMP_V2.md           # predecessor → Agnir 的显式迁移要求
+│
+├── profiles/                          # Core 之外的具体 discovery / storage realization
+│   └── REPOSITORY_FILESYSTEM.md       # 当前 repository-filesystem/0.1 profile
+├── schemas/                           # 具体 profile artifact 的机器可读 serialization
+│   └── agnir-manifest.schema.json     # 当前 AGNIR.yaml manifest 的 JSON Schema
+│
+├── conformance/                       # 用可执行测试给 Core / profile 施加一致性压力
+│   ├── check_agnir_0_1.py             # self-hosting cold start + active repository 结构检查
+│   ├── *_reference.py                 # 仅用于 conformance 的可执行参考模型，不是 production implementation
+│   └── test_*.py                      # failure、backend、authorization、isolation、boundary 等 fixtures
+│
+├── .agnir/                            # 这个 Agnir Project 自己的 canonical durable continuity
+│   ├── state.md                       # 当前 Project 状态
+│   ├── next-actions.md                # 下次恢复时继续做什么
+│   ├── decisions.md                   # 已确定的协议 / 项目决策及理由
+│   └── evidence/                      # checkpoint 与 conformance evidence
+│
+├── history/                           # 前身 lineage；只作历史，不属于 active protocol structure
+│   └── PREDECESSOR.md                 # 指向 PPMP / Persistent Project Memory / Sandminni 前身历史
+├── .github/workflows/                 # CI：运行 self-hosting 与完整 conformance
+├── AGNIR.yaml                         # 本仓库的 repository-filesystem discovery anchor；不是 Core 的普遍要求
+├── README.md                          # 英文项目入口
+├── README.zh-CN.md                    # 简体中文项目入口
+└── VERSION                            # 当前 Agnir development version
 ```
 
 前身版本中的 implementation/backend/adapter/site/template material 不再留在 active `main`，需要时从 legacy branch 查看。
@@ -84,11 +106,13 @@ Fresh Executor 只拿到 authorized Project Entry Point 时，也必须能够找
 
 ## 与 Svif 的关系
 
-Svif 是位于 `iorLab/svif` 的独立 **Project orchestration product**。当前 Svif 通过 Agnir adapter，把 Agnir 作为首个 Continuity Provider；但 Agnir 不依赖 Svif，也可以被其他产品或 Executor 独立使用。Svif 的 execution、delivery、provider、authority 等产品语义不属于 Agnir Core。
+Svif 是位于 `iorLab/svif` 的独立 **Project orchestration product**。当前 Svif 通过 Agnir adapter，把 Agnir 作为首个 Continuity Provider；但 Agnir 不依赖 Svif，也可以被其他产品或 Executor 独立使用。Svif 的 execution、delivery、provider、authority、distribution 等产品语义不属于 Agnir Core。
 
 ## 文档同步规则
 
 `README.md` 与 `README.zh-CN.md` 是并行维护的项目入口。当 Agnir 的 layer model、discovery path、durable-memory semantics、Project boundary 或 continuity flow 发生变化时，**同一个 change set 必须同步更新两种语言 README 中受影响的架构图/流程图**。这些图表示当前架构与运行逻辑。
+
+纯文本的**仓库结构树**也遵守同一条维护规则：只要已经展示的目录被新增、删除、移动，或者职责发生变化，同一个 change set 必须同步更新中英文 README 中受影响的树。它的作用是帮助读者快速理解仓库，而不是穷举所有文件，所以应始终保持简洁。
 
 中文版图表还有一条额外规则：**每个节点必须优先说明“这是什么、在 Agnir 中负责什么”，英文术语仅作为括注或正式标识保留；中文读者不应先理解英文术语才能读懂图。**
 
