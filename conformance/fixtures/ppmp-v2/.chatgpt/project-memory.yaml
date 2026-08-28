@@ -1,0 +1,29 @@
+ppmp:
+  version: 2.0.0
+
+implementation:
+  name: persistent-project-memory
+
+backend:
+  name: repository
+
+adapter:
+  name: chatgpt
+
+project:
+  name: PPMP
+  primary_type: generic
+  profiles:
+    - generic
+
+memory:
+  root: docs/project-memory
+  state: PROJECT_STATE.md
+  next_steps: NEXT_STEPS.md
+  decisions: DECISIONS.md
+  checkpoints: sessions
+
+policy:
+  checkpoint: event-driven
+  session_logs: meaningful-only
+  raw_transcripts: false
