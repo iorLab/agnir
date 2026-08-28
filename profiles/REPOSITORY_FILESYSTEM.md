@@ -4,7 +4,7 @@
 
 This profile applies when the authorized Project Entry Point is a filesystem-style Project root, including a repository checkout/worktree, synced directory, hosted workspace filesystem, or equivalent hierarchical substrate.
 
-This profile is not Agnir Core. It does not make filesystems, repositories, Git, GitHub, AI agents, or any one agent-instruction filename universal Agnir requirements.
+This profile is not Agnir Core. It does not make filesystems, repositories, Git, GitHub, AI agents, Agent Skills, or any one agent-instruction filename universal Agnir requirements.
 
 ## 1. Discovery anchor
 
@@ -49,6 +49,12 @@ The reference activation contract is:
 
 Once this route has been installed, a user SHOULD NOT need to repeat an Agnir bootstrap prompt for normal future work. An execution surface that does not automatically inspect Project instruction files may require one-time configuration to honor `AGENTS.md` / Project documentation; that execution-surface behavior is outside Agnir Core.
 
+### Reference Agent Skill packaging
+
+This reference repository publishes root `SKILL.md` as the Agent-facing procedure for applying this initialization contract. The user-facing request MAY remain a short intent statement such as “install and initialize Agnir”; the detailed procedural checklist belongs to the Skill, not to the user's prompt.
+
+`SKILL.md` is a distribution/operation surface. It does not redefine this profile or Agnir Core, and another implementation MAY expose the same profile semantics through a different Agent Skill or non-Agent installer. After initialization, normal target-Project activation proceeds through the target Project's durable `AGENTS.md` → README → `AGNIR.yaml` route and does not depend on reopening the Skill repository.
+
 This activation convention is profile-level guidance for Agent-operable repository Projects. Non-Agent Executors that are directly given the applicable profile implementation may begin at `AGNIR.yaml` as described by Core cold-start semantics.
 
 ## 3. Reference serialization
@@ -79,7 +85,8 @@ A relative locator that traverses filesystem indirection outside the selected Pr
 - `agnir.version` is the Core major.minor line as a string.
 - `agnir.discovery_profile` is `<profile-name>/<major.minor>`.
 - This profile requires `repository-filesystem/0.1`.
-- A breaking change to the discovery anchor, required serialization, relative-locator interpretation, selected-root authority semantics, or the stable activation route for Agent-operable Projects requires a new profile compatibility line after publication.
+- A breaking change to the discovery anchor, required serialization, relative-locator interpretation, selected-root authority semantics, or stable activation route for Agent-operable Projects requires a new profile compatibility line after publication.
+- A change only to the reference Skill's wording, packaging, or implementation procedure does not by itself change profile compatibility if the same profile contract remains satisfied.
 - `extensions` keys use `<owner>/<name>` namespaces.
 - `agnir/*` extension namespaces are reserved for Agnir-defined extensions.
 - Extensions MUST NOT redefine Core fields while claiming the same Core version.
