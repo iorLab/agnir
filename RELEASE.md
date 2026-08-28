@@ -45,6 +45,7 @@ The `0.1.0` release includes:
 - `repository-filesystem/0.1` profile and manifest schema;
 - root `SKILL.md` Agent Skill packaging with YAML frontmatter and complete operational procedure;
 - one-line user-facing installation UX separated from the Agent-facing procedure;
+- non-destructive existing-`AGENTS.md` merge semantics: preserve Project-owned instructions, add only the minimal Agnir locator, stay idempotent, and surface material conflicts instead of silently overwriting them;
 - Agent-operable repository initialization with durable activation via `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml`;
 - prompt-free fresh-Agent activation pressure proving that an initialized Project does not depend on the initialization conversation;
 - self-hosting cold-start validation;
@@ -71,11 +72,13 @@ A publication commit is ready when all of the following hold:
 2. `AGNIR.yaml`, schema, Core spec, discovery spec, profile, README files, Skill package, and conformance baseline agree on the Core/profile compatibility lines;
 3. root `SKILL.md` has valid Agent Skill frontmatter and owns the detailed install / initialize / resume / checkpoint / repair procedure;
 4. both READMEs expose the short user-facing install prompt, point Agents to `SKILL.md`, and do not duplicate the Agent installation checklist in Quick Start;
-5. root `AGENTS.md` points to the canonical README `Agnir Project Instructions` section, and that section contains the durable activation instructions required by the repository/filesystem profile;
-6. Agent activation conformance proves Project root → `AGENTS.md` → README instruction → `AGNIR.yaml` → durable memory without relying on a repeated user bootstrap prompt;
-7. active protocol/profile files contain no dependency on retired predecessor branch refs or predecessor bootstrap layouts;
-8. the full self-hosting and executable conformance suite passes on the publication commit;
-9. `main` is the only live branch and historical branch tips remain indexed under `history/`;
-10. known limitations are stated without being represented as proven.
+5. the Skill/profile contract preserves pre-existing target `AGENTS.md` instructions, keeps the Agnir addition locator-only and idempotent, and blocks on a material instruction conflict rather than deleting or overriding Project-owned rules;
+6. root `AGENTS.md` points to the canonical README `Agnir Project Instructions` section, and that section contains the durable activation instructions required by the repository/filesystem profile;
+7. Agent activation conformance proves Project root → `AGENTS.md` → README instruction → `AGNIR.yaml` → durable memory without relying on a repeated user bootstrap prompt;
+8. executable merge pressure proves existing `AGENTS.md` content is preserved and an explicit contradictory instruction fails before merge;
+9. active protocol/profile files contain no dependency on retired predecessor branch refs or predecessor bootstrap layouts;
+10. the full self-hosting and executable conformance suite passes on the publication commit;
+11. `main` is the only live branch and historical branch tips remain indexed under `history/`;
+12. known limitations are stated without being represented as proven.
 
 Tagging `v0.1.0` or creating a GitHub Release is a separate publication action.
