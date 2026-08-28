@@ -16,6 +16,8 @@ AGNIR.yaml
 
 An Executor entering a Project root under this profile MUST inspect that anchor before relying on predecessor-private context or hidden environment knowledge.
 
+A filesystem indirection used as the authorized Project Entry Point (for example a symlink that resolves to one selected Project root) MAY be canonicalized before discovery, provided authority still selects exactly one Project root. The indirection does not authorize unrelated parent, child, sibling, or external memory.
+
 ## 2. Reference serialization
 
 The profile uses YAML compatible with `schemas/agnir-manifest.schema.json`.
@@ -36,6 +38,8 @@ memory:
 ```
 
 Relative locators resolve from the Project root. Absolute filesystem paths SHOULD be avoided unless the Project intentionally accepts that portability constraint.
+
+A relative locator that traverses filesystem indirection outside the selected Project root MUST NOT be treated as an implicitly authorized external Locator Chain merely because the target is readable. External memory requires an explicit durable authorized binding/Locator Chain.
 
 ## 3. Profile and extension versioning
 
@@ -75,6 +79,8 @@ extensions:
 
 This extension is profile/backend metadata, not Core identity. A non-default authoritative ref MUST be durably discoverable; a fresh Executor cannot be expected to remember it from a prior session.
 
+A Git worktree is a valid filesystem-style Project root when the selected worktree contains the authoritative top-level `AGNIR.yaml` and its declared continuity locators resolve for that worktree. Agnir discovery MUST NOT depend on `.git` being a directory rather than Git's worktree metadata file.
+
 ## 7. Discovery order
 
 1. resolve the selected Project root;
@@ -96,4 +102,6 @@ A migration-capable implementation MAY recognize `.chatgpt/project-memory.yaml` 
 
 A profile conformance case SHOULD begin with only the Project root and profile implementation. It MUST prove discovery of `AGNIR.yaml`, version and identity validation, resolution of Current State and Next Actions, recovery of at least one material durable fact, and correct failure for at least one broken-locator case.
 
-The active reference conformance suite additionally pressure-tests explicit `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, and pre-root-selection `AMBIGUOUS` semantics, plus isolation between explicitly selected nested Project roots.
+The active reference conformance suite additionally pressure-tests explicit `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, and pre-root-selection `AMBIGUOUS` semantics, isolation between explicitly selected nested Project roots, a symlinked Project Entry Point, rejection of relative-locator symlink escape without an explicit external binding, and Git worktree cold start.
+
+Real mount-boundary behavior remains an environment-dependent pressure case. It MUST NOT be claimed proven by simulating a mount with an ordinary directory.
