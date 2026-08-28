@@ -16,7 +16,7 @@
 
 ## Legacy rule
 
-Legacy branches and predecessor documents are historical lineage only. They are not active Core semantics, conformance requirements, compatibility obligations, or release gates. `spec/MIGRATION_PPMP_V2.md` is optional migration guidance for consumers that explicitly choose to migrate old data; greenfield Agnir implementations do not need it.
+Legacy branches and predecessor documents are historical lineage only. They are not active Core semantics, conformance requirements, compatibility obligations, or release gates. Optional migration guidance lives under `history/MIGRATION_PPMP_V2.md`, outside active `spec/`, for consumers that explicitly choose to migrate old data; greenfield Agnir implementations do not need it.
 
 ## Completed conformance/documentation baseline
 
@@ -29,4 +29,5 @@ Legacy branches and predecessor documents are historical lineage only. They are 
 - English and Simplified Chinese READMEs contain synchronized Architecture / Continuity diagrams plus compact annotated repository trees.
 - `REPOSITORY_TREE.md` provides the complete tracked file-level repository map with responsibility annotations.
 - Self-hosting conformance enforces the documentation baseline without byte-for-byte prose locking.
+- `spec/` now contains only current Agnir protocol material; PPMP migration guidance has been moved to `history/` and is forbidden from returning as active spec.
 - Pre-checkpoint repository-documentation head `0ca0982a6807acd4af3bf945601f85a5882b88bc` passed conformance run `33146757923`.
