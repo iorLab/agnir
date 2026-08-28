@@ -15,6 +15,7 @@ from repository_filesystem_reference import (
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "schemas" / "agnir-manifest.schema.json"
 SELF_PROJECT_ID = "urn:agnir:project:agnir-core"
+REPOSITORY_VERSION = "0.1.0-rc.1"
 
 
 def fail(message: str) -> None:
@@ -42,6 +43,7 @@ def require_readme_repository_tree(path: str, heading: str) -> None:
         "├── .agnir/",
         "├── history/",
         "REPOSITORY_TREE.md",
+        "RELEASE.md",
     ):
         if marker not in text:
             fail(f"{path} missing required repository-structure marker: {marker}")
@@ -72,11 +74,13 @@ def require_full_repository_tree() -> None:
         "history/",
         "PREDECESSOR.md",
         "MIGRATION_PPMP_V2.md",
+        "BRANCH_ARCHIVE.md",
         ".github/",
         "conformance.yml",
         "AGNIR.yaml",
         "README.zh-CN.md",
         "REPOSITORY_TREE.md",
+        "RELEASE.md",
         "VERSION",
     ):
         if marker not in text:
@@ -106,15 +110,34 @@ def main() -> None:
     if snapshot.version != CORE_VERSION or snapshot.profile != PROFILE:
         fail("self-hosted discovery returned an unexpected Core/profile line")
 
+    repository_version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    if repository_version != REPOSITORY_VERSION:
+        fail(f"expected repository release version {REPOSITORY_VERSION}, got {repository_version}")
+
+    manifest_text = (ROOT / "AGNIR.yaml").read_text(encoding="utf-8")
+    if "predecessor_ref:" in manifest_text:
+        fail("active AGNIR.yaml must not depend on a retired predecessor branch ref")
+
+    profile_text = (ROOT / "profiles" / "REPOSITORY_FILESYSTEM.md").read_text(encoding="utf-8")
+    if ".chatgpt/project-memory.yaml" in profile_text:
+        fail("active repository/filesystem profile must not define predecessor bootstrap fallback")
+
+    release_text = (ROOT / "RELEASE.md").read_text(encoding="utf-8")
+    for marker in (REPOSITORY_VERSION, 'Core compatibility line:** `0.1`', 'repository-filesystem/0.1'):
+        if marker not in release_text:
+            fail(f"RELEASE.md missing release marker: {marker}")
+
     required_active = [
         "README.md",
         "README.zh-CN.md",
         "REPOSITORY_TREE.md",
+        "RELEASE.md",
         "spec/AGNIR_CORE.md",
         "spec/AGNIR_DISCOVERY.md",
         "profiles/REPOSITORY_FILESYSTEM.md",
         "history/PREDECESSOR.md",
         "history/MIGRATION_PPMP_V2.md",
+        "history/BRANCH_ARCHIVE.md",
         "conformance/core_reference.py",
         "conformance/repository_filesystem_reference.py",
         "conformance/test_repository_filesystem_failures.py",
@@ -164,7 +187,7 @@ def main() -> None:
             fail(f"predecessor or execution-surface-specific artifact remains active on main: {path}")
 
     print(
-        f"PASS: Agnir {snapshot.version} repository/filesystem cold-start structure "
+        f"PASS: Agnir {snapshot.version} / {snapshot.profile} repository release {repository_version} "
         f"for {snapshot.project_identity}"
     )
 
