@@ -49,12 +49,25 @@ agnir/                                                    # Agnir Core / profile
 │   ├── locator_chain_reference.py                        # substrate-neutral Locator Chain failure 参考模型
 │   ├── sqlite_backend_reference.py                       # durable SQLite-style non-repository backend 参考模型
 │   ├── workspace_registry_reference.py                   # locator-only multi-project workspace registry 参考模型
+│   ├── ppmp_v2_migration_reference.py                    # PPMP v2 → Agnir 0.1 conformance-only migration reference
+│   ├── fixtures/                                         # executable conformance fixtures
+│   │   └── ppmp-v2/                                      # exact PPMP v2 predecessor-format fixture
+│   │       ├── .chatgpt/
+│   │       │   └── project-memory.yaml                   # 与 canonical legacy/ppmp-v2.0.0 manifest 对齐的 PPMP 2.0.0 入口
+│   │       └── docs/
+│   │           └── project-memory/
+│   │               ├── PROJECT_STATE.md                  # material Current State preservation marker
+│   │               ├── NEXT_STEPS.md                     # material Next Actions preservation marker
+│   │               ├── DECISIONS.md                      # material Decisions preservation marker
+│   │               └── sessions/
+│   │                   └── 2026-08-27.md                 # predecessor checkpoint/evidence preservation marker
 │   ├── test_repository_filesystem_failures.py            # NOT_FOUND / UNRESOLVABLE / VERSION / MISMATCH / AMBIGUOUS 等失败测试
 │   ├── test_repository_filesystem_boundaries.py          # symlink escape、symlink entry point、真实 Git worktree 等边界测试
 │   ├── test_external_memory_authorization.py             # NOT_FOUND vs UNAUTHORIZED vs authorized-UNRESOLVABLE 测试
 │   ├── test_locator_chain_failures.py                    # CYCLE / STALE / INCONSISTENT 测试
 │   ├── test_sqlite_backend.py                            # 非 repository SQLite cold-start / checkpoint / fresh-resume 测试
-│   └── test_workspace_isolation.py                       # 多 Project 独立 authority 与 locator-only registry 隔离测试
+│   ├── test_workspace_isolation.py                       # 多 Project 独立 authority 与 locator-only registry 隔离测试
+│   └── test_ppmp_v2_migration.py                         # exact PPMP v2 migration、cold-start 与 v1/RPM 拒绝测试
 │
 ├── history/                                              # predecessor lineage；只作历史，不属于 active Core
 │   └── PREDECESSOR.md                                    # PPMP / Persistent Project Memory / Sandminni 前身历史定位
