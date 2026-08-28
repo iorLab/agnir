@@ -6,6 +6,9 @@ This conformance layer validates the stable Agnir Core `0.1` and `repository-fil
 
 The executable suite covers:
 
+- self-hosting Agent activation from Project root through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml`;
+- prompt-free fresh-Agent activation for an initialized Agent-operable repository Project;
+- failure when the Agent activation locator is missing, does not reference the canonical README instruction, or forks an incomplete/duplicated activation contract;
 - self-hosting `AGNIR.yaml` cold start;
 - Core/profile version agreement and Project identity validation;
 - required Current State / Next Actions resolution and optional Decisions / Evidence resolution;
@@ -19,6 +22,8 @@ The executable suite covers:
 - real Git worktree cold start;
 - bilingual README/documentation structure and exhaustive repository-tree maintenance.
 
+The Agent activation fixture is a repository/filesystem profile pressure case, not an Agnir Core requirement that every Executor be an AI Agent or that every backend use `AGENTS.md` / `README.md`.
+
 The reference models under `conformance/` are executable pressure tools, not promoted production implementations or mandatory backends.
 
 ## Known unproven boundary
@@ -27,4 +32,6 @@ A real mount-boundary case remains unproven because the current environment does
 
 ## Release interpretation
 
-Passing this suite establishes the reference repository's stable `0.1.0` conformance baseline for Core `0.1` and profile `repository-filesystem/0.1`. It does not imply that every possible backend, adapter, filesystem, authorization system, or execution environment has been tested.
+Passing this suite establishes the reference repository's stable `0.1.0` conformance baseline for Core `0.1` and profile `repository-filesystem/0.1`. For an Agent-operable repository initialized under the reference convention, it additionally proves that the activation route itself is durable and that future Agents do not require the original initialization prompt or conversation.
+
+It does not imply that every possible backend, adapter, filesystem, authorization system, Agent instruction mechanism, or execution environment has been tested.
