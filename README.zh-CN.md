@@ -96,6 +96,8 @@ agnir/
 └── VERSION                            # 当前 Agnir development version
 ```
 
+需要查看当前 `main` 的**完整文件级展开**（包含每个 tracked 文件及其职责说明），请看 **[目录树.md](目录树.md)**。
+
 前身版本中的 implementation/backend/adapter/site/template material 不再留在 active `main`，需要时从 legacy branch 查看。
 
 ## Core memory semantics
@@ -112,7 +114,7 @@ Svif 是位于 `iorLab/svif` 的独立 **Project orchestration product**。当�
 
 `README.md` 与 `README.zh-CN.md` 是并行维护的项目入口。当 Agnir 的 layer model、discovery path、durable-memory semantics、Project boundary 或 continuity flow 发生变化时，**同一个 change set 必须同步更新两种语言 README 中受影响的架构图/流程图**。这些图表示当前架构与运行逻辑。
 
-纯文本的**仓库结构树**也遵守同一条维护规则：只要已经展示的目录被新增、删除、移动，或者职责发生变化，同一个 change set 必须同步更新中英文 README 中受影响的树。它的作用是帮助读者快速理解仓库，而不是穷举所有文件，所以应始终保持简洁。
+纯文本的**仓库结构树**继续作为快速导航，保持简洁；完整文件级结构则由 **`目录树.md`** 维护。只要 tracked 文件被新增、删除、移动，或者职责发生实质变化，必须在同一个 change set 中更新 `目录树.md`；如果变化也影响 README 的简略树，则中英文 README 必须同时更新。
 
 中文版图表还有一条额外规则：**每个节点必须优先说明“这是什么、在 Agnir 中负责什么”，英文术语仅作为括注或正式标识保留；中文读者不应先理解英文术语才能读懂图。**
 
