@@ -58,25 +58,24 @@ Agnir 并不执行流程中间的 Project 工作。它负责让工作前后的 c
 
 ## 当前版本线
 
-`main` 实现 Agnir Core `0.1` development line。已发布的前身 PPMP v2.0.0 / Persistent Project Memory / Sandminni 保留在 `legacy/ppmp-v2.0.0`，不会被静默改名成 Agnir。
+`main` 实现 Agnir Core `0.1` development line。前身 PPMP v2.0.0 / Persistent Project Memory / Sandminni 保留在 `legacy/ppmp-v2.0.0`，**只作为历史**；它不会被静默改名成 Agnir，也不会成为当前版本的兼容义务或发布门槛。
 
 ## 仓库结构
 
-下面这棵树就是仓库的实用导航。它重点解释“协议定义在哪里、具体 profile 在哪里、conformance 怎么验证、这个 Project 自己的连续性状态在哪里”，不会穷举每一个测试或 evidence 文件。
+下面这棵树就是仓库的实用导航。它重点解释“当前协议定义在哪里、具体 profile 在哪里、conformance 怎么验证、这个 Project 自己的连续性状态在哪里，以及历史材料放在哪里”，不会穷举每一个测试或 evidence 文件。
 
 ```text
 agnir/
-├── spec/                              # 协议层定义；这里不绑定具体存储或执行环境
+├── spec/                              # 当前有效的协议层定义；这里不绑定具体存储或执行环境
 │   ├── AGNIR_CORE.md                  # Core 0.1：durable continuity 的核心语义和 invariants
-│   ├── AGNIR_DISCOVERY.md             # cold start、Locator Chain、Project identity 和 failure semantics
-│   └── MIGRATION_PPMP_V2.md           # predecessor → Agnir 的显式迁移要求
+│   └── AGNIR_DISCOVERY.md             # cold start、Locator Chain、Project identity 和 failure semantics
 │
 ├── profiles/                          # Core 之外的具体 discovery / storage realization
 │   └── REPOSITORY_FILESYSTEM.md       # 当前 repository-filesystem/0.1 profile
 ├── schemas/                           # 具体 profile artifact 的机器可读 serialization
 │   └── agnir-manifest.schema.json     # 当前 AGNIR.yaml manifest 的 JSON Schema
 │
-├── conformance/                       # 用可执行测试给 Core / profile 施加一致性压力
+├── conformance/                       # 用可执行测试给当前 Core / profile 施加一致性压力
 │   ├── check_agnir_0_1.py             # self-hosting cold start + active repository 结构检查
 │   ├── *_reference.py                 # 仅用于 conformance 的可执行参考模型，不是 production implementation
 │   └── test_*.py                      # failure、backend、authorization、isolation、boundary 等 fixtures
@@ -87,8 +86,9 @@ agnir/
 │   ├── decisions.md                   # 已确定的协议 / 项目决策及理由
 │   └── evidence/                      # checkpoint 与 conformance evidence
 │
-├── history/                           # 前身 lineage；只作历史，不属于 active protocol structure
-│   └── PREDECESSOR.md                 # 指向 PPMP / Persistent Project Memory / Sandminni 前身历史
+├── history/                           # 前身 lineage 与可选历史指南；不属于 active Core
+│   ├── PREDECESSOR.md                 # PPMP / Persistent Project Memory / Sandminni 前身历史
+│   └── MIGRATION_PPMP_V2.md           # 可选旧数据迁移指南；不是 Core / conformance / release gate
 ├── .github/workflows/                 # CI：运行 self-hosting 与完整 conformance
 ├── AGNIR.yaml                         # 本仓库的 repository-filesystem discovery anchor；不是 Core 的普遍要求
 ├── README.md                          # 英文项目入口
@@ -98,7 +98,7 @@ agnir/
 
 需要查看当前 `main` 的**完整文件级展开**（包含每个 tracked 文件及其职责说明），请看 **[完整目录树：REPOSITORY_TREE.md](REPOSITORY_TREE.md)**。
 
-前身版本中的 implementation/backend/adapter/site/template material 不再留在 active `main`，需要时从 legacy branch 查看。
+前身版本中的 implementation/backend/adapter/site/template material 不再留在 active `main`，需要时从 legacy branch 查看。`history/` 只是历史/参考资料，不定义当前 Agnir Core 行为。
 
 ## Core memory semantics
 
