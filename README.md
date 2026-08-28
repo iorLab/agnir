@@ -58,7 +58,19 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 ## Active line
 
-`main` implements the Agnir Core `0.1` development line. Predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni history is referenced by immutable commit SHA and the documents under `history/`; no live legacy branch is part of repository governance.
+`main` is now the Agnir `0.1.0-rc.1` release-candidate line. The protocol compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.
+
+Predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni history is referenced by immutable commit SHA and the documents under `history/`; no live legacy branch or predecessor bootstrap path is part of the active protocol contract.
+
+## Release status
+
+The current repository is **release-candidate ready**. `RELEASE.md` defines the frozen version model, release scope, publication gate, and known limitation. Creating a Git tag or GitHub Release remains a separate publication action.
+
+Version layers are intentionally distinct:
+
+- Core compatibility: `0.1`;
+- repository/filesystem profile compatibility: `repository-filesystem/0.1`;
+- repository release: `0.1.0-rc.1`.
 
 ## Repository Structure
 
@@ -76,7 +88,7 @@ agnir/
 │   └── agnir-manifest.schema.json     # JSON Schema for this profile's AGNIR.yaml manifest
 │
 ├── conformance/                       # executable pressure proving the current Core/profile semantics
-│   ├── check_agnir_0_1.py             # self-hosting cold-start and active-repository structure check
+│   ├── check_agnir_0_1.py             # self-hosting cold-start and release-readiness structure check
 │   ├── *_reference.py                 # conformance-only executable reference models; not production implementations
 │   └── test_*.py                      # failure, backend, authorization, isolation, and boundary fixtures
 │
@@ -92,9 +104,10 @@ agnir/
 │   └── BRANCH_ARCHIVE.md              # retired branch names and final tip SHAs; main-only governance record
 ├── .github/workflows/                 # CI that runs self-hosting and executable conformance
 ├── AGNIR.yaml                         # this repository's repository-filesystem discovery anchor; not a universal Core requirement
+├── RELEASE.md                         # release-candidate version model, scope, known limitation, and publication gate
 ├── README.md                          # English project entry point
 ├── README.zh-CN.md                    # Simplified Chinese project entry point
-└── VERSION                            # current Agnir development version
+└── VERSION                            # repository SemVer; currently 0.1.0-rc.1
 ```
 
 For the fully expanded file-by-file map of the current `main`, including responsibility annotations for every tracked file, see **[REPOSITORY_TREE.md](REPOSITORY_TREE.md)**.
@@ -126,6 +139,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-The suite currently covers repository/filesystem cold start and explicit discovery failures, a durable non-repository SQLite realization, external-memory authorization without plaintext credentials, multi-project isolation with locator-only registry metadata, generic Locator Chain cycle/stale/inconsistency semantics, symlink boundary behavior, and real Git worktree cold start.
+The release-candidate suite covers repository/filesystem cold start and explicit discovery failures, a durable non-repository SQLite realization, external-memory authorization without plaintext credentials, multi-project isolation with locator-only registry metadata, generic Locator Chain cycle/stale/inconsistency semantics, symlink boundary behavior, and real Git worktree cold start.
 
-A real mount-boundary case remains intentionally unproven until a mount-capable test environment is available; Agnir does not treat an ordinary directory as fake mount evidence.
+A real mount-boundary case remains intentionally unproven until a mount-capable test environment is available; Agnir does not treat an ordinary directory as fake mount evidence. This limitation is documented in `RELEASE.md` and is not represented as proven coverage.
