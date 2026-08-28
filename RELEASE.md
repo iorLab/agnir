@@ -1,6 +1,6 @@
-# Agnir 0.1 Release Candidate
+# Agnir 0.1.0 Release
 
-**Repository version:** `0.1.0-rc.1`
+**Repository version:** `0.1.0`
 
 **Core compatibility line:** `0.1`
 
@@ -8,7 +8,7 @@
 
 ## Status
 
-The current `main` is release-candidate ready. This repository has not been tagged or published as a GitHub Release by this document alone.
+The current `main` is release-ready for Agnir `0.1.0`. This document does not itself create a Git tag or GitHub Release.
 
 Agnir `0.1` is a greenfield protocol line. Historical PPMP / PPM / Sandminni material under `history/` is lineage/reference material only and is not part of the active compatibility contract, conformance baseline, or release gate.
 
@@ -24,9 +24,9 @@ Breaking Core semantics require a new Core compatibility line. Breaking reposito
 
 ## Release scope
 
-The `0.1.0-rc.1` candidate includes:
+The `0.1.0` release includes:
 
-- normative Core continuity semantics;
+- stable normative Core continuity semantics;
 - normative discovery and failure semantics;
 - `repository-filesystem/0.1` profile and manifest schema;
 - self-hosting cold-start validation;
@@ -47,11 +47,11 @@ Real mount-boundary behavior remains explicitly unproven because the current con
 
 A publication commit is ready when all of the following hold:
 
-1. `VERSION` is the intended release version;
+1. `VERSION` is `0.1.0`;
 2. `AGNIR.yaml`, schema, Core spec, discovery spec, profile, README files, and conformance baseline agree on the Core/profile compatibility lines;
 3. active protocol/profile files contain no dependency on retired predecessor branch refs or predecessor bootstrap layouts;
 4. the full self-hosting and executable conformance suite passes on the publication commit;
 5. `main` is the only live branch and historical branch tips remain indexed under `history/`;
 6. known limitations are stated without being represented as proven.
 
-Tagging or creating a GitHub Release is a separate publication action.
+Tagging `v0.1.0` or creating a GitHub Release is a separate publication action.
