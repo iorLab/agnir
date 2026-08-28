@@ -9,9 +9,12 @@
 
 ## Documentation maintenance rule
 
-Architecture/continuity changes are incomplete until the corresponding diagrams and affected explanatory sections in both `README.md` and `README.zh-CN.md` are updated in the same change set. Localized diagrams are comprehension-first rather than literal translations.
+- Architecture/continuity changes are incomplete until the corresponding diagrams and affected explanatory sections in both `README.md` and `README.zh-CN.md` are updated in the same change set.
+- Localized diagrams are comprehension-first rather than literal translations.
+- README repository trees remain compact navigation views.
+- `REPOSITORY_TREE.md` is the exhaustive file-level repository map. Tracked file additions/removals/moves or material responsibility changes must update it in the same change set; if the compact tree is affected, both README language versions must update together.
 
-## Completed conformance baseline
+## Completed conformance/documentation baseline
 
 - Every named Agnir Core `0.1` discovery failure class has executable pressure.
 - Durable non-repository SQLite continuity proves storage neutrality, including checkpoint and fresh-resolver resume.
@@ -19,6 +22,7 @@ Architecture/continuity changes are incomplete until the corresponding diagrams 
 - Multi-project workspace isolation proves locator-only registry metadata cannot become shared Project truth.
 - Generic Locator Chain fixtures cover cycle, stale, and materially inconsistent continuity.
 - Repository/filesystem boundary tests prove symlinked Project Entry Point behavior, reject implicit symlink escape, and cold-start a real Git worktree.
-- Corrected filesystem-boundary run `33144199717`, job `98761550583`, succeeded; durable evidence is `.agnir/evidence/2026-08-28-filesystem-boundaries.md`.
-- Full documented conformance head `16adfdf69156eda5393f94495f250dccdff27117` passed run `33144314449`.
-- Migration audit evidence is recorded in `.agnir/evidence/2026-08-28-conformance-and-migration-audit-checkpoint.md`.
+- English and Simplified Chinese READMEs contain synchronized Architecture / Continuity diagrams plus compact annotated repository trees.
+- `REPOSITORY_TREE.md` now provides the complete tracked file-level repository map with responsibility annotations.
+- Self-hosting conformance enforces the documentation baseline without byte-for-byte prose locking.
+- Pre-checkpoint repository-documentation head `0ca0982a6807acd4af3bf945601f85a5882b88bc` passed conformance run `33146757923`.
