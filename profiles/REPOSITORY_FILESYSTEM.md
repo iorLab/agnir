@@ -47,6 +47,21 @@ The reference activation contract is:
 5. Initialization MUST create or validate `AGNIR.yaml`, resolve all required memory locators, create any required initial durable memory, and persist at least one initialization Evidence object when Evidence is declared.
 6. Initialization MUST finish with a fresh activation test from the Project root: resolve `AGENTS.md`, follow the README Agnir section, resolve `AGNIR.yaml`, load required continuity, and verify the Project no longer depends on the initialization conversation or initializing Agent's private memory.
 
+### Existing AGENTS.md merge and conflict behavior
+
+An Agent-operable initializer applying this profile MUST treat pre-existing root `AGENTS.md` as Project-owned instruction content, not as a replaceable Agnir template.
+
+The reference behavior is:
+
+1. If root `AGENTS.md` is absent, create a minimal Agent instruction file containing only the Agnir locator needed to reach README `Agnir Project Instructions`.
+2. If root `AGENTS.md` exists, preserve existing unrelated instructions and merge only the minimal Agnir locator. Existing instructions MUST NOT be deleted, reordered, normalized, summarized, or silently rewritten merely to install Agnir.
+3. If an equivalent Agnir locator already exists, the operation MUST be idempotent and MUST NOT create another copy.
+4. Agnir content in `AGENTS.md` MUST remain locator-only. Current State, Next Actions, Decisions, Evidence, checkpoint procedure, and the full activation contract belong in their canonical Agnir locations, not as a duplicate `AGENTS.md` rule set.
+5. The initializer MUST inspect for material conflicts before writing. A material conflict includes an existing instruction that directly contradicts the required activation route—for example, forbidding the Agent from reading/following `README.md`, forbidding `AGNIR.yaml`, disabling Agnir, or declaring a competing canonical Agnir instruction location.
+6. If resolving a material conflict would require deleting, overriding, or reinterpreting an existing Project instruction, the initializer MUST NOT guess or silently overwrite it. It MUST surface the conflict to the Principal and MUST NOT report Agnir installation complete until the conflict is explicitly resolved and fresh activation passes.
+
+Initializers SHOULD detect such conflicts in preflight before making any Agnir installation writes. A partially written setup does not satisfy this profile's completed initialization contract.
+
 Once this route has been installed, a user SHOULD NOT need to repeat an Agnir bootstrap prompt for normal future work. An execution surface that does not automatically inspect Project instruction files may require one-time configuration to honor `AGENTS.md` / Project documentation; that execution-surface behavior is outside Agnir Core.
 
 ### Reference Agent Skill packaging
@@ -146,6 +161,8 @@ Implementations MUST NOT silently search arbitrary sibling repositories, user ho
 A profile conformance case SHOULD begin with only the Project root and profile implementation. It MUST prove discovery of `AGNIR.yaml`, version and identity validation, resolution of Current State and Next Actions, recovery of at least one material durable fact, and correct failure for at least one broken-locator case.
 
 An Agent-operable initialization conformance case additionally MUST prove that a fresh Agent activation context can start with only the Project root, resolve `AGENTS.md` to the canonical README Agnir instruction, and then complete Agnir discovery without any repeated user bootstrap prompt or prior conversation.
+
+The reference Agent-initialization conformance also pressure-tests non-destructive merge into an existing `AGENTS.md`, minimal creation when it is absent, idempotent existing locator behavior, and explicit failure on a contradictory existing Agent instruction rather than silent overwrite.
 
 The active reference conformance suite additionally pressure-tests explicit `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, and pre-root-selection `AMBIGUOUS` semantics, isolation between explicitly selected nested Project roots, a symlinked Project Entry Point, rejection of relative-locator symlink escape without an explicit external binding, and Git worktree cold start.
 
