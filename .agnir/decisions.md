@@ -105,3 +105,38 @@
 - Each documented directory or key file SHOULD include a short responsibility explanation directly in the tree.
 - If a documented directory is added, removed, moved, or materially changes responsibility, `README.md` and `README.zh-CN.md` MUST update the affected tree in the same change set.
 - Self-hosting conformance checks enforce the presence of the explanatory tree and key anchors without byte-for-byte locking the full presentation.
+
+## 2026-08-28 — Exhaustive repository tree companion
+
+- README repository trees remain compact navigation views rather than exhaustive listings.
+- `REPOSITORY_TREE.md` is the canonical exhaustive file-level repository map for documentation purposes.
+- Every tracked file SHOULD appear in `REPOSITORY_TREE.md` with a concise responsibility annotation or clear inherited directory responsibility.
+- Tracked file additions, removals, moves, or material responsibility changes MUST update `REPOSITORY_TREE.md` in the same change set.
+- If the change affects the compact README tree, both `README.md` and `README.zh-CN.md` MUST update together.
+- `REPOSITORY_TREE.md` is explanatory documentation, not a second protocol specification; normative semantics remain in `spec/`, profiles, schemas, and canonical decisions/state.
+
+## 2026-08-28 — PPMP v2 release-evidence requirement resolved
+
+- A second independently hosted historical PPMP v2 Project is **not** a hard Agnir Core `0.1` release prerequisite.
+- The availability of such a Project is accidental historical evidence, not a semantic property of Agnir or PPMP migration.
+- Release-quality predecessor pressure requires instead:
+  1. preservation of the canonical exact PPMP v2 predecessor boundary on `legacy/ppmp-v2.0.0`;
+  2. an explicit reproducible exact PPMP v2 -> Agnir migration conformance fixture derived from that canonical predecessor semantics;
+  3. at least one real non-fixture predecessor migration audit that compares material durable knowledge;
+  4. clear separation of predecessor evidence, migration evidence, and target Agnir conformance.
+- `iorLab/svif@legacy/zerolocal-v0.1` satisfies the real non-fixture migration-pressure requirement but remains classified as v1/RPM-era, not PPMP v2.
+- `conformance/fixtures/ppmp-v2/`, `conformance/ppmp_v2_migration_reference.py`, and `conformance/test_ppmp_v2_migration.py` satisfy the reproducible exact PPMP v2 fixture requirement.
+- The fixture MUST reject v1/RPM serialization rather than silently promote it to PPMP v2.
+- First full conformance including the exact migration fixture passed run `33150059494`, job `98779726021`.
+
+## 2026-08-28 — Core 0.1 compatibility and RC freeze
+
+- Core compatibility, profile compatibility, and repository release version are separate version layers.
+- Discovery Records for this line serialize Core compatibility as `agnir.version: "0.1"`.
+- The current repository/filesystem profile remains `repository-filesystem/0.1`.
+- Repository/distribution releases use SemVer; the first stable release for this Core line is `0.1.0`.
+- `VERSION` is advanced to `0.1.0-rc.1`; this is a release-candidate label for the same Core `"0.1"` compatibility semantics, not a new Core line.
+- Consumers such as Svif SHOULD bind to Core compatibility `"0.1"`, not to a particular repository patch or RC build.
+- Patch releases in `0.1.x` MAY clarify prose, fix implementations, add conforming fixtures/profiles, or strengthen conformance, but MUST NOT redefine existing Core `0.1` field meaning, required durable-memory semantics, discovery failure semantics, or compatibility claims.
+- A deliberate breaking Core semantic change MUST move to a new compatibility line such as `"0.2"`, with repository release beginning at `0.2.0`.
+- Entering `0.1.0-rc.1` does **not** authorize creation of a public GitHub Release or tag; publication remains a separate explicit external effect.
