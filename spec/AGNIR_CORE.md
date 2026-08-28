@@ -169,6 +169,8 @@ Profiles MAY define serialization-specific extension namespaces. Extensions MUST
 
 ## 14. Relationship to Svif
 
-Svif is an independent consuming protocol. Svif MAY require a compatible Agnir Core line but MUST NOT require a particular Agnir implementation, backend, adapter, or repository layout when another implementation satisfies the same Core contract.
+Svif is an independent **Project orchestration product**. Its stable kernel depends on a Continuity Provider interface; Agnir Core `0.1` is the founding/current continuity protocol used by Svif through an Agnir integration.
 
-Dependency direction is `Svif -> Agnir`.
+Svif MAY require a compatible Agnir Core line but MUST NOT require a particular Agnir implementation, backend, adapter, or repository layout when another implementation satisfies the same Core contract.
+
+Agnir remains independently useful without Svif. Svif execution, delivery, provider, authority, and product-distribution semantics remain outside Agnir Core.
