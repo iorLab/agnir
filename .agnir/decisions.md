@@ -40,4 +40,5 @@
 - Both language versions MUST contain a current **Architecture Diagram** and **Continuity Flow** diagram using Mermaid.
 - Changes to Agnir's layer model, discovery path, durable-memory semantics, Project boundary, or continuity flow MUST update the affected diagrams in both README language versions in the same change set.
 - Localized READMEs explain the same canonical protocol architecture; translation may adapt prose but must not create a second semantic model.
+- Localized diagrams are **comprehension-first, not literal translations**. In `README.zh-CN.md`, each node SHOULD explain in Chinese what the object is and what responsibility it has in Agnir; English terms remain secondary annotation or exact identifiers only.
 - Conformance checks enforce diagram/locale structure rather than byte-for-byte prose.
