@@ -29,53 +29,38 @@ The canonical projects relevant to this workspace are now `iorLab/agnir` and `io
 
 The repository has parallel English and Simplified Chinese entry points: `README.md` and `README.zh-CN.md`.
 
-Both READMEs MUST contain:
-
-- an **Architecture Diagram** showing Agnir Core, discovery/profile realization, and durable continuity components;
-- a **Continuity Flow** diagram showing cold-start discovery, load, external Project work, checkpoint, and future resume.
-
-Changes to the layer model, discovery path, durable-memory semantics, Project boundary, or continuity flow require the affected diagrams in both language versions to be updated in the same change set. Conformance checks enforce the README/diagram structure without freezing prose wording.
-
-Localized diagrams are **comprehension-first, not literal translations**. In the Simplified Chinese README, important diagram nodes must be understandable to a Chinese reader without requiring prior knowledge of the English technical term: nodes should explain both the role and its responsibility, while English terminology may remain as a secondary label.
+Both READMEs MUST contain an **Architecture Diagram** and **Continuity Flow** diagram. Architecture/continuity changes require both languages to be updated in the same change set. Localized diagrams are comprehension-first, not literal translations.
 
 ## Conformance coverage
 
-The active conformance suite now pressure-tests Agnir Core across multiple realizations rather than only the self-hosting repository/filesystem path.
+The active suite now pressure-tests every named Core discovery failure class through executable conformance references while keeping substrate-specific fixtures outside Core.
 
 ### Repository/filesystem
 
-`conformance/repository_filesystem_reference.py` is a conformance-only executable reference. Proven cases include:
-
-- missing top-level Discovery Record -> `AGNIR_DISCOVERY_NOT_FOUND`;
-- broken required locator -> `AGNIR_DISCOVERY_UNRESOLVABLE`;
-- unsupported Core version -> `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`;
-- Project identity mismatch -> `AGNIR_DISCOVERY_PROJECT_MISMATCH`;
-- multiple unresolved candidate roots before authority selection -> `AGNIR_DISCOVERY_AMBIGUOUS`;
-- nested parent/child Projects remain isolated once one root is explicitly selected.
-
-Selected-root rule: after a Project Entry Point has selected a repository/filesystem root, a mismatch at that root is not repaired by searching a parent or child Project.
+`conformance/repository_filesystem_reference.py` proves self-hosting cold start plus `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, pre-root-selection `AMBIGUOUS`, and nested selected-root isolation.
 
 ### Non-repository storage neutrality
 
-`conformance/sqlite_backend_reference.py` and `conformance/test_sqlite_backend.py` provide a durable database-style path whose Project Entry Point is a database locator plus durable project key. It does not use `AGNIR.yaml`, `.agnir/`, repository-root discovery, Git, or GitHub, and proves cold start, checkpoint, and fresh-resolver resume.
+`conformance/sqlite_backend_reference.py` proves durable continuity without `AGNIR.yaml`, `.agnir/`, repository-root discovery, Git, or GitHub, including checkpoint and fresh-resolver resume.
 
 ### External-memory authorization
 
-`conformance/external_memory_reference.py` and its tests distinguish:
+`conformance/external_memory_reference.py` distinguishes missing external Discovery Record (`NOT_FOUND`), known-but-denied authorization reference (`UNAUTHORIZED`), and authorized-but-missing required memory (`UNRESOLVABLE`) without transporting plaintext credentials.
 
-- absent external Discovery Record -> `AGNIR_DISCOVERY_NOT_FOUND`;
-- known record but denied authorization reference -> `AGNIR_DISCOVERY_UNAUTHORIZED`;
-- authorization granted but required memory missing -> `AGNIR_DISCOVERY_UNRESOLVABLE`.
+### Multi-project isolation
 
-Only authorization references are durable; plaintext credential values remain outside Agnir continuity.
+`conformance/workspace_registry_reference.py` proves a locator-only shared workspace registry can locate independent Projects without becoming a second continuity root. Checkpointing one Project leaves another Project and the registry unchanged.
 
-### Multi-project workspace isolation
+### Generic Locator Chain failures
 
-`conformance/workspace_registry_reference.py` and `conformance/test_workspace_isolation.py` prove that a shared workspace registry may locate multiple independent Projects without becoming a shared truth root.
+`conformance/locator_chain_reference.py` now proves:
 
-The registry carries only locator metadata. Alpha and Beta use separate durable continuity stores. Checkpointing Alpha leaves Beta's State / Next Actions / Decisions / Evidence unchanged and leaves the registry file byte-for-byte unchanged. Registry entries that embed continuity payloads are rejected as `AGNIR_DISCOVERY_INCONSISTENT`.
+- a revisited locator -> `AGNIR_DISCOVERY_CYCLE`;
+- a known superseded/non-authoritative record -> `AGNIR_DISCOVERY_STALE`;
+- contradictory chain structure or mixed checkpoint generations -> `AGNIR_DISCOVERY_INCONSISTENT`;
+- a coherent multi-hop chain with matching checkpoint generation resolves successfully.
 
-The registry is convenience metadata only and is not a required Agnir Core component.
+This closes the executable baseline across the complete discovery failure vocabulary named by Core `0.1`.
 
 ## Branch governance
 
@@ -85,16 +70,14 @@ The registry is convenience metadata only and is not a required Agnir Core compo
 
 ## Current implementation status
 
-The active Agnir main line contains normative Core/Discovery/Profile documents, self-hosting repository/filesystem cold-start conformance, executable discovery-failure fixtures, a durable non-repository SQLite fixture, external-memory authorization pressure, and multi-project workspace isolation.
+The active Agnir main line contains normative Core/Discovery/Profile documents and conformance pressure across repository/filesystem, non-repository SQLite, external-memory authorization, multi-project isolation, and generic Locator Chain failure semantics.
 
-The former ChatGPT-specific bootstrap shim has been removed from active `main`. Cold start for this repository now begins directly at `AGNIR.yaml`, matching the repository/filesystem profile and keeping execution-surface integration outside the Project structure.
-
-This is a working `0.1` development contract, not yet a final release.
+This is still a working `0.1` development contract, not yet a final release.
 
 ## Known gaps
 
-- Cycle, stale-locator, and materially inconsistent-memory failure fixtures remain to be added.
-- Symlink, mount, and worktree boundary edge cases need dedicated repository/filesystem tests.
+- Symlink and Git worktree boundary cases are not yet executable in the repository/filesystem suite.
+- A real mount-boundary case is not yet proven and should not be simulated as if it were a real mount.
 - PPMP v2 -> Agnir external migration validation remains incomplete.
 - Release compatibility notation consumed by Svif remains provisional until Agnir `0.1` release criteria are complete.
 
@@ -104,6 +87,7 @@ This is a working `0.1` development contract, not yet a final release.
 - Negative discovery fixtures: `.agnir/evidence/2026-08-28-negative-discovery-fixtures.md`, run `33143495855` success.
 - Non-repository SQLite backend: `.agnir/evidence/2026-08-28-sqlite-non-repository-backend.md`, run `33143655399` success.
 - External-memory authorization: `.agnir/evidence/2026-08-28-external-memory-authorization.md`, run `33143771320` success.
-- Multi-project workspace isolation: `.agnir/evidence/2026-08-28-multi-project-workspace-isolation.md`, run `33143930233`, job `98760729955`, success.
+- Multi-project workspace isolation: `.agnir/evidence/2026-08-28-multi-project-workspace-isolation.md`, run `33143930233` success.
+- Locator Chain failures: `.agnir/evidence/2026-08-28-locator-chain-failures.md`, run `33144042330`, job `98761070215`, success.
 
-Resume point: add explicit `CYCLE`, `STALE`, and materially `INCONSISTENT` discovery fixtures, then filesystem boundary edge cases and migration validation.
+Resume point: add real repository/filesystem symlink and Git worktree boundary pressure, then external PPMP v2 migration validation and release-compatibility freeze.
