@@ -6,6 +6,61 @@ Agnir 是一个 **由 Project 自己拥有的 durable continuity protocol（持�
 
 它的目标是：即使 Executor、执行环境、存储实现或对话上下文发生变化，一个 Project 仍然可以被安全地恢复和继续。Durable continuity 属于 Project，而不属于某个 execution surface。
 
+## 30 秒快速开始
+
+如果你的 Agent 能读写 Project 目录，`repository-filesystem/0.1` **不要求**安装后台服务、注册账号、接入 GitHub、使用 ChatGPT，也不要求某一种特定执行环境。
+
+### 已经有 Agnir 的 Project
+
+把 Project 根目录交给 Agent，然后直接粘贴这段提示词：
+
+```text
+对这个 Project 使用 Agnir。把 Project 根目录视为已授权的 Project Entry Point。开始工作前，先读取顶层 AGNIR.yaml，并按照其中声明的 memory locators 加载 Current State 和 Next Actions；需要时再加载 Decisions 和 Evidence。持久化的 Agnir memory 优先于聊天记录或 Agent 私有记忆。当我说 checkpoint、保存进度、收尾或结束时，把发生变化的关键状态、后续动作、决策和必要证据写回 Agnir 声明的位置，然后再次从同一个 Project Entry Point 验证可以 cold-start。
+```
+
+只要 Agent 已经有文件读写能力，这就足够开始使用一个已经配置好的 Agnir Project。
+
+### 给新 Project 初始化 Agnir
+
+也可以直接让 Agent 帮你创建最小配置：
+
+```text
+为这个 Project 初始化 Agnir Core 0.1，使用 repository-filesystem/0.1。创建顶层 AGNIR.yaml，设置一个持久的 project.identity，并分别指向 .agnir/state.md、.agnir/next-actions.md、.agnir/decisions.md 和 .agnir/evidence/。创建这些文件和目录，写入最小初始内容，并至少创建一个会被版本控制保存的 initialization evidence 文件。然后从 Project 根目录重新 cold-start：读取 AGNIR.yaml，确认所有 locator 都能解析，并从此使用 Agnir 做 checkpoint / resume。
+```
+
+最小的 `AGNIR.yaml` 可以这样写：
+
+```yaml
+agnir:
+  version: "0.1"
+  discovery_profile: "repository-filesystem/0.1"
+
+project:
+  identity: "urn:example:project:my-project"
+
+memory:
+  state: ".agnir/state.md"
+  next_actions: ".agnir/next-actions.md"
+  decisions: ".agnir/decisions.md"
+  evidence: ".agnir/evidence/"
+
+policy:
+  checkpoint: event-driven
+```
+
+配套目录只需要：
+
+```text
+.agnir/
+├── state.md              # 当前可靠状态：以后继续工作必须知道什么
+├── next-actions.md       # 尚未完成的工作、优先级和 blocker
+├── decisions.md          # 已接受的持久决策及必要理由
+└── evidence/
+    └── initialization.md # 第一份会被持久保存的初始化 evidence
+```
+
+一开始内容可以很少。真正重要的是：**未来 Executor 安全继续工作所必需的事实，必须存在于 Agnir 声明的 durable memory 中，而不能只存在于某一次聊天或某个 Agent 的私有上下文里。**
+
 ## 架构图（Architecture Diagram）
 
 ```mermaid
@@ -128,7 +183,7 @@ Svif 是位于 `iorLab/svif` 的独立 **Project orchestration product**。当�
 
 `README.md` 与 `README.zh-CN.md` 是并行维护的项目入口。当 Agnir 的 layer model、discovery path、durable-memory semantics、Project boundary 或 continuity flow 发生变化时，**同一个 change set 必须同步更新两种语言 README 中受影响的架构图/流程图**。这些图表示当前架构与运行逻辑。
 
-纯文本的**仓库结构树**继续作为快速导航，保持简洁；完整文件级结构则由 **`REPOSITORY_TREE.md`** 维护。只要 tracked 文件被新增、删除、移动，或者职责发生实质变化，必须在同一个 change set 中更新 `REPOSITORY_TREE.md`；如果变化也影响 README 的简略树，则中英文 README 必须同时更新。
+README 必须把可操作的快速开始放在架构材料之前，让第一次来到仓库的用户无需先理解协议内部结构就能让 Agent 开始使用 Agnir。纯文本的**仓库结构树**继续作为快速导航，保持简洁；完整文件级结构则由 **`REPOSITORY_TREE.md`** 维护。只要 tracked 文件被新增、删除、移动，或者职责发生实质变化，必须在同一个 change set 中更新 `REPOSITORY_TREE.md`；如果变化也影响 README 的简略树，则中英文 README 必须同时更新。
 
 中文版图表还有一条额外规则：**每个节点必须优先说明“这是什么、在 Agnir 中负责什么”，英文术语仅作为括注或正式标识保留；中文读者不应先理解英文术语才能读懂图。**
 
