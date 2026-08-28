@@ -70,3 +70,13 @@
 - Durable external Discovery Records carry authorization **references** only. Plaintext tokens, passwords, secret values, or credential payloads remain outside Agnir durable memory and outside the conformance fixture.
 - `conformance/external_memory_reference.py` and `conformance/test_external_memory_authorization.py` are conformance-only artifacts, not a normative external-memory profile.
 - Conformance run `33143771320`, job `98760235526`, succeeded with the external-memory authorization tests included; durable evidence is `.agnir/evidence/2026-08-28-external-memory-authorization.md`.
+
+## 2026-08-28 — Multi-project workspace isolation
+
+- A workspace registry MAY provide locator-only convenience metadata mapping Project identity to Project Entry Point, but it MUST NOT become canonical Current State, Next Actions, Decisions, Evidence, or any other mutable continuity root.
+- `conformance/workspace_registry_reference.py` deliberately accepts only locator metadata (`backend`, `database`, `project_key`) for its current fixture and rejects embedded continuity as `AGNIR_DISCOVERY_INCONSISTENT`.
+- Multiple Projects discovered through one workspace registry remain independently authoritative through their own Agnir continuity stores.
+- Checkpointing one Project MUST NOT mutate another Project's continuity or the locator-only workspace registry.
+- A registry locator does not bypass Project identity validation; cross-Project resolution still fails as `AGNIR_DISCOVERY_PROJECT_MISMATCH`.
+- The workspace registry is conformance-only convenience metadata, not an Agnir Core-required registry design.
+- Conformance run `33143930233`, job `98760729955`, succeeded with the multi-project isolation tests included; durable evidence is `.agnir/evidence/2026-08-28-multi-project-workspace-isolation.md`.
