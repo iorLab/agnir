@@ -1,15 +1,30 @@
-# Agnir 0.1 Conformance — initial executable layer
+# Agnir 0.1 Conformance
 
-This main-line conformance layer validates the repository/filesystem discovery contract without relabeling PPMP v2 evidence.
+This conformance layer validates the active Agnir Core `0.1` and `repository-filesystem/0.1` contracts without importing predecessor protocol requirements.
 
-Current executable checks cover:
+## Release-candidate baseline
 
-- top-level `AGNIR.yaml` exists;
-- declared Core and discovery-profile versions are `0.1` and `repository-filesystem/0.1`;
-- Project identity is present;
-- state and next-actions locators resolve from the Project root;
-- decisions/evidence locators resolve when non-null;
-- authoritative memory contains a material Agnir fact recoverable without predecessor chat context;
-- the reference JSON Schema is syntactically valid and declares the same required version/profile constants.
+The executable suite covers:
 
-This is a structural cold-start fixture, not complete release conformance. Negative failure fixtures, non-repository persistence, external-memory authorization, nested-boundary cases, and multi-project isolation remain required before release-quality neutrality claims.
+- self-hosting `AGNIR.yaml` cold start;
+- Core/profile version agreement and Project identity validation;
+- required Current State / Next Actions resolution and optional Decisions / Evidence resolution;
+- all named discovery failure classes: `NOT_FOUND`, `AMBIGUOUS`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, `UNRESOLVABLE`, `UNAUTHORIZED`, `CYCLE`, `STALE`, and `INCONSISTENT`;
+- selected-root isolation for nested Projects;
+- durable non-repository SQLite continuity, checkpoint, and fresh-resolver resume;
+- external-memory authorization semantics using authorization references rather than plaintext secrets;
+- multi-project workspace isolation with locator-only registry metadata;
+- substrate-neutral Locator Chain cycle, stale, and material inconsistency pressure;
+- symlinked Project Entry Point behavior and rejection of implicit symlink escape;
+- real Git worktree cold start;
+- bilingual README/documentation structure and exhaustive repository-tree maintenance.
+
+The reference models under `conformance/` are executable pressure tools, not promoted production implementations or mandatory backends.
+
+## Known unproven boundary
+
+A real mount-boundary case remains unproven because the current environment does not provide a real mount-capable fixture. An ordinary directory MUST NOT be represented as equivalent mount evidence.
+
+## Release interpretation
+
+Passing this suite establishes the current repository's release-candidate conformance baseline for the published Core/profile compatibility lines. It does not imply that every possible backend, adapter, filesystem, authorization system, or execution environment has been tested.
