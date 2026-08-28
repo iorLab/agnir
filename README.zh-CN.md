@@ -58,7 +58,7 @@ Agnir 并不执行流程中间的 Project 工作。它负责让工作前后的 c
 
 ## 当前版本线
 
-`main` 实现 Agnir Core `0.1` development line。前身 PPMP v2.0.0 / Persistent Project Memory / Sandminni 保留在 `legacy/ppmp-v2.0.0`，**只作为历史**；它不会被静默改名成 Agnir，也不会成为当前版本的兼容义务或发布门槛。
+`main` 实现 Agnir Core `0.1` development line。前身 PPMP v2.0.0 / Persistent Project Memory / Sandminni 只通过 immutable commit SHA 和 `history/` 文档保留历史定位；仓库治理不再保留 live legacy branch。
 
 ## 仓库结构
 
@@ -87,8 +87,9 @@ agnir/
 │   └── evidence/                      # checkpoint 与 conformance evidence
 │
 ├── history/                           # 前身 lineage 与可选历史指南；不属于 active Core
-│   ├── PREDECESSOR.md                 # PPMP / Persistent Project Memory / Sandminni 前身历史
-│   └── MIGRATION_PPMP_V2.md           # 可选旧数据迁移指南；不是 Core / conformance / release gate
+│   ├── PREDECESSOR.md                 # 用 immutable commit SHA 定位 PPMP / PPM / Sandminni 前身历史
+│   ├── MIGRATION_PPMP_V2.md           # 可选旧数据迁移指南；不是 Core / conformance / release gate
+│   └── BRANCH_ARCHIVE.md              # 已删除分支名称及最终 tip SHA；记录 main-only 分支治理
 ├── .github/workflows/                 # CI：运行 self-hosting 与完整 conformance
 ├── AGNIR.yaml                         # 本仓库的 repository-filesystem discovery anchor；不是 Core 的普遍要求
 ├── README.md                          # 英文项目入口
@@ -98,7 +99,7 @@ agnir/
 
 需要查看当前 `main` 的**完整文件级展开**（包含每个 tracked 文件及其职责说明），请看 **[完整目录树：REPOSITORY_TREE.md](REPOSITORY_TREE.md)**。
 
-前身版本中的 implementation/backend/adapter/site/template material 不再留在 active `main`，需要时从 legacy branch 查看。`history/` 只是历史/参考资料，不定义当前 Agnir Core 行为。
+前身版本中的 implementation/backend/adapter/site/template material 不再留在 active `main`；需要时通过 `history/` 和 Git history 回溯。`history/` 只是历史/参考资料，不定义当前 Agnir Core 行为。
 
 ## Core memory semantics
 
