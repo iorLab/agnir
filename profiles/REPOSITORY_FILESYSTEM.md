@@ -14,7 +14,7 @@ The Project root MUST contain top-level:
 AGNIR.yaml
 ```
 
-An Executor entering a Project root under this profile MUST inspect that anchor before relying on predecessor-private context or hidden environment knowledge.
+An Executor entering a Project root under this profile MUST inspect that anchor before relying on private execution context or hidden environment knowledge.
 
 A filesystem indirection used as the authorized Project Entry Point (for example a symlink that resolves to one selected Project root) MAY be canonicalized before discovery, provided authority still selects exactly one Project root. The indirection does not authorize unrelated parent, child, sibling, or external memory.
 
@@ -46,6 +46,7 @@ A relative locator that traverses filesystem indirection outside the selected Pr
 - `agnir.version` is the Core major.minor line as a string.
 - `agnir.discovery_profile` is `<profile-name>/<major.minor>`.
 - This profile requires `repository-filesystem/0.1`.
+- A breaking change to the discovery anchor, required serialization, relative-locator interpretation, or selected-root authority semantics requires a new profile compatibility line.
 - `extensions` keys use `<owner>/<name>` namespaces.
 - `agnir/*` extension namespaces are reserved for Agnir-defined extensions.
 - Extensions MUST NOT redefine Core fields while claiming the same Core version.
@@ -92,13 +93,9 @@ A Git worktree is a valid filesystem-style Project root when the selected worktr
 7. load Decisions/Evidence as required;
 8. surface Agnir discovery failure semantics.
 
-Implementations MUST NOT silently search arbitrary sibling repositories, user home directories, or old chat logs when `AGNIR.yaml` is missing.
+Implementations MUST NOT silently search arbitrary sibling repositories, user home directories, old chat logs, or historical predecessor layouts when `AGNIR.yaml` is missing.
 
-## 8. Migration fallback
-
-A migration-capable implementation MAY recognize `.chatgpt/project-memory.yaml` only in explicit predecessor/migration mode. Once `AGNIR.yaml` is authoritative, predecessor bootstrap files MUST NOT form a second divergent mutable state root.
-
-## 9. Conformance
+## 8. Conformance
 
 A profile conformance case SHOULD begin with only the Project root and profile implementation. It MUST prove discovery of `AGNIR.yaml`, version and identity validation, resolution of Current State and Next Actions, recovery of at least one material durable fact, and correct failure for at least one broken-locator case.
 
