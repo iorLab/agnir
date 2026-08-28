@@ -1,6 +1,6 @@
 # Agnir Current State
 
-Agnir is the active project/protocol identity on `main`. PPMP v2.0.0 / Persistent Project Memory / Sandminni is predecessor history preserved on `legacy/ppmp-v2.0.0`.
+Agnir is the active project/protocol identity on `main`. Repository branch governance is main-only: PPMP/PPM/Sandminni and other predecessor history are preserved by commit SHA and `history/`, not by live legacy branch refs.
 
 ## Active contract line
 
@@ -9,7 +9,7 @@ Agnir is the active project/protocol identity on `main`. PPMP v2.0.0 / Persisten
 - Authoritative discovery anchor for this Project: top-level `AGNIR.yaml`.
 - Authoritative mutable continuity state: `.agnir/` as resolved by `AGNIR.yaml`.
 - No execution-surface-specific bootstrap file is part of the active Project structure.
-- Active `spec/` now contains only current Agnir protocol material: `AGNIR_CORE.md` and `AGNIR_DISCOVERY.md`.
+- Active `spec/` contains only current Agnir protocol material: `AGNIR_CORE.md` and `AGNIR_DISCOVERY.md`.
 
 ## Core invariants
 
@@ -50,9 +50,9 @@ A Git worktree is a valid Project root when its own top-level `AGNIR.yaml` and d
 
 Real mount-boundary behavior remains unproven and must not be represented by a fake ordinary-directory test.
 
-## Legacy isolation boundary
+## Historical isolation boundary
 
-`legacy/ppmp-v2.0.0` and predecessor PPMP/PPM/Sandminni material are historical lineage only.
+PPMP/PPM/Sandminni and other retired branch material are historical lineage only, referenced through immutable commit SHAs in `history/PREDECESSOR.md` and `history/BRANCH_ARCHIVE.md`.
 
 They MUST NOT become:
 
@@ -62,7 +62,7 @@ They MUST NOT become:
 - compatibility obligations for new Agnir implementations;
 - reasons to reintroduce `.chatgpt/`, ChatGPT-specific adapters, predecessor repository structure, or legacy serialization into active `main`.
 
-Optional PPMP migration guidance now lives at `history/MIGRATION_PPMP_V2.md`, outside active `spec/`. It is historical/reference material for consumers that deliberately choose to migrate old PPMP data. It is not part of Core `0.1`, not a conformance requirement, and not a release gate for greenfield Agnir.
+Optional PPMP migration guidance lives at `history/MIGRATION_PPMP_V2.md`, outside active `spec/`. It is historical/reference material for consumers that deliberately choose to migrate old PPMP data. It is not part of Core `0.1`, not a conformance requirement, and not a release gate for greenfield Agnir.
 
 Current `main` is a greenfield protocol line. Historical material MAY inform design review, but a rule is active only when it is independently stated by current Agnir Core/profile decisions.
 
@@ -76,7 +76,6 @@ Resume in this order:
 2. **Run a final current-architecture consistency review** across Core, Discovery, repository-filesystem profile, schema, README, conformance, and Svif's Continuity Provider binding.
 3. Decide whether the resulting `0.1` line is ready for release-candidate/stable publication based on current architecture and conformance only.
 4. Keep real mount-boundary behavior explicitly unproven until a mount-capable environment exists; it is not to be faked as release evidence.
-5. Keep legacy branches unchanged as history only.
 
 This remains a working `0.1` development contract until the current-architecture release review is complete.
 
@@ -89,10 +88,10 @@ This remains a working `0.1` development contract until the current-architecture
 - Multi-project workspace isolation: `.agnir/evidence/2026-08-28-multi-project-workspace-isolation.md`, run `33143930233` success.
 - Locator Chain failures: `.agnir/evidence/2026-08-28-locator-chain-failures.md`, run `33144042330` success.
 - Filesystem boundaries: `.agnir/evidence/2026-08-28-filesystem-boundaries.md`; corrected run `33144199717` success.
-- Repository documentation baseline: pre-checkpoint head `0ca0982a6807acd4af3bf945601f85a5882b88bc`, conformance run `33146757923` success.
+- Retired branch tips: `history/BRANCH_ARCHIVE.md`.
 
 ## Branch governance
 
-- `main`: authoritative active Agnir development line.
-- `legacy/ppmp-v2.0.0`: immutable predecessor history only.
-- Incidental branch cleanup remains deferred until the new version is substantially complete.
+- `main` is the only long-lived branch and the only authoritative active Agnir development line.
+- All former legacy, website, release-pointer, feature, and temporary branch refs are retired after their final tip SHAs are recorded in `history/BRANCH_ARCHIVE.md`.
+- Historical recovery uses commit SHAs and Git history, not live branch refs.
