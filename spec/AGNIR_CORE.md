@@ -1,6 +1,6 @@
 # Agnir Core 0.1
 
-**Status:** Working normative specification on the active `0.1` line.
+**Status:** Release-candidate normative specification for the Core compatibility line `0.1`.
 
 ## 1. Purpose
 
@@ -159,11 +159,19 @@ A checkpoint SHOULD coherently reconcile Current State, Next Actions, Decisions,
 
 Checkpoint persistence is independent of deployment, CI, release, or any other consuming workflow.
 
-## 13. Versioning and extensions
+## 13. Versioning, compatibility, and extensions
 
-Agnir begins a new version namespace at Core `0.1`. PPMP v2.0.0 is predecessor evidence and MUST NOT be silently relabeled as Agnir.
+Agnir begins a new version namespace at Core `0.1`. Historical predecessor protocols are not part of the Agnir compatibility contract.
 
-Agnir Core version values are strings. The reference repository/filesystem profile uses `"0.1"` for the Core line and `<profile-name>/<major.minor>` for profile identifiers.
+Agnir distinguishes three version layers:
+
+1. **Core compatibility line** — Discovery Records use a string such as `"0.1"`. A breaking change to Core field meaning, required semantics, identity rules, or discovery invariants MUST move to a new Core line such as `"0.2"`.
+2. **Profile compatibility line** — concrete profiles use identifiers such as `repository-filesystem/0.1`. A breaking change to that profile's discovery anchor, required serialization, locator interpretation, or selected-root semantics MUST move to a new profile line.
+3. **Repository release version** — the reference specification/conformance repository uses SemVer such as `0.1.0` or `0.1.0-rc.1`. Repository patch releases MAY clarify text, add non-breaking tests, or fix reference tooling without changing the advertised Core/profile compatibility lines.
+
+The top-level `VERSION` file records the repository release version. It is not substituted for `agnir.version` in Discovery Records.
+
+Within Core `0.1`, clarifications and additional conformance pressure MUST NOT redefine already-published Core semantics while continuing to claim compatibility with `"0.1"`.
 
 Profiles MAY define serialization-specific extension namespaces. Extensions MUST NOT change Core field meaning while claiming the same Core version.
 
