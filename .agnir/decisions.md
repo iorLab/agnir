@@ -117,3 +117,17 @@
 - Legacy, website, feature, release-pointer, and temporary branch refs are deleted after their final tip SHAs are recorded in `history/BRANCH_ARCHIVE.md`.
 - Historical predecessor boundaries are referenced by immutable commit SHA and Git history rather than a live `legacy/*` branch.
 - No active Core semantic, conformance rule, release gate, or recovery path may require a retired branch ref.
+
+## 2026-08-28 — Stable Agnir 0.1.0 compatibility and release boundary
+
+- Agnir Core `0.1` is the stable initial Core compatibility line.
+- `repository-filesystem/0.1` is the stable initial repository/filesystem profile compatibility line.
+- Repository release SemVer is independent from those compatibility identifiers; the initial stable repository release is `0.1.0`.
+- Breaking Core field meaning, required continuity semantics, identity rules, or discovery invariants require a new Core compatibility line such as `0.2`.
+- Breaking repository/filesystem discovery-anchor, required serialization, locator interpretation, or selected-root authority semantics require a new profile compatibility line.
+- Repository `0.1.x` patch releases may clarify specification text, add non-breaking conformance pressure, or fix reference tooling, but MUST NOT redefine Core `0.1` or profile `repository-filesystem/0.1` semantics.
+- The active repository/filesystem profile has no predecessor bootstrap fallback; historical migration guidance remains outside active profile/spec semantics.
+- `AGNIR.yaml` contains no retired predecessor branch reference.
+- `RELEASE.md` is the publication contract and records the known unproven real-mount boundary.
+- Stable publication candidate `846d794384e24f4d0431bb72b0f1036c60503bdd` passed conformance run `33161463275`.
+- Agnir is release-ready; creating tag `v0.1.0` and/or a GitHub Release is a separate explicit publication action.
