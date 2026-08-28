@@ -58,7 +58,7 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 ## Active line
 
-`main` implements the Agnir Core `0.1` development line. The predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni line is preserved on `legacy/ppmp-v2.0.0` as history only and is not silently relabeled as Agnir or used as an active compatibility requirement.
+`main` implements the Agnir Core `0.1` development line. Predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni history is referenced by immutable commit SHA and the documents under `history/`; no live legacy branch is part of repository governance.
 
 ## Repository Structure
 
@@ -87,8 +87,9 @@ agnir/
 │   └── evidence/                      # checkpoint and conformance evidence records
 │
 ├── history/                           # predecessor lineage and optional historical guidance; not active Core
-│   ├── PREDECESSOR.md                 # PPMP / Persistent Project Memory / Sandminni lineage
-│   └── MIGRATION_PPMP_V2.md           # optional historical migration guide; not Core/conformance/release gate
+│   ├── PREDECESSOR.md                 # predecessor boundary referenced by immutable commit SHA
+│   ├── MIGRATION_PPMP_V2.md           # optional historical migration guide; not Core/conformance/release gate
+│   └── BRANCH_ARCHIVE.md              # retired branch names and final tip SHAs; main-only governance record
 ├── .github/workflows/                 # CI that runs self-hosting and executable conformance
 ├── AGNIR.yaml                         # this repository's repository-filesystem discovery anchor; not a universal Core requirement
 ├── README.md                          # English project entry point
@@ -98,7 +99,7 @@ agnir/
 
 For the fully expanded file-by-file map of the current `main`, including responsibility annotations for every tracked file, see **[REPOSITORY_TREE.md](REPOSITORY_TREE.md)**.
 
-Predecessor implementation/backend/adapter/site/template material is deliberately absent from active `main`; it remains available on the legacy branch. `history/` is archival/reference material and does not define current Agnir Core behavior.
+Predecessor implementation/backend/adapter/site/template material is deliberately absent from active `main`; historical material is recoverable through `history/` and Git history. `history/` is archival/reference material and does not define current Agnir Core behavior.
 
 ## Core memory semantics
 
