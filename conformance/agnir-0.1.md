@@ -1,8 +1,8 @@
 # Agnir 0.1 Conformance
 
-This conformance layer validates the active Agnir Core `0.1` and `repository-filesystem/0.1` contracts without importing predecessor protocol requirements.
+This conformance layer validates the stable Agnir Core `0.1` and `repository-filesystem/0.1` contracts without importing predecessor protocol requirements.
 
-## Release-candidate baseline
+## Stable baseline
 
 The executable suite covers:
 
@@ -27,4 +27,4 @@ A real mount-boundary case remains unproven because the current environment does
 
 ## Release interpretation
 
-Passing this suite establishes the current repository's release-candidate conformance baseline for the published Core/profile compatibility lines. It does not imply that every possible backend, adapter, filesystem, authorization system, or execution environment has been tested.
+Passing this suite establishes the reference repository's stable `0.1.0` conformance baseline for Core `0.1` and profile `repository-filesystem/0.1`. It does not imply that every possible backend, adapter, filesystem, authorization system, or execution environment has been tested.
