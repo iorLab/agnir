@@ -10,25 +10,25 @@ Agnir 是一个 **由 Project 自己拥有的 durable continuity protocol（持�
 
 ```mermaid
 flowchart TB
-    X[Consumer / Executor\nSvif 或其他工具] --> P[Authorized Project Entry Point]
-    P --> D[Discovery Profile / Adapter]
-    D --> R[Discovery Record]
+    X["使用 Agnir 的消费者 / Executor<br/>例如 Svif、其他 Agent 或工具"] --> P["授权的 Project 入口（Project Entry Point）<br/>告诉 Agnir：从这个 Project 边界开始查找连续性信息"]
+    P --> D["发现适配层（Discovery Profile / Adapter）<br/>根据当前环境找到并解析正确的发现记录"]
+    D --> R["发现记录（Discovery Record）<br/>声明 Agnir 版本、Project 身份以及持久记忆的位置"]
 
     subgraph C[Agnir Core 0.1]
-        V[Version + Project identity 校验]
-        M[Continuity semantics]
+        V["版本与 Project 身份校验<br/>防止读取不兼容版本或误把别的 Project 当成本 Project"]
+        M["连续性语义（Continuity Semantics）<br/>规定哪些 Project 事实必须能够被持久恢复"]
         V --> M
     end
 
     R --> V
-    M --> S[Current State]
-    M --> N[Next Actions]
-    M --> J[Decisions]
-    M --> E[Evidence / Checkpoints]
+    M --> S["当前状态（Current State）<br/>Project 现在处于什么状态"]
+    M --> N["后续动作（Next Actions）<br/>接下来最应该继续做什么"]
+    M --> J["决策记录（Decisions）<br/>已经确定了什么，以及为什么这样决定"]
+    M --> E["证据与检查点（Evidence / Checkpoints）<br/>哪些事实或结果已经有持久证据支持"]
 
-    D -. 当前 profile .-> Y[repository-filesystem/0.1]
-    Y --> A[AGNIR.yaml]
-    A --> F[Durable locators\n本仓库：.agnir/]
+    D -. "本仓库当前使用的发现方式" .-> Y["repository-filesystem/0.1<br/>从仓库 / 文件系统边界进行 cold start"]
+    Y --> A["AGNIR.yaml<br/>本 profile 的顶层发现入口<br/>声明 Project 身份和 memory locators"]
+    A --> F["持久记忆位置（Durable Locators）<br/>指向真正保存状态的地方<br/>本仓库当前为 .agnir/"]
 ```
 
 Agnir Core 定义 durable continuity 的语义和 discovery invariants；它**不要求** Git、GitHub、repository、ChatGPT 或任何特定 storage backend。Profiles/adapters 负责在具体 Project Entry Point 和存储环境中实现这些语义。
@@ -39,18 +39,18 @@ Agnir Core 定义 durable continuity 的语义和 discovery invariants；它**�
 
 ```mermaid
 flowchart TD
-    C[Cold start / 新 Executor] --> P[获得 authorized Project Entry Point]
-    P --> D[选择适用的 discovery profile]
-    D --> R[解析唯一的 Discovery Record]
-    R --> V{Version + Project identity 是否有效?}
-    V -- 否 --> F[显式暴露 discovery failure]
-    V -- 是 --> L[加载 Current State + Next Actions]
-    L --> Q[按需加载 Decisions / Evidence]
-    Q --> W[Executor 执行 Project 工作\n此工作不属于 Agnir Core]
-    W --> U[产生显式 continuity updates]
-    U --> K[Checkpoint durable truth + evidence]
-    K --> S[Durable continuity store]
-    S --> N[未来的 Executor / 环境]
+    C["一次新的 cold start<br/>新的 Executor / 新环境准备接手 Project"] --> P["获得授权的 Project 入口<br/>只从被允许的 Project 边界开始发现"]
+    P --> D["选择适合当前环境的发现方式<br/>例如 repository-filesystem/0.1"]
+    D --> R["解析唯一的 Discovery Record<br/>找到这个 Project 声明的 Agnir 配置"]
+    R --> V{"Agnir 版本和 Project 身份<br/>是否与当前 Project 一致且可支持？"}
+    V -- "否" --> F["显式返回 discovery failure<br/>不猜测、不静默改用其他 Project 或其他位置"]
+    V -- "是" --> L["加载当前状态和后续动作<br/>恢复 Project 现在在哪里、接下来做什么"]
+    L --> Q["按需要加载决策和证据<br/>恢复已有约束、理由和已验证事实"]
+    Q --> W["Executor 在 Agnir 之外执行真正的 Project 工作<br/>Agnir 只负责连续性，不负责替 Executor 做工作"]
+    W --> U["形成明确的连续性更新<br/>哪些状态、后续动作或决策发生了变化"]
+    U --> K["写入 checkpoint 和 evidence<br/>把新的可靠 Project truth 持久保存"]
+    K --> S["持久连续性存储<br/>可以是文件系统，也可以是其他兼容 backend"]
+    S --> N["未来的新 Executor / 新环境<br/>无需依赖当前对话，也能重新恢复 Project"]
     N --> P
 ```
 
@@ -89,6 +89,8 @@ Svif 是位于 `iorLab/svif` 的独立 **Project orchestration product**。当�
 ## 文档同步规则
 
 `README.md` 与 `README.zh-CN.md` 是并行维护的项目入口。当 Agnir 的 layer model、discovery path、durable-memory semantics、Project boundary 或 continuity flow 发生变化时，**同一个 change set 必须同步更新两种语言 README 中受影响的架构图/流程图**。这些图表示当前架构与运行逻辑。
+
+中文版图表还有一条额外规则：**每个节点必须优先说明“这是什么、在 Agnir 中负责什么”，英文术语仅作为括注或正式标识保留；中文读者不应先理解英文术语才能读懂图。**
 
 ## Conformance
 
