@@ -58,7 +58,19 @@ Agnir 并不执行流程中间的 Project 工作。它负责让工作前后的 c
 
 ## 当前版本线
 
-`main` 实现 Agnir Core `0.1` development line。前身 PPMP v2.0.0 / Persistent Project Memory / Sandminni 只通过 immutable commit SHA 和 `history/` 文档保留历史定位；仓库治理不再保留 live legacy branch。
+`main` 现在是 Agnir `0.1.0-rc.1` release-candidate 版本线。协议兼容标识仍然分别是 Core `0.1` 和 `repository-filesystem/0.1`；仓库本身的 SemVer 独立记录在 `VERSION`。
+
+PPMP v2.0.0 / Persistent Project Memory / Sandminni 等前身历史，只通过 immutable commit SHA 与 `history/` 文档保存。当前协议不依赖 live legacy branch，也不再定义 predecessor bootstrap fallback。
+
+## 发布状态
+
+当前仓库已经进入**可发布候选（release-candidate ready）**阶段。`RELEASE.md` 固定了版本模型、发布范围、发布门槛和已知限制。创建 Git tag 或 GitHub Release 仍然是单独的正式发布动作。
+
+三个版本层必须区分：
+
+- Core compatibility：`0.1`；
+- repository/filesystem profile compatibility：`repository-filesystem/0.1`；
+- repository release：`0.1.0-rc.1`。
 
 ## 仓库结构
 
@@ -76,7 +88,7 @@ agnir/
 │   └── agnir-manifest.schema.json     # 当前 AGNIR.yaml manifest 的 JSON Schema
 │
 ├── conformance/                       # 用可执行测试给当前 Core / profile 施加一致性压力
-│   ├── check_agnir_0_1.py             # self-hosting cold start + active repository 结构检查
+│   ├── check_agnir_0_1.py             # self-hosting cold start + release-readiness 结构检查
 │   ├── *_reference.py                 # 仅用于 conformance 的可执行参考模型，不是 production implementation
 │   └── test_*.py                      # failure、backend、authorization、isolation、boundary 等 fixtures
 │
@@ -92,9 +104,10 @@ agnir/
 │   └── BRANCH_ARCHIVE.md              # 已删除分支名称及最终 tip SHA；记录 main-only 分支治理
 ├── .github/workflows/                 # CI：运行 self-hosting 与完整 conformance
 ├── AGNIR.yaml                         # 本仓库的 repository-filesystem discovery anchor；不是 Core 的普遍要求
+├── RELEASE.md                         # release candidate 的版本模型、范围、已知限制与发布门槛
 ├── README.md                          # 英文项目入口
 ├── README.zh-CN.md                    # 简体中文项目入口
-└── VERSION                            # 当前 Agnir development version
+└── VERSION                            # 仓库 SemVer；当前 0.1.0-rc.1
 ```
 
 需要查看当前 `main` 的**完整文件级展开**（包含每个 tracked 文件及其职责说明），请看 **[完整目录树：REPOSITORY_TREE.md](REPOSITORY_TREE.md)**。
@@ -128,6 +141,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-当前测试覆盖：repository/filesystem cold start 与显式 discovery failures、持久化的非 repository SQLite realization、无明文凭据的 external-memory authorization、多 Project 的 locator-only workspace isolation、通用 Locator Chain 的 cycle / stale / inconsistency 语义、symlink 边界行为，以及真实 Git worktree cold start。
+当前 release-candidate 测试覆盖：repository/filesystem cold start 与显式 discovery failures、持久化的非 repository SQLite realization、无明文凭据的 external-memory authorization、多 Project 的 locator-only workspace isolation、通用 Locator Chain 的 cycle / stale / inconsistency 语义、symlink 边界行为，以及真实 Git worktree cold start。
 
-真实 mount boundary 目前仍明确属于**未证明**项；只有在能够创建真实 mount 的测试环境中验证后才能声称覆盖，不能拿普通目录模拟 mount 来充当证据。
+真实 mount boundary 目前仍明确属于**未证明**项；只有在能够创建真实 mount 的测试环境中验证后才能声称覆盖，不能拿普通目录模拟 mount 来充当证据。这个限制已经写入 `RELEASE.md`，不会被包装成已验证能力。
