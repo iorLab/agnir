@@ -39,13 +39,14 @@ agnir/                                                    # Agnir Agent Skill + 
 │   └── AGNIR_DISCOVERY.md                                # cold-start discovery / Locator Chain / failure vocabulary
 │
 ├── profiles/                                             # Core 之外的具体 discovery / storage realization
-│   └── REPOSITORY_FILESYSTEM.md                          # repository-filesystem/0.1；含 Agent activation/init contract + Skill packaging note
+│   └── REPOSITORY_FILESYSTEM.md                          # repository-filesystem/0.1；含 Agent activation/init + safe AGENTS merge contract
 │
 ├── schemas/
 │   └── agnir-manifest.schema.json                        # repository/filesystem AGNIR.yaml JSON Schema
 │
 ├── conformance/                                          # executable pressure
 │   ├── activation_reference.py                           # AGENTS.md → README canonical activation resolver
+│   ├── agents_merge_reference.py                         # conformance-only：existing AGENTS.md non-destructive merge / conflict reference
 │   ├── agnir-0.1.md                                      # Agnir 0.1 stable conformance baseline
 │   ├── check_agnir_0_1.py                                # self-host + Skill packaging + stable release-readiness checker
 │   ├── core_reference.py                                 # shared Core failure semantics reference
@@ -55,6 +56,7 @@ agnir/                                                    # Agnir Agent Skill + 
 │   ├── sqlite_backend_reference.py                       # non-repository SQLite durable backend reference
 │   ├── workspace_registry_reference.py                   # locator-only multi-project workspace registry reference
 │   ├── test_agent_activation.py                          # prompt-free Project activation + negative fixtures
+│   ├── test_agents_merge.py                              # existing AGENTS preserve / minimal create / idempotence / explicit conflict tests
 │   ├── test_external_memory_authorization.py             # external authorization failure semantics
 │   ├── test_locator_chain_failures.py                    # cycle / stale / inconsistency tests
 │   ├── test_repository_filesystem_boundaries.py          # symlink / Git worktree filesystem boundaries
@@ -68,7 +70,7 @@ agnir/                                                    # Agnir Agent Skill + 
 │   ├── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；非 release gate
 │   └── PREDECESSOR.md                                    # predecessor lineage 的 immutable commit 定位
 │
-├── SKILL.md                                              # canonical Agent Skill entrypoint；完整 install/use/checkpoint/repair procedure
+├── SKILL.md                                              # canonical Agent Skill entrypoint；完整 install/use/checkpoint/repair + safe merge procedure
 ├── AGENTS.md                                             # 本仓库 Agent-facing locator：指向 README canonical Agnir Project Instructions
 ├── AGNIR.yaml                                            # 本仓库 repository-filesystem/0.1 discovery anchor
 ├── RELEASE.md                                            # 0.1.0 版本、Skill packaging、activation 与 publication gate
