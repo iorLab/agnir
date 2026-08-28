@@ -16,6 +16,7 @@ agnir/                                                    # Agnir Core / profile
 │       ├── 2026-08-27-mainline-implementation.md         # 新 main-line Agnir 结构落地证据
 │       ├── 2026-08-27-repository-rename-checkpoint.md    # 仓库更名 / canonical identity checkpoint
 │       ├── 2026-08-28-conformance-and-migration-audit-checkpoint.md # conformance 与 predecessor migration 审计 checkpoint
+│       ├── 2026-08-28-core-0.1-rc1-freeze.md             # Core 0.1 compatibility / repository 0.1.0-rc.1 freeze 证据
 │       ├── 2026-08-28-external-memory-authorization.md   # external-memory authorization 语义验证证据
 │       ├── 2026-08-28-filesystem-boundaries.md           # symlink / Git worktree 等 filesystem boundary 证据
 │       ├── 2026-08-28-locator-chain-failures.md          # CYCLE / STALE / INCONSISTENT Locator Chain 证据
@@ -30,7 +31,7 @@ agnir/                                                    # Agnir Core / profile
 │       └── conformance.yml                               # CI：self-host cold start + executable conformance suite
 │
 ├── spec/                                                 # Agnir 协议层规范；不绑定具体 storage / execution surface
-│   ├── AGNIR_CORE.md                                     # Core 0.1：durable continuity、identity、checkpoint 等核心语义
+│   ├── AGNIR_CORE.md                                     # Core 0.1：durable continuity、identity、checkpoint 与兼容性语义
 │   ├── AGNIR_DISCOVERY.md                                # cold-start discovery、Locator Chain、failure vocabulary 等
 │   └── MIGRATION_PPMP_V2.md                              # PPMP v2 / predecessor → Agnir 的显式迁移要求
 │
@@ -41,7 +42,7 @@ agnir/                                                    # Agnir Core / profile
 │   └── agnir-manifest.schema.json                        # 当前 repository/filesystem `AGNIR.yaml` manifest 的 JSON Schema
 │
 ├── conformance/                                          # executable pressure：证明 Core / profile 语义可被实现并正确失败
-│   ├── agnir-0.1.md                                      # Agnir 0.1 conformance baseline 的人类可读说明
+│   ├── agnir-0.1.md                                      # 当前 Agnir 0.1 executable conformance baseline 说明
 │   ├── check_agnir_0_1.py                                # self-hosting cold start + active repository 结构检查
 │   ├── core_reference.py                                 # Core failure / shared semantics 的 conformance-only 参考定义
 │   ├── repository_filesystem_reference.py                # repository-filesystem profile 的 conformance-only resolver
@@ -73,10 +74,10 @@ agnir/                                                    # Agnir Core / profile
 │   └── PREDECESSOR.md                                    # PPMP / Persistent Project Memory / Sandminni 前身历史定位
 │
 ├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；不是 Core 普遍要求
-├── README.md                                             # 英文项目入口：架构图、Continuity Flow、简略仓库树
+├── README.md                                             # 英文项目入口：架构图、Continuity Flow、简略仓库树、RC/versioning 说明
 ├── README.zh-CN.md                                       # 简体中文项目入口；与英文版保持同一 canonical protocol 语义
 ├── REPOSITORY_TREE.md                                    # 本文件：当前 main 的完整文件级仓库结构与职责说明
-└── VERSION                                               # 当前 Agnir development version
+└── VERSION                                               # repository release version；当前为 0.1.0-rc.1
 ```
 
 ## 如何使用这张树
