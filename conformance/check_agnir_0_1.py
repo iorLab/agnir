@@ -23,6 +23,37 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
+def require_readme_quick_start(
+    path: str,
+    *,
+    quick_start_heading: str,
+    architecture_heading: str,
+    use_prompt_marker: str,
+    init_prompt_marker: str,
+) -> None:
+    text = (ROOT / path).read_text(encoding="utf-8")
+    for marker in (
+        quick_start_heading,
+        use_prompt_marker,
+        init_prompt_marker,
+        "Project Entry Point",
+        "AGNIR.yaml",
+        "repository-filesystem/0.1",
+        ".agnir/state.md",
+        ".agnir/next-actions.md",
+        ".agnir/decisions.md",
+        ".agnir/evidence/",
+        "checkpoint",
+    ):
+        if marker not in text:
+            fail(f"{path} missing required operational quick-start marker: {marker}")
+
+    quick_start_position = text.find(quick_start_heading)
+    architecture_position = text.find(architecture_heading)
+    if quick_start_position < 0 or architecture_position < 0 or quick_start_position > architecture_position:
+        fail(f"{path} must present the operational Quick Start before architecture material")
+
+
 def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
     text = (ROOT / path).read_text(encoding="utf-8")
     if text.count("```mermaid") < 2:
@@ -155,6 +186,20 @@ def main() -> None:
         if not (ROOT / path).exists():
             fail(f"missing active Agnir artifact: {path}")
 
+    require_readme_quick_start(
+        "README.md",
+        quick_start_heading="## 30-second Quick Start",
+        architecture_heading="## Architecture Diagram",
+        use_prompt_marker="Use Agnir for this Project.",
+        init_prompt_marker="Initialize Agnir Core 0.1 for this Project",
+    )
+    require_readme_quick_start(
+        "README.zh-CN.md",
+        quick_start_heading="## 30 秒快速开始",
+        architecture_heading="## 架构图",
+        use_prompt_marker="对这个 Project 使用 Agnir。",
+        init_prompt_marker="为这个 Project 初始化 Agnir Core 0.1",
+    )
     require_readme_diagrams("README.md", ("## Architecture Diagram", "## Continuity Flow"))
     require_readme_diagrams("README.zh-CN.md", ("## 架构图", "## 连续性流程"))
     require_readme_repository_tree("README.md", "## Repository Structure")
