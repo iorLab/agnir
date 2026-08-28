@@ -9,6 +9,8 @@ The executable suite covers:
 - root `SKILL.md` Agent Skill frontmatter and the presence of the complete Agent-facing install / initialize / resume / checkpoint / repair procedure;
 - separation of the one-line user-facing install request from the detailed Agent-facing procedure;
 - bilingual README Quick Starts pointing Agents to `SKILL.md` without embedding the internal installation checklist;
+- non-destructive merge of the minimal Agnir locator into an existing `AGENTS.md` while preserving existing Project instructions;
+- minimal `AGENTS.md` creation when absent, idempotent handling of an equivalent locator, and explicit conflict failure instead of silent overwrite when existing instructions contradict durable Agnir activation;
 - self-hosting Agent activation from Project root through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml`;
 - prompt-free fresh-Agent activation for an initialized Agent-operable repository Project;
 - failure when the Agent activation locator is missing, does not reference the canonical README instruction, or forks an incomplete/duplicated activation contract;
@@ -25,7 +27,7 @@ The executable suite covers:
 - real Git worktree cold start;
 - bilingual README/documentation structure and exhaustive repository-tree maintenance.
 
-`SKILL.md` is an Agent-facing distribution/operation surface, not an Agnir Core requirement that every Executor use an Agent Skill mechanism. The Agent activation fixture is a repository/filesystem profile pressure case, not a Core requirement that every Executor be an AI Agent or that every backend use `AGENTS.md` / `README.md`.
+`SKILL.md` is an Agent-facing distribution/operation surface, not an Agnir Core requirement that every Executor use an Agent Skill mechanism. The `AGENTS.md` merge reference is conformance-only pressure for the repository/filesystem Agent-operable initialization contract, not a production installer. The Agent activation fixture is a repository/filesystem profile pressure case, not a Core requirement that every Executor be an AI Agent or that every backend use `AGENTS.md` / `README.md`.
 
 The reference models under `conformance/` are executable pressure tools, not promoted production implementations or mandatory backends.
 
@@ -35,6 +37,6 @@ A real mount-boundary case remains unproven because the current environment does
 
 ## Release interpretation
 
-Passing this suite establishes the reference repository's stable `0.1.0` conformance baseline for Core `0.1`, profile `repository-filesystem/0.1`, and the published Agent Skill packaging boundary. For an Agent-operable repository initialized under the reference convention, it additionally proves that the activation route itself is durable and that future Agents do not require the original initialization prompt or conversation.
+Passing this suite establishes the reference repository's stable `0.1.0` conformance baseline for Core `0.1`, profile `repository-filesystem/0.1`, and the published Agent Skill packaging boundary. For an Agent-operable repository initialized under the reference convention, it additionally proves that existing root Agent instructions are preserved during Agnir locator installation, explicit contradictory instructions are surfaced rather than overwritten, the activation route itself is durable, and future Agents do not require the original initialization prompt or conversation.
 
-It does not imply that every possible backend, adapter, filesystem, authorization system, Agent Skill installer, Agent instruction mechanism, or execution environment has been tested.
+It does not imply that every possible backend, adapter, filesystem, authorization system, Agent Skill installer, Agent instruction mechanism, semantic conflict form, or execution environment has been tested.
