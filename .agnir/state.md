@@ -50,6 +50,22 @@ Stable publication candidate `846d794384e24f4d0431bb72b0f1036c60503bdd` passed A
 
 Durable evidence: `.agnir/evidence/2026-08-28-agnir-0.1.0-release-readiness.md`.
 
+## User-operability baseline
+
+The bilingual README entry points now begin with an operational Quick Start before architecture explanation.
+
+For `repository-filesystem/0.1`, the first-screen path is intentionally minimal:
+
+- an Agent that already has Project-directory read/write access can use an existing Agnir Project by reading top-level `AGNIR.yaml` and following its durable memory locators;
+- a new Project can be initialized by an Agent from a copyable prompt that creates the minimal `AGNIR.yaml` and `.agnir/` continuity layout, persists initialization evidence, and verifies a fresh cold start;
+- the Quick Start shows the minimal manifest and the four durable continuity categories directly, without requiring the user to understand Core/Profile architecture first.
+
+This is a documentation/usability contract, not a new Core semantic dependency. The self-hosting checker requires the operational Quick Start to remain before the Architecture Diagram in both language versions and requires both existing-Project and initialization paths.
+
+Quick Start enforcement commit `820d8847bba4bc825740972bda19d3cc22378ad0` passed conformance run `33162899443`.
+
+Durable evidence: `.agnir/evidence/2026-08-28-readme-agent-quick-start-checkpoint.md`.
+
 ## Conformance coverage
 
 The stable suite spans:
@@ -71,7 +87,7 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Its curre
 
 ## Repository documentation baseline
 
-`README.md` and `README.zh-CN.md` are parallel entry points with synchronized Architecture and Continuity Flow diagrams plus compact annotated repository trees. `REPOSITORY_TREE.md` is the exhaustive tracked-file map and must be updated with tracked file additions/removals/moves or material responsibility changes.
+`README.md` and `README.zh-CN.md` are parallel entry points. Each begins with an operational Quick Start before the Architecture Diagram, then retains synchronized Architecture and Continuity Flow diagrams plus compact annotated repository trees. `REPOSITORY_TREE.md` is the exhaustive tracked-file map and must be updated with tracked file additions/removals/moves or material responsibility changes.
 
 ## Historical isolation boundary
 
