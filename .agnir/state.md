@@ -9,6 +9,7 @@ Agnir is the active project/protocol identity on `main`. PPMP v2.0.0 / Persisten
 - Authoritative discovery anchor for this Project: top-level `AGNIR.yaml`.
 - Authoritative mutable continuity state: `.agnir/` as resolved by `AGNIR.yaml`.
 - No execution-surface-specific bootstrap file is part of the active Project structure.
+- Active `spec/` now contains only current Agnir protocol material: `AGNIR_CORE.md` and `AGNIR_DISCOVERY.md`.
 
 ## Core invariants
 
@@ -61,7 +62,7 @@ They MUST NOT become:
 - compatibility obligations for new Agnir implementations;
 - reasons to reintroduce `.chatgpt/`, ChatGPT-specific adapters, predecessor repository structure, or legacy serialization into active `main`.
 
-`spec/MIGRATION_PPMP_V2.md` is optional migration guidance for consumers that deliberately choose to migrate old PPMP data. It is not part of the Core `0.1` release gate and does not constrain greenfield implementations that start directly with Agnir.
+Optional PPMP migration guidance now lives at `history/MIGRATION_PPMP_V2.md`, outside active `spec/`. It is historical/reference material for consumers that deliberately choose to migrate old PPMP data. It is not part of Core `0.1`, not a conformance requirement, and not a release gate for greenfield Agnir.
 
 Current `main` is a greenfield protocol line. Historical material MAY inform design review, but a rule is active only when it is independently stated by current Agnir Core/profile decisions.
 
