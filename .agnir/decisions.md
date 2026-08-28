@@ -102,6 +102,12 @@
 - This decision supersedes any interpretation that Agnir Core `0.1` release readiness depends on PPMP/PPM/Sandminni migration or predecessor compatibility.
 - `legacy/ppmp-v2.0.0` and other predecessor artifacts are retained only for lineage, audit, and optional historical reference.
 - Active Core semantics, profiles, conformance, release gates, Project state, and next actions MUST NOT depend on predecessor serialization, `.chatgpt/` layout, ChatGPT-specific adapters, legacy repository structure, or historical external Projects.
-- `spec/MIGRATION_PPMP_V2.md` is optional migration guidance for a consumer that explicitly chooses to migrate old PPMP data. It is not a Core `0.1` conformance requirement and is not a release gate for greenfield Agnir.
 - Historical ideas become active only when independently restated in current Agnir Core/profile decisions.
 - Current Agnir `main` is intentionally a new protocol namespace and architecture; backward compatibility with PPMP is not implied by lineage.
+
+## 2026-08-28 — Historical migration guidance lives outside active spec
+
+- Active `spec/` contains only current Agnir protocol definitions: `spec/AGNIR_CORE.md` and `spec/AGNIR_DISCOVERY.md`.
+- Optional PPMP migration guidance lives at `history/MIGRATION_PPMP_V2.md` and is explicitly archival/reference material.
+- `history/MIGRATION_PPMP_V2.md` is not an Agnir Core `0.1` semantic dependency, conformance requirement, compatibility obligation, or release gate.
+- The self-hosting checker forbids `spec/MIGRATION_PPMP_V2.md` from reappearing on active `main`, so legacy migration cannot silently drift back into the normative specification surface.
