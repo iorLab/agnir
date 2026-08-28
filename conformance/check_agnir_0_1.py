@@ -15,6 +15,7 @@ from repository_filesystem_reference import (
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "schemas" / "agnir-manifest.schema.json"
 SELF_PROJECT_ID = "urn:agnir:project:agnir-core"
+REPOSITORY_VERSION = "0.1.0-rc.1"
 
 
 def fail(message: str) -> None:
@@ -76,6 +77,7 @@ def require_full_repository_tree() -> None:
         ".agnir/",
         "2026-08-28-negative-discovery-fixtures.md",
         "2026-08-28-real-predecessor-migration-and-ppmp-boundary.md",
+        "2026-08-28-core-0.1-rc1-freeze.md",
         "history/",
         "PREDECESSOR.md",
         ".github/",
@@ -84,6 +86,7 @@ def require_full_repository_tree() -> None:
         "README.zh-CN.md",
         "REPOSITORY_TREE.md",
         "VERSION",
+        REPOSITORY_VERSION,
     ):
         if marker not in text:
             fail(f"REPOSITORY_TREE.md missing required full-tree marker: {marker}")
@@ -111,6 +114,20 @@ def main() -> None:
         fail("manifest and JSON Schema version/profile declarations diverge")
     if snapshot.version != CORE_VERSION or snapshot.profile != PROFILE:
         fail("self-hosted discovery returned an unexpected Core/profile line")
+
+    repository_version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    if repository_version != REPOSITORY_VERSION:
+        fail(f"expected repository VERSION {REPOSITORY_VERSION}, discovered {repository_version!r}")
+
+    core_text = (ROOT / "spec" / "AGNIR_CORE.md").read_text(encoding="utf-8")
+    for marker in (
+        "Release-candidate normative specification",
+        'agnir.version: "0.1"',
+        "0.1.0-rc.1",
+        "MUST NOT redefine existing Core `0.1`",
+    ):
+        if marker not in core_text:
+            fail(f"spec/AGNIR_CORE.md missing RC compatibility marker: {marker}")
 
     required_active = [
         "README.md",
@@ -141,6 +158,7 @@ def main() -> None:
         "conformance/fixtures/ppmp-v2/docs/project-memory/DECISIONS.md",
         "conformance/fixtures/ppmp-v2/docs/project-memory/sessions/2026-08-27.md",
         ".agnir/evidence/2026-08-28-real-predecessor-migration-and-ppmp-boundary.md",
+        ".agnir/evidence/2026-08-28-core-0.1-rc1-freeze.md",
     ]
     for path in required_active:
         if not (ROOT / path).exists():
@@ -177,7 +195,7 @@ def main() -> None:
             fail(f"predecessor or execution-surface-specific artifact remains active on main: {path}")
 
     print(
-        f"PASS: Agnir {snapshot.version} repository/filesystem cold-start structure "
+        f"PASS: Agnir {snapshot.version} / repository {repository_version} RC baseline "
         f"for {snapshot.project_identity}"
     )
 
