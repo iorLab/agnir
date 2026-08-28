@@ -21,7 +21,20 @@ Agnir is the active project/protocol identity on `main`. PPMP v2.0.0 / Persisten
 
 ## Relationship to Svif
 
-Svif is a separate Project at `iorLab/svif`. Dependency direction is `Svif -> Agnir`. Svif consumes the Agnir Core protocol contract, not this repository's storage layout, implementation, backend, or any execution-surface integration.
+Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif's stable kernel depends on a Continuity Provider interface; the current founding implementation uses Agnir Core `0.1` through an Agnir adapter. Agnir remains independently useful and does not absorb Svif execution, delivery, provider, or authority semantics.
+
+The canonical projects relevant to this workspace are now `iorLab/agnir` and `iorLab/svif`. The former standalone Svif Cloudflare reference has been retired from active architecture and is not an Agnir dependency.
+
+## README architecture documentation
+
+The repository has parallel English and Simplified Chinese entry points: `README.md` and `README.zh-CN.md`.
+
+Both READMEs MUST contain:
+
+- an **Architecture Diagram** showing Agnir Core, discovery/profile realization, and durable continuity components;
+- a **Continuity Flow** diagram showing cold-start discovery, load, external Project work, checkpoint, and future resume.
+
+Changes to the layer model, discovery path, durable-memory semantics, Project boundary, or continuity flow require the affected diagrams in both language versions to be updated in the same change set. Conformance checks enforce the README/diagram structure without freezing prose wording.
 
 ## Branch governance
 
@@ -43,11 +56,9 @@ At the 2026-08-27 checkpoint, the pre-checkpoint `main` head was `6537fe56157d26
 
 The coordinated repository identity transition is complete.
 
-Canonical repositories relevant to this workspace are now:
-
-- Agnir: `iorLab/agnir` (renamed from `mattamior/rpm` and transferred into the `iorLab` organization)
-- Svif: `iorLab/svif`
-- Svif Cloudflare reference: `iorLab/svif-cloudflare-reference`
+- Agnir: `iorLab/agnir` (renamed from `mattamior/rpm` and transferred into the `iorLab` organization).
+- Svif: `iorLab/svif`.
+- Provider-specific Svif Cloudflare behavior now belongs inside `iorLab/svif`; no standalone Cloudflare project is part of the active canonical topology.
 
 The predecessor branch `legacy/ppmp-v2.0.0` remains unchanged because it intentionally preserves predecessor identity. Repository redirects from predecessor names are compatibility behavior only.
 

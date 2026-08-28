@@ -1,8 +1,60 @@
 # Agnir
 
-Agnir is a project-owned durable continuity protocol.
+**English** | [简体中文](README.zh-CN.md)
 
-It exists so a Project can be safely resumed when Executors, execution environments, storage implementations, or conversational contexts change. The Project owns the memory; execution surfaces do not.
+Agnir is a **project-owned durable continuity protocol**.
+
+It exists so a Project can be safely resumed when Executors, execution environments, storage implementations, or conversational contexts change. The Project owns the durable continuity; execution surfaces do not.
+
+## Architecture Diagram
+
+```mermaid
+flowchart TB
+    X[Consumer / Executor\nSvif or another tool] --> P[Authorized Project Entry Point]
+    P --> D[Discovery Profile / Adapter]
+    D --> R[Discovery Record]
+
+    subgraph C[Agnir Core 0.1]
+        V[Version + Project identity validation]
+        M[Continuity semantics]
+        V --> M
+    end
+
+    R --> V
+    M --> S[Current State]
+    M --> N[Next Actions]
+    M --> J[Decisions]
+    M --> E[Evidence / Checkpoints]
+
+    D -. current profile .-> Y[repository-filesystem/0.1]
+    Y --> A[AGNIR.yaml]
+    A --> F[Durable locators\nthis repo: .agnir/]
+```
+
+Agnir Core defines durable continuity semantics and discovery invariants; it does **not** require Git, GitHub, a repository, ChatGPT, or any specific storage backend. Profiles/adapters realize those semantics for a concrete Project Entry Point and storage environment.
+
+For this repository, the active realization is `repository-filesystem/0.1`: cold start begins at the Project root, resolves top-level `AGNIR.yaml`, validates the Project identity and Agnir line, then follows the declared memory locators. `AGNIR.yaml` and `.agnir/` are profile/repository choices, not universal Core requirements.
+
+## Continuity Flow
+
+```mermaid
+flowchart TD
+    C[Cold start / fresh Executor] --> P[Receive authorized Project Entry Point]
+    P --> D[Select applicable discovery profile]
+    D --> R[Resolve exactly one Discovery Record]
+    R --> V{Version + Project identity valid?}
+    V -- No --> F[Surface explicit discovery failure]
+    V -- Yes --> L[Load Current State + Next Actions]
+    L --> Q[Load Decisions / Evidence as required]
+    Q --> W[Executor performs Project work\noutside Agnir Core]
+    W --> U[Produce explicit continuity updates]
+    U --> K[Checkpoint durable truth + evidence]
+    K --> S[Durable continuity store]
+    S --> N[Future Executor / environment]
+    N --> P
+```
+
+Agnir does not perform the Project work shown in the middle of the flow. It makes the before/after continuity durable, discoverable, attributable to the correct Project, and safe to resume. Discovery failures such as not-found, ambiguity, unsupported version, Project mismatch, authorization failure, cycles, stale locators, and material inconsistency must be surfaced rather than silently repaired by guessing.
 
 ## Active line
 
@@ -24,28 +76,24 @@ history/PREDECESSOR.md         # locator to preserved predecessor lineage
 
 Predecessor implementation/backend/adapter/site/template material is deliberately absent from active `main`; it remains available on the legacy branch.
 
-`AGNIR.yaml` is a rule of the repository/filesystem profile, not Agnir Core. Core remains storage-, VCS-, platform-, host-, and execution-surface-neutral.
-
 ## Core memory semantics
 
 Agnir requires durable recovery of Current State, Next Actions, Decisions, and Evidence / Checkpoints.
 
 A fresh Executor given only an authorized Project Entry Point must be able to resolve the Project's Discovery Record and required durable state without replaying predecessor-private context.
 
-## Cold start
+## Svif relationship
 
-For the repository/filesystem profile, cold start begins at the Project root and resolves top-level `AGNIR.yaml`. The manifest identifies the Agnir line, Project identity, and authoritative memory locators.
+Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif currently uses Agnir as its founding Continuity Provider through an Agnir adapter, but Agnir remains independently useful without Svif. Svif-specific execution, delivery, provider, or authority semantics do not belong in Agnir Core.
+
+## Documentation synchronization
+
+`README.md` and `README.zh-CN.md` are maintained as parallel entry points. Any change to Agnir's layer model, discovery path, durable-memory semantics, Project boundary, or continuity flow **must update the affected README diagrams in both language versions in the same change set**. The diagrams represent the current architecture and flow.
+
+## Conformance
 
 Run the active self-hosting check with:
 
 ```bash
 python conformance/check_agnir_0_1.py
 ```
-
-## Layer model
-
-Agnir separates Core, Profiles, Implementations, Backends, and Adapters. Those lower layers are intentionally empty/minimal on the new main line until Agnir-native implementations are introduced and validated.
-
-## Svif
-
-Svif is a separate consuming protocol. Dependency direction is `Svif -> Agnir`: Svif may require a compatible Agnir Core version, but not a specific Agnir backend, adapter, or repository layout.

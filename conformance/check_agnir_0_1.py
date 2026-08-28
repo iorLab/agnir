@@ -47,6 +47,15 @@ def locator_exists(locator: str | None, key: str) -> None:
         fail(f"memory locator {key} does not resolve: {locator}")
 
 
+def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
+    text = (ROOT / path).read_text(encoding="utf-8")
+    if text.count("```mermaid") < 2:
+        fail(f"{path} must contain at least two Mermaid diagrams")
+    for heading in headings:
+        if heading not in text:
+            fail(f"{path} missing required diagram section: {heading}")
+
+
 def main() -> None:
     if not MANIFEST.is_file():
         fail("top-level AGNIR.yaml is missing")
@@ -83,6 +92,8 @@ def main() -> None:
         fail("manifest and JSON Schema version/profile declarations diverge")
 
     required_active = [
+        "README.md",
+        "README.zh-CN.md",
         "spec/AGNIR_CORE.md",
         "spec/AGNIR_DISCOVERY.md",
         "spec/MIGRATION_PPMP_V2.md",
@@ -92,6 +103,9 @@ def main() -> None:
     for path in required_active:
         if not (ROOT / path).exists():
             fail(f"missing active Agnir artifact: {path}")
+
+    require_readme_diagrams("README.md", ("## Architecture Diagram", "## Continuity Flow"))
+    require_readme_diagrams("README.zh-CN.md", ("## 架构图", "## 连续性流程"))
 
     forbidden = [
         "docs",
