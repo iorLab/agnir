@@ -46,11 +46,15 @@ Relative locators resolve from the Project root. Absolute filesystem paths SHOUL
 - `agnir/*` extension namespaces are reserved for Agnir-defined extensions.
 - Extensions MUST NOT redefine Core fields while claiming the same Core version.
 
-## 4. Project identity
+## 4. Project identity and selected-root authority
 
 `project.identity` MUST be non-empty. URI/URN forms are RECOMMENDED for identities intended to survive backend or host changes. Opaque identifiers MAY be used when the Project boundary makes them unambiguous.
 
 Nested Projects are allowed, but each Project Entry Point MUST select one Project root. Implementations MUST NOT silently walk into an unrelated parent/child Project when the selected boundary already determines authority.
+
+A parent and child directory may each contain their own authoritative `AGNIR.yaml`. Once one of those roots has been selected as the authorized Project Entry Point, the existence of the other does **not** make the selected root ambiguous; discovery remains scoped to the selected root. `AGNIR_DISCOVERY_AMBIGUOUS` applies earlier, when multiple candidate Project roots exist and no authority rule has selected exactly one.
+
+A detected identity mismatch at the selected root MUST surface `AGNIR_DISCOVERY_PROJECT_MISMATCH` rather than searching a parent or child root for a more convenient identity.
 
 ## 5. Colocated memory
 
@@ -91,3 +95,5 @@ A migration-capable implementation MAY recognize `.chatgpt/project-memory.yaml` 
 ## 9. Conformance
 
 A profile conformance case SHOULD begin with only the Project root and profile implementation. It MUST prove discovery of `AGNIR.yaml`, version and identity validation, resolution of Current State and Next Actions, recovery of at least one material durable fact, and correct failure for at least one broken-locator case.
+
+The active reference conformance suite additionally pressure-tests explicit `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, and pre-root-selection `AMBIGUOUS` semantics, plus isolation between explicitly selected nested Project roots.
