@@ -80,3 +80,13 @@
 - A registry locator does not bypass Project identity validation; cross-Project resolution still fails as `AGNIR_DISCOVERY_PROJECT_MISMATCH`.
 - The workspace registry is conformance-only convenience metadata, not an Agnir Core-required registry design.
 - Conformance run `33143930233`, job `98760729955`, succeeded with the multi-project isolation tests included; durable evidence is `.agnir/evidence/2026-08-28-multi-project-workspace-isolation.md`.
+
+## 2026-08-28 — Locator Chain cycle, stale, and inconsistency semantics
+
+- `conformance/locator_chain_reference.py` is a substrate-neutral conformance model for Core Locator Chain semantics, not a normative storage profile or production implementation.
+- Revisiting a previously resolved locator in the same chain MUST surface `AGNIR_DISCOVERY_CYCLE`; an implementation MUST NOT choose an arbitrary node and fabricate terminal continuity.
+- A record known to be superseded or non-authoritative MUST surface `AGNIR_DISCOVERY_STALE` even if the physical state objects still exist.
+- A chain hop that simultaneously claims another Discovery Record and terminal memory is materially contradictory and MUST surface `AGNIR_DISCOVERY_INCONSISTENT`.
+- Current State and Next Actions from different checkpoint generations are materially inconsistent and MUST NOT be spliced into one apparent Project truth.
+- A consistent multi-hop chain with matching identity and checkpoint generation remains valid.
+- Conformance run `33144042330`, job `98761070215`, succeeded with the Locator Chain fixtures included; durable evidence is `.agnir/evidence/2026-08-28-locator-chain-failures.md`.
