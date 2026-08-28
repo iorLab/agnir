@@ -61,3 +61,12 @@
 - The fixture proves cold start, version/identity validation, Current State / Next Actions / Decisions / Evidence retrieval, checkpoint persistence, and fresh-resolver resume on the database-backed path.
 - Shared semantic failure classes live in `conformance/core_reference.py` so repository/filesystem and SQLite fixtures preserve equivalent Core failure vocabulary without promoting either substrate into Core.
 - Conformance run `33143655399`, job `98759873676`, succeeded with the SQLite tests included in the negative/backend unittest discovery step; durable evidence is `.agnir/evidence/2026-08-28-sqlite-non-repository-backend.md`.
+
+## 2026-08-28 — External-memory authorization semantics
+
+- External memory conformance resolves the Discovery Record before authorization. A missing external Discovery Record maps to `AGNIR_DISCOVERY_NOT_FOUND` and MUST NOT be disguised as an authorization failure.
+- Once an external Discovery Record is known, denied or unavailable authorization for its declared authorization reference maps to `AGNIR_DISCOVERY_UNAUTHORIZED`.
+- After authorization succeeds, a missing declared required memory object maps to `AGNIR_DISCOVERY_UNRESOLVABLE`, not `UNAUTHORIZED` or `NOT_FOUND`.
+- Durable external Discovery Records carry authorization **references** only. Plaintext tokens, passwords, secret values, or credential payloads remain outside Agnir durable memory and outside the conformance fixture.
+- `conformance/external_memory_reference.py` and `conformance/test_external_memory_authorization.py` are conformance-only artifacts, not a normative external-memory profile.
+- Conformance run `33143771320`, job `98760235526`, succeeded with the external-memory authorization tests included; durable evidence is `.agnir/evidence/2026-08-28-external-memory-authorization.md`.
