@@ -1,6 +1,6 @@
 # Agnir Core 0.1
 
-**Status:** Release-candidate normative specification for the Core compatibility line `0.1`.
+**Status:** Stable normative specification for the Core compatibility line `0.1`.
 
 ## 1. Purpose
 
@@ -167,7 +167,7 @@ Agnir distinguishes three version layers:
 
 1. **Core compatibility line** — Discovery Records use a string such as `"0.1"`. A breaking change to Core field meaning, required semantics, identity rules, or discovery invariants MUST move to a new Core line such as `"0.2"`.
 2. **Profile compatibility line** — concrete profiles use identifiers such as `repository-filesystem/0.1`. A breaking change to that profile's discovery anchor, required serialization, locator interpretation, or selected-root semantics MUST move to a new profile line.
-3. **Repository release version** — the reference specification/conformance repository uses SemVer such as `0.1.0` or `0.1.0-rc.1`. Repository patch releases MAY clarify text, add non-breaking tests, or fix reference tooling without changing the advertised Core/profile compatibility lines.
+3. **Repository release version** — the reference specification/conformance repository uses SemVer such as `0.1.0` or `0.1.1`. Repository patch releases MAY clarify text, add non-breaking tests, or fix reference tooling without changing the advertised Core/profile compatibility lines.
 
 The top-level `VERSION` file records the repository release version. It is not substituted for `agnir.version` in Discovery Records.
 
