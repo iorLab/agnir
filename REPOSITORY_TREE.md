@@ -22,6 +22,7 @@ agnir/                                                    # Agnir Core / profile
 │       ├── 2026-08-28-multi-project-workspace-isolation.md # multi-project workspace isolation 证据
 │       ├── 2026-08-28-negative-discovery-fixtures.md     # discovery failure vocabulary negative fixtures 证据
 │       ├── 2026-08-28-readme-diagram-localization-checkpoint.md # 双语 README / Mermaid 本地化 checkpoint
+│       ├── 2026-08-28-real-predecessor-migration-and-ppmp-boundary.md # 真实 predecessor migration 与 exact PPMP v2 evidence 边界
 │       └── 2026-08-28-sqlite-non-repository-backend.md   # SQLite 非 repository backend storage-neutrality 证据
 │
 ├── .github/                                              # GitHub 托管侧自动化配置
