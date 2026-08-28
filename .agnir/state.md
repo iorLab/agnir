@@ -57,11 +57,23 @@ Selected-root rule: after a Project Entry Point has selected a repository/filesy
 
 ## Non-repository storage-neutrality evidence
 
-Agnir Core now has an executable durable database-style conformance path under `conformance/sqlite_backend_reference.py` and `conformance/test_sqlite_backend.py`.
+Agnir Core has an executable durable database-style conformance path under `conformance/sqlite_backend_reference.py` and `conformance/test_sqlite_backend.py`.
 
-The SQLite Project Entry Point is a database locator plus durable project key. The fixture does not use `AGNIR.yaml`, `.agnir/`, repository-root discovery, Git, or GitHub. It proves cold-start discovery-record resolution, version/identity validation, Current State / Next Actions / Decisions / Evidence recovery, checkpoint persistence, and fresh-resolver resume from the database-backed continuity store.
+The SQLite Project Entry Point is a database locator plus durable project key. The fixture does not use `AGNIR.yaml`, `.agnir/`, repository-root discovery, Git, or GitHub. It proves cold-start Discovery Record resolution, version/identity validation, Current State / Next Actions / Decisions / Evidence recovery, checkpoint persistence, and fresh-resolver resume from the database-backed continuity store.
 
 This fixture is conformance evidence only; it does not define a normative SQLite profile or promote SQLite into Agnir Core.
+
+## External-memory authorization evidence
+
+Agnir Core now has executable external-memory authorization pressure under `conformance/external_memory_reference.py` and `conformance/test_external_memory_authorization.py`.
+
+The fixture preserves three distinct layers:
+
+- external Discovery Record absent -> `AGNIR_DISCOVERY_NOT_FOUND`;
+- Discovery Record known but its authorization reference is not granted -> `AGNIR_DISCOVERY_UNAUTHORIZED`;
+- authorization granted but a declared required memory object is absent -> `AGNIR_DISCOVERY_UNRESOLVABLE`.
+
+The Discovery Record carries only a durable authorization reference such as `credential-ref://...`; no plaintext credential/token/password/secret value is stored or transported in Agnir continuity.
 
 ## Branch governance
 
@@ -71,33 +83,21 @@ This fixture is conformance evidence only; it does not define a normative SQLite
 
 ## Current implementation status
 
-The active Agnir main line contains `AGNIR.yaml`, `.agnir/`, normative Core/Discovery/Profile documents, a manifest JSON Schema, self-hosting cold-start conformance, executable negative discovery fixtures, and a materially non-repository durable SQLite conformance fixture.
+The active Agnir main line contains normative Core/Discovery/Profile documents, self-hosting repository/filesystem cold-start conformance, executable discovery-failure fixtures, a durable non-repository SQLite fixture, and an external-memory authorization fixture with reference-only authorization semantics.
 
 The former ChatGPT-specific bootstrap shim has been removed from active `main`. Cold start for this repository now begins directly at `AGNIR.yaml`, matching the repository/filesystem profile and keeping execution-surface integration outside the Project structure.
 
 This is a working `0.1` development contract, not yet a final release.
 
-## Repository identity transition
-
-The coordinated repository identity transition is complete.
-
-- Agnir: `iorLab/agnir` (renamed from `mattamior/rpm` and transferred into the `iorLab` organization).
-- Svif: `iorLab/svif`.
-- Provider-specific Svif Cloudflare behavior now belongs inside `iorLab/svif`; no standalone Cloudflare project is part of the active canonical topology.
-
-The predecessor branch `legacy/ppmp-v2.0.0` remains unchanged because it intentionally preserves predecessor identity. Repository redirects from predecessor names are compatibility behavior only.
-
 ## Known gaps
 
-- External-memory authorization failure vs not-found is not yet executable.
 - Multi-project workspace isolation beyond selected nested roots is not yet executable.
 - Symlink, mount, and worktree boundary edge cases need dedicated repository/filesystem tests.
 - Cycle, stale-locator, and materially inconsistent-memory failure fixtures remain to be added.
+- PPMP v2 -> Agnir external migration validation remains incomplete.
 - Release compatibility notation consumed by Svif remains provisional until Agnir `0.1` release criteria are complete.
 
 ## 2026-08-28 README/localization checkpoint
-
-README architecture documentation and localization policy are durable Project state.
 
 - Simplified Chinese diagram clarification commit: `0f9f9ec3371fa6560d237bf7224adf5430bc0a19`.
 - Localization-policy decision commit: `fbcbef93cd17434999e431b3d7af3af4c810c351`.
@@ -112,7 +112,7 @@ README architecture documentation and localization policy are durable Project st
 - CI integration: `02dd1662fadf5451acfcb26370d6f36ff0d4bc8e`.
 - Nested-root semantic clarification: `2cbad2ad80e18bb674a88f5d91e1d51cc217cdbd`.
 - Agnir Core Svif relationship correction: `3645bce8940e2e4c3d4c811709852eb9f3dcf8fa`.
-- Conformance run `33143495855`, job `98759373389`: success for both self-hosting cold-start and negative fixtures.
+- Conformance run `33143495855`, job `98759373389`: success.
 - Durable evidence: `.agnir/evidence/2026-08-28-negative-discovery-fixtures.md`.
 
 ## 2026-08-28 non-repository backend advance
@@ -123,4 +123,12 @@ README architecture documentation and localization policy are durable Project st
 - Checker registration: `cf260a1f864a47d2a08902c8c8db069b2cf9003b`.
 - Conformance run `33143655399`, job `98759873676`: success.
 - Durable evidence: `.agnir/evidence/2026-08-28-sqlite-non-repository-backend.md`.
-- Resume point: external-memory authorization semantics (`UNAUTHORIZED` vs missing Discovery Record), then multi-project isolation.
+
+## 2026-08-28 external-memory authorization advance
+
+- External-memory reference: `60a10aaa10f52ce7ab95bcdc2e5ba7983cc7dd0f`.
+- Authorization tests: `82585c5b9d6fd38951392710baf238a55d1b237c`.
+- Checker registration: `775c8b0657c445514c52fd70ff5988d92ac8275d`.
+- Conformance run `33143771320`, job `98760235526`: success.
+- Durable evidence: `.agnir/evidence/2026-08-28-external-memory-authorization.md`.
+- Resume point: multi-project workspace isolation, then remaining failure classes and filesystem boundary edge cases.
