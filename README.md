@@ -96,6 +96,8 @@ agnir/
 └── VERSION                            # current Agnir development version
 ```
 
+For the fully expanded file-by-file map of the current `main`, including responsibility annotations for every tracked file, see **[目录树.md](目录树.md)**.
+
 Predecessor implementation/backend/adapter/site/template material is deliberately absent from active `main`; it remains available on the legacy branch.
 
 ## Core memory semantics
@@ -112,7 +114,7 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif curr
 
 `README.md` and `README.zh-CN.md` are maintained as parallel entry points. Any change to Agnir's layer model, discovery path, durable-memory semantics, Project boundary, or continuity flow **must update the affected README diagrams in both language versions in the same change set**. The diagrams represent the current architecture and flow.
 
-The plain-text **Repository Structure** tree follows the same maintenance rule. If a documented directory is added, removed, moved, or changes responsibility, both language versions must update the affected tree in the same change set. The tree is explanatory rather than exhaustive and should stay compact enough to orient a new reader.
+The plain-text **Repository Structure** tree remains a compact navigation view. The exhaustive companion **`目录树.md`** is the file-level map of the active repository and must be updated whenever tracked files are added, removed, moved, or materially change responsibility. If the change affects the compact tree, both README language versions must update it in the same change set as well.
 
 ## Conformance
 
