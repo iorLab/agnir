@@ -66,6 +66,18 @@ Quick Start enforcement commit `820d8847bba4bc825740972bda19d3cc22378ad0` passed
 
 Durable evidence: `.agnir/evidence/2026-08-28-readme-agent-quick-start-checkpoint.md`.
 
+## Bilingual README navigation
+
+The current language-navigation model remains intentionally simple:
+
+- `README.md` is the standalone English entry point;
+- `README.zh-CN.md` is the standalone Simplified Chinese entry point;
+- each document links to the other as a separate GitHub Markdown page.
+
+Same-page language switching was considered but explicitly deferred. No anchor-based or collapsible bilingual single-page treatment is part of the current `0.1.0` publication surface, and this is not a release blocker.
+
+Durable evidence: `.agnir/evidence/2026-08-28-readme-language-navigation-deferred-checkpoint.md`.
+
 ## Conformance coverage
 
 The stable suite spans:
@@ -87,7 +99,7 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Its curre
 
 ## Repository documentation baseline
 
-`README.md` and `README.zh-CN.md` are parallel entry points. Each begins with an operational Quick Start before the Architecture Diagram, then retains synchronized Architecture and Continuity Flow diagrams plus compact annotated repository trees. `REPOSITORY_TREE.md` is the exhaustive tracked-file map and must be updated with tracked file additions/removals/moves or material responsibility changes.
+`README.md` and `README.zh-CN.md` are parallel standalone entry points. Each begins with an operational Quick Start before the Architecture Diagram, then retains synchronized Architecture and Continuity Flow diagrams plus compact annotated repository trees. `REPOSITORY_TREE.md` is the exhaustive tracked-file map and must be updated with tracked file additions/removals/moves or material responsibility changes.
 
 ## Historical isolation boundary
 
@@ -103,7 +115,8 @@ The next operation is **publication only**:
 
 1. after explicit authorization, create tag `v0.1.0` on the intended publication commit and/or create the GitHub Release;
 2. after publication, treat Core `0.1` and profile `repository-filesystem/0.1` as frozen compatibility lines and keep `0.1.x` maintenance non-breaking;
-3. keep real mount-boundary validation as optional additional evidence when a real mount-capable environment becomes available.
+3. keep real mount-boundary validation as optional additional evidence when a real mount-capable environment becomes available;
+4. do not alter bilingual README navigation unless the Project explicitly revisits same-page language UX.
 
 ## Branch governance
 
