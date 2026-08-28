@@ -16,7 +16,7 @@
 
 - Svif is a separate Project orchestration product whose stable kernel consumes a Continuity Provider interface; Agnir Core `0.1` is its current founding continuity implementation.
 - Svif consumes Agnir protocol semantics, not the Agnir reference repository layout or a specific backend/adapter.
-- Agnir remains independently useful without Svif, and Svif execution/delivery/provider/authority semantics remain outside Agnir Core.
+- Agnir remains independently useful without Svif, and Svif execution/delivery/provider/authority/distribution semantics remain outside Agnir Core.
 
 ## 2026-08-27 — Repository identity transition
 
@@ -88,3 +88,12 @@
 - Declared durable continuity must actually survive the substrate. Git does not track empty directories, so an Evidence locator to an otherwise empty directory can legitimately become unresolvable in a new worktree. The conformance fixture was fixed by persisting real Evidence rather than weakening discovery semantics.
 - Real mount-boundary behavior remains unproven. It MUST NOT be claimed by substituting an ordinary directory for a real mount-capable environment.
 - Corrected boundary run `33144199717`, job `98761550583`, succeeded; durable evidence is `.agnir/evidence/2026-08-28-filesystem-boundaries.md`.
+
+## 2026-08-28 — Predecessor evidence classification for migration
+
+- Real predecessor evidence and exact PPMP v2 evidence are distinct categories. A Project MUST NOT be relabeled as PPMP v2 merely because it predates Agnir or uses `.chatgpt/project-memory.yaml`.
+- `iorLab/svif@legacy/zerolocal-v0.1` is genuine predecessor evidence relative to Agnir, but its project-memory serialization is earlier v1/RPM-era form rather than PPMP v2.0.0. `mattamior/agent-skills` is likewise older project-memory evidence, not PPMP v2.
+- These older Projects MAY validate migration requirements that are semantic across predecessor forms: durable-knowledge preservation, explicit transition, cold-start independence from predecessor-private context, and distinction between predecessor and target conformance.
+- Exact external PPMP v2 migration validation remains separately unmet unless a qualifying historical Project is found.
+- Release criteria MUST state explicitly whether exact external PPMP v2 evidence is required or whether a clearly classified PPMP v2 conformance fixture plus real older-predecessor migration evidence is sufficient.
+- Migration validation MUST compare material Project knowledge, not only locator/file presence. The Svif audit's temporary loss of the durable `installable-plugin` product target is a concrete example of a migration regression that structural checks alone would miss.
