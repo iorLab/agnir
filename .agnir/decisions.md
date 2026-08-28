@@ -32,7 +32,7 @@
 - Active Agnir Projects must not need a ChatGPT-specific bootstrap file to discover durable continuity.
 - For the repository/filesystem profile used here, cold start begins directly at top-level `AGNIR.yaml`.
 - Execution-surface integrations may keep their own workspace/bootstrap configuration outside the canonical Project structure.
-- The former `.chatgpt/project-memory.yaml` compatibility shim is removed from active `main` and conformance now treats `.chatgpt/` as forbidden active structure in this reference Project.
+- The former `.chatgpt/project-memory.yaml` compatibility shim is removed from active `main` and conformance treats `.chatgpt/` as forbidden active structure in this reference Project.
 
 ## 2026-08-28 — README architecture diagrams and localization
 
@@ -50,7 +50,7 @@
 - `AGNIR_DISCOVERY_AMBIGUOUS` applies when multiple candidate Project roots exist **before** authority has selected exactly one root.
 - Once the authorized Project Entry Point selects a repository/filesystem root, nested parent/child Projects do not make that selected root ambiguous. Discovery remains scoped to the selected root.
 - If the selected root identifies another Project, discovery MUST surface `AGNIR_DISCOVERY_PROJECT_MISMATCH`; it MUST NOT search a parent or child root for a more convenient identity.
-- Active negative fixtures now cover `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, pre-root-selection `AMBIGUOUS`, and nested selected-root isolation.
+- Active negative fixtures cover `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, pre-root-selection `AMBIGUOUS`, and nested selected-root isolation.
 
 ## 2026-08-28 — Non-repository backend conformance baseline
 
@@ -89,15 +89,6 @@
 - Real mount-boundary behavior remains unproven. It MUST NOT be claimed by substituting an ordinary directory for a real mount-capable environment.
 - Corrected boundary run `33144199717`, job `98761550583`, succeeded; durable evidence is `.agnir/evidence/2026-08-28-filesystem-boundaries.md`.
 
-## 2026-08-28 — Predecessor evidence classification for migration
-
-- Real predecessor evidence and exact PPMP v2 evidence are distinct categories. A Project MUST NOT be relabeled as PPMP v2 merely because it predates Agnir or uses `.chatgpt/project-memory.yaml`.
-- `iorLab/svif@legacy/zerolocal-v0.1` is genuine predecessor evidence relative to Agnir, but its project-memory serialization is earlier v1/RPM-era form rather than PPMP v2.0.0. `mattamior/agent-skills` is likewise older project-memory evidence, not PPMP v2.
-- These older Projects MAY validate migration requirements that are semantic across predecessor forms: durable-knowledge preservation, explicit transition, cold-start independence from predecessor-private context, and distinction between predecessor and target conformance.
-- Exact external PPMP v2 migration validation remains separately unmet unless a qualifying historical Project is found.
-- Release criteria MUST state explicitly whether exact external PPMP v2 evidence is required or whether a clearly classified PPMP v2 conformance fixture plus real older-predecessor migration evidence is sufficient.
-- Migration validation MUST compare material Project knowledge, not only locator/file presence. The Svif audit's temporary loss of the durable `installable-plugin` product target is a concrete example of a migration regression that structural checks alone would miss.
-
 ## 2026-08-28 — README repository structure tree
 
 - The README repository explanation uses a **plain-text tree**, not a third Mermaid architecture diagram and not a second abstract repository-map visualization.
@@ -105,3 +96,12 @@
 - Each documented directory or key file SHOULD include a short responsibility explanation directly in the tree.
 - If a documented directory is added, removed, moved, or materially changes responsibility, `README.md` and `README.zh-CN.md` MUST update the affected tree in the same change set.
 - Self-hosting conformance checks enforce the presence of the explanatory tree and key anchors without byte-for-byte locking the full presentation.
+
+## 2026-08-28 — Greenfield Core; legacy is history only
+
+- This decision supersedes any interpretation that Agnir Core `0.1` release readiness depends on PPMP/PPM/Sandminni migration or predecessor compatibility.
+- `legacy/ppmp-v2.0.0` and other predecessor artifacts are retained only for lineage, audit, and optional historical reference.
+- Active Core semantics, profiles, conformance, release gates, Project state, and next actions MUST NOT depend on predecessor serialization, `.chatgpt/` layout, ChatGPT-specific adapters, legacy repository structure, or historical external Projects.
+- `spec/MIGRATION_PPMP_V2.md` is optional migration guidance for a consumer that explicitly chooses to migrate old PPMP data. It is not a Core `0.1` conformance requirement and is not a release gate for greenfield Agnir.
+- Historical ideas become active only when independently restated in current Agnir Core/profile decisions.
+- Current Agnir `main` is intentionally a new protocol namespace and architecture; backward compatibility with PPMP is not implied by lineage.
