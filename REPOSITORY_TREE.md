@@ -1,84 +1,84 @@
 # Repository Tree / 目录树
 
-本页是 `iorLab/agnir` 当前 `main` 的**完整文件级仓库结构说明**。README 中的仓库树只用于快速导航；这里把当前 tracked 目录与文件全部展开，并在右侧说明它们在协议、profile、conformance、本 Project continuity 和历史参考中的职责。
+本页是 `iorLab/agnir` 当前 `main` 的**完整文件级仓库结构说明**。README 中的仓库树只用于快速导航；这里展开当前 tracked 文件，并说明它们在 Skill packaging、协议、profile、conformance、本 Project continuity 和历史参考中的职责。
 
-维护规则：只要仓库新增、删除、移动文件，或者某个目录 / 文件的职责发生实质变化，就必须在同一个 change set 中同步更新本页；README 中的简略目录树若受影响，也必须一起更新。
+维护规则：只要仓库新增、删除、移动文件，或者某个目录 / 文件职责发生实质变化，就必须在同一个 change set 中同步更新本页；README 中的简略目录树若受影响，也必须一起更新。
 
-> 本页解释的是当前 active `main`。Git 内部元数据（例如 `.git/`）不属于仓库 tracked 内容，因此不列出。
+> Git 内部元数据（例如 `.git/`）不是 tracked 内容，因此不列出。
 
 ```text
-agnir/                                                    # Agnir Core / profiles / conformance 主仓库
+agnir/                                                    # Agnir Agent Skill + Core / profiles / conformance 主仓库
 ├── .agnir/                                               # Agnir 项目自身的 canonical durable continuity
 │   ├── state.md                                          # 当前 Project 状态与已验证事实
 │   ├── next-actions.md                                   # 下次恢复时继续推进的 durable work
-│   ├── decisions.md                                      # 已确认的协议、profile、conformance 与文档决策
+│   ├── decisions.md                                      # 已确认的协议、Skill、profile、conformance 与文档决策
 │   └── evidence/                                         # checkpoint、conformance 与历史审计证据
-│       ├── 2026-08-27-mainline-implementation.md         # 新 main-line Agnir 结构落地证据
-│       ├── 2026-08-27-repository-rename-checkpoint.md    # 仓库更名 / canonical identity checkpoint
-│       ├── 2026-08-28-agnir-0.1.0-release-readiness.md   # 稳定 0.1.0 版本冻结、发布就绪与最终 CI 证据
-│       ├── 2026-08-28-conformance-and-migration-audit-checkpoint.md # 早期 conformance / predecessor 审计 checkpoint；历史记录
-│       ├── 2026-08-28-durable-agent-activation.md        # AGENTS → README → AGNIR 持久激活、免重复提示与 fresh-Agent conformance 证据
-│       ├── 2026-08-28-external-memory-authorization.md   # external-memory authorization 语义验证证据
-│       ├── 2026-08-28-filesystem-boundaries.md           # symlink / Git worktree 等 filesystem boundary 证据
-│       ├── 2026-08-28-locator-chain-failures.md          # CYCLE / STALE / INCONSISTENT Locator Chain 证据
-│       ├── 2026-08-28-main-only-branch-cleanup-checkpoint.md # 只保留 main、历史分支改由 commit SHA 索引的 checkpoint
-│       ├── 2026-08-28-multi-project-workspace-isolation.md # multi-project workspace isolation 证据
-│       ├── 2026-08-28-negative-discovery-fixtures.md     # discovery failure vocabulary negative fixtures 证据
-│       ├── 2026-08-28-readme-agent-quick-start-checkpoint.md # README-first Agent Quick Start、初始化路径与 conformance 约束 checkpoint
-│       ├── 2026-08-28-readme-diagram-localization-checkpoint.md # 双语 README / Mermaid 本地化 checkpoint
-│       ├── 2026-08-28-readme-language-navigation-deferred-checkpoint.md # 暂缓同页语言切换、继续独立双语 README 导航的 checkpoint
-│       └── 2026-08-28-sqlite-non-repository-backend.md   # SQLite 非 repository backend storage-neutrality 证据
+│       ├── 2026-08-27-mainline-implementation.md
+│       ├── 2026-08-27-repository-rename-checkpoint.md
+│       ├── 2026-08-28-agnir-0.1.0-release-readiness.md
+│       ├── 2026-08-28-conformance-and-migration-audit-checkpoint.md
+│       ├── 2026-08-28-durable-agent-activation.md
+│       ├── 2026-08-28-external-memory-authorization.md
+│       ├── 2026-08-28-filesystem-boundaries.md
+│       ├── 2026-08-28-locator-chain-failures.md
+│       ├── 2026-08-28-main-only-branch-cleanup-checkpoint.md
+│       ├── 2026-08-28-multi-project-workspace-isolation.md
+│       ├── 2026-08-28-negative-discovery-fixtures.md
+│       ├── 2026-08-28-readme-agent-quick-start-checkpoint.md
+│       ├── 2026-08-28-readme-diagram-localization-checkpoint.md
+│       ├── 2026-08-28-readme-language-navigation-deferred-checkpoint.md
+│       └── 2026-08-28-sqlite-non-repository-backend.md
 │
-├── .github/                                              # GitHub 托管侧自动化配置
+├── .github/
 │   └── workflows/
-│       └── conformance.yml                               # CI：self-host Agent activation + cold start + executable conformance suite
+│       └── conformance.yml                               # CI：self-host + Skill / activation / Core/profile conformance
 │
-├── spec/                                                 # 当前 Agnir 协议层规范；不绑定具体 storage / execution surface
-│   ├── AGNIR_CORE.md                                     # 稳定 Core 0.1：durable continuity、identity、checkpoint 与版本兼容语义
-│   └── AGNIR_DISCOVERY.md                                # cold-start discovery、Locator Chain、failure vocabulary 等
+├── spec/                                                 # 当前 Agnir Core 协议层规范
+│   ├── AGNIR_CORE.md                                     # Core 0.1 durable continuity / identity / checkpoint / version semantics
+│   └── AGNIR_DISCOVERY.md                                # cold-start discovery / Locator Chain / failure vocabulary
 │
-├── profiles/                                             # 在 Core 之外定义具体 discovery / storage realization
-│   └── REPOSITORY_FILESYSTEM.md                          # `repository-filesystem/0.1` profile；含 Agent activation / initialization contract
+├── profiles/                                             # Core 之外的具体 discovery / storage realization
+│   └── REPOSITORY_FILESYSTEM.md                          # repository-filesystem/0.1；含 Agent activation/init contract
 │
-├── schemas/                                              # 具体 profile artifact 的机器可读 schema
-│   └── agnir-manifest.schema.json                        # 当前 repository/filesystem `AGNIR.yaml` manifest 的 JSON Schema
+├── schemas/
+│   └── agnir-manifest.schema.json                        # repository/filesystem AGNIR.yaml JSON Schema
 │
-├── conformance/                                          # executable pressure：证明当前 Core / profile 语义可被实现并正确失败
-│   ├── activation_reference.py                           # conformance-only：解析 AGENTS.md → README canonical Agnir activation
+├── conformance/                                          # executable pressure
+│   ├── activation_reference.py                           # AGENTS.md → README canonical activation resolver
 │   ├── agnir-0.1.md                                      # Agnir 0.1 stable conformance baseline
-│   ├── check_agnir_0_1.py                                # self-host Agent activation + cold start + stable release-readiness 检查
-│   ├── core_reference.py                                 # Core failure / shared semantics 的 conformance-only 参考定义
-│   ├── repository_filesystem_reference.py                # repository-filesystem profile 的 conformance-only resolver
-│   ├── external_memory_reference.py                      # external Discovery Record + authorization 的参考模型
-│   ├── locator_chain_reference.py                        # substrate-neutral Locator Chain failure 参考模型
-│   ├── sqlite_backend_reference.py                       # durable SQLite-style non-repository backend 参考模型
-│   ├── workspace_registry_reference.py                   # locator-only multi-project workspace registry 参考模型
-│   ├── test_agent_activation.py                          # prompt-free fresh Agent activation、locator/reference/duplication 负例测试
-│   ├── test_repository_filesystem_failures.py            # NOT_FOUND / UNRESOLVABLE / VERSION / MISMATCH / AMBIGUOUS 等失败测试
-│   ├── test_repository_filesystem_boundaries.py          # symlink escape、symlink entry point、真实 Git worktree 等边界测试
-│   ├── test_external_memory_authorization.py             # NOT_FOUND vs UNAUTHORIZED vs authorized-UNRESOLVABLE 测试
-│   ├── test_locator_chain_failures.py                    # CYCLE / STALE / INCONSISTENT 测试
-│   ├── test_sqlite_backend.py                            # 非 repository SQLite cold-start / checkpoint / fresh-resume 测试
-│   └── test_workspace_isolation.py                       # 多 Project 独立 authority 与 locator-only registry 隔离测试
+│   ├── check_agnir_0_1.py                                # self-host + Skill packaging + stable release-readiness checker
+│   ├── core_reference.py                                 # shared Core failure semantics reference
+│   ├── external_memory_reference.py                      # external memory + authorization reference model
+│   ├── locator_chain_reference.py                        # Locator Chain CYCLE / STALE / INCONSISTENT reference model
+│   ├── repository_filesystem_reference.py                # repository-filesystem resolver reference
+│   ├── sqlite_backend_reference.py                       # non-repository SQLite durable backend reference
+│   ├── workspace_registry_reference.py                   # locator-only multi-project workspace registry reference
+│   ├── test_agent_activation.py                          # prompt-free Project activation + negative fixtures
+│   ├── test_external_memory_authorization.py             # external authorization failure semantics
+│   ├── test_locator_chain_failures.py                    # cycle / stale / inconsistency tests
+│   ├── test_repository_filesystem_boundaries.py          # symlink / Git worktree filesystem boundaries
+│   ├── test_repository_filesystem_failures.py            # discovery failure fixtures
+│   ├── test_skill_package.py                             # root SKILL.md + one-line user prompt / Agent-procedure boundary tests
+│   ├── test_sqlite_backend.py                            # SQLite cold-start / checkpoint / fresh-resume
+│   └── test_workspace_isolation.py                       # multi-Project isolation tests
 │
-├── history/                                              # predecessor lineage 与可选历史指南；不属于 active Core
-│   ├── PREDECESSOR.md                                    # PPMP / Persistent Project Memory / Sandminni 前身历史定位；通过 commit SHA 定位
-│   ├── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；不参与 Core / conformance / release gate
-│   └── BRANCH_ARCHIVE.md                                 # 已删除分支及最终 tip SHA 的历史索引；main-only 治理记录
+├── history/                                              # predecessor lineage；不属于 active Core / Skill procedure
+│   ├── BRANCH_ARCHIVE.md                                 # 已删除 branch tip SHA 历史索引
+│   ├── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；非 release gate
+│   └── PREDECESSOR.md                                    # predecessor lineage 的 immutable commit 定位
 │
-├── AGENTS.md                                             # Agent-facing locator：指向 README.md 的 canonical Agnir Project Instructions
-├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；只引用当前 main
-├── RELEASE.md                                            # 0.1.0 稳定版的版本模型、activation gate、范围、限制与发布门槛
-├── README.md                                             # 英文入口：Quick Start + canonical Agnir activation + 架构/流程/仓库树
-├── README.zh-CN.md                                       # 简体中文入口：免重复提示使用路径 + 自包含初始化说明
-├── REPOSITORY_TREE.md                                    # 本文件：当前 main 的完整文件级仓库结构与职责说明
+├── SKILL.md                                              # canonical Agent Skill entrypoint；完整 install/use/checkpoint/repair procedure
+├── AGENTS.md                                             # 本仓库 Agent-facing locator：指向 README canonical Agnir Project Instructions
+├── AGNIR.yaml                                            # 本仓库 repository-filesystem/0.1 discovery anchor
+├── RELEASE.md                                            # 0.1.0 版本、Skill packaging、activation 与 publication gate
+├── README.md                                             # 英文入口：一句话用户安装提示 + Skill/架构/activation/continuity
+├── README.zh-CN.md                                       # 简体中文入口：一句话用户安装提示 + 同一 canonical 模型
+├── REPOSITORY_TREE.md                                    # 本文件：当前 main 完整 tracked file 级结构
 └── VERSION                                               # 仓库 SemVer；当前 0.1.0
 ```
 
 ## 如何使用这张树
 
-第一次使用 Agnir 时，先看 README 开头的 Quick Start；一个已经初始化好的 Agent-operable Project 不应要求用户重复粘贴 Agnir 提示词，而应由 `AGENTS.md` 定位到 README 中的 canonical Agnir activation instruction，再进入 `AGNIR.yaml` discovery。
+第一次安装 Agnir 时，用户只需要 README 开头的一句话提示词；Agent 找到本仓库后读取根目录 `SKILL.md`，由 Skill 持有完整 procedure。一个已经初始化好的 Agent-operable Project 不应要求用户再次粘贴 Agnir procedure，而应由目标 Project 自己的 `AGENTS.md → README → AGNIR.yaml` 路线完成 activation / discovery。
 
-第一次理解 Agnir 架构时，README 中的简略树已经足够；当你需要定位某个 Core 规范、profile、activation reference、negative fixture、evidence 或历史资料时，再查本页。
-
-本页不是第二套协议定义。**当前 Core 语义只以 `spec/` 为准，具体 repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准，机器可读约束以 `schemas/` 为准；`history/` 仅保存 lineage 和可选历史参考，不定义当前协议。**
+本页不是第二套协议或 Skill procedure。**Agent procedure 以根目录 `SKILL.md` 为准；Core 语义以 `spec/` 为准；repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准；机器可读 manifest 约束以 `schemas/` 为准；`history/` 仅保存 lineage。**
