@@ -94,8 +94,13 @@ Svif 是位于 `iorLab/svif` 的独立 **Project orchestration product**。当�
 
 ## Conformance
 
-运行当前 self-hosting check：
+运行本仓库的 self-hosting 结构检查，以及完整的可执行压力测试：
 
 ```bash
 python conformance/check_agnir_0_1.py
+python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
+
+当前测试覆盖：repository/filesystem cold start 与显式 discovery failures、持久化的非 repository SQLite realization、无明文凭据的 external-memory authorization、多 Project 的 locator-only workspace isolation、通用 Locator Chain 的 cycle / stale / inconsistency 语义、symlink 边界行为，以及真实 Git worktree cold start。
+
+真实 mount boundary 目前仍明确属于**未证明**项；只有在能够创建真实 mount 的测试环境中验证后才能声称覆盖，不能拿普通目录模拟 mount 来充当证据。
