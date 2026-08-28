@@ -6,6 +6,61 @@ Agnir is a **project-owned durable continuity protocol**.
 
 It exists so a Project can be safely resumed when Executors, execution environments, storage implementations, or conversational contexts change. The Project owns the durable continuity; execution surfaces do not.
 
+## 30-second Quick Start
+
+If your Agent can read and write the Project directory, the `repository-filesystem/0.1` profile does **not** require a daemon, account, GitHub integration, ChatGPT, or another special execution surface.
+
+### Use an existing Agnir Project
+
+Give the Agent the Project root and paste this prompt:
+
+```text
+Use Agnir for this Project. Treat the Project root as the authorized Project Entry Point. Before doing work, read the top-level AGNIR.yaml and follow its declared memory locators. Load Current State and Next Actions, and load Decisions and Evidence when relevant. Treat durable Agnir memory as canonical over chat history or private Agent memory. When I say checkpoint, save progress, or finish, reconcile material updates into the declared Agnir memory and verify the Project can cold-start again from the same entry point.
+```
+
+For an Agent that already has filesystem access, that is enough to start using an Agnir-enabled Project.
+
+### Initialize Agnir in a new Project
+
+You can also ask an Agent to create the minimum repository/filesystem setup for you:
+
+```text
+Initialize Agnir Core 0.1 for this Project using repository-filesystem/0.1. Create a top-level AGNIR.yaml with a durable project.identity and locators for .agnir/state.md, .agnir/next-actions.md, .agnir/decisions.md, and .agnir/evidence/. Create those files/directories with minimal initial content, including one tracked initialization evidence file. Then cold-start from the Project root, read AGNIR.yaml, verify every locator resolves, and use Agnir for future checkpoint/resume.
+```
+
+The minimum manifest can look like this:
+
+```yaml
+agnir:
+  version: "0.1"
+  discovery_profile: "repository-filesystem/0.1"
+
+project:
+  identity: "urn:example:project:my-project"
+
+memory:
+  state: ".agnir/state.md"
+  next_actions: ".agnir/next-actions.md"
+  decisions: ".agnir/decisions.md"
+  evidence: ".agnir/evidence/"
+
+policy:
+  checkpoint: event-driven
+```
+
+With a simple colocated layout:
+
+```text
+.agnir/
+├── state.md              # current truth needed to continue safely
+├── next-actions.md       # outstanding work and priorities
+├── decisions.md          # durable accepted decisions and rationale
+└── evidence/
+    └── initialization.md # first tracked checkpoint/evidence file
+```
+
+The files can start small. The important rule is that facts required for a future Executor to continue safely must live in the declared durable memory, not only in a chat or one Agent's private context.
+
 ## Architecture Diagram
 
 ```mermaid
@@ -128,7 +183,7 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif curr
 
 `README.md` and `README.zh-CN.md` are maintained as parallel entry points. Any change to Agnir's layer model, discovery path, durable-memory semantics, Project boundary, or continuity flow **must update the affected README diagrams in both language versions in the same change set**. The diagrams represent the current architecture and flow.
 
-The plain-text **Repository Structure** tree remains a compact navigation view. The exhaustive companion **`REPOSITORY_TREE.md`** is the file-level map of the active repository and must be updated whenever tracked files are added, removed, moved, or materially change responsibility. If the change affects the compact tree, both README language versions must update it in the same change set as well.
+The README must keep the operational Quick Start before architecture material so a new user can start with an Agent without first learning the protocol internals. The plain-text **Repository Structure** tree remains a compact navigation view. The exhaustive companion **`REPOSITORY_TREE.md`** is the file-level map of the active repository and must be updated whenever tracked files are added, removed, moved, or materially change responsibility. If the change affects the compact tree, both README language versions must update it in the same change set as well.
 
 ## Conformance
 
