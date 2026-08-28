@@ -21,11 +21,11 @@ Agnir is the active project/protocol identity on `main`. PPMP v2.0.0 / Persisten
 
 ## Relationship to Svif
 
-Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif's stable kernel depends on a Continuity Provider interface; the current founding implementation uses Agnir Core `0.1` through an Agnir adapter. Agnir remains independently useful and does not absorb Svif execution, delivery, provider, or authority semantics.
+Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif's stable kernel depends on a Continuity Provider interface; the current founding implementation uses Agnir Core `0.1` through an Agnir adapter. Agnir remains independently useful and does not absorb Svif execution, delivery, provider, authority, or distribution semantics.
 
 ## README architecture documentation
 
-The repository has parallel English and Simplified Chinese entry points: `README.md` and `README.zh-CN.md`. Both contain current Architecture and Continuity Flow Mermaid diagrams. Architecture/continuity changes require both languages to be updated in the same change set; localized diagrams are comprehension-first rather than literal translations.
+The repository has parallel English and Simplified Chinese entry points: `README.md` and `README.zh-CN.md`. Both contain current Architecture and Continuity Flow Mermaid diagrams and expose the active conformance commands. Architecture/continuity changes require both languages to be updated in the same change set; localized diagrams are comprehension-first rather than literal translations.
 
 ## Conformance coverage
 
@@ -49,9 +49,19 @@ The first worktree fixture correctly failed because its declared Evidence direct
 
 Real mount-boundary behavior remains unproven and must not be represented by a fake ordinary-directory test.
 
+## Predecessor migration audit
+
+The migration specification remains explicitly **PPMP v2 -> Agnir 0.1**. Current accessible real predecessor Projects inspected during the migration audit do not provide a second external Project with a clear PPMP v2.0.0 manifest.
+
+`iorLab/svif@legacy/zerolocal-v0.1` is genuine external predecessor evidence relative to Agnir and is suitable for validating predecessor-memory -> Agnir semantic migration. Its `.chatgpt/project-memory.yaml`, however, is an earlier v1/RPM-era serialization rather than PPMP v2.0.0. `mattamior/agent-skills` likewise carries an older `.chatgpt/project-memory.yaml` form.
+
+These older real Projects MUST NOT be relabeled as PPMP v2 fixtures. They MAY validate predecessor fallback semantics and durable-knowledge preservation, but exact external PPMP v2 migration evidence remains unmet unless a qualifying Project is found or an explicitly classified non-historical PPMP v2 fixture is introduced.
+
+The Svif predecessor audit already exposed one material migration regression: ZeroLocal predecessor state explicitly preserved `installable-plugin` as long-term product intent, while the rewritten Svif state had generalized this to `distribution` and lost the exact durable intent. Svif is restoring the Plugin target. This confirms that Agnir migration validation must compare material Project knowledge, not merely verify that target locator files exist.
+
 ## Current implementation status
 
-The active Agnir main line now has a broad executable Core `0.1` conformance baseline across storage-neutral, authorization, multi-project, failure-class, and repository/filesystem boundary cases. The remaining release-pressure work is primarily predecessor migration validation, a real mount case when an appropriate environment exists, and final compatibility/release notation.
+The active Agnir main line has a broad executable Core `0.1` conformance baseline across storage-neutral, authorization, multi-project, failure-class, and repository/filesystem boundary cases. The remaining release-pressure work is primarily migration reconciliation and final compatibility/release notation.
 
 This remains a working `0.1` development contract, not yet a final release.
 
@@ -64,8 +74,10 @@ This remains a working `0.1` development contract, not yet a final release.
 - Multi-project workspace isolation: `.agnir/evidence/2026-08-28-multi-project-workspace-isolation.md`, run `33143930233` success.
 - Locator Chain failures: `.agnir/evidence/2026-08-28-locator-chain-failures.md`, run `33144042330` success.
 - Filesystem boundaries: `.agnir/evidence/2026-08-28-filesystem-boundaries.md`; corrected run `33144199717`, job `98761550583`, success.
+- Conformance / migration-audit checkpoint: `.agnir/evidence/2026-08-28-conformance-and-migration-audit-checkpoint.md`.
+- Pre-checkpoint head `16adfdf69156eda5393f94495f250dccdff27117`; Agnir conformance run `33144314449` success.
 
-Resume point: validate PPMP v2 -> Agnir migration against external predecessor evidence, then determine the final Agnir Core `0.1` compatibility/release notation. A real mount-boundary case remains optional until a mount-capable environment is available.
+Resume point: complete a real predecessor-memory -> Agnir migration evidence envelope using the Svif predecessor while clearly labeling it as pre-PPMP-v2/v1-era evidence; then reconcile whether exact external PPMP v2 evidence is required for Core `0.1` release and freeze compatibility notation accordingly. A real mount-boundary case remains unproven until an appropriate environment is available.
 
 ## Branch governance
 
