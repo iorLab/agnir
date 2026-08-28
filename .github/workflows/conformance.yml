@@ -16,4 +16,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python conformance/check_agnir_0_1.py
+      - name: Self-hosting cold-start conformance
+        run: python conformance/check_agnir_0_1.py
+      - name: Negative discovery fixtures
+        run: python -m unittest discover -s conformance -p 'test_*.py' -v
