@@ -30,18 +30,18 @@ agnir/                                                    # Agnir Core / profile
 │       └── conformance.yml                               # CI：self-host cold start + executable conformance suite
 │
 ├── spec/                                                 # 当前 Agnir 协议层规范；不绑定具体 storage / execution surface
-│   ├── AGNIR_CORE.md                                     # Core 0.1：durable continuity、identity、checkpoint 等核心语义
+│   ├── AGNIR_CORE.md                                     # Core 0.1：durable continuity、identity、checkpoint 与版本兼容语义
 │   └── AGNIR_DISCOVERY.md                                # cold-start discovery、Locator Chain、failure vocabulary 等
 │
 ├── profiles/                                             # 在 Core 之外定义具体 discovery / storage realization
-│   └── REPOSITORY_FILESYSTEM.md                          # 当前 `repository-filesystem/0.1` profile
+│   └── REPOSITORY_FILESYSTEM.md                          # 当前 `repository-filesystem/0.1` profile；greenfield discovery contract
 │
 ├── schemas/                                              # 具体 profile artifact 的机器可读 schema
 │   └── agnir-manifest.schema.json                        # 当前 repository/filesystem `AGNIR.yaml` manifest 的 JSON Schema
 │
 ├── conformance/                                          # executable pressure：证明当前 Core / profile 语义可被实现并正确失败
-│   ├── agnir-0.1.md                                      # Agnir 0.1 conformance baseline 的人类可读说明
-│   ├── check_agnir_0_1.py                                # self-hosting cold start + active repository 结构检查
+│   ├── agnir-0.1.md                                      # Agnir 0.1 release-candidate conformance baseline
+│   ├── check_agnir_0_1.py                                # self-hosting cold start + release-readiness 结构/版本检查
 │   ├── core_reference.py                                 # Core failure / shared semantics 的 conformance-only 参考定义
 │   ├── repository_filesystem_reference.py                # repository-filesystem profile 的 conformance-only resolver
 │   ├── external_memory_reference.py                      # external Discovery Record + authorization 的参考模型
@@ -60,11 +60,12 @@ agnir/                                                    # Agnir Core / profile
 │   ├── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；不参与 Core / conformance / release gate
 │   └── BRANCH_ARCHIVE.md                                 # 已删除分支及最终 tip SHA 的历史索引；main-only 治理记录
 │
-├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；不是 Core 普遍要求
-├── README.md                                             # 英文项目入口：架构图、Continuity Flow、简略仓库树
+├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；只引用当前 main
+├── RELEASE.md                                            # 0.1 release candidate 的版本模型、范围、已知限制与发布门槛
+├── README.md                                             # 英文项目入口：架构图、Continuity Flow、简略仓库树与 release status
 ├── README.zh-CN.md                                       # 简体中文项目入口；与英文版保持同一 canonical protocol 语义
 ├── REPOSITORY_TREE.md                                    # 本文件：当前 main 的完整文件级仓库结构与职责说明
-└── VERSION                                               # 当前 Agnir development version
+└── VERSION                                               # 仓库 SemVer；当前 0.1.0-rc.1
 ```
 
 ## 如何使用这张树
