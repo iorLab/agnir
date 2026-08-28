@@ -1,0 +1,72 @@
+# Repository Tree / 目录树
+
+本页是 `iorLab/agnir` 当前 `main` 的**完整文件级仓库结构说明**。README 中的仓库树只用于快速导航；这里把当前 tracked 目录与文件全部展开，并在右侧说明它们在协议、profile、conformance 和本 Project continuity 中的职责。
+
+维护规则：只要仓库新增、删除、移动文件，或者某个目录 / 文件的职责发生实质变化，就必须在同一个 change set 中同步更新本页；README 中的简略目录树若受影响，也必须一起更新。
+
+> 本页解释的是当前 active `main`。Git 内部元数据（例如 `.git/`）不属于仓库 tracked 内容，因此不列出。
+
+```text
+agnir/                                                    # Agnir Core / profiles / conformance 主仓库
+├── .agnir/                                               # Agnir 项目自身的 canonical durable continuity
+│   ├── state.md                                          # 当前 Project 状态与已验证事实
+│   ├── next-actions.md                                   # 下次恢复时继续推进的 durable work
+│   ├── decisions.md                                      # 已确认的协议、profile、conformance 与文档决策
+│   └── evidence/                                         # checkpoint、conformance 与迁移审计证据
+│       ├── 2026-08-27-mainline-implementation.md         # 新 main-line Agnir 结构落地证据
+│       ├── 2026-08-27-repository-rename-checkpoint.md    # 仓库更名 / canonical identity checkpoint
+│       ├── 2026-08-28-conformance-and-migration-audit-checkpoint.md # conformance 与 predecessor migration 审计 checkpoint
+│       ├── 2026-08-28-external-memory-authorization.md   # external-memory authorization 语义验证证据
+│       ├── 2026-08-28-filesystem-boundaries.md           # symlink / Git worktree 等 filesystem boundary 证据
+│       ├── 2026-08-28-locator-chain-failures.md          # CYCLE / STALE / INCONSISTENT Locator Chain 证据
+│       ├── 2026-08-28-multi-project-workspace-isolation.md # multi-project workspace isolation 证据
+│       ├── 2026-08-28-negative-discovery-fixtures.md     # discovery failure vocabulary negative fixtures 证据
+│       ├── 2026-08-28-readme-diagram-localization-checkpoint.md # 双语 README / Mermaid 本地化 checkpoint
+│       └── 2026-08-28-sqlite-non-repository-backend.md   # SQLite 非 repository backend storage-neutrality 证据
+│
+├── .github/                                              # GitHub 托管侧自动化配置
+│   └── workflows/
+│       └── conformance.yml                               # CI：self-host cold start + executable conformance suite
+│
+├── spec/                                                 # Agnir 协议层规范；不绑定具体 storage / execution surface
+│   ├── AGNIR_CORE.md                                     # Core 0.1：durable continuity、identity、checkpoint 等核心语义
+│   ├── AGNIR_DISCOVERY.md                                # cold-start discovery、Locator Chain、failure vocabulary 等
+│   └── MIGRATION_PPMP_V2.md                              # PPMP v2 / predecessor → Agnir 的显式迁移要求
+│
+├── profiles/                                             # 在 Core 之外定义具体 discovery / storage realization
+│   └── REPOSITORY_FILESYSTEM.md                          # 当前 `repository-filesystem/0.1` profile
+│
+├── schemas/                                              # 具体 profile artifact 的机器可读 schema
+│   └── agnir-manifest.schema.json                        # 当前 repository/filesystem `AGNIR.yaml` manifest 的 JSON Schema
+│
+├── conformance/                                          # executable pressure：证明 Core / profile 语义可被实现并正确失败
+│   ├── agnir-0.1.md                                      # Agnir 0.1 conformance baseline 的人类可读说明
+│   ├── check_agnir_0_1.py                                # self-hosting cold start + active repository 结构检查
+│   ├── core_reference.py                                 # Core failure / shared semantics 的 conformance-only 参考定义
+│   ├── repository_filesystem_reference.py                # repository-filesystem profile 的 conformance-only resolver
+│   ├── external_memory_reference.py                      # external Discovery Record + authorization 的参考模型
+│   ├── locator_chain_reference.py                        # substrate-neutral Locator Chain failure 参考模型
+│   ├── sqlite_backend_reference.py                       # durable SQLite-style non-repository backend 参考模型
+│   ├── workspace_registry_reference.py                   # locator-only multi-project workspace registry 参考模型
+│   ├── test_repository_filesystem_failures.py            # NOT_FOUND / UNRESOLVABLE / VERSION / MISMATCH / AMBIGUOUS 等失败测试
+│   ├── test_repository_filesystem_boundaries.py          # symlink escape、symlink entry point、真实 Git worktree 等边界测试
+│   ├── test_external_memory_authorization.py             # NOT_FOUND vs UNAUTHORIZED vs authorized-UNRESOLVABLE 测试
+│   ├── test_locator_chain_failures.py                    # CYCLE / STALE / INCONSISTENT 测试
+│   ├── test_sqlite_backend.py                            # 非 repository SQLite cold-start / checkpoint / fresh-resume 测试
+│   └── test_workspace_isolation.py                       # 多 Project 独立 authority 与 locator-only registry 隔离测试
+│
+├── history/                                              # predecessor lineage；只作历史，不属于 active Core
+│   └── PREDECESSOR.md                                    # PPMP / Persistent Project Memory / Sandminni 前身历史定位
+│
+├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；不是 Core 普遍要求
+├── README.md                                             # 英文项目入口：架构图、Continuity Flow、简略仓库树
+├── README.zh-CN.md                                       # 简体中文项目入口；与英文版保持同一 canonical protocol 语义
+├── REPOSITORY_TREE.md                                    # 本文件：当前 main 的完整文件级仓库结构与职责说明
+└── VERSION                                               # 当前 Agnir development version
+```
+
+## 如何使用这张树
+
+第一次理解 Agnir 时，README 中的简略树已经足够；当你需要定位某个 Core 规范、profile、reference model、negative fixture、evidence 或 migration 文件时，再查本页。
+
+本页不是第二套协议定义。**Core 语义仍以 `spec/` 为准，具体 repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准，机器可读约束以 `schemas/` 为准；本页负责把这些职责映射回仓库中的实际文件位置。**
