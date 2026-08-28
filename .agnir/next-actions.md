@@ -1,36 +1,32 @@
 # Agnir Next Actions
 
-Agnir `0.1.0` is release-ready. Development work required for the initial stable release is complete.
+Agnir `0.1.0` is release-ready. Development work required for the initial stable release is complete, including durable Agent activation for Agent-operable `repository-filesystem/0.1` Projects.
 
 1. **Publication only:** after explicit authorization, create tag `v0.1.0` on the intended publication commit and/or create the GitHub Release.
-2. After publication, keep Core `0.1` and `repository-filesystem/0.1` frozen as compatibility lines. Any `0.1.x` maintenance must remain non-breaking.
-3. Reconcile any future Svif dependency updates against the stable Agnir Core/profile compatibility lines, not repository internals or historical material.
-4. Keep a real mount-boundary case as optional additional evidence when a real mount-capable test environment exists; do not represent ordinary directories as mount evidence.
-5. Keep the current bilingual README navigation (`README.md` ↔ `README.zh-CN.md`) unchanged unless the Project explicitly revisits same-page language UX. This is not a publication blocker.
+2. After publication, keep Core `0.1` and `repository-filesystem/0.1` frozen compatibility lines. Any `0.1.x` maintenance must remain non-breaking.
+3. Preserve the Agent activation invariant for Agent-operable repository Projects: Project root → `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → durable memory.
+4. Existing initialized Projects should not require a recurring Agnir bootstrap prompt; if an execution surface ignores Project instruction files, handle that as one-time surface configuration rather than duplicating Agnir rules in user prompts.
+5. Keep `AGENTS.md` locator-only and the README Agnir section canonical; do not let the two drift into competing instruction copies.
+6. Reconcile future Svif dependency updates against stable Agnir Core/profile semantics, not repository internals or historical material.
+7. Keep real mount-boundary validation as optional additional evidence when a real mount-capable environment exists; do not represent ordinary directories as mount evidence.
+8. Keep the current bilingual README navigation (`README.md` ↔ `README.zh-CN.md`) unchanged unless the Project explicitly revisits same-page language UX.
 
-## Documentation maintenance rule
+## Documentation and conformance maintenance
 
-- Both `README.md` and `README.zh-CN.md` must keep an operational Quick Start before the Architecture Diagram.
-- The Quick Start must preserve two usable paths: using an existing Agnir Project and initializing a new Project.
-- The Quick Start must retain enough minimal `AGNIR.yaml` and `.agnir/` detail for an Agent with Project-directory read/write access to act without separate setup documentation.
-- Architecture/continuity changes are incomplete until the corresponding diagrams and affected explanatory sections in both `README.md` and `README.zh-CN.md` are updated in the same change set.
-- Localized diagrams are comprehension-first rather than literal translations.
-- README repository trees remain compact navigation views.
-- `REPOSITORY_TREE.md` is the exhaustive file-level repository map. Tracked file additions/removals/moves or material responsibility changes must update it in the same change set; if the compact tree is affected, both README language versions must update together.
+- Both READMEs must keep the operational Quick Start before architecture material.
+- Existing-Project Quick Start must state that correctly initialized Projects do not need a repeated Agnir prompt.
+- New-Project initialization must remain self-contained and install the README canonical activation section plus root `AGENTS.md` locator while preserving unrelated existing content.
+- Architecture/continuity changes must update both language diagrams in the same change set.
+- `REPOSITORY_TREE.md` must track added/removed/moved files and material responsibility changes.
+- Self-hosting conformance must continue to resolve Agent activation before `AGNIR.yaml` discovery and run the full `test_*.py` suite.
 
 ## Stable release baseline completed
 
-- Core compatibility line `0.1` frozen.
-- Repository/filesystem profile compatibility line `repository-filesystem/0.1` frozen.
-- Repository release SemVer set to `0.1.0`.
-- Stable Core version semantics are normative in `spec/AGNIR_CORE.md`.
-- Active profile no longer contains predecessor bootstrap fallback.
-- `AGNIR.yaml` no longer references retired predecessor branches.
-- `RELEASE.md` defines the publication contract and known limitation.
-- All nine discovery failure classes have executable conformance pressure.
-- Non-repository SQLite continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start are covered.
-- Stable publication candidate `846d794384e24f4d0431bb72b0f1036c60503bdd` passed conformance run `33161463275`.
-- Release-readiness evidence is `.agnir/evidence/2026-08-28-agnir-0.1.0-release-readiness.md`.
-- Bilingual operational Quick Start enforcement commit `820d8847bba4bc825740972bda19d3cc22378ad0` passed conformance run `33162899443`; checkpoint evidence is `.agnir/evidence/2026-08-28-readme-agent-quick-start-checkpoint.md`.
-- Same-page README language navigation was explicitly deferred; current separate-document navigation remains intentional. Evidence: `.agnir/evidence/2026-08-28-readme-language-navigation-deferred-checkpoint.md`.
-- Main-only branch governance remains in force; retired branch tips are indexed in `history/BRANCH_ARCHIVE.md`.
+- Core compatibility `0.1` frozen.
+- Repository/filesystem profile compatibility `repository-filesystem/0.1` frozen for first publication.
+- Repository SemVer `0.1.0`.
+- All nine discovery failure classes have executable pressure.
+- Non-repository SQLite continuity, external authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start are covered.
+- Durable Agent activation implementation head `39d1e029e2b6fe8d47417f1e60c10dcbb0aef80c` passed conformance run `33165874089`.
+- Activation evidence: `.agnir/evidence/2026-08-28-durable-agent-activation.md`.
+- Main-only branch governance remains in force.
