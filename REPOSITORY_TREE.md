@@ -55,8 +55,9 @@ agnir/                                                    # Agnir Core / profile
 │   └── test_workspace_isolation.py                       # 多 Project 独立 authority 与 locator-only registry 隔离测试
 │
 ├── history/                                              # predecessor lineage 与可选历史指南；不属于 active Core
-│   ├── PREDECESSOR.md                                    # PPMP / Persistent Project Memory / Sandminni 前身历史定位
-│   └── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；不参与 Core / conformance / release gate
+│   ├── PREDECESSOR.md                                    # PPMP / Persistent Project Memory / Sandminni 前身历史定位；通过 commit SHA 定位
+│   ├── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；不参与 Core / conformance / release gate
+│   └── BRANCH_ARCHIVE.md                                 # 已删除分支及最终 tip SHA 的历史索引；main-only 治理记录
 │
 ├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；不是 Core 普遍要求
 ├── README.md                                             # 英文项目入口：架构图、Continuity Flow、简略仓库树
