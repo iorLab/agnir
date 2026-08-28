@@ -25,6 +25,7 @@ agnir/                                                    # Agnir Core / profile
 │       ├── 2026-08-28-negative-discovery-fixtures.md     # discovery failure vocabulary negative fixtures 证据
 │       ├── 2026-08-28-readme-agent-quick-start-checkpoint.md # README-first Agent Quick Start、初始化路径与 conformance 约束 checkpoint
 │       ├── 2026-08-28-readme-diagram-localization-checkpoint.md # 双语 README / Mermaid 本地化 checkpoint
+│       ├── 2026-08-28-readme-language-navigation-deferred-checkpoint.md # 暂缓同页语言切换、继续独立双语 README 导航的 checkpoint
 │       └── 2026-08-28-sqlite-non-repository-backend.md   # SQLite 非 repository backend storage-neutrality 证据
 │
 ├── .github/                                              # GitHub 托管侧自动化配置
