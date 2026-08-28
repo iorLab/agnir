@@ -19,6 +19,7 @@ agnir/                                                    # Agnir Core / profile
 │       ├── 2026-08-28-external-memory-authorization.md   # external-memory authorization 语义验证证据
 │       ├── 2026-08-28-filesystem-boundaries.md           # symlink / Git worktree 等 filesystem boundary 证据
 │       ├── 2026-08-28-locator-chain-failures.md          # CYCLE / STALE / INCONSISTENT Locator Chain 证据
+│       ├── 2026-08-28-main-only-branch-cleanup-checkpoint.md # 只保留 main、历史分支改由 commit SHA 索引的 checkpoint
 │       ├── 2026-08-28-multi-project-workspace-isolation.md # multi-project workspace isolation 证据
 │       ├── 2026-08-28-negative-discovery-fixtures.md     # discovery failure vocabulary negative fixtures 证据
 │       ├── 2026-08-28-readme-diagram-localization-checkpoint.md # 双语 README / Mermaid 本地化 checkpoint
