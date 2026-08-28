@@ -1,28 +1,29 @@
 # Agnir Next Actions
 
-1. **Complete a real predecessor-memory -> Agnir migration evidence envelope using `iorLab/svif@legacy/zerolocal-v0.1`.** Treat it as genuine predecessor evidence but classify its `.chatgpt/project-memory.yaml` as earlier v1/RPM-era serialization, not PPMP v2. The envelope must show what material durable knowledge was preserved, what was intentionally retired, and which migration regressions were discovered/repaired.
-2. **Resolve the exact PPMP v2 external-fixture requirement before release freeze.** No qualifying second external Project with a clear PPMP v2.0.0 manifest was found in the current audit. Do not relabel older v1/RPM Projects as PPMP v2. Decide whether Core `0.1` release requires a genuinely historical external PPMP v2 Project or whether an explicitly classified PPMP v2 conformance fixture plus real older-predecessor migration evidence is sufficient.
-3. **Freeze Agnir Core `0.1` release compatibility notation** only after the migration evidence decision is explicit, using the accumulated repository/filesystem, non-repository, authorization, multi-project, Locator Chain, and boundary evidence.
-4. Keep a **real mount-boundary case** explicitly unproven until a mount-capable test environment is available; do not block Core release solely on a fake or simulated mount test.
-5. Coordinate Svif's continuity dependency against the protocol line only; do not leak Svif execution, delivery, provider, authority, or distribution semantics into Agnir Core.
-6. Keep incidental branch cleanup deferred until the new version is substantially complete; preserve `legacy/ppmp-v2.0.0` unchanged as predecessor history.
+1. **Record the Core `0.1` compatibility/release freeze in `.agnir/decisions.md`.** Preserve the now-frozen separation between Core compatibility (`"0.1"`), profile compatibility (`repository-filesystem/0.1`), and repository SemVer (`0.1.0-rc.1` -> stable `0.1.0`).
+2. **Create a final RC evidence record** covering the real ZeroLocal predecessor audit, exact PPMP v2 migration fixture, frozen compatibility semantics, and the final all-green conformance head.
+3. **Run a final stale-wording/release-boundary audit** across normative and user-facing docs. Remove or qualify any wording that still incorrectly describes the line as an unfrozen development contract, while preserving `0.1.0-rc.1` as pre-release rather than claiming stable publication.
+4. **Coordinate Svif against the Core compatibility line `"0.1"`.** Svif must not bind itself to a particular Agnir repository patch release, backend, adapter, or repository layout.
+5. Keep the **real mount-boundary case** explicitly unproven until a mount-capable environment is available; do not invent a fake mount fixture and do not block RC solely on its absence.
+6. **Do not create a public GitHub Release/tag without explicit authorization.** Repository RC preparation is authorized by the current development workflow; public release publication is a separate external effect.
+7. Keep incidental branch cleanup deferred until the new version is substantially complete; preserve `legacy/ppmp-v2.0.0` unchanged as predecessor history.
+
+## Completed in the current sequence
+
+- Real non-fixture predecessor migration audit completed using `iorLab/svif@legacy/zerolocal-v0.1`; classified correctly as v1/RPM-era evidence rather than PPMP v2.
+- The audit compared material durable knowledge and caught/repaired the lost `installable-plugin` product intent in Svif.
+- The release criterion requiring a second independently hosted historical PPMP v2 Project was rejected as non-semantic historical availability.
+- Canonical exact PPMP v2 source remains `legacy/ppmp-v2.0.0` at commit `3bd3938ea00276eb51ca51c6c7ee1264d862acd4`.
+- Exact PPMP v2 -> Agnir executable migration conformance was added under `conformance/fixtures/ppmp-v2/`, `conformance/ppmp_v2_migration_reference.py`, and `conformance/test_ppmp_v2_migration.py`.
+- The fixture preserves material state / next actions / decisions / checkpoint evidence, cold-starts the migrated target through current Agnir discovery, and rejects v1/RPM serialization as PPMP v2.
+- Full conformance including the migration fixture passed in run `33150059494` (job `98779726021`).
+- Core `0.1` version/compatibility semantics were frozen in `spec/AGNIR_CORE.md`.
+- Repository `VERSION` advanced from `0.1.0-dev` to **`0.1.0-rc.1`**.
+- English and Simplified Chinese READMEs now describe the RC line and the frozen versioning model.
 
 ## Documentation maintenance rule
 
-- Architecture/continuity changes are incomplete until the corresponding diagrams and affected explanatory sections in both `README.md` and `README.zh-CN.md` are updated in the same change set.
-- Localized diagrams are comprehension-first rather than literal translations.
+- Architecture/continuity changes update affected diagrams and explanations in both `README.md` and `README.zh-CN.md` in the same change set.
+- Localized diagrams remain comprehension-first.
 - README repository trees remain compact navigation views.
-- `REPOSITORY_TREE.md` is the exhaustive file-level repository map. Tracked file additions/removals/moves or material responsibility changes must update it in the same change set; if the compact tree is affected, both README language versions must update together.
-
-## Completed conformance/documentation baseline
-
-- Every named Agnir Core `0.1` discovery failure class has executable pressure.
-- Durable non-repository SQLite continuity proves storage neutrality, including checkpoint and fresh-resolver resume.
-- External-memory authorization distinguishes missing Discovery Record, denied authorization reference, and authorized-but-unresolvable memory without plaintext credentials.
-- Multi-project workspace isolation proves locator-only registry metadata cannot become shared Project truth.
-- Generic Locator Chain fixtures cover cycle, stale, and materially inconsistent continuity.
-- Repository/filesystem boundary tests prove symlinked Project Entry Point behavior, reject implicit symlink escape, and cold-start a real Git worktree.
-- English and Simplified Chinese READMEs contain synchronized Architecture / Continuity diagrams plus compact annotated repository trees.
-- `REPOSITORY_TREE.md` now provides the complete tracked file-level repository map with responsibility annotations.
-- Self-hosting conformance enforces the documentation baseline without byte-for-byte prose locking.
-- Pre-checkpoint repository-documentation head `0ca0982a6807acd4af3bf945601f85a5882b88bc` passed conformance run `33146757923`.
+- `REPOSITORY_TREE.md` is the exhaustive tracked file-level map and must be updated whenever tracked files are added, removed, moved, or materially change responsibility.
