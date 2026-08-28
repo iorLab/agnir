@@ -142,3 +142,11 @@
 - These prompts are operational examples, not additional Core normative fields or execution-surface requirements. Agent-specific wording MAY evolve while preserving the same Agnir semantics.
 - Self-hosting conformance enforces Quick Start position and structural content without byte-for-byte locking prompt prose.
 - Quick Start enforcement commit `820d8847bba4bc825740972bda19d3cc22378ad0` passed conformance run `33162899443`; durable evidence is `.agnir/evidence/2026-08-28-readme-agent-quick-start-checkpoint.md`.
+
+## 2026-08-28 — Keep separate bilingual README navigation for now
+
+- `README.md` and `README.zh-CN.md` remain separate language entry documents and continue linking to each other normally.
+- Same-page language switching via anchors, collapsible sections, or other GitHub Markdown techniques is deliberately deferred.
+- This is a documentation UX choice, not a Core `0.1` semantic rule, profile compatibility rule, or publication gate.
+- Future work MAY revisit same-page language navigation only after an explicit Project decision; until then, do not change the current bilingual navigation behavior as unfinished cleanup.
+- Durable evidence: `.agnir/evidence/2026-08-28-readme-language-navigation-deferred-checkpoint.md`.
