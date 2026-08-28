@@ -2,7 +2,7 @@
 
 > **Status:** historical / optional migration guidance. This document is **not** part of the active Agnir Core `0.1` specification, conformance baseline, compatibility contract, or release gate.
 
-PPMP v2.0.0 / Persistent Project Memory / Sandminni is predecessor history preserved on `legacy/ppmp-v2.0.0`. Agnir `main` is a greenfield protocol line and does not require backward compatibility with PPMP.
+PPMP v2.0.0 / Persistent Project Memory / Sandminni predecessor history is anchored at commit `3bd3938ea00276eb51ca51c6c7ee1264d862acd4` and indexed through `history/PREDECESSOR.md` and `history/BRANCH_ARCHIVE.md`. Agnir `main` is a greenfield protocol line and does not require backward compatibility with PPMP or a live legacy branch.
 
 This guide exists only for a consumer that deliberately chooses to migrate an old PPMP Project into a new Agnir Project. Such a migration is explicit and semantic; renaming files or products is insufficient.
 
