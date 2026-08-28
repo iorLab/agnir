@@ -2,7 +2,7 @@
 
 ## 2026-08-27 — New main-line structure
 
-- `main` implements the Agnir identity directly; predecessor PPMP/PPM/Sandminni behavior is preserved on `legacy/ppmp-v2.0.0` rather than retained as the active structure.
+- `main` implements the Agnir identity directly; predecessor PPMP/PPM/Sandminni behavior is historical lineage rather than active structure.
 - Top-level `AGNIR.yaml` is the normative discovery anchor for the `repository-filesystem/0.1` profile. This filename is a profile rule, not an Agnir Core rule.
 - This Project uses `.agnir/` for colocated durable memory. The directory is an implementation/profile choice; `AGNIR.yaml` locators are authoritative.
 - Agnir Core version is declared as string `"0.1"`. Profile versions use `<profile-name>/<major.minor>` such as `repository-filesystem/0.1`.
@@ -23,7 +23,6 @@
 - The active canonical repository is `iorLab/agnir`; it was renamed from `mattamior/rpm` and transferred into the `iorLab` organization.
 - Svif is canonical at `iorLab/svif`.
 - A standalone Svif Cloudflare reference existed during migration/validation but is no longer part of the active canonical topology; provider-specific Svif Cloudflare behavior is now owned inside `iorLab/svif`.
-- The predecessor branch `legacy/ppmp-v2.0.0` is intentionally not renamed; it preserves predecessor identity and history.
 - Repository redirects are compatibility behavior rather than canonical Project identity.
 - Repository naming is a discovery/profile metadata concern, not an Agnir Core storage or execution dependency.
 
@@ -97,10 +96,10 @@
 - If a documented directory is added, removed, moved, or materially changes responsibility, `README.md` and `README.zh-CN.md` MUST update the affected tree in the same change set.
 - Self-hosting conformance checks enforce the presence of the explanatory tree and key anchors without byte-for-byte locking the full presentation.
 
-## 2026-08-28 — Greenfield Core; legacy is history only
+## 2026-08-28 — Greenfield Core; history is non-authoritative
 
 - This decision supersedes any interpretation that Agnir Core `0.1` release readiness depends on PPMP/PPM/Sandminni migration or predecessor compatibility.
-- `legacy/ppmp-v2.0.0` and other predecessor artifacts are retained only for lineage, audit, and optional historical reference.
+- Predecessor artifacts are retained only for lineage, audit, and optional historical reference.
 - Active Core semantics, profiles, conformance, release gates, Project state, and next actions MUST NOT depend on predecessor serialization, `.chatgpt/` layout, ChatGPT-specific adapters, legacy repository structure, or historical external Projects.
 - Historical ideas become active only when independently restated in current Agnir Core/profile decisions.
 - Current Agnir `main` is intentionally a new protocol namespace and architecture; backward compatibility with PPMP is not implied by lineage.
@@ -111,3 +110,10 @@
 - Optional PPMP migration guidance lives at `history/MIGRATION_PPMP_V2.md` and is explicitly archival/reference material.
 - `history/MIGRATION_PPMP_V2.md` is not an Agnir Core `0.1` semantic dependency, conformance requirement, compatibility obligation, or release gate.
 - The self-hosting checker forbids `spec/MIGRATION_PPMP_V2.md` from reappearing on active `main`, so legacy migration cannot silently drift back into the normative specification surface.
+
+## 2026-08-28 — Main-only branch governance
+
+- `main` is the only long-lived branch in `iorLab/agnir`.
+- Legacy, website, feature, release-pointer, and temporary branch refs are deleted after their final tip SHAs are recorded in `history/BRANCH_ARCHIVE.md`.
+- Historical predecessor boundaries are referenced by immutable commit SHA and Git history rather than a live `legacy/*` branch.
+- No active Core semantic, conformance rule, release gate, or recovery path may require a retired branch ref.
