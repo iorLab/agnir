@@ -15,6 +15,7 @@ agnir/                                                    # Agnir Agent Skill + 
 │   └── evidence/                                         # checkpoint、conformance 与历史审计证据
 │       ├── 2026-08-27-mainline-implementation.md
 │       ├── 2026-08-27-repository-rename-checkpoint.md
+│       ├── 2026-08-28-agent-skill-packaging.md           # 一句话用户提示词 + SKILL.md Agent procedure 分层与 conformance 证据
 │       ├── 2026-08-28-agnir-0.1.0-release-readiness.md
 │       ├── 2026-08-28-conformance-and-migration-audit-checkpoint.md
 │       ├── 2026-08-28-durable-agent-activation.md
@@ -38,7 +39,7 @@ agnir/                                                    # Agnir Agent Skill + 
 │   └── AGNIR_DISCOVERY.md                                # cold-start discovery / Locator Chain / failure vocabulary
 │
 ├── profiles/                                             # Core 之外的具体 discovery / storage realization
-│   └── REPOSITORY_FILESYSTEM.md                          # repository-filesystem/0.1；含 Agent activation/init contract
+│   └── REPOSITORY_FILESYSTEM.md                          # repository-filesystem/0.1；含 Agent activation/init contract + Skill packaging note
 │
 ├── schemas/
 │   └── agnir-manifest.schema.json                        # repository/filesystem AGNIR.yaml JSON Schema
