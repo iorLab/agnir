@@ -36,6 +36,8 @@ Both READMEs MUST contain:
 
 Changes to the layer model, discovery path, durable-memory semantics, Project boundary, or continuity flow require the affected diagrams in both language versions to be updated in the same change set. Conformance checks enforce the README/diagram structure without freezing prose wording.
 
+Localized diagrams are **comprehension-first, not literal translations**. In the Simplified Chinese README, important diagram nodes must be understandable to a Chinese reader without requiring prior knowledge of the English technical term: nodes should explain both the role and its responsibility, while English terminology may remain as a secondary label.
+
 ## Branch governance
 
 - `main`: authoritative active Agnir development line.
@@ -69,3 +71,13 @@ The predecessor branch `legacy/ppmp-v2.0.0` remains unchanged because it intenti
 - External-memory authorization fixture is not yet implemented.
 - Nested project, symlink, mount, and worktree edge cases need dedicated repository/filesystem tests.
 - Release compatibility notation consumed by Svif remains provisional until Agnir `0.1` release criteria are complete.
+
+## 2026-08-28 checkpoint
+
+README architecture documentation and localization policy are now durable Project state.
+
+- Simplified Chinese diagram clarification commit: `0f9f9ec3371fa6560d237bf7224adf5430bc0a19`.
+- Localization-policy decision commit: `fbcbef93cd17434999e431b3d7af3af4c810c351`.
+- Agnir conformance run `33142765236`: success.
+- Durable evidence: `.agnir/evidence/2026-08-28-readme-diagram-localization-checkpoint.md`.
+- Resume point remains Agnir Core `0.1` conformance hardening: negative discovery fixtures, storage-neutral evidence, external-memory authorization, and multi-project isolation.
