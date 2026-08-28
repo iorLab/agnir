@@ -58,7 +58,17 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 ## Active line
 
-`main` implements the Agnir Core `0.1` development line. The released predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni line is preserved on `legacy/ppmp-v2.0.0` and is not silently relabeled as Agnir.
+`main` is the Agnir Core `0.1` **release-candidate line**. The repository version is currently `0.1.0-rc.1`. The released predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni line is preserved on `legacy/ppmp-v2.0.0` and is not silently relabeled as Agnir.
+
+## Versioning
+
+The protocol compatibility line and repository release version are deliberately separate:
+
+- Discovery Records use `agnir.version: "0.1"` for Core compatibility;
+- the current filesystem profile is `repository-filesystem/0.1`;
+- repository/distribution releases use SemVer, with the first stable release of this line being `0.1.0`.
+
+Patch releases in `0.1.x` may clarify or strengthen conformance but must not redefine existing Core `0.1` semantics. A breaking Core change requires a new compatibility line such as `"0.2"`.
 
 ## Repository Structure
 
@@ -79,7 +89,7 @@ agnir/
 ├── conformance/                       # executable pressure proving the Core/profile semantics
 │   ├── check_agnir_0_1.py             # self-hosting cold-start and active-repository structure check
 │   ├── *_reference.py                 # conformance-only executable reference models; not production implementations
-│   └── test_*.py                      # failure, backend, authorization, isolation, and boundary fixtures
+│   └── test_*.py                      # failure, backend, authorization, isolation, migration, and boundary fixtures
 │
 ├── .agnir/                            # this Agnir Project's own canonical durable continuity
 │   ├── state.md                       # current Project state
@@ -93,7 +103,7 @@ agnir/
 ├── AGNIR.yaml                         # this repository's repository-filesystem discovery anchor; not a universal Core requirement
 ├── README.md                          # English project entry point
 ├── README.zh-CN.md                    # Simplified Chinese project entry point
-└── VERSION                            # current Agnir development version
+└── VERSION                            # repository release version; currently 0.1.0-rc.1
 ```
 
 For the fully expanded file-by-file map of the current `main`, including responsibility annotations for every tracked file, see **[REPOSITORY_TREE.md](REPOSITORY_TREE.md)**.
@@ -125,6 +135,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-The suite currently covers repository/filesystem cold start and explicit discovery failures, a durable non-repository SQLite realization, external-memory authorization without plaintext credentials, multi-project isolation with locator-only registry metadata, generic Locator Chain cycle/stale/inconsistency semantics, symlink boundary behavior, and real Git worktree cold start.
+The suite currently covers repository/filesystem cold start and all explicit discovery failures, durable non-repository SQLite continuity, external-memory authorization without plaintext credentials, multi-project isolation with locator-only registry metadata, generic Locator Chain cycle/stale/inconsistency semantics, symlink boundaries, real Git worktree cold start, and exact PPMP v2 -> Agnir migration. The PPMP fixture is aligned with the canonical `legacy/ppmp-v2.0.0` manifest, preserves material state / next actions / decisions / checkpoint evidence, cold-starts the migrated target through current Agnir discovery, and explicitly rejects v1/RPM serialization as PPMP v2.
 
 A real mount-boundary case remains intentionally unproven until a mount-capable test environment is available; Agnir does not treat an ordinary directory as fake mount evidence.
