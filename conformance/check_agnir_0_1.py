@@ -15,7 +15,7 @@ from repository_filesystem_reference import (
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = ROOT / "schemas" / "agnir-manifest.schema.json"
 SELF_PROJECT_ID = "urn:agnir:project:agnir-core"
-REPOSITORY_VERSION = "0.1.0-rc.1"
+REPOSITORY_VERSION = "0.1.0"
 
 
 def fail(message: str) -> None:
