@@ -88,6 +88,7 @@ This remains a working `0.1` development contract until the current-architecture
 - Multi-project workspace isolation: `.agnir/evidence/2026-08-28-multi-project-workspace-isolation.md`, run `33143930233` success.
 - Locator Chain failures: `.agnir/evidence/2026-08-28-locator-chain-failures.md`, run `33144042330` success.
 - Filesystem boundaries: `.agnir/evidence/2026-08-28-filesystem-boundaries.md`; corrected run `33144199717` success.
+- Main-only branch cleanup: `.agnir/evidence/2026-08-28-main-only-branch-cleanup-checkpoint.md`; verified cleanup baseline head `de10811149889cce5c3525e7b690c5e04d10d2e2`, conformance run `33157427784` success.
 - Retired branch tips: `history/BRANCH_ARCHIVE.md`.
 
 ## Branch governance
