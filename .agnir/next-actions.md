@@ -9,6 +9,9 @@ Agnir `0.1.0` is release-ready. Development work required for the initial stable
 
 ## Documentation maintenance rule
 
+- Both `README.md` and `README.zh-CN.md` must keep an operational Quick Start before the Architecture Diagram.
+- The Quick Start must preserve two usable paths: using an existing Agnir Project and initializing a new Project.
+- The Quick Start must retain enough minimal `AGNIR.yaml` and `.agnir/` detail for an Agent with Project-directory read/write access to act without separate setup documentation.
 - Architecture/continuity changes are incomplete until the corresponding diagrams and affected explanatory sections in both `README.md` and `README.zh-CN.md` are updated in the same change set.
 - Localized diagrams are comprehension-first rather than literal translations.
 - README repository trees remain compact navigation views.
@@ -27,4 +30,5 @@ Agnir `0.1.0` is release-ready. Development work required for the initial stable
 - Non-repository SQLite continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start are covered.
 - Stable publication candidate `846d794384e24f4d0431bb72b0f1036c60503bdd` passed conformance run `33161463275`.
 - Release-readiness evidence is `.agnir/evidence/2026-08-28-agnir-0.1.0-release-readiness.md`.
+- Bilingual operational Quick Start enforcement commit `820d8847bba4bc825740972bda19d3cc22378ad0` passed conformance run `33162899443`; checkpoint evidence is `.agnir/evidence/2026-08-28-readme-agent-quick-start-checkpoint.md`.
 - Main-only branch governance remains in force; retired branch tips are indexed in `history/BRANCH_ARCHIVE.md`.
