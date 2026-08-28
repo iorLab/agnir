@@ -1,6 +1,6 @@
 # Agnir Core 0.1
 
-**Status:** Release-candidate normative specification for the `0.1` compatibility line.
+**Status:** Working normative specification on the active `0.1` line.
 
 ## 1. Purpose
 
@@ -159,23 +159,11 @@ A checkpoint SHOULD coherently reconcile Current State, Next Actions, Decisions,
 
 Checkpoint persistence is independent of deployment, CI, release, or any other consuming workflow.
 
-## 13. Versioning, compatibility, and extensions
+## 13. Versioning and extensions
 
 Agnir begins a new version namespace at Core `0.1`. PPMP v2.0.0 is predecessor evidence and MUST NOT be silently relabeled as Agnir.
 
-The Core compatibility line and repository release version are distinct:
-
-- **Core compatibility:** Discovery Records serialize the current line as `agnir.version: "0.1"`.
-- **Profile compatibility:** profile identifiers carry their own line, for example `repository-filesystem/0.1`.
-- **Repository / distribution release:** releases use SemVer, with the first stable release of this Core line being `0.1.0`.
-
-An implementation claiming Core `0.1` compatibility MUST accept the normative semantics of the `"0.1"` line. Consumers SHOULD bind to the Core line (`"0.1"`) rather than to a particular patch release of this repository.
-
-Patch releases in the `0.1.x` repository-release family MAY clarify prose, fix implementations, add conforming profiles/fixtures, or strengthen conformance, but MUST NOT change the meaning of existing Core `0.1` fields, required memory semantics, discovery failure semantics, or compatibility claims.
-
-A change that intentionally breaks or redefines Core `0.1` semantics MUST use a new Core compatibility line such as `"0.2"`; the corresponding repository release begins a new minor line such as `0.2.0`.
-
-Pre-release repository versions such as `0.1.0-rc.1` do not create a new Core compatibility line. They are release-readiness labels for the same `"0.1"` semantics.
+Agnir Core version values are strings. The reference repository/filesystem profile uses `"0.1"` for the Core line and `<profile-name>/<major.minor>` for profile identifiers.
 
 Profiles MAY define serialization-specific extension namespaces. Extensions MUST NOT change Core field meaning while claiming the same Core version.
 

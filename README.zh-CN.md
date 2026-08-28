@@ -58,17 +58,7 @@ Agnir 并不执行流程中间的 Project 工作。它负责让工作前后的 c
 
 ## 当前版本线
 
-`main` 现在是 Agnir Core `0.1` 的 **Release Candidate（候选发布）版本线**。当前仓库版本为 `0.1.0-rc.1`。已发布的前身 PPMP v2.0.0 / Persistent Project Memory / Sandminni 保留在 `legacy/ppmp-v2.0.0`，不会被静默改名成 Agnir。
-
-## 版本与兼容性
-
-协议兼容性版本与仓库 release 版本是两层不同概念：
-
-- Discovery Record 使用 `agnir.version: "0.1"` 表示 Core compatibility；
-- 当前 filesystem profile 是 `repository-filesystem/0.1`；
-- 仓库 / distribution release 使用 SemVer，本版本线第一个 stable release 将是 `0.1.0`。
-
-`0.1.x` patch release 可以修正文档、实现和 conformance，但不能重新定义既有 Core `0.1` 字段、required memory semantics 或 discovery failure semantics。需要破坏性修改时，必须进入新的 Core compatibility line，例如 `"0.2"`。
+`main` 实现 Agnir Core `0.1` development line。已发布的前身 PPMP v2.0.0 / Persistent Project Memory / Sandminni 保留在 `legacy/ppmp-v2.0.0`，不会被静默改名成 Agnir。
 
 ## 仓库结构
 
@@ -89,7 +79,7 @@ agnir/
 ├── conformance/                       # 用可执行测试给 Core / profile 施加一致性压力
 │   ├── check_agnir_0_1.py             # self-hosting cold start + active repository 结构检查
 │   ├── *_reference.py                 # 仅用于 conformance 的可执行参考模型，不是 production implementation
-│   └── test_*.py                      # failure、backend、authorization、isolation、migration、boundary 等 fixtures
+│   └── test_*.py                      # failure、backend、authorization、isolation、boundary 等 fixtures
 │
 ├── .agnir/                            # 这个 Agnir Project 自己的 canonical durable continuity
 │   ├── state.md                       # 当前 Project 状态
@@ -103,7 +93,7 @@ agnir/
 ├── AGNIR.yaml                         # 本仓库的 repository-filesystem discovery anchor；不是 Core 的普遍要求
 ├── README.md                          # 英文项目入口
 ├── README.zh-CN.md                    # 简体中文项目入口
-└── VERSION                            # 仓库 release 版本；当前为 0.1.0-rc.1
+└── VERSION                            # 当前 Agnir development version
 ```
 
 需要查看当前 `main` 的**完整文件级展开**（包含每个 tracked 文件及其职责说明），请看 **[完整目录树：REPOSITORY_TREE.md](REPOSITORY_TREE.md)**。
@@ -137,6 +127,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-当前测试覆盖：repository/filesystem cold start 与全部显式 discovery failures、持久化的非 repository SQLite realization、无明文凭据的 external-memory authorization、多 Project 的 locator-only workspace isolation、通用 Locator Chain 的 cycle / stale / inconsistency 语义、symlink 边界行为、真实 Git worktree cold start，以及 **exact PPMP v2 → Agnir migration**。PPMP fixture 与 canonical `legacy/ppmp-v2.0.0` manifest 对齐，验证 state / next actions / decisions / checkpoint evidence 的保留，并用当前 Agnir discovery 对迁移后的 Project 做 fresh cold-start；同时明确拒绝把 v1/RPM serialization 当成 PPMP v2。
+当前测试覆盖：repository/filesystem cold start 与显式 discovery failures、持久化的非 repository SQLite realization、无明文凭据的 external-memory authorization、多 Project 的 locator-only workspace isolation、通用 Locator Chain 的 cycle / stale / inconsistency 语义、symlink 边界行为，以及真实 Git worktree cold start。
 
 真实 mount boundary 目前仍明确属于**未证明**项；只有在能够创建真实 mount 的测试环境中验证后才能声称覆盖，不能拿普通目录模拟 mount 来充当证据。
