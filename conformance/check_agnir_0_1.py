@@ -65,6 +65,7 @@ def main() -> None:
         "conformance/core_reference.py",
         "conformance/repository_filesystem_reference.py",
         "conformance/test_repository_filesystem_failures.py",
+        "conformance/test_repository_filesystem_boundaries.py",
         "conformance/sqlite_backend_reference.py",
         "conformance/test_sqlite_backend.py",
         "conformance/external_memory_reference.py",
