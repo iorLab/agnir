@@ -15,6 +15,7 @@ agnir/                                                    # Agnir Core / profile
 │   └── evidence/                                         # checkpoint、conformance 与历史审计证据
 │       ├── 2026-08-27-mainline-implementation.md         # 新 main-line Agnir 结构落地证据
 │       ├── 2026-08-27-repository-rename-checkpoint.md    # 仓库更名 / canonical identity checkpoint
+│       ├── 2026-08-28-agnir-0.1.0-release-readiness.md   # 稳定 0.1.0 版本冻结、发布就绪与最终 CI 证据
 │       ├── 2026-08-28-conformance-and-migration-audit-checkpoint.md # 早期 conformance / predecessor 审计 checkpoint；历史记录
 │       ├── 2026-08-28-external-memory-authorization.md   # external-memory authorization 语义验证证据
 │       ├── 2026-08-28-filesystem-boundaries.md           # symlink / Git worktree 等 filesystem boundary 证据
