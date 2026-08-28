@@ -24,38 +24,63 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
+def require_skill_package() -> None:
+    path = ROOT / "SKILL.md"
+    if not path.exists():
+        fail("missing root SKILL.md Agent Skill entrypoint")
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        fail("SKILL.md must start with Agent Skill YAML frontmatter")
+    for marker in (
+        "name: agnir",
+        "description:",
+        "Do not require the user to carry Agnir's implementation checklist",
+        "## Install or initialize Agnir",
+        "## Resume or use an existing Agnir Project",
+        "## Checkpoint",
+        "## Repair",
+        "AGNIR.yaml",
+        "AGENTS.md",
+        "Agnir Project Instructions",
+        ".agnir/state.md",
+        ".agnir/next-actions.md",
+        ".agnir/decisions.md",
+        ".agnir/evidence/",
+        "fresh activation test",
+    ):
+        if marker not in text:
+            fail(f"SKILL.md missing required Agent procedure marker: {marker}")
+
+
 def require_readme_quick_start(
     path: str,
     *,
     quick_start_heading: str,
     architecture_heading: str,
+    install_prompt: str,
     existing_marker: str,
-    init_marker: str,
+    forbidden_checklist: str,
 ) -> None:
     text = (ROOT / path).read_text(encoding="utf-8")
     for marker in (
         quick_start_heading,
+        install_prompt,
         existing_marker,
-        init_marker,
+        "SKILL.md",
         "AGENTS.md",
-        "README.md",
         "Agnir Project Instructions",
-        "Project Entry Point",
-        "AGNIR.yaml",
-        "repository-filesystem/0.1",
-        ".agnir/state.md",
-        ".agnir/next-actions.md",
-        ".agnir/decisions.md",
-        ".agnir/evidence/",
-        "checkpoint",
     ):
         if marker not in text:
-            fail(f"{path} missing required operational quick-start marker: {marker}")
+            fail(f"{path} missing required user-facing Quick Start marker: {marker}")
 
     quick_start_position = text.find(quick_start_heading)
     architecture_position = text.find(architecture_heading)
     if quick_start_position < 0 or architecture_position < 0 or quick_start_position > architecture_position:
-        fail(f"{path} must present the operational Quick Start before architecture material")
+        fail(f"{path} must present Quick Start before architecture material")
+
+    quick_start = text[quick_start_position:architecture_position]
+    if forbidden_checklist in quick_start:
+        fail(f"{path} must keep the Agent implementation checklist in SKILL.md, not the user Quick Start")
 
 
 def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
@@ -65,9 +90,9 @@ def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
     for heading in headings:
         if heading not in text:
             fail(f"{path} missing required diagram section: {heading}")
-    for marker in ("AGENTS.md", "README", "AGNIR.yaml"):
+    for marker in ("SKILL.md", "AGENTS.md", "README", "AGNIR.yaml"):
         if marker not in text:
-            fail(f"{path} diagrams/explanation missing activation-path marker: {marker}")
+            fail(f"{path} diagrams/explanation missing install/activation marker: {marker}")
 
 
 def require_readme_repository_tree(path: str, heading: str) -> None:
@@ -80,8 +105,10 @@ def require_readme_repository_tree(path: str, heading: str) -> None:
         "├── conformance/",
         "├── .agnir/",
         "├── history/",
+        "SKILL.md",
         "AGENTS.md",
         "activation_reference.py",
+        "test_skill_package.py",
         "REPOSITORY_TREE.md",
         "RELEASE.md",
     ):
@@ -103,22 +130,20 @@ def require_full_repository_tree() -> None:
         "conformance/",
         "activation_reference.py",
         "test_agent_activation.py",
+        "test_skill_package.py",
         "repository_filesystem_reference.py",
         "external_memory_reference.py",
         "locator_chain_reference.py",
         "sqlite_backend_reference.py",
         "workspace_registry_reference.py",
-        "test_repository_filesystem_boundaries.py",
-        "test_external_memory_authorization.py",
-        "test_workspace_isolation.py",
         ".agnir/",
-        "2026-08-28-negative-discovery-fixtures.md",
         "history/",
         "PREDECESSOR.md",
         "MIGRATION_PPMP_V2.md",
         "BRANCH_ARCHIVE.md",
         ".github/",
         "conformance.yml",
+        "SKILL.md",
         "AGENTS.md",
         "AGNIR.yaml",
         "README.zh-CN.md",
@@ -131,6 +156,8 @@ def require_full_repository_tree() -> None:
 
 
 def main() -> None:
+    require_skill_package()
+
     try:
         activation = resolve_agent_activation(ROOT)
     except ActivationFailure as exc:
@@ -186,6 +213,7 @@ def main() -> None:
         REPOSITORY_VERSION,
         'Core compatibility line:** `0.1`',
         'repository-filesystem/0.1',
+        'SKILL.md',
         'AGENTS.md',
         'Agnir Project Instructions',
     ):
@@ -193,6 +221,7 @@ def main() -> None:
             fail(f"RELEASE.md missing release marker: {marker}")
 
     required_active = [
+        "SKILL.md",
         "AGENTS.md",
         "README.md",
         "README.zh-CN.md",
@@ -206,6 +235,7 @@ def main() -> None:
         "history/BRANCH_ARCHIVE.md",
         "conformance/activation_reference.py",
         "conformance/test_agent_activation.py",
+        "conformance/test_skill_package.py",
         "conformance/core_reference.py",
         "conformance/repository_filesystem_reference.py",
         "conformance/test_repository_filesystem_failures.py",
@@ -227,15 +257,17 @@ def main() -> None:
         "README.md",
         quick_start_heading="## 30-second Quick Start",
         architecture_heading="## Architecture Diagram",
+        install_prompt="Install and initialize Agnir for this Project: https://github.com/iorLab/agnir",
         existing_marker="No recurring Agnir prompt is required.",
-        init_marker="The initialization request must be self-contained",
+        forbidden_checklist="Requirements:\n1.",
     )
     require_readme_quick_start(
         "README.zh-CN.md",
         quick_start_heading="## 30 秒快速开始",
         architecture_heading="## 架构图",
-        existing_marker="不需要每次再给 Agent 一段 Agnir 提示词。",
-        init_marker="初始化提示词必须是**自包含**的",
+        install_prompt="为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir",
+        existing_marker="不需要再给 Agent 任何 Agnir bootstrap 提示词。",
+        forbidden_checklist="要求：\n1.",
     )
     require_readme_diagrams("README.md", ("## Architecture Diagram", "## Continuity Flow"))
     require_readme_diagrams("README.zh-CN.md", ("## 架构图", "## 连续性流程"))
@@ -269,8 +301,8 @@ def main() -> None:
             fail(f"predecessor or execution-surface-specific artifact remains active on main: {path}")
 
     print(
-        f"PASS: Agnir {snapshot.version} / {snapshot.profile} repository release {repository_version} "
-        f"for {snapshot.project_identity}; durable Agent activation resolved"
+        f"PASS: Agnir Skill + Core {snapshot.version} / {snapshot.profile} repository release {repository_version} "
+        f"for {snapshot.project_identity}; user prompt / Agent procedure boundary enforced"
     )
 
 
