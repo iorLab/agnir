@@ -124,7 +124,7 @@ def main() -> None:
         "Release-candidate normative specification",
         'agnir.version: "0.1"',
         "0.1.0-rc.1",
-        "MUST NOT redefine existing Core `0.1`",
+        "MUST NOT change the meaning of existing Core `0.1` fields",
     ):
         if marker not in core_text:
             fail(f"spec/AGNIR_CORE.md missing RC compatibility marker: {marker}")
