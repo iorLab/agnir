@@ -40,9 +40,46 @@ def require_readme_repository_tree(path: str, heading: str) -> None:
         "├── profiles/",
         "├── conformance/",
         "├── .agnir/",
+        "REPOSITORY_TREE.md",
     ):
         if marker not in text:
             fail(f"{path} missing required repository-structure marker: {marker}")
+
+
+def require_full_repository_tree() -> None:
+    text = (ROOT / "REPOSITORY_TREE.md").read_text(encoding="utf-8")
+    for marker in (
+        "# Repository Tree",
+        "spec/",
+        "AGNIR_CORE.md",
+        "AGNIR_DISCOVERY.md",
+        "MIGRATION_PPMP_V2.md",
+        "profiles/",
+        "REPOSITORY_FILESYSTEM.md",
+        "schemas/",
+        "agnir-manifest.schema.json",
+        "conformance/",
+        "repository_filesystem_reference.py",
+        "external_memory_reference.py",
+        "locator_chain_reference.py",
+        "sqlite_backend_reference.py",
+        "workspace_registry_reference.py",
+        "test_repository_filesystem_boundaries.py",
+        "test_external_memory_authorization.py",
+        "test_workspace_isolation.py",
+        ".agnir/",
+        "2026-08-28-negative-discovery-fixtures.md",
+        "history/",
+        "PREDECESSOR.md",
+        ".github/",
+        "conformance.yml",
+        "AGNIR.yaml",
+        "README.zh-CN.md",
+        "REPOSITORY_TREE.md",
+        "VERSION",
+    ):
+        if marker not in text:
+            fail(f"REPOSITORY_TREE.md missing required full-tree marker: {marker}")
 
 
 def main() -> None:
@@ -71,6 +108,7 @@ def main() -> None:
     required_active = [
         "README.md",
         "README.zh-CN.md",
+        "REPOSITORY_TREE.md",
         "spec/AGNIR_CORE.md",
         "spec/AGNIR_DISCOVERY.md",
         "spec/MIGRATION_PPMP_V2.md",
@@ -97,6 +135,7 @@ def main() -> None:
     require_readme_diagrams("README.zh-CN.md", ("## 架构图", "## 连续性流程"))
     require_readme_repository_tree("README.md", "## Repository Structure")
     require_readme_repository_tree("README.zh-CN.md", "## 仓库结构")
+    require_full_repository_tree()
 
     forbidden = [
         "docs",
@@ -116,6 +155,7 @@ def main() -> None:
         "profiles/generic.md",
         ".chatgpt",
         ".github/workflows/site-ci.yml",
+        "目录树.md",
     ]
     for path in forbidden:
         if (ROOT / path).exists():
