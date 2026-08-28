@@ -2,49 +2,24 @@
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
+from repository_filesystem_reference import (
+    CORE_VERSION,
+    PROFILE,
+    DiscoveryFailure,
+    discover_repository_filesystem,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "AGNIR.yaml"
 SCHEMA = ROOT / "schemas" / "agnir-manifest.schema.json"
+SELF_PROJECT_ID = "urn:agnir:project:agnir-core"
 
 
 def fail(message: str) -> None:
     print(f"FAIL: {message}", file=sys.stderr)
     raise SystemExit(1)
-
-
-def section_scalar(text: str, section: str, key: str) -> str | None:
-    lines = text.splitlines()
-    in_section = False
-    for line in lines:
-        if re.match(rf"^{re.escape(section)}:\s*$", line):
-            in_section = True
-            continue
-        if in_section and line and not line.startswith((" ", "\t", "#")):
-            break
-        if in_section:
-            m = re.match(rf"^\s{{2}}{re.escape(key)}:\s*(.+?)\s*$", line)
-            if m:
-                value = m.group(1).strip()
-                if value in {"null", "~"}:
-                    return None
-                return value.strip("\"'")
-    return None
-
-
-def locator_exists(locator: str | None, key: str) -> None:
-    if locator is None:
-        if key in {"state", "next_actions"}:
-            fail(f"required memory locator {key} is null or missing")
-        return
-    if "://" in locator:
-        return
-    target = ROOT / locator
-    if not target.exists():
-        fail(f"memory locator {key} does not resolve: {locator}")
 
 
 def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
@@ -57,29 +32,15 @@ def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
 
 
 def main() -> None:
-    if not MANIFEST.is_file():
-        fail("top-level AGNIR.yaml is missing")
-    text = MANIFEST.read_text(encoding="utf-8")
+    try:
+        snapshot = discover_repository_filesystem(
+            ROOT,
+            expected_project_identity=SELF_PROJECT_ID,
+        )
+    except DiscoveryFailure as exc:
+        fail(str(exc))
 
-    version = section_scalar(text, "agnir", "version")
-    profile = section_scalar(text, "agnir", "discovery_profile")
-    identity = section_scalar(text, "project", "identity")
-
-    if version != "0.1":
-        fail(f"unsupported or missing Agnir version: {version!r}")
-    if profile != "repository-filesystem/0.1":
-        fail(f"unexpected discovery profile: {profile!r}")
-    if not identity:
-        fail("project.identity is missing")
-
-    for key in ("state", "next_actions", "decisions", "evidence"):
-        locator_exists(section_scalar(text, "memory", key), key)
-
-    state_locator = section_scalar(text, "memory", "state")
-    if state_locator is None or "://" in state_locator:
-        fail("self-hosting fixture requires a local state locator")
-    state_text = (ROOT / state_locator).read_text(encoding="utf-8")
-    if "Durable continuity belongs to the Project" not in state_text:
+    if "Durable continuity belongs to the Project" not in snapshot.state:
         fail("cold-start fixture did not recover the expected material durable fact")
 
     try:
@@ -88,8 +49,10 @@ def main() -> None:
         fail(f"manifest schema is not valid JSON: {exc}")
     version_const = schema["properties"]["agnir"]["properties"]["version"]["const"]
     profile_const = schema["properties"]["agnir"]["properties"]["discovery_profile"]["const"]
-    if version_const != version or profile_const != profile:
+    if version_const != snapshot.version or profile_const != snapshot.profile:
         fail("manifest and JSON Schema version/profile declarations diverge")
+    if snapshot.version != CORE_VERSION or snapshot.profile != PROFILE:
+        fail("self-hosted discovery returned an unexpected Core/profile line")
 
     required_active = [
         "README.md",
@@ -99,6 +62,8 @@ def main() -> None:
         "spec/MIGRATION_PPMP_V2.md",
         "profiles/REPOSITORY_FILESYSTEM.md",
         "history/PREDECESSOR.md",
+        "conformance/repository_filesystem_reference.py",
+        "conformance/test_repository_filesystem_failures.py",
     ]
     for path in required_active:
         if not (ROOT / path).exists():
@@ -130,7 +95,10 @@ def main() -> None:
         if (ROOT / path).exists():
             fail(f"predecessor or execution-surface-specific artifact remains active on main: {path}")
 
-    print(f"PASS: Agnir {version} repository/filesystem cold-start structure for {identity}")
+    print(
+        f"PASS: Agnir {snapshot.version} repository/filesystem cold-start structure "
+        f"for {snapshot.project_identity}"
+    )
 
 
 if __name__ == "__main__":
