@@ -42,3 +42,13 @@
 - Localized READMEs explain the same canonical protocol architecture; translation may adapt prose but must not create a second semantic model.
 - Localized diagrams are **comprehension-first, not literal translations**. In `README.zh-CN.md`, each node SHOULD explain in Chinese what the object is and what responsibility it has in Agnir; English terms remain secondary annotation or exact identifiers only.
 - Conformance checks enforce diagram/locale structure rather than byte-for-byte prose.
+
+## 2026-08-28 — Discovery conformance reference and selected-root semantics
+
+- `conformance/repository_filesystem_reference.py` is a **conformance-only executable reference**, not a promoted Agnir production implementation, backend, or adapter.
+- The self-hosting repository/filesystem check and negative fixtures use the same reference resolver so positive and negative conformance pressure share one interpretation of the profile.
+- `AGNIR_DISCOVERY_AMBIGUOUS` applies when multiple candidate Project roots exist **before** authority has selected exactly one root.
+- Once the authorized Project Entry Point selects a repository/filesystem root, nested parent/child Projects do not make that selected root ambiguous. Discovery remains scoped to the selected root.
+- If the selected root identifies another Project, discovery MUST surface `AGNIR_DISCOVERY_PROJECT_MISMATCH`; it MUST NOT search a parent or child root for a more convenient identity.
+- Active negative fixtures now cover `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, pre-root-selection `AMBIGUOUS`, and nested selected-root isolation.
+- Conformance run `33143495855` succeeded with both self-hosting cold-start and negative discovery fixture steps; durable evidence is `.agnir/evidence/2026-08-28-negative-discovery-fixtures.md`.
