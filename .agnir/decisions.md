@@ -131,3 +131,14 @@
 - `RELEASE.md` is the publication contract and records the known unproven real-mount boundary.
 - Stable publication candidate `846d794384e24f4d0431bb72b0f1036c60503bdd` passed conformance run `33161463275`.
 - Agnir is release-ready; creating tag `v0.1.0` and/or a GitHub Release is a separate explicit publication action.
+
+## 2026-08-28 — README operational Quick Start is a required entry surface
+
+- The first operational section in both `README.md` and `README.zh-CN.md` MUST be a Quick Start placed before the Architecture Diagram.
+- The Quick Start MUST support two direct user paths: using an already-configured Agnir Project and initializing a new Project.
+- The existing-Project path SHOULD be expressible as a copyable Agent instruction that starts from the authorized Project root, reads `AGNIR.yaml`, follows durable memory locators, and checkpoints changed Project truth on request.
+- The initialization path SHOULD be expressible as a copyable Agent instruction that creates the minimal repository/filesystem manifest and durable memory layout, persists initialization evidence, and verifies a fresh cold start.
+- The Quick Start MUST show enough minimal `AGNIR.yaml` and `.agnir/` structure for a user with an Agent that already has Project-directory read/write access to begin without separate installation/setup documentation.
+- These prompts are operational examples, not additional Core normative fields or execution-surface requirements. Agent-specific wording MAY evolve while preserving the same Agnir semantics.
+- Self-hosting conformance enforces Quick Start position and structural content without byte-for-byte locking prompt prose.
+- Quick Start enforcement commit `820d8847bba4bc825740972bda19d3cc22378ad0` passed conformance run `33162899443`; durable evidence is `.agnir/evidence/2026-08-28-readme-agent-quick-start-checkpoint.md`.
