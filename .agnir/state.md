@@ -38,6 +38,23 @@ Changes to the layer model, discovery path, durable-memory semantics, Project bo
 
 Localized diagrams are **comprehension-first, not literal translations**. In the Simplified Chinese README, important diagram nodes must be understandable to a Chinese reader without requiring prior knowledge of the English technical term: nodes should explain both the role and its responsibility, while English terminology may remain as a secondary label.
 
+## Repository/filesystem conformance status
+
+The active conformance path now uses `conformance/repository_filesystem_reference.py` as a conformance-only executable reference. It is not a promoted production implementation/backend.
+
+`conformance/check_agnir_0_1.py` self-hosts this repository through that resolver, while `conformance/test_repository_filesystem_failures.py` pressure-tests explicit discovery semantics.
+
+Proven cases now include:
+
+- missing top-level Discovery Record -> `AGNIR_DISCOVERY_NOT_FOUND`;
+- broken required locator -> `AGNIR_DISCOVERY_UNRESOLVABLE`;
+- unsupported Core version -> `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`;
+- Project identity mismatch -> `AGNIR_DISCOVERY_PROJECT_MISMATCH`;
+- multiple unresolved candidate roots before authority selection -> `AGNIR_DISCOVERY_AMBIGUOUS`;
+- nested parent/child Projects remain isolated once one root is explicitly selected.
+
+Selected-root rule: after a Project Entry Point has selected a repository/filesystem root, a mismatch at that root is not repaired by searching a parent or child Project.
+
 ## Branch governance
 
 - `main`: authoritative active Agnir development line.
@@ -46,13 +63,11 @@ Localized diagrams are **comprehension-first, not literal translations**. In the
 
 ## Current implementation status
 
-The active Agnir main line contains `AGNIR.yaml`, `.agnir/`, normative Core/Discovery/Profile documents, a manifest JSON Schema, and an executable cold-start structural conformance check.
+The active Agnir main line contains `AGNIR.yaml`, `.agnir/`, normative Core/Discovery/Profile documents, a manifest JSON Schema, self-hosting cold-start conformance, and executable negative discovery fixtures.
 
 The former ChatGPT-specific bootstrap shim has been removed from active `main`. Cold start for this repository now begins directly at `AGNIR.yaml`, matching the repository/filesystem profile and keeping execution-surface integration outside the Project structure.
 
-This is a working `0.1` development contract, not yet a final release. Repository/filesystem conformance is concrete enough for this repository to self-host through Agnir discovery rather than PPMP/PPM maintenance memory.
-
-At the 2026-08-27 checkpoint, the pre-checkpoint `main` head was `6537fe56157d2673c0ddc8b205919c73fdda117e`; Agnir conformance run `33081100118` completed successfully for that head.
+This is a working `0.1` development contract, not yet a final release.
 
 ## Repository identity transition
 
@@ -66,18 +81,30 @@ The predecessor branch `legacy/ppmp-v2.0.0` remains unchanged because it intenti
 
 ## Known gaps
 
-- Non-repository persistence conformance fixture is not yet implemented.
-- Multi-project workspace isolation fixture is not yet executable.
-- External-memory authorization fixture is not yet implemented.
-- Nested project, symlink, mount, and worktree edge cases need dedicated repository/filesystem tests.
+- A materially non-repository persistence conformance fixture is not yet implemented.
+- External-memory authorization failure vs not-found is not yet executable.
+- Multi-project workspace isolation beyond selected nested roots is not yet executable.
+- Symlink, mount, and worktree boundary edge cases need dedicated repository/filesystem tests.
+- Cycle, stale-locator, and materially inconsistent-memory failure fixtures remain to be added.
 - Release compatibility notation consumed by Svif remains provisional until Agnir `0.1` release criteria are complete.
 
-## 2026-08-28 checkpoint
+## 2026-08-28 README/localization checkpoint
 
-README architecture documentation and localization policy are now durable Project state.
+README architecture documentation and localization policy are durable Project state.
 
 - Simplified Chinese diagram clarification commit: `0f9f9ec3371fa6560d237bf7224adf5430bc0a19`.
 - Localization-policy decision commit: `fbcbef93cd17434999e431b3d7af3af4c810c351`.
 - Agnir conformance run `33142765236`: success.
 - Durable evidence: `.agnir/evidence/2026-08-28-readme-diagram-localization-checkpoint.md`.
-- Resume point remains Agnir Core `0.1` conformance hardening: negative discovery fixtures, storage-neutral evidence, external-memory authorization, and multi-project isolation.
+
+## 2026-08-28 discovery conformance advance
+
+- Shared conformance resolver: `5a8c79959248f04f9c453afc8bc732b7e55a8af7`.
+- Negative fixture suite: `63cec0a2feda44fe6102e176afa5c99b444462e4`.
+- Self-hosting checker refactor: `6269ff4f01ad4b57c6406def87d037b2665324fe`.
+- CI integration: `02dd1662fadf5451acfcb26370d6f36ff0d4bc8e`.
+- Nested-root semantic clarification: `2cbad2ad80e18bb674a88f5d91e1d51cc217cdbd`.
+- Agnir Core Svif relationship correction: `3645bce8940e2e4c3d4c811709852eb9f3dcf8fa`.
+- Conformance run `33143495855`, job `98759373389`: success for both self-hosting cold-start and negative fixtures.
+- Durable evidence: `.agnir/evidence/2026-08-28-negative-discovery-fixtures.md`.
+- Resume point: materially non-repository backend fixture, then external-memory authorization and multi-project isolation.
