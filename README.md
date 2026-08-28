@@ -60,18 +60,40 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 `main` implements the Agnir Core `0.1` development line. The released predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni line is preserved on `legacy/ppmp-v2.0.0` and is not silently relabeled as Agnir.
 
-The active structure is:
+## Repository Structure
+
+This tree is the practical map of the repository. It shows the directories and key files that explain where protocol definition, discovery profiles, executable conformance, Project continuity, and predecessor history live.
 
 ```text
-AGNIR.yaml                     # repository/filesystem discovery anchor
-.agnir/                        # this Project's authoritative colocated continuity
-spec/AGNIR_CORE.md             # Core 0.1 working specification
-spec/AGNIR_DISCOVERY.md        # cold-start discovery contract
-spec/MIGRATION_PPMP_V2.md      # explicit predecessor migration rules
-profiles/REPOSITORY_FILESYSTEM.md
-schemas/agnir-manifest.schema.json
-conformance/                   # executable conformance pressure
-history/PREDECESSOR.md         # locator to preserved predecessor lineage
+agnir/
+├── spec/                              # protocol-level definitions; storage and execution surface remain abstract
+│   ├── AGNIR_CORE.md                  # Core 0.1 continuity semantics and invariants
+│   ├── AGNIR_DISCOVERY.md             # cold-start discovery, Locator Chain, identity, and failure semantics
+│   └── MIGRATION_PPMP_V2.md           # explicit predecessor-to-Agnir migration requirements
+│
+├── profiles/                          # concrete discovery/storage realizations layered outside Core
+│   └── REPOSITORY_FILESYSTEM.md       # current repository-filesystem/0.1 profile
+├── schemas/                           # machine-readable serializations for concrete profile artifacts
+│   └── agnir-manifest.schema.json     # JSON Schema for this profile's AGNIR.yaml manifest
+│
+├── conformance/                       # executable pressure proving the Core/profile semantics
+│   ├── check_agnir_0_1.py             # self-hosting cold-start and active-repository structure check
+│   ├── *_reference.py                 # conformance-only executable reference models; not production implementations
+│   └── test_*.py                      # failure, backend, authorization, isolation, and boundary fixtures
+│
+├── .agnir/                            # this Agnir Project's own canonical durable continuity
+│   ├── state.md                       # current Project state
+│   ├── next-actions.md                # next durable work to resume
+│   ├── decisions.md                   # durable protocol/project decisions and rationale
+│   └── evidence/                      # checkpoint and conformance evidence records
+│
+├── history/                           # predecessor lineage retained as history, not active protocol structure
+│   └── PREDECESSOR.md                 # pointer to PPMP / Persistent Project Memory / Sandminni lineage
+├── .github/workflows/                 # CI that runs self-hosting and executable conformance
+├── AGNIR.yaml                         # this repository's repository-filesystem discovery anchor; not a universal Core requirement
+├── README.md                          # English project entry point
+├── README.zh-CN.md                    # Simplified Chinese project entry point
+└── VERSION                            # current Agnir development version
 ```
 
 Predecessor implementation/backend/adapter/site/template material is deliberately absent from active `main`; it remains available on the legacy branch.
@@ -84,11 +106,13 @@ A fresh Executor given only an authorized Project Entry Point must be able to re
 
 ## Svif relationship
 
-Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif currently uses Agnir as its founding Continuity Provider through an Agnir adapter, but Agnir remains independently useful without Svif. Svif-specific execution, delivery, provider, or authority semantics do not belong in Agnir Core.
+Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif currently uses Agnir as its founding Continuity Provider through an Agnir adapter, but Agnir remains independently useful without Svif. Svif-specific execution, delivery, provider, authority, or distribution semantics do not belong in Agnir Core.
 
 ## Documentation synchronization
 
 `README.md` and `README.zh-CN.md` are maintained as parallel entry points. Any change to Agnir's layer model, discovery path, durable-memory semantics, Project boundary, or continuity flow **must update the affected README diagrams in both language versions in the same change set**. The diagrams represent the current architecture and flow.
+
+The plain-text **Repository Structure** tree follows the same maintenance rule. If a documented directory is added, removed, moved, or changes responsibility, both language versions must update the affected tree in the same change set. The tree is explanatory rather than exhaustive and should stay compact enough to orient a new reader.
 
 ## Conformance
 
