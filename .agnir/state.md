@@ -40,11 +40,11 @@ Localized diagrams are **comprehension-first, not literal translations**. In the
 
 ## Repository/filesystem conformance status
 
-The active conformance path now uses `conformance/repository_filesystem_reference.py` as a conformance-only executable reference. It is not a promoted production implementation/backend.
+The active conformance path uses `conformance/repository_filesystem_reference.py` as a conformance-only executable reference. It is not a promoted production implementation/backend.
 
 `conformance/check_agnir_0_1.py` self-hosts this repository through that resolver, while `conformance/test_repository_filesystem_failures.py` pressure-tests explicit discovery semantics.
 
-Proven cases now include:
+Proven cases include:
 
 - missing top-level Discovery Record -> `AGNIR_DISCOVERY_NOT_FOUND`;
 - broken required locator -> `AGNIR_DISCOVERY_UNRESOLVABLE`;
@@ -55,6 +55,14 @@ Proven cases now include:
 
 Selected-root rule: after a Project Entry Point has selected a repository/filesystem root, a mismatch at that root is not repaired by searching a parent or child Project.
 
+## Non-repository storage-neutrality evidence
+
+Agnir Core now has an executable durable database-style conformance path under `conformance/sqlite_backend_reference.py` and `conformance/test_sqlite_backend.py`.
+
+The SQLite Project Entry Point is a database locator plus durable project key. The fixture does not use `AGNIR.yaml`, `.agnir/`, repository-root discovery, Git, or GitHub. It proves cold-start discovery-record resolution, version/identity validation, Current State / Next Actions / Decisions / Evidence recovery, checkpoint persistence, and fresh-resolver resume from the database-backed continuity store.
+
+This fixture is conformance evidence only; it does not define a normative SQLite profile or promote SQLite into Agnir Core.
+
 ## Branch governance
 
 - `main`: authoritative active Agnir development line.
@@ -63,7 +71,7 @@ Selected-root rule: after a Project Entry Point has selected a repository/filesy
 
 ## Current implementation status
 
-The active Agnir main line contains `AGNIR.yaml`, `.agnir/`, normative Core/Discovery/Profile documents, a manifest JSON Schema, self-hosting cold-start conformance, and executable negative discovery fixtures.
+The active Agnir main line contains `AGNIR.yaml`, `.agnir/`, normative Core/Discovery/Profile documents, a manifest JSON Schema, self-hosting cold-start conformance, executable negative discovery fixtures, and a materially non-repository durable SQLite conformance fixture.
 
 The former ChatGPT-specific bootstrap shim has been removed from active `main`. Cold start for this repository now begins directly at `AGNIR.yaml`, matching the repository/filesystem profile and keeping execution-surface integration outside the Project structure.
 
@@ -81,7 +89,6 @@ The predecessor branch `legacy/ppmp-v2.0.0` remains unchanged because it intenti
 
 ## Known gaps
 
-- A materially non-repository persistence conformance fixture is not yet implemented.
 - External-memory authorization failure vs not-found is not yet executable.
 - Multi-project workspace isolation beyond selected nested roots is not yet executable.
 - Symlink, mount, and worktree boundary edge cases need dedicated repository/filesystem tests.
@@ -107,4 +114,13 @@ README architecture documentation and localization policy are durable Project st
 - Agnir Core Svif relationship correction: `3645bce8940e2e4c3d4c811709852eb9f3dcf8fa`.
 - Conformance run `33143495855`, job `98759373389`: success for both self-hosting cold-start and negative fixtures.
 - Durable evidence: `.agnir/evidence/2026-08-28-negative-discovery-fixtures.md`.
-- Resume point: materially non-repository backend fixture, then external-memory authorization and multi-project isolation.
+
+## 2026-08-28 non-repository backend advance
+
+- Shared Core conformance semantics: `ecad85a8618fa8774f6dd256378e37f97ff6266e`.
+- SQLite backend reference: `7c0c5dd82c6f74968c0d65c51c4194ccdaacaa26`.
+- SQLite backend tests: `08a0cb3f2707b3b5fcd7fdbf0b24a32f4fd0c7eb`.
+- Checker registration: `cf260a1f864a47d2a08902c8c8db069b2cf9003b`.
+- Conformance run `33143655399`, job `98759873676`: success.
+- Durable evidence: `.agnir/evidence/2026-08-28-sqlite-non-repository-backend.md`.
+- Resume point: external-memory authorization semantics (`UNAUTHORIZED` vs missing Discovery Record), then multi-project isolation.
