@@ -6,6 +6,7 @@ Agnir `0.1.0` is release-ready. Development work required for the initial stable
 2. After publication, keep Core `0.1` and `repository-filesystem/0.1` frozen as compatibility lines. Any `0.1.x` maintenance must remain non-breaking.
 3. Reconcile any future Svif dependency updates against the stable Agnir Core/profile compatibility lines, not repository internals or historical material.
 4. Keep a real mount-boundary case as optional additional evidence when a real mount-capable test environment exists; do not represent ordinary directories as mount evidence.
+5. Keep the current bilingual README navigation (`README.md` ↔ `README.zh-CN.md`) unchanged unless the Project explicitly revisits same-page language UX. This is not a publication blocker.
 
 ## Documentation maintenance rule
 
@@ -31,4 +32,5 @@ Agnir `0.1.0` is release-ready. Development work required for the initial stable
 - Stable publication candidate `846d794384e24f4d0431bb72b0f1036c60503bdd` passed conformance run `33161463275`.
 - Release-readiness evidence is `.agnir/evidence/2026-08-28-agnir-0.1.0-release-readiness.md`.
 - Bilingual operational Quick Start enforcement commit `820d8847bba4bc825740972bda19d3cc22378ad0` passed conformance run `33162899443`; checkpoint evidence is `.agnir/evidence/2026-08-28-readme-agent-quick-start-checkpoint.md`.
+- Same-page README language navigation was explicitly deferred; current separate-document navigation remains intentional. Evidence: `.agnir/evidence/2026-08-28-readme-language-navigation-deferred-checkpoint.md`.
 - Main-only branch governance remains in force; retired branch tips are indexed in `history/BRANCH_ARCHIVE.md`.
