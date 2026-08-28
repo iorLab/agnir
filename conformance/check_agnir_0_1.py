@@ -71,6 +71,8 @@ def main() -> None:
         "conformance/test_external_memory_authorization.py",
         "conformance/workspace_registry_reference.py",
         "conformance/test_workspace_isolation.py",
+        "conformance/locator_chain_reference.py",
+        "conformance/test_locator_chain_failures.py",
     ]
     for path in required_active:
         if not (ROOT / path).exists():
