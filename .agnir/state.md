@@ -1,14 +1,31 @@
 # Agnir Current State
 
-Agnir is the active project/protocol identity on `main`. Repository branch governance is main-only: PPMP/PPM/Sandminni and other predecessor history are preserved by commit SHA and `history/`, not by live legacy branch refs.
+Agnir is the active project/protocol identity on `main`. Repository branch governance is main-only: PPMP/PPM/Sandminni and other predecessor history are preserved by immutable commit SHA and `history/`, not by live legacy branch refs.
+
+## Stable release line
+
+Agnir is **release-ready at repository version `0.1.0`**.
+
+The version layers are deliberately distinct:
+
+- Core compatibility line: `0.1`;
+- repository/filesystem discovery profile: `repository-filesystem/0.1`;
+- repository release SemVer: `0.1.0`.
+
+The top-level `VERSION` records repository SemVer. Discovery Records continue to declare `agnir.version: "0.1"`; repository SemVer does not replace the Core compatibility identifier.
+
+Breaking Core field meaning, required continuity semantics, identity rules, or discovery invariants requires a new Core line such as `0.2`. Breaking repository/filesystem discovery-anchor, serialization, locator, or selected-root semantics requires a new profile line. Repository `0.1.x` patch releases may make non-breaking clarifications, compatible conformance additions, or reference-tooling fixes without changing the Core/profile compatibility identifiers.
+
+`RELEASE.md` is the current publication contract for `0.1.0`.
 
 ## Active contract line
 
-- Core: Agnir Core `0.1`.
-- Repository/filesystem discovery profile: `repository-filesystem/0.1`.
+- Stable Core: Agnir Core `0.1`.
+- Stable repository/filesystem profile: `repository-filesystem/0.1`.
+- Repository release: `0.1.0`.
 - Authoritative discovery anchor for this Project: top-level `AGNIR.yaml`.
 - Authoritative mutable continuity state: `.agnir/` as resolved by `AGNIR.yaml`.
-- No execution-surface-specific bootstrap file is part of the active Project structure.
+- No execution-surface-specific or predecessor bootstrap file is part of the active Project structure.
 - Active `spec/` contains only current Agnir protocol material: `AGNIR_CORE.md` and `AGNIR_DISCOVERY.md`.
 
 ## Core invariants
@@ -20,79 +37,60 @@ Agnir is the active project/protocol identity on `main`. Repository branch gover
 - All named Core discovery failure classes have executable conformance pressure: `NOT_FOUND`, `AMBIGUOUS`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, `UNRESOLVABLE`, `UNAUTHORIZED`, `CYCLE`, `STALE`, and `INCONSISTENT`.
 - Profiles, implementations, backends, and adapters remain outside Core unless their semantics are independently generalized.
 
-## Relationship to Svif
+## Release-readiness review
 
-Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif's stable kernel depends on a Continuity Provider interface; the current founding implementation uses Agnir Core `0.1` through an Agnir adapter. Agnir remains independently useful and does not absorb Svif execution, delivery, provider, authority, or distribution semantics.
+The stable review reconciled Core, Discovery, repository/filesystem profile, manifest schema, bilingual READMEs, conformance baseline, self-hosting checker, `AGNIR.yaml`, repository version metadata, and Svif's current Core `0.1` Continuity Provider binding.
 
-## Repository documentation baseline
+Release cleanup removed the final active predecessor couplings:
 
-The repository has parallel English and Simplified Chinese entry points: `README.md` and `README.zh-CN.md`.
+- stale `predecessor_ref` was removed from `AGNIR.yaml`;
+- predecessor `.chatgpt/project-memory.yaml` fallback was removed from the active repository/filesystem profile.
 
-Both READMEs contain a current Architecture Diagram, Continuity Flow diagram, and compact plain-text repository tree. Localized Mermaid diagrams are comprehension-first rather than literal translations.
+Stable publication candidate `846d794384e24f4d0431bb72b0f1036c60503bdd` passed Agnir conformance run `33161463275`.
 
-`REPOSITORY_TREE.md` is the exhaustive file-level map of the active tracked repository. Architecture/continuity changes update both README language versions; tracked file additions/removals/moves or material responsibility changes update `REPOSITORY_TREE.md` in the same change set, and both compact README trees when affected.
+Durable evidence: `.agnir/evidence/2026-08-28-agnir-0.1.0-release-readiness.md`.
 
 ## Conformance coverage
 
-The active suite spans:
+The stable suite spans:
 
 - self-hosting `repository-filesystem/0.1` cold start;
-- explicit repository/filesystem negative discovery semantics;
-- durable non-repository SQLite continuity, including checkpoint and fresh-resolver resume;
-- external-memory authorization (`NOT_FOUND` vs `UNAUTHORIZED` vs authorized-but-`UNRESOLVABLE`) using authorization references only;
+- all nine named discovery failure classes;
+- durable non-repository SQLite continuity, checkpoint, and fresh-resolver resume;
+- external-memory authorization using authorization references rather than plaintext secrets;
 - multi-project workspace isolation with locator-only registry metadata;
-- generic Locator Chain `CYCLE`, `STALE`, and material `INCONSISTENT` semantics;
-- repository/filesystem indirection pressure for symlinked Project Entry Points, rejection of relative-locator symlink escape, and real Git worktree cold start.
+- Locator Chain cycle, stale, and material inconsistency semantics;
+- symlinked Project Entry Point and symlink-escape boundaries;
+- real Git worktree cold start.
 
-An authorized symlink Project Entry Point may canonicalize to one selected Project root. A relative memory locator that escapes that root through a symlink is not implicitly authorized external memory and fails `AGNIR_DISCOVERY_UNRESOLVABLE` unless an explicit external Locator Chain exists.
+Real mount-boundary behavior remains explicitly unproven. Ordinary directories are not accepted as fake mount evidence. This is documented in `RELEASE.md` and is not a Core `0.1` publication blocker.
 
-A Git worktree is a valid Project root when its own top-level `AGNIR.yaml` and declared continuity are present. Discovery does not depend on `.git` being a directory.
+## Relationship to Svif
 
-Real mount-boundary behavior remains unproven and must not be represented by a fake ordinary-directory test.
+Svif is a separate **Project orchestration product** at `iorLab/svif`. Its current `AgnirFilesystemContinuityProvider` binds to Core `0.1` and profile `repository-filesystem/0.1`. Svif consumes the Agnir continuity contract, not this repository's historical lineage or a universal Git/GitHub requirement.
+
+## Repository documentation baseline
+
+`README.md` and `README.zh-CN.md` are parallel entry points with synchronized Architecture and Continuity Flow diagrams plus compact annotated repository trees. `REPOSITORY_TREE.md` is the exhaustive tracked-file map and must be updated with tracked file additions/removals/moves or material responsibility changes.
 
 ## Historical isolation boundary
 
-PPMP/PPM/Sandminni and other retired branch material are historical lineage only, referenced through immutable commit SHAs in `history/PREDECESSOR.md` and `history/BRANCH_ARCHIVE.md`.
+PPMP/PPM/Sandminni and other retired work remain lineage/reference material only under `history/` and Git history. They are not Core semantic dependencies, profile compatibility obligations, conformance requirements, or release gates.
 
-They MUST NOT become:
+Optional historical PPMP migration guidance remains at `history/MIGRATION_PPMP_V2.md`; it is outside active `spec/`.
 
-- Agnir Core `0.1` semantic dependencies;
-- active conformance fixtures required for Core correctness;
-- release gates for Agnir `0.1`;
-- compatibility obligations for new Agnir implementations;
-- reasons to reintroduce `.chatgpt/`, ChatGPT-specific adapters, predecessor repository structure, or legacy serialization into active `main`.
+## Current resume point
 
-Optional PPMP migration guidance lives at `history/MIGRATION_PPMP_V2.md`, outside active `spec/`. It is historical/reference material for consumers that deliberately choose to migrate old PPMP data. It is not part of Core `0.1`, not a conformance requirement, and not a release gate for greenfield Agnir.
+Agnir development work required for the initial stable release is complete.
 
-Current `main` is a greenfield protocol line. Historical material MAY inform design review, but a rule is active only when it is independently stated by current Agnir Core/profile decisions.
+The next operation is **publication only**:
 
-## Current implementation status / resume point
-
-The active Agnir `main` line has a broad executable Core `0.1` conformance baseline across storage neutrality, authorization, multi-project isolation, failure classes, and repository/filesystem boundaries.
-
-Resume in this order:
-
-1. **Freeze the current Agnir Core `0.1` compatibility and repository release notation** from the present Core/profile contract itself, without using predecessor migration as a prerequisite.
-2. **Run a final current-architecture consistency review** across Core, Discovery, repository-filesystem profile, schema, README, conformance, and Svif's Continuity Provider binding.
-3. Decide whether the resulting `0.1` line is ready for release-candidate/stable publication based on current architecture and conformance only.
-4. Keep real mount-boundary behavior explicitly unproven until a mount-capable environment exists; it is not to be faked as release evidence.
-
-This remains a working `0.1` development contract until the current-architecture release review is complete.
-
-## Evidence checkpoints
-
-- README/localization: `.agnir/evidence/2026-08-28-readme-diagram-localization-checkpoint.md`.
-- Negative discovery fixtures: `.agnir/evidence/2026-08-28-negative-discovery-fixtures.md`, run `33143495855` success.
-- Non-repository SQLite backend: `.agnir/evidence/2026-08-28-sqlite-non-repository-backend.md`, run `33143655399` success.
-- External-memory authorization: `.agnir/evidence/2026-08-28-external-memory-authorization.md`, run `33143771320` success.
-- Multi-project workspace isolation: `.agnir/evidence/2026-08-28-multi-project-workspace-isolation.md`, run `33143930233` success.
-- Locator Chain failures: `.agnir/evidence/2026-08-28-locator-chain-failures.md`, run `33144042330` success.
-- Filesystem boundaries: `.agnir/evidence/2026-08-28-filesystem-boundaries.md`; corrected run `33144199717` success.
-- Main-only branch cleanup: `.agnir/evidence/2026-08-28-main-only-branch-cleanup-checkpoint.md`; verified cleanup baseline head `de10811149889cce5c3525e7b690c5e04d10d2e2`, conformance run `33157427784` success.
-- Retired branch tips: `history/BRANCH_ARCHIVE.md`.
+1. after explicit authorization, create tag `v0.1.0` on the intended publication commit and/or create the GitHub Release;
+2. after publication, treat Core `0.1` and profile `repository-filesystem/0.1` as frozen compatibility lines and keep `0.1.x` maintenance non-breaking;
+3. keep real mount-boundary validation as optional additional evidence when a real mount-capable environment becomes available.
 
 ## Branch governance
 
-- `main` is the only long-lived branch and the only authoritative active Agnir development line.
-- All former legacy, website, release-pointer, feature, and temporary branch refs are retired after their final tip SHAs are recorded in `history/BRANCH_ARCHIVE.md`.
+- `main` is the only long-lived branch and the only authoritative Agnir line.
+- Retired branch tips are recorded in `history/BRANCH_ARCHIVE.md`.
 - Historical recovery uses commit SHAs and Git history, not live branch refs.
