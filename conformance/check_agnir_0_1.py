@@ -5,6 +5,7 @@ import json
 import sys
 from pathlib import Path
 
+from activation_reference import ActivationFailure, resolve_agent_activation
 from repository_filesystem_reference import (
     CORE_VERSION,
     PROFILE,
@@ -28,14 +29,17 @@ def require_readme_quick_start(
     *,
     quick_start_heading: str,
     architecture_heading: str,
-    use_prompt_marker: str,
-    init_prompt_marker: str,
+    existing_marker: str,
+    init_marker: str,
 ) -> None:
     text = (ROOT / path).read_text(encoding="utf-8")
     for marker in (
         quick_start_heading,
-        use_prompt_marker,
-        init_prompt_marker,
+        existing_marker,
+        init_marker,
+        "AGENTS.md",
+        "README.md",
+        "Agnir Project Instructions",
         "Project Entry Point",
         "AGNIR.yaml",
         "repository-filesystem/0.1",
@@ -61,6 +65,9 @@ def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
     for heading in headings:
         if heading not in text:
             fail(f"{path} missing required diagram section: {heading}")
+    for marker in ("AGENTS.md", "README", "AGNIR.yaml"):
+        if marker not in text:
+            fail(f"{path} diagrams/explanation missing activation-path marker: {marker}")
 
 
 def require_readme_repository_tree(path: str, heading: str) -> None:
@@ -73,6 +80,8 @@ def require_readme_repository_tree(path: str, heading: str) -> None:
         "├── conformance/",
         "├── .agnir/",
         "├── history/",
+        "AGENTS.md",
+        "activation_reference.py",
         "REPOSITORY_TREE.md",
         "RELEASE.md",
     ):
@@ -92,6 +101,8 @@ def require_full_repository_tree() -> None:
         "schemas/",
         "agnir-manifest.schema.json",
         "conformance/",
+        "activation_reference.py",
+        "test_agent_activation.py",
         "repository_filesystem_reference.py",
         "external_memory_reference.py",
         "locator_chain_reference.py",
@@ -108,6 +119,7 @@ def require_full_repository_tree() -> None:
         "BRANCH_ARCHIVE.md",
         ".github/",
         "conformance.yml",
+        "AGENTS.md",
         "AGNIR.yaml",
         "README.zh-CN.md",
         "REPOSITORY_TREE.md",
@@ -119,6 +131,13 @@ def require_full_repository_tree() -> None:
 
 
 def main() -> None:
+    try:
+        activation = resolve_agent_activation(ROOT)
+    except ActivationFailure as exc:
+        fail(str(exc))
+    if "AGNIR.yaml" not in activation.readme_section:
+        fail("self-hosted Agent activation did not resolve the canonical Agnir instruction")
+
     try:
         snapshot = discover_repository_filesystem(
             ROOT,
@@ -152,13 +171,29 @@ def main() -> None:
     profile_text = (ROOT / "profiles" / "REPOSITORY_FILESYSTEM.md").read_text(encoding="utf-8")
     if ".chatgpt/project-memory.yaml" in profile_text:
         fail("active repository/filesystem profile must not define predecessor bootstrap fallback")
+    for marker in (
+        "Agent-operable Project activation and initialization",
+        "AGENTS.md",
+        "Agnir Project Instructions",
+        "fresh activation test",
+        "SHOULD NOT need to repeat an Agnir bootstrap prompt",
+    ):
+        if marker not in profile_text:
+            fail(f"repository/filesystem profile missing activation contract marker: {marker}")
 
     release_text = (ROOT / "RELEASE.md").read_text(encoding="utf-8")
-    for marker in (REPOSITORY_VERSION, 'Core compatibility line:** `0.1`', 'repository-filesystem/0.1'):
+    for marker in (
+        REPOSITORY_VERSION,
+        'Core compatibility line:** `0.1`',
+        'repository-filesystem/0.1',
+        'AGENTS.md',
+        'Agnir Project Instructions',
+    ):
         if marker not in release_text:
             fail(f"RELEASE.md missing release marker: {marker}")
 
     required_active = [
+        "AGENTS.md",
         "README.md",
         "README.zh-CN.md",
         "REPOSITORY_TREE.md",
@@ -169,6 +204,8 @@ def main() -> None:
         "history/PREDECESSOR.md",
         "history/MIGRATION_PPMP_V2.md",
         "history/BRANCH_ARCHIVE.md",
+        "conformance/activation_reference.py",
+        "conformance/test_agent_activation.py",
         "conformance/core_reference.py",
         "conformance/repository_filesystem_reference.py",
         "conformance/test_repository_filesystem_failures.py",
@@ -190,15 +227,15 @@ def main() -> None:
         "README.md",
         quick_start_heading="## 30-second Quick Start",
         architecture_heading="## Architecture Diagram",
-        use_prompt_marker="Use Agnir for this Project.",
-        init_prompt_marker="Initialize Agnir Core 0.1 for this Project",
+        existing_marker="No recurring Agnir prompt is required.",
+        init_marker="The initialization request must be self-contained",
     )
     require_readme_quick_start(
         "README.zh-CN.md",
         quick_start_heading="## 30 秒快速开始",
         architecture_heading="## 架构图",
-        use_prompt_marker="对这个 Project 使用 Agnir。",
-        init_prompt_marker="为这个 Project 初始化 Agnir Core 0.1",
+        existing_marker="不需要每次再给 Agent 一段 Agnir 提示词。",
+        init_marker="初始化提示词必须是**自包含**的",
     )
     require_readme_diagrams("README.md", ("## Architecture Diagram", "## Continuity Flow"))
     require_readme_diagrams("README.zh-CN.md", ("## 架构图", "## 连续性流程"))
@@ -233,7 +270,7 @@ def main() -> None:
 
     print(
         f"PASS: Agnir {snapshot.version} / {snapshot.profile} repository release {repository_version} "
-        f"for {snapshot.project_identity}"
+        f"for {snapshot.project_identity}; durable Agent activation resolved"
     )
 
 
