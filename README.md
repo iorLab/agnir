@@ -58,25 +58,24 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 ## Active line
 
-`main` implements the Agnir Core `0.1` development line. The released predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni line is preserved on `legacy/ppmp-v2.0.0` and is not silently relabeled as Agnir.
+`main` implements the Agnir Core `0.1` development line. The predecessor PPMP v2.0.0 / Persistent Project Memory / Sandminni line is preserved on `legacy/ppmp-v2.0.0` as history only and is not silently relabeled as Agnir or used as an active compatibility requirement.
 
 ## Repository Structure
 
-This tree is the practical map of the repository. It shows the directories and key files that explain where protocol definition, discovery profiles, executable conformance, Project continuity, and predecessor history live.
+This tree is the practical map of the repository. It shows the directories and key files that explain where current protocol definition, discovery profiles, executable conformance, Project continuity, and predecessor history live.
 
 ```text
 agnir/
-├── spec/                              # protocol-level definitions; storage and execution surface remain abstract
+├── spec/                              # active protocol-level definitions; storage and execution surface remain abstract
 │   ├── AGNIR_CORE.md                  # Core 0.1 continuity semantics and invariants
-│   ├── AGNIR_DISCOVERY.md             # cold-start discovery, Locator Chain, identity, and failure semantics
-│   └── MIGRATION_PPMP_V2.md           # explicit predecessor-to-Agnir migration requirements
+│   └── AGNIR_DISCOVERY.md             # cold-start discovery, Locator Chain, identity, and failure semantics
 │
 ├── profiles/                          # concrete discovery/storage realizations layered outside Core
 │   └── REPOSITORY_FILESYSTEM.md       # current repository-filesystem/0.1 profile
 ├── schemas/                           # machine-readable serializations for concrete profile artifacts
 │   └── agnir-manifest.schema.json     # JSON Schema for this profile's AGNIR.yaml manifest
 │
-├── conformance/                       # executable pressure proving the Core/profile semantics
+├── conformance/                       # executable pressure proving the current Core/profile semantics
 │   ├── check_agnir_0_1.py             # self-hosting cold-start and active-repository structure check
 │   ├── *_reference.py                 # conformance-only executable reference models; not production implementations
 │   └── test_*.py                      # failure, backend, authorization, isolation, and boundary fixtures
@@ -87,8 +86,9 @@ agnir/
 │   ├── decisions.md                   # durable protocol/project decisions and rationale
 │   └── evidence/                      # checkpoint and conformance evidence records
 │
-├── history/                           # predecessor lineage retained as history, not active protocol structure
-│   └── PREDECESSOR.md                 # pointer to PPMP / Persistent Project Memory / Sandminni lineage
+├── history/                           # predecessor lineage and optional historical guidance; not active Core
+│   ├── PREDECESSOR.md                 # PPMP / Persistent Project Memory / Sandminni lineage
+│   └── MIGRATION_PPMP_V2.md           # optional historical migration guide; not Core/conformance/release gate
 ├── .github/workflows/                 # CI that runs self-hosting and executable conformance
 ├── AGNIR.yaml                         # this repository's repository-filesystem discovery anchor; not a universal Core requirement
 ├── README.md                          # English project entry point
@@ -98,7 +98,7 @@ agnir/
 
 For the fully expanded file-by-file map of the current `main`, including responsibility annotations for every tracked file, see **[REPOSITORY_TREE.md](REPOSITORY_TREE.md)**.
 
-Predecessor implementation/backend/adapter/site/template material is deliberately absent from active `main`; it remains available on the legacy branch.
+Predecessor implementation/backend/adapter/site/template material is deliberately absent from active `main`; it remains available on the legacy branch. `history/` is archival/reference material and does not define current Agnir Core behavior.
 
 ## Core memory semantics
 
