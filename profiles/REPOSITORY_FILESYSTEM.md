@@ -4,7 +4,7 @@
 
 This profile applies when the authorized Project Entry Point is a filesystem-style Project root, including a repository checkout/worktree, synced directory, hosted workspace filesystem, or equivalent hierarchical substrate.
 
-This profile is not Agnir Core. It does not make filesystems, repositories, Git, or GitHub universal Agnir requirements.
+This profile is not Agnir Core. It does not make filesystems, repositories, Git, GitHub, AI agents, or any one agent-instruction filename universal Agnir requirements.
 
 ## 1. Discovery anchor
 
@@ -14,11 +14,44 @@ The Project root MUST contain top-level:
 AGNIR.yaml
 ```
 
-An Executor entering a Project root under this profile MUST inspect that anchor before relying on private execution context or hidden environment knowledge.
+An Executor that already knows this profile applies MUST inspect that anchor before relying on private execution context or hidden environment knowledge.
 
 A filesystem indirection used as the authorized Project Entry Point (for example a symlink that resolves to one selected Project root) MAY be canonicalized before discovery, provided authority still selects exactly one Project root. The indirection does not authorize unrelated parent, child, sibling, or external memory.
 
-## 2. Reference serialization
+## 2. Agent-operable Project activation and initialization
+
+Agnir discovery and Agent activation are distinct concerns. `AGNIR.yaml` can only be discovered after an Executor knows to apply Agnir; therefore an Agent-operable repository MUST persist an activation route outside private chat or Agent memory.
+
+For Projects intended to be resumed by general-purpose Agents through this profile, initialization MUST establish the following durable route:
+
+```text
+Project root
+→ AGENTS.md
+→ README.md / Agnir Project Instructions
+→ AGNIR.yaml
+→ declared durable memory
+```
+
+The reference activation contract is:
+
+1. `README.md` MUST contain a canonical section headed `## Agnir Project Instructions`.
+2. That section MUST state that the Project uses Agnir for durable continuity and MUST instruct an Agent, before Project work, to:
+   - treat the Project root as the authorized Project Entry Point;
+   - read top-level `AGNIR.yaml`;
+   - load Current State and Next Actions;
+   - load Decisions and Evidence when relevant;
+   - prefer durable Agnir Project truth over chat history or private Agent memory unless superseded by a newer Principal instruction or directly observed current Project fact;
+   - checkpoint material state, next-action, decision, and evidence changes at an intentional save/finish boundary.
+3. Root `AGENTS.md` MUST point to the `README.md` **Agnir Project Instructions** section. `AGENTS.md` SHOULD remain a locator and SHOULD NOT duplicate the full activation contract, so the Project has one canonical instruction surface rather than two drifting copies.
+4. Initialization MUST preserve unrelated existing README and `AGENTS.md` content. It MUST merge the Agnir section/reference rather than destructively replacing Project documentation or other Agent instructions.
+5. Initialization MUST create or validate `AGNIR.yaml`, resolve all required memory locators, create any required initial durable memory, and persist at least one initialization Evidence object when Evidence is declared.
+6. Initialization MUST finish with a fresh activation test from the Project root: resolve `AGENTS.md`, follow the README Agnir section, resolve `AGNIR.yaml`, load required continuity, and verify the Project no longer depends on the initialization conversation or initializing Agent's private memory.
+
+Once this route has been installed, a user SHOULD NOT need to repeat an Agnir bootstrap prompt for normal future work. An execution surface that does not automatically inspect Project instruction files may require one-time configuration to honor `AGENTS.md` / Project documentation; that execution-surface behavior is outside Agnir Core.
+
+This activation convention is profile-level guidance for Agent-operable repository Projects. Non-Agent Executors that are directly given the applicable profile implementation may begin at `AGNIR.yaml` as described by Core cold-start semantics.
+
+## 3. Reference serialization
 
 The profile uses YAML compatible with `schemas/agnir-manifest.schema.json`.
 
@@ -41,17 +74,17 @@ Relative locators resolve from the Project root. Absolute filesystem paths SHOUL
 
 A relative locator that traverses filesystem indirection outside the selected Project root MUST NOT be treated as an implicitly authorized external Locator Chain merely because the target is readable. External memory requires an explicit durable authorized binding/Locator Chain.
 
-## 3. Profile and extension versioning
+## 4. Profile and extension versioning
 
 - `agnir.version` is the Core major.minor line as a string.
 - `agnir.discovery_profile` is `<profile-name>/<major.minor>`.
 - This profile requires `repository-filesystem/0.1`.
-- A breaking change to the discovery anchor, required serialization, relative-locator interpretation, or selected-root authority semantics requires a new profile compatibility line.
+- A breaking change to the discovery anchor, required serialization, relative-locator interpretation, selected-root authority semantics, or the stable activation route for Agent-operable Projects requires a new profile compatibility line after publication.
 - `extensions` keys use `<owner>/<name>` namespaces.
 - `agnir/*` extension namespaces are reserved for Agnir-defined extensions.
 - Extensions MUST NOT redefine Core fields while claiming the same Core version.
 
-## 4. Project identity and selected-root authority
+## 5. Project identity and selected-root authority
 
 `project.identity` MUST be non-empty. URI/URN forms are RECOMMENDED for identities intended to survive backend or host changes. Opaque identifiers MAY be used when the Project boundary makes them unambiguous.
 
@@ -61,13 +94,13 @@ A parent and child directory may each contain their own authoritative `AGNIR.yam
 
 A detected identity mismatch at the selected root MUST surface `AGNIR_DISCOVERY_PROJECT_MISMATCH` rather than searching a parent or child root for a more convenient identity.
 
-## 5. Colocated memory
+## 6. Colocated memory
 
 `.agnir/` is the recommended reference layout for colocated memory, but it is not authoritative by name. `AGNIR.yaml` locators are authoritative.
 
 A Project MAY locate memory elsewhere, including outside the Project root, when the active backend/adapter provides a durable authorized Locator Chain.
 
-## 6. Repository/VCS extension
+## 7. Repository/VCS extension
 
 Repository-aware implementations MAY declare repository metadata under an extension namespace, for example:
 
@@ -82,22 +115,30 @@ This extension is profile/backend metadata, not Core identity. A non-default aut
 
 A Git worktree is a valid filesystem-style Project root when the selected worktree contains the authoritative top-level `AGNIR.yaml` and its declared continuity locators resolve for that worktree. Agnir discovery MUST NOT depend on `.git` being a directory rather than Git's worktree metadata file.
 
-## 7. Discovery order
+## 8. Discovery order
 
-1. resolve the selected Project root;
-2. read `AGNIR.yaml`;
-3. validate Core/profile compatibility;
-4. verify Project identity;
-5. resolve required memory locators;
-6. load Current State and Next Actions;
-7. load Decisions/Evidence as required;
-8. surface Agnir discovery failure semantics.
+For an Agent-operable repository initialized under the reference activation contract:
+
+1. receive the authorized Project root;
+2. resolve root `AGENTS.md`;
+3. follow its pointer to `README.md` **Agnir Project Instructions**;
+4. read `AGNIR.yaml`;
+5. validate Core/profile compatibility;
+6. verify Project identity;
+7. resolve required memory locators;
+8. load Current State and Next Actions;
+9. load Decisions/Evidence as required;
+10. surface Agnir discovery failure semantics.
+
+A non-Agent Executor or adapter that already knows this profile applies MAY begin at step 4.
 
 Implementations MUST NOT silently search arbitrary sibling repositories, user home directories, old chat logs, or historical predecessor layouts when `AGNIR.yaml` is missing.
 
-## 8. Conformance
+## 9. Conformance
 
 A profile conformance case SHOULD begin with only the Project root and profile implementation. It MUST prove discovery of `AGNIR.yaml`, version and identity validation, resolution of Current State and Next Actions, recovery of at least one material durable fact, and correct failure for at least one broken-locator case.
+
+An Agent-operable initialization conformance case additionally MUST prove that a fresh Agent activation context can start with only the Project root, resolve `AGENTS.md` to the canonical README Agnir instruction, and then complete Agnir discovery without any repeated user bootstrap prompt or prior conversation.
 
 The active reference conformance suite additionally pressure-tests explicit `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, and pre-root-selection `AMBIGUOUS` semantics, isolation between explicitly selected nested Project roots, a symlinked Project Entry Point, rejection of relative-locator symlink escape without an explicit external binding, and Git worktree cold start.
 
