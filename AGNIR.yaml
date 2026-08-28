@@ -20,4 +20,3 @@ extensions:
   agnir/repository:
     canonical: "iorLab/agnir"
     authoritative_ref: "main"
-    predecessor_ref: "legacy/ppmp-v2.0.0"
