@@ -30,27 +30,29 @@ agnir/                                                    # Agnir Core / profile
 │
 ├── .github/                                              # GitHub 托管侧自动化配置
 │   └── workflows/
-│       └── conformance.yml                               # CI：self-host cold start + executable conformance suite
+│       └── conformance.yml                               # CI：self-host Agent activation + cold start + executable conformance suite
 │
 ├── spec/                                                 # 当前 Agnir 协议层规范；不绑定具体 storage / execution surface
 │   ├── AGNIR_CORE.md                                     # 稳定 Core 0.1：durable continuity、identity、checkpoint 与版本兼容语义
 │   └── AGNIR_DISCOVERY.md                                # cold-start discovery、Locator Chain、failure vocabulary 等
 │
 ├── profiles/                                             # 在 Core 之外定义具体 discovery / storage realization
-│   └── REPOSITORY_FILESYSTEM.md                          # 当前 `repository-filesystem/0.1` profile；greenfield discovery contract
+│   └── REPOSITORY_FILESYSTEM.md                          # `repository-filesystem/0.1` profile；含 Agent activation / initialization contract
 │
 ├── schemas/                                              # 具体 profile artifact 的机器可读 schema
 │   └── agnir-manifest.schema.json                        # 当前 repository/filesystem `AGNIR.yaml` manifest 的 JSON Schema
 │
 ├── conformance/                                          # executable pressure：证明当前 Core / profile 语义可被实现并正确失败
+│   ├── activation_reference.py                           # conformance-only：解析 AGENTS.md → README canonical Agnir activation
 │   ├── agnir-0.1.md                                      # Agnir 0.1 stable conformance baseline
-│   ├── check_agnir_0_1.py                                # self-hosting cold start + stable release-readiness / README Quick Start 检查
+│   ├── check_agnir_0_1.py                                # self-host Agent activation + cold start + stable release-readiness 检查
 │   ├── core_reference.py                                 # Core failure / shared semantics 的 conformance-only 参考定义
 │   ├── repository_filesystem_reference.py                # repository-filesystem profile 的 conformance-only resolver
 │   ├── external_memory_reference.py                      # external Discovery Record + authorization 的参考模型
 │   ├── locator_chain_reference.py                        # substrate-neutral Locator Chain failure 参考模型
 │   ├── sqlite_backend_reference.py                       # durable SQLite-style non-repository backend 参考模型
 │   ├── workspace_registry_reference.py                   # locator-only multi-project workspace registry 参考模型
+│   ├── test_agent_activation.py                          # prompt-free fresh Agent activation、locator/reference/duplication 负例测试
 │   ├── test_repository_filesystem_failures.py            # NOT_FOUND / UNRESOLVABLE / VERSION / MISMATCH / AMBIGUOUS 等失败测试
 │   ├── test_repository_filesystem_boundaries.py          # symlink escape、symlink entry point、真实 Git worktree 等边界测试
 │   ├── test_external_memory_authorization.py             # NOT_FOUND vs UNAUTHORIZED vs authorized-UNRESOLVABLE 测试
@@ -63,16 +65,19 @@ agnir/                                                    # Agnir Core / profile
 │   ├── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；不参与 Core / conformance / release gate
 │   └── BRANCH_ARCHIVE.md                                 # 已删除分支及最终 tip SHA 的历史索引；main-only 治理记录
 │
+├── AGENTS.md                                             # Agent-facing locator：指向 README.md 的 canonical Agnir Project Instructions
 ├── AGNIR.yaml                                            # 本仓库在 repository-filesystem/0.1 下的 discovery anchor；只引用当前 main
-├── RELEASE.md                                            # 0.1.0 稳定版的版本模型、范围、已知限制与发布门槛
-├── README.md                                             # 英文项目入口：Quick Start、架构图、Continuity Flow、简略仓库树与 release status
-├── README.zh-CN.md                                       # 简体中文项目入口：30 秒 Quick Start 优先，并与英文版保持同一 canonical protocol 语义
+├── RELEASE.md                                            # 0.1.0 稳定版的版本模型、activation gate、范围、限制与发布门槛
+├── README.md                                             # 英文入口：Quick Start + canonical Agnir activation + 架构/流程/仓库树
+├── README.zh-CN.md                                       # 简体中文入口：免重复提示使用路径 + 自包含初始化说明
 ├── REPOSITORY_TREE.md                                    # 本文件：当前 main 的完整文件级仓库结构与职责说明
 └── VERSION                                               # 仓库 SemVer；当前 0.1.0
 ```
 
 ## 如何使用这张树
 
-第一次使用 Agnir 时，先看 README 开头的 Quick Start；第一次理解 Agnir 架构时，README 中的简略树已经足够。当你需要定位某个 Core 规范、profile、reference model、negative fixture、evidence 或历史资料时，再查本页。
+第一次使用 Agnir 时，先看 README 开头的 Quick Start；一个已经初始化好的 Agent-operable Project 不应要求用户重复粘贴 Agnir 提示词，而应由 `AGENTS.md` 定位到 README 中的 canonical Agnir activation instruction，再进入 `AGNIR.yaml` discovery。
+
+第一次理解 Agnir 架构时，README 中的简略树已经足够；当你需要定位某个 Core 规范、profile、activation reference、negative fixture、evidence 或历史资料时，再查本页。
 
 本页不是第二套协议定义。**当前 Core 语义只以 `spec/` 为准，具体 repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准，机器可读约束以 `schemas/` 为准；`history/` 仅保存 lineage 和可选历史参考，不定义当前协议。**
