@@ -8,7 +8,7 @@
 
 ## Status
 
-The current `main` is the Agnir `0.1.0` publication candidate. This document does not itself create a Git tag or GitHub Release.
+The current `main` is the Agnir `0.1.0` pre-publication line. This document does not itself create a Git tag or GitHub Release. After any material pre-publication contract/conformance change, the resulting publication commit must pass the full conformance gate before it is treated as the publication candidate.
 
 Agnir `0.1` is a greenfield protocol line. Historical PPMP / PPM / Sandminni material under `history/` is lineage/reference material only and is not part of the active compatibility contract, conformance baseline, or release gate.
 
@@ -22,11 +22,11 @@ Agnir separates three version layers:
 
 Breaking Core semantics require a new Core compatibility line. Breaking repository/filesystem profile semantics require a new profile compatibility line after publication. Patch releases may clarify text, strengthen non-breaking conformance, or fix reference/Skill tooling without changing those compatibility identifiers.
 
-The durable Agent-activation route and the root Agent Skill were incorporated before the first `v0.1.0` publication. They are part of the initial operational distribution surface, not post-publication Core compatibility changes.
+The durable Agent-activation route, transactional checkpoint invariants, repository commit/push event integration, and root Agent Skill are incorporated before the first `v0.1.0` publication. They are part of the initial operational distribution surface, not post-publication compatibility changes.
 
 ## Skill packaging boundary
 
-Root `SKILL.md` is the canonical Agent-facing Agnir Skill entrypoint. It owns the detailed install / initialize / resume / checkpoint / repair procedure.
+Root `SKILL.md` is the canonical Agent-facing Agnir Skill entrypoint. It owns the detailed install / initialize / resume / checkpoint / commit / push / repair procedure.
 
 The README deliberately exposes only a short user-facing install request:
 
@@ -41,15 +41,17 @@ The user is not required to carry Agnir's implementation checklist. After locati
 The `0.1.0` release includes:
 
 - stable normative Core continuity semantics;
+- checkpoint no-op, coherent authoritative transition, mixed-generation prevention, and stale-base `AGNIR_CHECKPOINT_CONFLICT` semantics;
 - normative discovery and failure semantics;
 - `repository-filesystem/0.1` profile and manifest schema;
+- repository/VCS integration semantics where commit intent evaluates/reconciles continuity before commit, commit-and-push verifies the declared authoritative ref, and observed commits trigger evaluation rather than unconditional mutation;
 - root `SKILL.md` Agent Skill packaging with YAML frontmatter and complete operational procedure;
 - one-line user-facing installation UX separated from the Agent-facing procedure;
 - non-destructive existing-`AGENTS.md` merge semantics: preserve Project-owned instructions, add only the minimal Agnir locator, stay idempotent, and surface material conflicts instead of silently overwriting them;
 - Agent-operable repository initialization with durable activation via `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml`;
 - prompt-free fresh-Agent activation pressure proving that an initialized Project does not depend on the initialization conversation;
 - self-hosting cold-start validation;
-- executable pressure for all named discovery failure classes;
+- executable pressure for checkpoint no-op / coherent publication / stale-base conflict and all named discovery failure classes;
 - durable non-repository SQLite continuity pressure;
 - external-memory authorization pressure without plaintext credentials;
 - multi-project isolation pressure;
@@ -64,21 +66,26 @@ Real mount-boundary behavior remains explicitly unproven because the current con
 
 Execution surfaces differ in how they discover or install Agent Skills and whether they automatically inspect `AGENTS.md` or Project documentation. Agnir publishes a repository-root `SKILL.md` and persists the Project activation route; platform-specific Skill installation/discovery mechanics remain outside Agnir Core. A surface that ignores Project instruction files may require one-time configuration. Repeating Agnir's internal procedure in every user prompt is not the intended workflow.
 
+Repository hooks are optional event-capture mechanisms. Agnir's commit/push integration contract does not require hooks and does not make Git/VCS a Core dependency.
+
 ## Publication gate
 
 A publication commit is ready when all of the following hold:
 
 1. `VERSION` is `0.1.0`;
 2. `AGNIR.yaml`, schema, Core spec, discovery spec, profile, README files, Skill package, and conformance baseline agree on the Core/profile compatibility lines;
-3. root `SKILL.md` has valid Agent Skill frontmatter and owns the detailed install / initialize / resume / checkpoint / repair procedure;
-4. both READMEs expose the short user-facing install prompt, point Agents to `SKILL.md`, and do not duplicate the Agent installation checklist in Quick Start;
-5. the Skill/profile contract preserves pre-existing target `AGENTS.md` instructions, keeps the Agnir addition locator-only and idempotent, and blocks on a material instruction conflict rather than deleting or overriding Project-owned rules;
-6. root `AGENTS.md` points to the canonical README `Agnir Project Instructions` section, and that section contains the durable activation instructions required by the repository/filesystem profile;
-7. Agent activation conformance proves Project root → `AGENTS.md` → README instruction → `AGNIR.yaml` → durable memory without relying on a repeated user bootstrap prompt;
-8. executable merge pressure proves existing `AGENTS.md` content is preserved and an explicit contradictory instruction fails before merge;
-9. active protocol/profile files contain no dependency on retired predecessor branch refs or predecessor bootstrap layouts;
-10. the full self-hosting and executable conformance suite passes on the publication commit;
-11. `main` is the only live branch and historical branch tips remain indexed under `history/`;
-12. known limitations are stated without being represented as proven.
+3. root `SKILL.md` has valid Agent Skill frontmatter and owns the detailed install / initialize / resume / checkpoint / commit / push / repair procedure;
+4. Core checkpoint semantics require no-op evaluation when truth is unchanged, coherent authoritative publication, mixed-generation rejection, and stale-base conflict handling;
+5. repository/filesystem guidance treats repository commit intent as checkpoint-before-commit, prefers one revision for Project + Agnir changes, treats commit-and-push as publication + verification, and does not turn observed commits into unconditional writes;
+6. both READMEs expose the short user-facing install prompt, point Agents to `SKILL.md`, do not duplicate the Agent installation checklist in Quick Start, and persist repository commit-boundary behavior in `Agnir Project Instructions`;
+7. the Skill/profile contract preserves pre-existing target `AGENTS.md` instructions, keeps the Agnir addition locator-only and idempotent, and blocks on a material instruction conflict rather than deleting or overriding Project-owned rules;
+8. root `AGENTS.md` points to the canonical README `Agnir Project Instructions` section, and that section contains the durable activation instructions required by the repository/filesystem profile;
+9. Agent activation conformance proves Project root → `AGENTS.md` → README instruction → `AGNIR.yaml` → durable memory without relying on a repeated user bootstrap prompt;
+10. executable merge pressure proves existing `AGENTS.md` content is preserved and an explicit contradictory instruction fails before merge;
+11. checkpoint conformance proves no-op evaluation, complete-generation publication, and stale-base conflict rejection;
+12. active protocol/profile files contain no dependency on retired predecessor branch refs or predecessor bootstrap layouts;
+13. the full self-hosting and executable conformance suite passes on the publication commit;
+14. `main` is the only live branch and historical branch tips remain indexed under `history/`;
+15. known limitations are stated without being represented as proven.
 
 Tagging `v0.1.0` or creating a GitHub Release is a separate publication action.

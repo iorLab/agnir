@@ -40,7 +40,9 @@ Project 根目录
 
 开始任何 Project 工作前，把本仓库根目录视为已授权的 Project Entry Point。先读取顶层 `AGNIR.yaml`，然后加载 Current State 和 Next Actions；需要时再加载 Decisions 和 Evidence。除非有更新的 Principal 指令或直接观察到的当前 Project 事实覆盖，否则 Agnir 中持久保存的 Project truth 优先于聊天记录或 Agent 私有记忆。
 
-当进行 checkpoint、保存进度或结束工作时，把重要的状态、后续动作、决策和必要 Evidence 写回 `AGNIR.yaml` 声明的位置。初始化或修复 discovery 后，应再次验证从同一个 Project Entry Point 可以 cold-start。
+当进行 checkpoint、保存进度或结束工作时，把重要的状态、后续动作、决策和必要 Evidence reconcile 到 `AGNIR.yaml` 声明的位置。Checkpoint 应当是一个一致的 authoritative transition：durable truth 没有实质变化时做 no-op，不能把不同 checkpoint generation 拼成表面一致的状态，发布后还要重新验证 fresh discovery。
+
+在 repository / VCS 上下文中，把已授权的 `commit`、`提交`、`提交代码` 或同义请求视为 checkpoint boundary：**先 reconcile Agnir，再 commit**，并优先把 Project 改动与 Agnir 改动放进同一个 revision。`commit and push`、`提交推送` 或同义请求表示 checkpoint + commit + push，并在声明了 authoritative remote/ref 时验证推送结果。只是观察到一个外部产生的 commit，只触发 checkpoint evaluation，不代表必须无条件再写一次 Agnir。
 
 根目录 `AGENTS.md` 故意只做 locator，指向本 section；本 section 才是 canonical activation instruction。
 
@@ -117,7 +119,7 @@ flowchart TD
     L --> Q["按需要加载 Decisions / Evidence"]
     Q --> W["Executor 执行真正的 Project 工作<br/>不属于 Agnir Core"]
     W --> U["形成明确的 continuity 更新"]
-    U --> K["Checkpoint durable truth + evidence"]
+    U --> K["Reconcile + 原子发布一致 checkpoint"]
     K --> S["持久连续性存储"]
     S --> N["未来新的 Agent / 环境"]
     N --> P
@@ -146,16 +148,17 @@ PPMP / PPM / Sandminni 等前身材料只属于 `history/` 与 immutable Git his
 ```text
 agnir/
 ├── spec/                              # 当前协议层定义
-│   ├── AGNIR_CORE.md                  # Core 0.1
+│   ├── AGNIR_CORE.md                  # Core 0.1，含 transactional checkpoint 语义
 │   └── AGNIR_DISCOVERY.md             # discovery / Locator Chain / failures
 ├── profiles/
-│   └── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1 activation/init contract
+│   └── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1 activation/init + VCS event integration
 ├── schemas/
 │   └── agnir-manifest.schema.json     # AGNIR.yaml schema
 ├── conformance/
 │   ├── check_agnir_0_1.py             # self-host + release-readiness
 │   ├── activation_reference.py        # AGENTS → README activation resolver
-│   ├── test_skill_package.py          # Skill / 用户提示词边界测试
+│   ├── checkpoint_reference.py        # atomic/no-op/conflict checkpoint reference model
+│   ├── test_skill_package.py          # Skill / 用户提示词边界 + commit intent 测试
 │   └── test_*.py                      # 其他 executable conformance
 ├── .agnir/                            # 本 Project 的 canonical durable continuity
 ├── history/                           # 仅历史 lineage
@@ -183,7 +186,7 @@ Svif 是独立的 **Project orchestration product**，位于 `iorLab/svif`。当
 
 `README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
 
-README 的 Quick Start 必须始终面向用户并保持极简：**安装提示词只有一句；完整 Agent procedure 属于根目录 `SKILL.md`。** `REPOSITORY_TREE.md` 是完整文件级地图，文件新增 / 删除 / 移动或职责实质变化时必须同步维护。
+README 的 Quick Start 必须始终面向用户并保持极简：**安装提示词只有一句；完整 Agent procedure 属于根目录 `SKILL.md`。** `REPOSITORY_TREE.md` 是完整结构地图；它说明 evidence 目录职责，不再重复登记每一个 checkpoint evidence 文件名。
 
 ## Conformance
 
@@ -194,6 +197,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-`0.1.0` suite 覆盖 Agent Skill packaging、免重复提示的 Project activation、repository/filesystem discovery 与 failures、SQLite 非 repository continuity、external-memory authorization、multi-project isolation、Locator Chain failures、symlink boundaries 和真实 Git worktree cold start。
+`0.1.0` suite 覆盖 Agent Skill packaging、免重复提示的 Project activation、repository/filesystem discovery 与 failures、checkpoint atomic/no-op/conflict 语义、SQLite 非 repository continuity、external-memory authorization、multi-project isolation、Locator Chain failures、symlink boundaries 和真实 Git worktree cold start。
 
 真实 mount-boundary 仍明确未验证；普通目录不能冒充 mount evidence。

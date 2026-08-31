@@ -40,7 +40,9 @@ This repository itself uses Agnir for durable Project continuity.
 
 Before doing Project work, treat this repository root as the authorized Project Entry Point. Read top-level `AGNIR.yaml`, then load Current State and Next Actions. Load Decisions and Evidence when relevant. Prefer durable Agnir Project truth over chat history or private Agent memory unless a newer Principal instruction or directly observed current Project fact supersedes it.
 
-When checkpointing, saving progress, or finishing work, reconcile material changes to state, next actions, decisions, and necessary evidence into the locations declared by `AGNIR.yaml`. After initialization or material discovery repair, verify the Project can cold-start again from the same Project Entry Point.
+When checkpointing, saving progress, or finishing work, reconcile material changes to state, next actions, decisions, and necessary evidence into the locations declared by `AGNIR.yaml`. A checkpoint should be a coherent authoritative transition: no-op when durable truth did not materially change, avoid mixed checkpoint generations, and verify fresh discovery after publication.
+
+In repository/VCS context, treat an authorized request to `commit`, `提交`, `提交代码`, or equivalent as a checkpoint boundary: reconcile Agnir **before** the commit and prefer Project changes plus Agnir changes in one revision. Treat `commit and push`, `提交推送`, or equivalent as checkpoint + commit + push + verification of the declared authoritative remote/ref when available. Merely observing a commit triggers checkpoint evaluation, not an unconditional new Agnir write.
 
 Root `AGENTS.md` is intentionally only a locator to this section; this section is the canonical activation instruction.
 
@@ -117,7 +119,7 @@ flowchart TD
     L --> Q[Load Decisions / Evidence as required]
     Q --> W[Executor performs Project work\noutside Agnir Core]
     W --> U[Produce explicit continuity updates]
-    U --> K[Checkpoint durable truth + evidence]
+    U --> K[Reconcile + publish coherent checkpoint]
     K --> S[Durable continuity store]
     S --> N[Future Agent / environment]
     N --> P
@@ -129,36 +131,37 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 `main` is the stable Agnir `0.1.0` release line. The compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.
 
-Predecessor PPMP / PPM / Sandminni material is historical only under `history/` and immutable Git history. It is not part of the current compatibility contract.
+Predecessor PPMP / PPM / Sandminni material is archival under `history/` and immutable Git history; it is not part of the active compatibility contract.
 
 ## Release status
 
-The current repository is being finalized for publication as Agnir `0.1.0`. `RELEASE.md` defines the frozen version model, release scope, publication gate, and known limitation. Creating the `v0.1.0` Git tag or GitHub Release remains a separate publication action.
+The repository is closing the final pre-publication Agnir `0.1.0` baseline. `RELEASE.md` defines the version model, release surface, gates, and known limits. Creating tag `v0.1.0` and/or the GitHub Release remains a separate publication action.
 
-Version layers are intentionally distinct:
+Keep the three version layers distinct:
 
 - Core compatibility: `0.1`;
-- repository/filesystem profile compatibility: `repository-filesystem/0.1`;
+- repository/filesystem profile: `repository-filesystem/0.1`;
 - repository release: `0.1.0`.
 
-## Repository Structure
+## Repository structure
 
 ```text
 agnir/
-├── spec/                              # active protocol-level definitions
-│   ├── AGNIR_CORE.md                  # stable Core 0.1 semantics
-│   └── AGNIR_DISCOVERY.md             # discovery, Locator Chain, failures
+├── spec/                              # current protocol contracts
+│   ├── AGNIR_CORE.md                  # Core 0.1, including transactional checkpoint semantics
+│   └── AGNIR_DISCOVERY.md             # discovery / Locator Chain / failures
 ├── profiles/
-│   └── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1 activation/init contract
+│   └── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1 activation/init + VCS event integration
 ├── schemas/
 │   └── agnir-manifest.schema.json     # AGNIR.yaml schema
 ├── conformance/
-│   ├── check_agnir_0_1.py             # self-host + release-readiness check
+│   ├── check_agnir_0_1.py             # self-host + release-readiness
 │   ├── activation_reference.py        # AGENTS → README activation resolver
-│   ├── test_skill_package.py          # Skill/user-prompt packaging boundary
-│   └── test_*.py                      # executable conformance pressure
+│   ├── checkpoint_reference.py        # atomic/no-op/conflict checkpoint reference model
+│   ├── test_skill_package.py          # Skill / user-prompt boundary + commit intent tests
+│   └── test_*.py                      # other executable conformance
 ├── .agnir/                            # this Project's canonical durable continuity
-├── history/                           # archival predecessor lineage only
+├── history/                           # historical lineage only
 ├── .github/workflows/                 # CI
 ├── SKILL.md                           # canonical Agent-facing Agnir Skill procedure
 ├── AGENTS.md                          # locator to README canonical Project instructions
@@ -169,21 +172,21 @@ agnir/
 └── VERSION                            # 0.1.0
 ```
 
-For the fully expanded tracked-file map, see **[REPOSITORY_TREE.md](REPOSITORY_TREE.md)**.
+For the exhaustive tracked-file map, see **[REPOSITORY_TREE.md](REPOSITORY_TREE.md)**.
 
 ## Core memory semantics
 
-Agnir requires durable recovery of Current State, Next Actions, Decisions, and Evidence / Checkpoints. A fresh compatible Executor must be able to recover required Project truth without replaying predecessor-private conversational context.
+Agnir requires durable recovery of Current State, Next Actions, Decisions, and Evidence / Checkpoints. A fresh compatible Executor must recover the truth needed to continue the Project without predecessor-private conversational context.
 
-## Svif relationship
+## Relationship to Svif
 
-Svif is a separate **Project orchestration product** at `iorLab/svif`. Svif currently uses Agnir as its founding Continuity Provider through an Agnir adapter, but Agnir remains independently useful without Svif.
+Svif is a separate **Project orchestration product** at `iorLab/svif`. Its current continuity integration uses Agnir as the founding Continuity Provider; Agnir does not depend on Svif and remains independently usable.
 
-## Documentation synchronization
+## Documentation synchronization rule
 
-`README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, or continuity flow must update affected documentation/diagrams in both languages in the same change set.
+`README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, or continuity flow must update the affected explanations/diagrams in both languages in the same change set.
 
-The README Quick Start must remain user-facing and minimal: the install prompt is one short sentence, while the detailed Agent procedure belongs in root `SKILL.md`. `REPOSITORY_TREE.md` is the exhaustive file-level map and must track file additions/removals/moves or material responsibility changes.
+The README Quick Start must remain user-facing and minimal: **the install prompt is one sentence; the full Agent procedure belongs in root `SKILL.md`.** `REPOSITORY_TREE.md` is the exhaustive structural map; it describes evidence-directory responsibility rather than duplicating every checkpoint evidence filename.
 
 ## Conformance
 
@@ -194,6 +197,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-The `0.1.0` suite covers Agent Skill packaging, prompt-free Project activation, repository/filesystem discovery and failures, non-repository SQLite continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start.
+The `0.1.0` suite covers Agent Skill packaging, durable prompt-free Project activation, repository/filesystem discovery and failures, checkpoint atomic/no-op/conflict semantics, SQLite non-repository continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start.
 
-A real mount-boundary case remains intentionally unproven until a mount-capable environment is available; ordinary directories are not accepted as substitute evidence.
+Real mount-boundary behavior remains explicitly unproven; an ordinary directory is not accepted as mount evidence.

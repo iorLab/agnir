@@ -43,6 +43,10 @@ def require_skill_package() -> None:
         "report the exact conflict to the Principal",
         "## Resume or use an existing Agnir Project",
         "## Checkpoint",
+        "## Commit and push integration",
+        "AGNIR_CHECKPOINT_CONFLICT",
+        "提交代码",
+        "提交推送",
         "## Repair",
         "AGNIR.yaml",
         "AGENTS.md",
@@ -113,6 +117,7 @@ def require_readme_repository_tree(path: str, heading: str) -> None:
         "SKILL.md",
         "AGENTS.md",
         "activation_reference.py",
+        "checkpoint_reference.py",
         "test_skill_package.py",
         "REPOSITORY_TREE.md",
         "RELEASE.md",
@@ -135,6 +140,8 @@ def require_full_repository_tree() -> None:
         "conformance/",
         "activation_reference.py",
         "agents_merge_reference.py",
+        "checkpoint_reference.py",
+        "test_checkpoint_semantics.py",
         "test_agent_activation.py",
         "test_agents_merge.py",
         "test_skill_package.py",
@@ -144,6 +151,7 @@ def require_full_repository_tree() -> None:
         "sqlite_backend_reference.py",
         "workspace_registry_reference.py",
         ".agnir/",
+        "evidence/",
         "history/",
         "PREDECESSOR.md",
         "MIGRATION_PPMP_V2.md",
@@ -159,7 +167,7 @@ def require_full_repository_tree() -> None:
         "VERSION",
     ):
         if marker not in text:
-            fail(f"REPOSITORY_TREE.md missing required full-tree marker: {marker}")
+            fail(f"REPOSITORY_TREE.md missing required structure marker: {marker}")
 
 
 def main() -> None:
@@ -202,6 +210,16 @@ def main() -> None:
     if "predecessor_ref:" in manifest_text:
         fail("active AGNIR.yaml must not depend on a retired predecessor branch ref")
 
+    core_text = (ROOT / "spec" / "AGNIR_CORE.md").read_text(encoding="utf-8")
+    for marker in (
+        "Checkpoints and authoritative transition",
+        "no-op",
+        "mixed checkpoint generations",
+        "AGNIR_CHECKPOINT_CONFLICT",
+    ):
+        if marker not in core_text:
+            fail(f"Agnir Core missing checkpoint invariant marker: {marker}")
+
     profile_text = (ROOT / "profiles" / "REPOSITORY_FILESYSTEM.md").read_text(encoding="utf-8")
     if ".chatgpt/project-memory.yaml" in profile_text:
         fail("active repository/filesystem profile must not define predecessor bootstrap fallback")
@@ -213,9 +231,13 @@ def main() -> None:
         "fresh activation test",
         "SHOULD NOT need to repeat an Agnir bootstrap prompt",
         "MUST NOT guess or silently overwrite it",
+        "Commit and push event integration",
+        "提交代码",
+        "提交推送",
+        "one revision",
     ):
         if marker not in profile_text:
-            fail(f"repository/filesystem profile missing activation contract marker: {marker}")
+            fail(f"repository/filesystem profile missing activation/event contract marker: {marker}")
 
     release_text = (ROOT / "RELEASE.md").read_text(encoding="utf-8")
     for marker in (
@@ -244,6 +266,8 @@ def main() -> None:
         "history/BRANCH_ARCHIVE.md",
         "conformance/activation_reference.py",
         "conformance/agents_merge_reference.py",
+        "conformance/checkpoint_reference.py",
+        "conformance/test_checkpoint_semantics.py",
         "conformance/test_agent_activation.py",
         "conformance/test_agents_merge.py",
         "conformance/test_skill_package.py",
@@ -282,7 +306,7 @@ def main() -> None:
     )
     require_readme_diagrams("README.md", ("## Architecture Diagram", "## Continuity Flow"))
     require_readme_diagrams("README.zh-CN.md", ("## 架构图", "## 连续性流程"))
-    require_readme_repository_tree("README.md", "## Repository Structure")
+    require_readme_repository_tree("README.md", "## Repository structure")
     require_readme_repository_tree("README.zh-CN.md", "## 仓库结构")
     require_full_repository_tree()
 
@@ -313,7 +337,7 @@ def main() -> None:
 
     print(
         f"PASS: Agnir Skill + Core {snapshot.version} / {snapshot.profile} repository release {repository_version} "
-        f"for {snapshot.project_identity}; user prompt / Agent procedure and safe AGENTS merge boundaries enforced"
+        f"for {snapshot.project_identity}; transactional checkpoint and repository commit-intent boundaries enforced"
     )
 
 

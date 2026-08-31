@@ -151,13 +151,23 @@ Discovery Records SHOULD contain authorization or credential references rather t
 
 Agnir Core does not require secrets to be stored in durable memory.
 
-## 12. Checkpoints
+## 12. Checkpoints and authoritative transition
 
 A checkpoint is an intentional persistence boundary where material Project truth is reconciled into durable memory.
 
-A checkpoint SHOULD coherently reconcile Current State, Next Actions, Decisions, and necessary Evidence. It MUST NOT claim resumability when the Discovery Record or Locator Chain cannot resolve the resulting authoritative memory.
+Checkpoint evaluation MUST distinguish material continuity change from a no-op. When Current State, Next Actions, Decisions, and necessary Evidence already represent the reconciled Project truth, an implementation SHOULD complete the evaluation without creating a new durable mutation merely to record that evaluation occurred.
 
-Checkpoint persistence is independent of deployment, CI, release, or any other consuming workflow.
+When material continuity changes exist, an implementation SHOULD first construct a coherent checkpoint candidate before changing authoritative continuity. The candidate SHOULD minimize writes to the semantic categories that actually changed.
+
+Publishing a checkpoint is an authoritative continuity transition. A completed checkpoint MUST NOT expose a mixture of old and new checkpoint generations as though that mixture were coherent Project truth. **Mixed checkpoint generations MUST NOT be accepted as a completed checkpoint.**
+
+- When the active backend can atomically publish all changed continuity objects, an implementation SHOULD use that atomic publication primitive.
+- When the active backend cannot atomically publish all changed continuity objects, the implementation MUST use durable generation, transaction, revision, pointer, or equivalent consistency metadata sufficient to prevent a fresh compatible resolver from accepting a mixed-generation result as a completed checkpoint.
+- If an implementation begins checkpoint work from a known authoritative revision and can detect that the authoritative revision changed before publication, it MUST NOT silently overwrite the newer truth. It MUST surface a checkpoint conflict, with semantics equivalent to `AGNIR_CHECKPOINT_CONFLICT`, then re-resolve and reconcile before another publication attempt.
+
+Checkpoint completion MUST include verification that the Discovery Record and Locator Chain resolve the resulting authoritative memory coherently enough for a fresh Executor to resume. A backend-produced revision, transaction ID, commit ID, or other receipt MAY identify the published checkpoint; Core does not require that identifier to be embedded inside the checkpoint content that produced it.
+
+Checkpoint persistence is independent of deployment, CI, release, VCS commit, push, or any other consuming workflow. Profiles and adapters MAY bind those external events to checkpoint evaluation or publication while preserving these Core invariants.
 
 ## 13. Versioning, compatibility, and extensions
 

@@ -35,7 +35,22 @@ class SkillPackageTests(unittest.TestCase):
             "fresh activation test",
             "## Resume or use an existing Agnir Project",
             "## Checkpoint",
+            "## Commit and push integration",
             "## Repair",
+        ):
+            self.assertIn(marker, text)
+
+    def test_skill_defines_transactional_checkpoint_and_repository_intent(self) -> None:
+        text = SKILL.read_text(encoding="utf-8")
+        for marker in (
+            "no-op",
+            "candidate checkpoint",
+            "AGNIR_CHECKPOINT_CONFLICT",
+            "one VCS revision",
+            "提交代码",
+            "提交推送",
+            "checkpoint evaluation",
+            "not by global string matching",
         ):
             self.assertIn(marker, text)
 
@@ -58,6 +73,16 @@ class SkillPackageTests(unittest.TestCase):
         quick_start_zh = chinese.split("## Agnir Project Instructions", 1)[0]
         self.assertNotIn("Requirements:\n1.", quick_start_en)
         self.assertNotIn("要求：\n1.", quick_start_zh)
+
+    def test_initialized_project_instructions_persist_commit_boundary_semantics(self) -> None:
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+        section_en = english.split("## Agnir Project Instructions", 1)[1].split("\n## ", 1)[0]
+        section_zh = chinese.split("## Agnir Project Instructions", 1)[1].split("\n## ", 1)[0]
+
+        for marker in ("commit", "提交代码", "提交推送", "checkpoint boundary"):
+            self.assertIn(marker, section_en)
+            self.assertIn(marker, section_zh)
 
 
 if __name__ == "__main__":

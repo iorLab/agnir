@@ -137,6 +137,20 @@ This extension is profile/backend metadata, not Core identity. A non-default aut
 
 A Git worktree is a valid filesystem-style Project root when the selected worktree contains the authoritative top-level `AGNIR.yaml` and its declared continuity locators resolve for that worktree. Agnir discovery MUST NOT depend on `.git` being a directory rather than Git's worktree metadata file.
 
+### Commit and push event integration
+
+For a repository-aware implementation that can create or observe VCS revisions, commit/push intent is a natural checkpoint boundary without making VCS part of Agnir Core.
+
+- When an authorized Principal asks the Executor to commit Project changes, the implementation SHOULD evaluate and reconcile material Agnir continuity **before** creating the VCS revision.
+- When both Project changes and Agnir continuity changes can be represented in the same VCS revision, the implementation SHOULD publish them together in one revision rather than creating a follow-up “checkpoint-only” revision.
+- If checkpoint evaluation finds no material continuity change, the implementation SHOULD leave Agnir memory unchanged and proceed with the requested commit rather than manufacturing a checkpoint mutation.
+- When the request includes push/publication and `agnir/repository.authoritative_ref` is declared, the implementation SHOULD verify after push that the intended published revision reached that authoritative ref.
+- Observing a commit created by another Executor, a web UI, CI, IDE, or other mechanism MAY trigger checkpoint evaluation. Observation alone MUST NOT imply an unconditional continuity write; if durable Project truth remains coherent, evaluation is a no-op.
+- Repository hooks such as `pre-commit` or `pre-push` MAY implement these events, but hooks are adapter/implementation mechanisms and MUST NOT become a discovery or continuity dependency.
+- A VCS-generated revision identifier MAY be used as the backend checkpoint receipt. The checkpoint content MUST NOT be required to embed its own resulting revision identifier.
+
+Agent-facing integrations MAY recognize phrases such as `commit`, `commit and push`, `提交`, `提交代码`, and `提交推送` when repository context makes VCS intent clear. Such phrases are integration vocabulary, not Core keywords; ambiguous uses of “提交” outside VCS context MUST NOT be treated as Agnir checkpoint commands merely by string matching.
+
 ## 8. Discovery order
 
 For an Agent-operable repository initialized under the reference activation contract:

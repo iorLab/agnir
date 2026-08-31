@@ -1,6 +1,6 @@
 ---
 name: agnir
-description: Install, initialize, use, checkpoint, resume, or repair Agnir durable Project continuity. Use when a user asks to install or initialize Agnir, make a Project resumable across Agents or conversations, recover an Agnir-enabled Project, checkpoint progress, or repair Agnir discovery/activation. The user-facing install request may be only a short intent statement; this Skill owns the full procedure.
+description: Install, initialize, use, checkpoint, resume, or repair Agnir durable Project continuity. Use when a user asks to install or initialize Agnir, make a Project resumable across Agents or conversations, recover an Agnir-enabled Project, checkpoint progress, commit or push Project changes with continuity reconciliation, or repair Agnir discovery/activation. The user-facing install request may be only a short intent statement; this Skill owns the full procedure.
 ---
 
 # Agnir
@@ -16,9 +16,10 @@ Classify the request as one of:
 - **install / initialize** — the target Project does not yet have a valid Agnir setup;
 - **resume / use** — the Project is already Agnir-enabled;
 - **checkpoint** — persist material continuity updates;
+- **commit / push** — treat repository publication intent as a checkpoint boundary, then perform the requested VCS operation when authorized;
 - **repair** — the Project intends to use Agnir but activation, discovery, identity, or locators are broken.
 
-For repository/filesystem Projects, read `profiles/REPOSITORY_FILESYSTEM.md` when performing installation, activation repair, or discovery repair. Read `spec/AGNIR_CORE.md` and `spec/AGNIR_DISCOVERY.md` when the operation depends on Core semantics or failure classification.
+For repository/filesystem Projects, read `profiles/REPOSITORY_FILESYSTEM.md` when performing installation, activation repair, discovery repair, or repository commit/push integration. Read `spec/AGNIR_CORE.md` and `spec/AGNIR_DISCOVERY.md` when the operation depends on Core semantics or failure classification.
 
 ## Install or initialize Agnir
 
@@ -58,7 +59,8 @@ For the reference `repository-filesystem/0.1` setup:
    - load Current State and Next Actions;
    - load Decisions and Evidence when relevant;
    - prefer durable Agnir Project truth over chat history or private Agent memory unless superseded by newer Principal instruction or directly observed current Project fact;
-   - checkpoint material state, next-action, decision, and evidence changes when saving progress or finishing work.
+   - checkpoint material state, next-action, decision, and evidence changes when saving progress or finishing work;
+   - treat an authorized request to commit Project changes as a checkpoint boundary: reconcile material continuity before the VCS commit, prefer code and Agnir changes in one revision, and treat a commit-and-push request as checkpoint + commit + push + verification when repository context applies.
 5. Create or update root `AGENTS.md` according to **Merge existing AGENTS.md safely** above so it points to the README `Agnir Project Instructions` section and does not fork a second copy of the full Agnir contract.
 6. Validate every locator and Project identity.
 7. Finish with a fresh activation test using only the target Project root:
@@ -91,15 +93,41 @@ If the execution surface does not automatically inspect Project instruction file
 
 ## Checkpoint
 
-At an intentional checkpoint, save-progress, handoff, or finish boundary:
+At an intentional checkpoint, save-progress, handoff, finish boundary, or repository commit boundary:
 
 1. reconcile current Project truth rather than appending a raw transcript;
-2. update Current State with present facts required to continue safely;
-3. update Next Actions with outstanding work, blockers, priorities, and intentional deferrals;
-4. record accepted durable decisions and material rationale;
-5. record only the Evidence needed for recovery, audit, or material claims;
-6. verify the Discovery Record and Locator Chain still resolve the resulting authoritative memory;
-7. ensure a fresh Executor can resume without private conversation context.
+2. classify only material changes: current facts to Current State, outstanding actionable work to Next Actions, accepted durable choices to Decisions, and only recovery/audit/material-claim support to Evidence;
+3. if the reconciled durable truth already matches the authoritative Agnir memory, treat the checkpoint as a **no-op**: do not create evidence, rewrite memory, or create a repository revision merely to record that evaluation occurred;
+4. when material continuity changed, construct the complete candidate checkpoint before publishing authoritative memory;
+5. publish the candidate using the active backend's atomic publication primitive when available; otherwise use durable generation/revision/transaction semantics sufficient to keep a fresh resolver from accepting mixed checkpoint generations;
+6. if the authoritative revision changed since the checkpoint base was read, do not silently overwrite it; surface `AGNIR_CHECKPOINT_CONFLICT`, re-resolve current Project truth, and reconcile again;
+7. verify the Discovery Record and Locator Chain resolve the resulting authoritative memory coherently;
+8. ensure a fresh Executor can resume without private conversation context.
+
+Do not require every checkpoint to modify all four durable semantic categories. Minimize writes to the categories whose durable truth actually changed.
+
+## Commit and push integration
+
+Interpret repository commit/push requests by intent and context, not by global string matching.
+
+- In a repository/VCS context, `commit`, `提交`, `提交代码`, and equivalent wording normally mean: **checkpoint evaluation → reconcile if material → create the requested VCS commit**.
+- `commit and push`, `提交推送`, and equivalent wording normally mean: **checkpoint evaluation → commit → push → verify the intended authoritative remote/ref when declared**.
+- A bare word such as `提交` outside repository context can mean submitting a form, document, job, or other non-VCS action; do not trigger Agnir merely because the literal word matches.
+
+For an authorized commit request:
+
+1. load and validate current Agnir continuity before building the commit;
+2. reconcile material continuity changes;
+3. if both Project work and Agnir memory changed, prefer staging them into **one VCS revision** so the revision itself is a coherent Project snapshot;
+4. do not create a second checkpoint-only commit after the Project commit unless a later independent material truth change requires it;
+5. if checkpoint evaluation is a no-op, commit only the requested Project changes;
+6. treat the resulting VCS revision identifier as a backend receipt when useful; do not try to embed a commit SHA inside the content whose commit would determine that same SHA.
+
+For an authorized push request, perform the commit-boundary procedure first. After push/publication, if the Project declares a canonical repository and authoritative ref, verify that the intended revision reached that ref before reporting completion.
+
+When a commit created elsewhere is merely observed—human CLI, IDE, web UI, CI, another Agent, or automation—trigger **checkpoint evaluation**, not unconditional checkpoint mutation. If the durable Project truth remains coherent, do nothing. If material truth drift is detected, reconcile at the next authorized checkpoint boundary or according to Project policy.
+
+Git hooks such as `pre-commit` or `pre-push` may be used by an implementation to surface these events, but hooks are optional adapter mechanisms. Never make future Agnir discovery or continuity depend on a hook having run.
 
 ## Repair
 
@@ -118,4 +146,4 @@ After material activation or discovery repair, rerun fresh activation/cold start
 
 For installation, report only the useful result: which Project was initialized, where the Agnir anchor and durable memory live, whether README/`AGENTS.md` activation was installed or merged, whether any existing instruction conflict blocked completion, and whether fresh activation passed. Do not make the user learn or repeat the internal checklist.
 
-For resume/checkpoint/repair, report material continuity changes, remaining blockers, and any failure class that prevents safe resumability.
+For resume/checkpoint/commit/push/repair, report material continuity changes, whether checkpoint evaluation was a no-op or published transition, the resulting repository revision/remote verification when relevant, remaining blockers, and any failure class that prevents safe resumability.

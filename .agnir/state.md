@@ -1,130 +1,69 @@
 # Agnir Current State
 
-Agnir is the active greenfield project/protocol identity on `main`. Repository branch governance is main-only; predecessor history is archival under immutable Git history and `history/`.
+Agnir is the active greenfield project-owned durable continuity protocol on `iorLab/agnir` `main`. Core compatibility is `0.1`, the repository/filesystem profile is `repository-filesystem/0.1`, and the intended initial repository release is `0.1.0`. No `v0.1.0` tag or GitHub Release has been created.
 
-## Stable release line
+## Current pre-publication contract
 
-Agnir is **release-ready at repository version `0.1.0`**, pending only the explicit publication action (tag / GitHub Release).
-
-Version layers remain distinct:
-
-- Core compatibility: `0.1`;
-- repository/filesystem profile: `repository-filesystem/0.1`;
-- repository release SemVer: `0.1.0`.
-
-`RELEASE.md` is the publication contract. No `v0.1.0` tag or GitHub Release has been created yet.
-
-## Active contract
-
-- **Durable continuity belongs to the Project**, not an Executor, execution environment, repository host, or conversation.
+- Durable continuity belongs to the Project, not an Executor, conversation, execution environment, repository host, or storage implementation.
 - Agnir Core remains storage-, platform-, VCS-, repository-, agent-, Skill-, and execution-surface-neutral.
 - Required durable semantics are Current State, Next Actions, Decisions, and Evidence / Checkpoints.
-- A compatible Executor that already knows the applicable profile can cold-start from the authorized Project Entry Point through the Discovery Record and durable memory.
-- For an Agent-operable Project using `repository-filesystem/0.1`, initialization additionally persists an activation route so a future general-purpose Agent can learn that Agnir applies without a repeated user prompt.
+- Cold-start discovery must resolve the correct Project identity and coherent authoritative memory without predecessor-private context.
+- Agent-operable `repository-filesystem/0.1` Projects persist activation through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory.
+- Existing Project-owned `AGENTS.md` content is preserved; Agnir adds only a minimal locator and blocks on material instruction conflicts rather than silently overriding them.
 
-Reference target-Project activation route:
+## Transactional checkpoint baseline
 
-```text
-Project root
-→ AGENTS.md
-→ README.md / Agnir Project Instructions
-→ AGNIR.yaml
-→ declared durable memory
-```
+The pre-publication Core now treats checkpointing as an authoritative continuity transition rather than an arbitrary sequence of writes:
 
-`README.md` owns the canonical **Agnir Project Instructions** in the initialized target Project. Root `AGENTS.md` is a locator to that section and must not fork a second copy of the full rules.
+1. reconcile current Project truth;
+2. minimize writes to semantic categories that materially changed;
+3. treat unchanged durable truth as a no-op;
+4. construct a coherent candidate before authoritative publication;
+5. use an atomic backend publication primitive when available, or durable generation/revision/transaction semantics that prevent a fresh resolver from accepting mixed generations;
+6. reject stale-base publication with semantics equivalent to `AGNIR_CHECKPOINT_CONFLICT` instead of silently overwriting newer truth;
+7. verify fresh discovery after publication.
 
-## Agent Skill distribution baseline
+A backend-generated commit/revision/transaction identifier may be the checkpoint receipt and does not need to be embedded inside the content whose publication creates that identifier.
 
-Agnir is packaged as an **Agent Skill** through top-level `SKILL.md`.
+## Repository commit and push integration
 
-The instruction surfaces are deliberately separated:
+Repository/VCS integration is profile/Skill behavior, not a Core VCS dependency.
 
-- **user-facing install prompt:** one short sentence expressing intent and identifying the Agnir repository;
-- **Agent-facing procedure:** root `SKILL.md`, which owns install / initialize / resume / checkpoint / repair;
-- **post-install target-Project activation:** target `AGENTS.md` → target README `Agnir Project Instructions` → target `AGNIR.yaml` → durable memory.
+- In repository context, `commit`, `提交`, `提交代码`, and equivalent intent are checkpoint boundaries: reconcile Agnir before commit and prefer Project changes plus Agnir changes in one VCS revision.
+- `commit and push`, `提交推送`, and equivalent intent mean checkpoint + commit + push + verification of the declared authoritative remote/ref when available.
+- A bare `提交` outside repository context is not a universal keyword; integrations interpret intent and context rather than literal string matching.
+- A commit observed after another human/Agent/IDE/CI/web action triggers checkpoint evaluation only. If durable continuity remains coherent, the result is a no-op rather than another checkpoint-only commit.
+- Git hooks may capture events but are optional implementation mechanisms and are not continuity dependencies.
 
-Canonical user-facing install requests shown in the bilingual READMEs are:
+## Executable pressure
 
-```text
-Install and initialize Agnir for this Project: https://github.com/iorLab/agnir
-```
+The conformance suite now includes a substrate-neutral checkpoint reference and tests for:
 
-```text
-为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir
-```
+- no-op evaluation without synthetic mutation;
+- complete checkpoint publication as one generation;
+- stale-base conflict rejection;
+- Skill/package markers for transactional checkpoint semantics and commit/push intent;
+- bilingual durable Project instructions carrying commit-boundary behavior.
 
-The user does **not** carry Agnir's implementation checklist. The Agent locates this repository, reads `SKILL.md`, and executes the current procedure. The Skill procedure itself is self-contained; the user prompt intentionally is not.
+Existing discovery, activation, safe `AGENTS.md` merge, SQLite continuity, external authorization, multi-project isolation, Locator Chain failure, symlink, and real Git worktree pressure remains in place.
 
-This supersedes the earlier Quick Start wording that placed a long self-contained initialization checklist directly in the user-facing prompt.
+## Repository documentation behavior
 
-After initialization, normal Project work does not depend on the Skill repository or original install conversation just to activate Agnir. The target Project is self-describing through its durable activation route.
+`REPOSITORY_TREE.md` is a structural responsibility map. `.agnir/evidence/` is represented by directory responsibility rather than duplicating every evidence filename. Adding an Evidence object therefore does not itself require a second documentation mutation merely to register that filename.
 
-## Existing AGENTS.md safety baseline
+## Release status
 
-Agnir installation treats a target Project's pre-existing root `AGENTS.md` as Project-owned instruction content.
+This transactional-checkpoint / commit-event change is a material pre-publication delta and must pass the full GitHub conformance workflow before its commit is treated as the `0.1.0` publication candidate. `RELEASE.md` contains the updated publication gate.
 
-Reference behavior is now explicit:
-
-- if `AGENTS.md` is absent, create only a minimal Agnir locator;
-- if it exists, preserve existing unrelated content and merge only the minimal locator;
-- if an equivalent locator already exists, remain idempotent and do not duplicate it;
-- never copy the full Agnir activation/checkpoint procedure into `AGENTS.md`;
-- inspect for material conflicts before writing;
-- when existing Project instructions materially contradict the Agnir activation route, do not delete, override, or reinterpret them silently—surface the conflict to the Principal and do not claim installation complete until it is explicitly resolved and fresh activation passes.
-
-`conformance/agents_merge_reference.py` and `conformance/test_agents_merge.py` provide executable pressure for preservation, minimal creation, idempotence, and explicit conflict failure. This reference is conformance-only; `SKILL.md` remains the Agent-facing procedure.
-
-## Skill and activation conformance
-
-Current executable pressure includes:
-
-- `conformance/test_skill_package.py` — verifies Skill frontmatter, full Agent procedure, exact one-line bilingual user prompts, and absence of the internal checklist from Quick Start;
-- `conformance/agents_merge_reference.py` + `test_agents_merge.py` — verifies safe target `AGENTS.md` merge and conflict behavior;
-- `conformance/activation_reference.py` + `test_agent_activation.py` — verifies prompt-free target-Project activation and negative activation cases;
-- `conformance/check_agnir_0_1.py` — self-hosts Skill packaging, Agent activation, `AGNIR.yaml` discovery, version/profile agreement, release surface, and repository documentation structure.
-
-Safe-merge implementation candidate `8b07f25b4ec3decbec0b2e410778db3b247cac47` passed the repository-filesystem CI job in workflow run `33185018378`.
-
-## Conformance coverage
-
-The stable suite also covers:
-
-- all nine named Agnir discovery failure classes;
-- durable non-repository SQLite continuity and fresh-resolver resume;
-- external-memory authorization without plaintext credentials;
-- multi-project isolation;
-- Locator Chain cycle / stale / inconsistency pressure;
-- symlink boundaries and real Git worktree cold start.
-
-Real mount-boundary behavior remains explicitly unproven; ordinary directories are not accepted as substitute mount evidence.
-
-## Documentation baseline
-
-- `README.md` and `README.zh-CN.md` remain separate bilingual entry documents; same-page language switching remains explicitly deferred and is not a release blocker.
-- Both READMEs put the user-facing Quick Start before architecture.
-- New-Project Quick Start contains only the one-line install request and points the Agent to root `SKILL.md`.
-- Existing initialized Projects require no recurring Agnir bootstrap prompt.
-- Architecture diagrams distinguish the one-time Skill installation path from the post-install durable Project activation/discovery path.
-- `REPOSITORY_TREE.md` is the exhaustive tracked-file map.
-
-## Relationship to Svif
-
-Svif remains a separate Project orchestration product at `iorLab/svif`. It consumes Agnir Core/profile continuity semantics through its Continuity Provider integration; Skill packaging does not make Agnir repository internals, Git/GitHub, or a particular Agent platform universal requirements.
+Real mount-boundary behavior remains explicitly unproven and optional additional evidence; ordinary directories are not accepted as mount evidence.
 
 ## Current resume point
 
-Development required for the initial Agnir `0.1.0` release is complete, including Agent Skill packaging, safe existing-`AGENTS.md` merge behavior, and durable post-install activation.
-
-Next operation is **publication only**:
-
-1. after explicit authorization, create tag `v0.1.0` on the intended publication commit and/or create the GitHub Release;
-2. after publication, keep Core `0.1` and `repository-filesystem/0.1` frozen compatibility lines and keep `0.1.x` maintenance non-breaking;
-3. preserve the user-prompt / Skill-procedure / target-Project-activation separation and the non-destructive `AGENTS.md` merge invariant;
-4. optionally add real mount-boundary evidence when a real mount-capable environment is available.
+1. publish the implementation checkpoint to `main` as one Git revision containing the Project/spec/Skill/conformance/Agnir-memory changes;
+2. verify the GitHub `Agnir conformance` workflow for that exact revision;
+3. if CI passes, record the successful revision/run as durable release-readiness evidence in a later observation checkpoint if needed;
+4. only after a passing publication candidate and explicit Principal authorization, create tag `v0.1.0` and/or the GitHub Release.
 
 ## Branch governance
 
-- `main` is the only long-lived and authoritative branch.
-- Retired branch tips remain indexed in `history/BRANCH_ARCHIVE.md`.
-- Historical recovery uses commit SHAs and Git history, not live legacy refs.
+`main` remains the only long-lived authoritative branch. Historical recovery uses immutable commit SHAs and Git history rather than live legacy refs.
