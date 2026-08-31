@@ -13,7 +13,7 @@ Agnir is the active greenfield project-owned durable continuity protocol on `ior
 
 ## Transactional checkpoint baseline
 
-The pre-publication Core now treats checkpointing as an authoritative continuity transition rather than an arbitrary sequence of writes:
+The pre-publication Core treats checkpointing as an authoritative continuity transition rather than an arbitrary sequence of writes:
 
 1. reconcile current Project truth;
 2. minimize writes to semantic categories that materially changed;
@@ -37,13 +37,7 @@ Repository/VCS integration is profile/Skill behavior, not a Core VCS dependency.
 
 ## Executable pressure
 
-The conformance suite now includes a substrate-neutral checkpoint reference and tests for:
-
-- no-op evaluation without synthetic mutation;
-- complete checkpoint publication as one generation;
-- stale-base conflict rejection;
-- Skill/package markers for transactional checkpoint semantics and commit/push intent;
-- bilingual durable Project instructions carrying commit-boundary behavior.
+The conformance suite includes a substrate-neutral checkpoint reference and tests for no-op evaluation, complete-generation publication, stale-base conflict rejection, Skill commit/push intent, and bilingual durable Project instructions.
 
 Existing discovery, activation, safe `AGENTS.md` merge, SQLite continuity, external authorization, multi-project isolation, Locator Chain failure, symlink, and real Git worktree pressure remains in place.
 
@@ -51,17 +45,23 @@ Existing discovery, activation, safe `AGENTS.md` merge, SQLite continuity, exter
 
 `REPOSITORY_TREE.md` is a structural responsibility map. `.agnir/evidence/` is represented by directory responsibility rather than duplicating every evidence filename. Adding an Evidence object therefore does not itself require a second documentation mutation merely to register that filename.
 
+## Exact-revision CI observation
+
+Implementation checkpoint `7e40da7f4bacf98d58570d93310a4e124b2d927b` triggered `Agnir conformance` workflow run `33425797110` and failed in the self-hosting step. The failure was a case-sensitive marker mismatch: the checker required lowercase `mixed checkpoint generations` while the Core sentence began `Mixed checkpoint generations` with an uppercase initial letter.
+
+The repair strengthens the normative sentence instead of weakening conformance: `A fresh compatible resolver MUST NOT accept mixed checkpoint generations as a completed checkpoint.` A new coherent checkpoint must be published from the exact current base and verified by a new workflow run.
+
 ## Release status
 
-This transactional-checkpoint / commit-event change is a material pre-publication delta and must pass the full GitHub conformance workflow before its commit is treated as the `0.1.0` publication candidate. `RELEASE.md` contains the updated publication gate.
+The transactional-checkpoint / commit-event delta is implemented but is **not yet release-ready** until the repaired exact revision passes the full GitHub conformance workflow. `RELEASE.md` contains the updated publication gate.
 
 Real mount-boundary behavior remains explicitly unproven and optional additional evidence; ordinary directories are not accepted as mount evidence.
 
 ## Current resume point
 
-1. publish the implementation checkpoint to `main` as one Git revision containing the Project/spec/Skill/conformance/Agnir-memory changes;
-2. verify the GitHub `Agnir conformance` workflow for that exact revision;
-3. if CI passes, record the successful revision/run as durable release-readiness evidence in a later observation checkpoint if needed;
+1. publish the CI-marker repair as a coherent checkpoint based on `7e40da7f4bacf98d58570d93310a4e124b2d927b`;
+2. verify the GitHub `Agnir conformance` workflow for the repaired exact revision;
+3. if CI passes, record the successful revision/run as release-readiness evidence in a later observation checkpoint when useful;
 4. only after a passing publication candidate and explicit Principal authorization, create tag `v0.1.0` and/or the GitHub Release.
 
 ## Branch governance

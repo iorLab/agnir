@@ -159,7 +159,7 @@ Checkpoint evaluation MUST distinguish material continuity change from a no-op. 
 
 When material continuity changes exist, an implementation SHOULD first construct a coherent checkpoint candidate before changing authoritative continuity. The candidate SHOULD minimize writes to the semantic categories that actually changed.
 
-Publishing a checkpoint is an authoritative continuity transition. A completed checkpoint MUST NOT expose a mixture of old and new checkpoint generations as though that mixture were coherent Project truth. **Mixed checkpoint generations MUST NOT be accepted as a completed checkpoint.**
+Publishing a checkpoint is an authoritative continuity transition. A completed checkpoint MUST NOT expose a mixture of old and new checkpoint generations as though that mixture were coherent Project truth. A fresh compatible resolver MUST NOT accept mixed checkpoint generations as a completed checkpoint.
 
 - When the active backend can atomically publish all changed continuity objects, an implementation SHOULD use that atomic publication primitive.
 - When the active backend cannot atomically publish all changed continuity objects, the implementation MUST use durable generation, transaction, revision, pointer, or equivalent consistency metadata sufficient to prevent a fresh compatible resolver from accepting a mixed-generation result as a completed checkpoint.
