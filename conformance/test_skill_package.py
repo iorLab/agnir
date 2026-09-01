@@ -15,7 +15,7 @@ class SkillPackageTests(unittest.TestCase):
         self.assertIn("\nname: agnir\n", text)
         self.assertIn("\ndescription:", text)
 
-    def test_skill_owns_full_install_procedure(self) -> None:
+    def test_skill_owns_full_operational_procedure(self) -> None:
         text = SKILL.read_text(encoding="utf-8")
         for marker in (
             "Do not require the user to carry Agnir's implementation checklist",
@@ -33,6 +33,7 @@ class SkillPackageTests(unittest.TestCase):
             "## Agnir Project Instructions",
             "AGENTS.md",
             "fresh activation test",
+            "## Upgrade an existing Agnir Project",
             "## Resume or use an existing Agnir Project",
             "## Checkpoint",
             "## Commit and push integration",
@@ -51,6 +52,21 @@ class SkillPackageTests(unittest.TestCase):
             "提交推送",
             "checkpoint evaluation",
             "not by global string matching",
+        ):
+            self.assertIn(marker, text)
+
+    def test_skill_defines_non_destructive_upgrade(self) -> None:
+        text = SKILL.read_text(encoding="utf-8")
+        for marker in (
+            "Upgrade is **not re-initialization**",
+            "latest stable release",
+            "Do not silently treat `main`",
+            "compatible operational upgrade",
+            "AGNIR_UPGRADE_MIGRATION_REQUIRED",
+            "agnir/operations",
+            "applied_revision",
+            "Preserve `project.identity`",
+            "upgrade evaluation is a no-op",
         ):
             self.assertIn(marker, text)
 

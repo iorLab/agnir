@@ -23,7 +23,7 @@ agnir/                                                    # Agnir Agent Skill + 
 │   └── AGNIR_DISCOVERY.md                                # cold-start discovery / Locator Chain / failure vocabulary
 │
 ├── profiles/                                             # Core 之外的具体 discovery / storage realization
-│   └── REPOSITORY_FILESYSTEM.md                          # repository-filesystem/0.1；Agent activation/init + VCS commit/push integration
+│   └── REPOSITORY_FILESYSTEM.md                          # repository-filesystem/0.1；activation/init + upgrade + VCS integration
 │
 ├── schemas/
 │   └── agnir-manifest.schema.json                        # repository/filesystem AGNIR.yaml JSON Schema
@@ -34,6 +34,7 @@ agnir/                                                    # Agnir Agent Skill + 
 │   ├── agnir-0.1.md                                      # Agnir 0.1 stable conformance baseline
 │   ├── check_agnir_0_1.py                                # self-host + Skill packaging + stable release-readiness checker
 │   ├── checkpoint_reference.py                           # substrate-neutral checkpoint no-op / atomic generation / stale-base conflict model
+│   ├── upgrade_reference.py                              # compatible upgrade / stable-target / provenance / migration classification model
 │   ├── core_reference.py                                 # shared Core failure semantics reference
 │   ├── external_memory_reference.py                      # external memory + authorization reference model
 │   ├── locator_chain_reference.py                        # Locator Chain CYCLE / STALE / INCONSISTENT reference model
@@ -43,11 +44,12 @@ agnir/                                                    # Agnir Agent Skill + 
 │   ├── test_agent_activation.py                          # prompt-free Project activation + negative fixtures
 │   ├── test_agents_merge.py                              # existing AGENTS preserve / minimal create / idempotence / explicit conflict tests
 │   ├── test_checkpoint_semantics.py                      # no-op / coherent publication / AGNIR_CHECKPOINT_CONFLICT tests
+│   ├── test_upgrade_semantics.py                         # compatible/no-op upgrade, stable-target, provenance preservation, migration tests
 │   ├── test_external_memory_authorization.py             # external authorization failure semantics
 │   ├── test_locator_chain_failures.py                    # cycle / stale / inconsistency tests
 │   ├── test_repository_filesystem_boundaries.py          # symlink / Git worktree filesystem boundaries
 │   ├── test_repository_filesystem_failures.py            # discovery failure fixtures
-│   ├── test_skill_package.py                             # root SKILL.md + user prompt boundary + commit/push intent tests
+│   ├── test_skill_package.py                             # root SKILL.md + user prompt + upgrade + commit/push intent tests
 │   ├── test_sqlite_backend.py                            # SQLite cold-start / checkpoint / fresh-resume
 │   └── test_workspace_isolation.py                       # multi-Project isolation tests
 │
@@ -56,10 +58,10 @@ agnir/                                                    # Agnir Agent Skill + 
 │   ├── MIGRATION_PPMP_V2.md                              # 可选历史迁移指南；非 release gate
 │   └── PREDECESSOR.md                                    # predecessor lineage 的 immutable commit 定位
 │
-├── SKILL.md                                              # canonical Agent Skill；install/use/checkpoint/commit/push/repair procedure
+├── SKILL.md                                              # canonical Agent Skill；install/upgrade/use/checkpoint/commit/push/repair procedure
 ├── AGENTS.md                                             # 本仓库 Agent-facing locator：指向 README canonical Agnir Project Instructions
 ├── AGNIR.yaml                                            # 本仓库 repository-filesystem/0.1 discovery anchor
-├── RELEASE.md                                            # 0.1.0 版本、Skill packaging、activation 与 publication gate
+├── RELEASE.md                                            # 0.1.0 版本、upgrade/Skill/activation 与 publication gate
 ├── README.md                                             # 英文入口：一句话安装提示 + Skill/架构/activation/continuity
 ├── README.zh-CN.md                                       # 简体中文入口：同一 canonical 模型
 ├── REPOSITORY_TREE.md                                    # 本文件：仓库结构与职责地图
@@ -68,6 +70,6 @@ agnir/                                                    # Agnir Agent Skill + 
 
 ## 如何使用这张树
 
-第一次安装 Agnir 时，用户只需要 README 开头的一句话提示词；Agent 找到本仓库后读取根目录 `SKILL.md`，由 Skill 持有完整 procedure。一个已经初始化好的 Agent-operable Project 不应要求用户再次粘贴 Agnir procedure，而应由目标 Project 自己的 `AGENTS.md → README → AGNIR.yaml` 路线完成 activation / discovery。
+第一次安装 Agnir 时，用户只需要 README 开头的一句话提示词；Agent 找到本仓库后读取根目录 `SKILL.md`，由 Skill 持有完整 procedure。已经初始化的 Project 正常使用时仍通过自己的 `AGENTS.md → README → AGNIR.yaml` 路线 activation；只有用户明确要求升级 Agnir 时才重新调用 distribution/Skill 的 upgrade procedure。
 
 本页不是第二套协议或 Skill procedure。**Agent procedure 以根目录 `SKILL.md` 为准；Core 语义以 `spec/` 为准；repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准；机器可读 manifest 约束以 `schemas/` 为准；`history/` 仅保存 lineage。**

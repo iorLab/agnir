@@ -16,13 +16,13 @@ AGNIR.yaml
 
 An Executor that already knows this profile applies MUST inspect that anchor before relying on private execution context or hidden environment knowledge.
 
-A filesystem indirection used as the authorized Project Entry Point (for example a symlink that resolves to one selected Project root) MAY be canonicalized before discovery, provided authority still selects exactly one Project root. The indirection does not authorize unrelated parent, child, sibling, or external memory.
+A filesystem indirection used as the authorized Project Entry Point MAY be canonicalized before discovery when authority still selects exactly one Project root. The indirection does not authorize unrelated parent, child, sibling, or external memory.
 
 ## 2. Agent-operable Project activation and initialization
 
 Agnir discovery and Agent activation are distinct concerns. `AGNIR.yaml` can only be discovered after an Executor knows to apply Agnir; therefore an Agent-operable repository MUST persist an activation route outside private chat or Agent memory.
 
-For Projects intended to be resumed by general-purpose Agents through this profile, initialization MUST establish the following durable route:
+For Projects intended to be resumed by general-purpose Agents through this profile, initialization MUST establish:
 
 ```text
 Project root
@@ -35,42 +35,63 @@ Project root
 The reference activation contract is:
 
 1. `README.md` MUST contain a canonical section headed `## Agnir Project Instructions`.
-2. That section MUST state that the Project uses Agnir for durable continuity and MUST instruct an Agent, before Project work, to:
-   - treat the Project root as the authorized Project Entry Point;
-   - read top-level `AGNIR.yaml`;
-   - load Current State and Next Actions;
-   - load Decisions and Evidence when relevant;
-   - prefer durable Agnir Project truth over chat history or private Agent memory unless superseded by a newer Principal instruction or directly observed current Project fact;
-   - checkpoint material state, next-action, decision, and evidence changes at an intentional save/finish boundary.
-3. Root `AGENTS.md` MUST point to the `README.md` **Agnir Project Instructions** section. `AGENTS.md` SHOULD remain a locator and SHOULD NOT duplicate the full activation contract, so the Project has one canonical instruction surface rather than two drifting copies.
-4. Initialization MUST preserve unrelated existing README and `AGENTS.md` content. It MUST merge the Agnir section/reference rather than destructively replacing Project documentation or other Agent instructions.
+2. That section MUST state that the Project uses Agnir for durable continuity and instruct an Agent, before Project work, to treat the Project root as the authorized Project Entry Point, read top-level `AGNIR.yaml`, load Current State and Next Actions, load Decisions/Evidence when relevant, prefer current durable Project truth over older private context, and checkpoint material changes at intentional save/finish boundaries.
+3. Root `AGENTS.md` MUST point to the README **Agnir Project Instructions** section and SHOULD remain locator-only for Agnir.
+4. Initialization MUST preserve unrelated existing README and `AGENTS.md` content and merge rather than destructively replace it.
 5. Initialization MUST create or validate `AGNIR.yaml`, resolve all required memory locators, create any required initial durable memory, and persist at least one initialization Evidence object when Evidence is declared.
-6. Initialization MUST finish with a fresh activation test from the Project root: resolve `AGENTS.md`, follow the README Agnir section, resolve `AGNIR.yaml`, load required continuity, and verify the Project no longer depends on the initialization conversation or initializing Agent's private memory.
+6. Initialization MUST finish with a fresh activation test from the Project root and prove continuation no longer depends on the initialization conversation or initializing Agent's private memory.
 
 ### Existing AGENTS.md merge and conflict behavior
 
 An Agent-operable initializer applying this profile MUST treat pre-existing root `AGENTS.md` as Project-owned instruction content, not as a replaceable Agnir template.
 
-The reference behavior is:
-
 1. If root `AGENTS.md` is absent, create a minimal Agent instruction file containing only the Agnir locator needed to reach README `Agnir Project Instructions`.
 2. If root `AGENTS.md` exists, preserve existing unrelated instructions and merge only the minimal Agnir locator. Existing instructions MUST NOT be deleted, reordered, normalized, summarized, or silently rewritten merely to install Agnir.
 3. If an equivalent Agnir locator already exists, the operation MUST be idempotent and MUST NOT create another copy.
-4. Agnir content in `AGENTS.md` MUST remain locator-only. Current State, Next Actions, Decisions, Evidence, checkpoint procedure, and the full activation contract belong in their canonical Agnir locations, not as a duplicate `AGENTS.md` rule set.
-5. The initializer MUST inspect for material conflicts before writing. A material conflict includes an existing instruction that directly contradicts the required activation route—for example, forbidding the Agent from reading/following `README.md`, forbidding `AGNIR.yaml`, disabling Agnir, or declaring a competing canonical Agnir instruction location.
-6. If resolving a material conflict would require deleting, overriding, or reinterpreting an existing Project instruction, the initializer MUST NOT guess or silently overwrite it. It MUST surface the conflict to the Principal and MUST NOT report Agnir installation complete until the conflict is explicitly resolved and fresh activation passes.
+4. Agnir content in `AGENTS.md` MUST remain locator-only.
+5. The initializer MUST inspect for material conflicts before writing.
+6. If resolving a material conflict would require deleting, overriding, or reinterpreting an existing Project instruction, the initializer MUST NOT guess or silently overwrite it. It MUST surface the conflict to the Principal and MUST NOT report installation complete until explicitly resolved and fresh activation passes.
 
 Initializers SHOULD detect such conflicts in preflight before making any Agnir installation writes. A partially written setup does not satisfy this profile's completed initialization contract.
 
-Once this route has been installed, a user SHOULD NOT need to repeat an Agnir bootstrap prompt for normal future work. An execution surface that does not automatically inspect Project instruction files may require one-time configuration to honor `AGENTS.md` / Project documentation; that execution-surface behavior is outside Agnir Core.
+Once this route has been installed, a user SHOULD NOT need to repeat an Agnir bootstrap prompt for normal future work. An execution surface that does not automatically inspect Project instruction files may require one-time configuration; that behavior is outside Agnir Core.
 
 ### Reference Agent Skill packaging
 
-This reference repository publishes root `SKILL.md` as the Agent-facing procedure for applying this initialization contract. The user-facing request MAY remain a short intent statement such as “install and initialize Agnir”; the detailed procedural checklist belongs to the Skill, not to the user's prompt.
+This reference repository publishes root `SKILL.md` as the Agent-facing procedure for applying installation, upgrade, resume, checkpoint, commit/push, and repair behavior. User-facing requests MAY remain short intent statements; the detailed procedural checklist belongs to the Skill, not to the user's prompt.
 
-`SKILL.md` is a distribution/operation surface. It does not redefine this profile or Agnir Core, and another implementation MAY expose the same profile semantics through a different Agent Skill or non-Agent installer. After initialization, normal target-Project activation proceeds through the target Project's durable `AGENTS.md` → README → `AGNIR.yaml` route and does not depend on reopening the Skill repository.
+`SKILL.md` is a distribution/operation surface. It does not redefine this profile or Agnir Core. After initialization, normal target-Project activation proceeds through the target Project's durable `AGENTS.md` → README → `AGNIR.yaml` route and does not depend on reopening the Skill repository.
 
-This activation convention is profile-level guidance for Agent-operable repository Projects. Non-Agent Executors that are directly given the applicable profile implementation may begin at `AGNIR.yaml` as described by Core cold-start semantics.
+### Existing Project upgrade and operational provenance
+
+Upgrade is distinct from initialization. A compatible operational upgrade MUST begin by activating the existing Project and preserving its authoritative continuity rather than rebuilding `.agnir/` from templates.
+
+For an upgrade to remain compatible with this profile:
+
+- the target Core compatibility line MUST remain `0.1`;
+- the target profile compatibility line MUST remain `repository-filesystem/0.1`;
+- `project.identity`, declared memory locators, durable memory contents, unrelated README/`AGENTS.md` content, and unrelated manifest extensions MUST be preserved unless a separately authorized migration changes them;
+- changing only Agent Skill wording, activation procedure, operational tooling, or non-breaking conformance does not by itself change the profile compatibility line;
+- if either Core or profile compatibility changes, the operation is a migration, not a compatible upgrade, and MUST NOT silently rewrite the Project to the new line.
+
+A Project created before operational provenance was introduced remains valid. Missing provenance is not a reason to re-initialize the Project.
+
+Repository/filesystem Projects MAY record the operational package that was last applied:
+
+```yaml
+extensions:
+  agnir/operations:
+    distribution: "agnir-agent-skill"
+    release: "0.1.0"
+    source: "iorLab/agnir"
+    applied_revision: "<immutable source revision>"
+```
+
+`agnir/operations` is optional operational provenance. It is not Core identity, does not replace `agnir.version` or `agnir.discovery_profile`, and MUST NOT be used to redefine Project identity or continuity locators.
+
+When the Principal asks for the **latest stable release**, an implementation MUST resolve an actually published stable release/tag. It MUST NOT silently interpret a moving `main` branch, another moving branch, or an untagged revision as stable. A non-stable target MAY be used only with explicit authorization.
+
+A compatible upgrade SHOULD non-destructively merge the target Agnir-owned activation/procedure content, update operational provenance, checkpoint material upgrade facts, and finish with a fresh activation test. In VCS, the implementation SHOULD publish the Project upgrade and its continuity update as one coherent revision when possible. If the same operational baseline is already applied and no material drift exists, the upgrade result SHOULD be a no-op.
 
 ## 3. Reference serialization
 
@@ -101,7 +122,7 @@ A relative locator that traverses filesystem indirection outside the selected Pr
 - `agnir.discovery_profile` is `<profile-name>/<major.minor>`.
 - This profile requires `repository-filesystem/0.1`.
 - A breaking change to the discovery anchor, required serialization, relative-locator interpretation, selected-root authority semantics, or stable activation route for Agent-operable Projects requires a new profile compatibility line after publication.
-- A change only to the reference Skill's wording, packaging, or implementation procedure does not by itself change profile compatibility if the same profile contract remains satisfied.
+- A change only to the reference Skill's wording, packaging, implementation procedure, or compatible operational upgrade behavior does not by itself change profile compatibility if the same profile contract remains satisfied.
 - `extensions` keys use `<owner>/<name>` namespaces.
 - `agnir/*` extension namespaces are reserved for Agnir-defined extensions.
 - Extensions MUST NOT redefine Core fields while claiming the same Core version.
@@ -112,9 +133,9 @@ A relative locator that traverses filesystem indirection outside the selected Pr
 
 Nested Projects are allowed, but each Project Entry Point MUST select one Project root. Implementations MUST NOT silently walk into an unrelated parent/child Project when the selected boundary already determines authority.
 
-A parent and child directory may each contain their own authoritative `AGNIR.yaml`. Once one of those roots has been selected as the authorized Project Entry Point, the existence of the other does **not** make the selected root ambiguous; discovery remains scoped to the selected root. `AGNIR_DISCOVERY_AMBIGUOUS` applies earlier, when multiple candidate Project roots exist and no authority rule has selected exactly one.
+A parent and child directory may each contain their own authoritative `AGNIR.yaml`. Once one root is selected as the authorized Project Entry Point, the existence of the other does not make the selected root ambiguous. `AGNIR_DISCOVERY_AMBIGUOUS` applies before authority has selected exactly one root.
 
-A detected identity mismatch at the selected root MUST surface `AGNIR_DISCOVERY_PROJECT_MISMATCH` rather than searching a parent or child root for a more convenient identity.
+A detected identity mismatch at the selected root MUST surface `AGNIR_DISCOVERY_PROJECT_MISMATCH` rather than searching for a more convenient identity.
 
 ## 6. Colocated memory
 
@@ -133,23 +154,23 @@ extensions:
     authoritative_ref: "main"
 ```
 
-This extension is profile/backend metadata, not Core identity. A non-default authoritative ref MUST be durably discoverable; a fresh Executor cannot be expected to remember it from a prior session.
+This extension is profile/backend metadata, not Core identity. A non-default authoritative ref MUST be durably discoverable.
 
-A Git worktree is a valid filesystem-style Project root when the selected worktree contains the authoritative top-level `AGNIR.yaml` and its declared continuity locators resolve for that worktree. Agnir discovery MUST NOT depend on `.git` being a directory rather than Git's worktree metadata file.
+A Git worktree is a valid filesystem-style Project root when the selected worktree contains authoritative top-level `AGNIR.yaml` and its declared continuity locators resolve for that worktree. Discovery MUST NOT depend on `.git` being a directory rather than Git worktree metadata.
 
 ### Commit and push event integration
 
 For a repository-aware implementation that can create or observe VCS revisions, commit/push intent is a natural checkpoint boundary without making VCS part of Agnir Core.
 
 - When an authorized Principal asks the Executor to commit Project changes, the implementation SHOULD evaluate and reconcile material Agnir continuity **before** creating the VCS revision.
-- When both Project changes and Agnir continuity changes can be represented in the same VCS revision, the implementation SHOULD publish them together in one revision rather than creating a follow-up “checkpoint-only” revision.
-- If checkpoint evaluation finds no material continuity change, the implementation SHOULD leave Agnir memory unchanged and proceed with the requested commit rather than manufacturing a checkpoint mutation.
+- When both Project changes and Agnir continuity changes can be represented in the same VCS revision, the implementation SHOULD publish them together in one revision rather than creating a follow-up checkpoint-only revision.
+- If checkpoint evaluation finds no material continuity change, the implementation SHOULD leave Agnir memory unchanged and proceed with the requested commit.
 - When the request includes push/publication and `agnir/repository.authoritative_ref` is declared, the implementation SHOULD verify after push that the intended published revision reached that authoritative ref.
-- Observing a commit created by another Executor, a web UI, CI, IDE, or other mechanism MAY trigger checkpoint evaluation. Observation alone MUST NOT imply an unconditional continuity write; if durable Project truth remains coherent, evaluation is a no-op.
+- Observing a commit created by another Executor, web UI, CI, IDE, or other mechanism MAY trigger checkpoint evaluation. Observation alone MUST NOT imply an unconditional continuity write.
 - Repository hooks such as `pre-commit` or `pre-push` MAY implement these events, but hooks are adapter/implementation mechanisms and MUST NOT become a discovery or continuity dependency.
 - A VCS-generated revision identifier MAY be used as the backend checkpoint receipt. The checkpoint content MUST NOT be required to embed its own resulting revision identifier.
 
-Agent-facing integrations MAY recognize phrases such as `commit`, `commit and push`, `提交`, `提交代码`, and `提交推送` when repository context makes VCS intent clear. Such phrases are integration vocabulary, not Core keywords; ambiguous uses of “提交” outside VCS context MUST NOT be treated as Agnir checkpoint commands merely by string matching.
+Agent-facing integrations MAY recognize phrases such as `commit`, `commit and push`, `提交`, `提交代码`, and `提交推送` when repository context makes VCS intent clear. Such phrases are integration vocabulary, not Core keywords.
 
 ## 8. Discovery order
 
@@ -174,10 +195,10 @@ Implementations MUST NOT silently search arbitrary sibling repositories, user ho
 
 A profile conformance case SHOULD begin with only the Project root and profile implementation. It MUST prove discovery of `AGNIR.yaml`, version and identity validation, resolution of Current State and Next Actions, recovery of at least one material durable fact, and correct failure for at least one broken-locator case.
 
-An Agent-operable initialization conformance case additionally MUST prove that a fresh Agent activation context can start with only the Project root, resolve `AGENTS.md` to the canonical README Agnir instruction, and then complete Agnir discovery without any repeated user bootstrap prompt or prior conversation.
+An Agent-operable initialization conformance case additionally MUST prove fresh activation from only the Project root and the durable activation route.
 
-The reference Agent-initialization conformance also pressure-tests non-destructive merge into an existing `AGENTS.md`, minimal creation when it is absent, idempotent existing locator behavior, and explicit failure on a contradictory existing Agent instruction rather than silent overwrite.
+Compatible-upgrade conformance SHOULD prove that an old Project with valid Core/profile compatibility but missing operational provenance can be upgraded without changing Project identity or memory locators; that the same applied provenance yields a no-op; that non-stable targets require explicit opt-in; and that Core/profile changes are classified as migration rather than silently applied.
 
-The active reference conformance suite additionally pressure-tests explicit `NOT_FOUND`, `UNRESOLVABLE`, `UNSUPPORTED_VERSION`, `PROJECT_MISMATCH`, and pre-root-selection `AMBIGUOUS` semantics, isolation between explicitly selected nested Project roots, a symlinked Project Entry Point, rejection of relative-locator symlink escape without an explicit external binding, and Git worktree cold start.
+The active reference suite additionally pressure-tests non-destructive `AGENTS.md` merge, all named discovery failures, multi-project isolation, transactional checkpoint semantics, external authorization, symlink boundaries, and real Git worktree cold start.
 
 Real mount-boundary behavior remains an environment-dependent pressure case. It MUST NOT be claimed proven by simulating a mount with an ordinary directory.

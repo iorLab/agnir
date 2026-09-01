@@ -1,25 +1,26 @@
 ---
 name: agnir
-description: Install, initialize, use, checkpoint, resume, or repair Agnir durable Project continuity. Use when a user asks to install or initialize Agnir, make a Project resumable across Agents or conversations, recover an Agnir-enabled Project, checkpoint progress, commit or push Project changes with continuity reconciliation, or repair Agnir discovery/activation. The user-facing install request may be only a short intent statement; this Skill owns the full procedure.
+description: Install, initialize, upgrade, use, checkpoint, resume, or repair Agnir durable Project continuity. Use when a user asks to install or initialize Agnir, upgrade an existing Agnir Project to a newer operational release, make a Project resumable across Agents or conversations, recover an Agnir-enabled Project, checkpoint progress, commit or push Project changes with continuity reconciliation, or repair Agnir discovery/activation. The user-facing install or upgrade request may be only a short intent statement; this Skill owns the full procedure.
 ---
 
 # Agnir
 
 Agnir is a project-owned durable continuity protocol. The Project owns the durable truth required to continue safely when Agents, conversations, execution environments, or storage implementations change.
 
-Do not require the user to carry Agnir's implementation checklist in their prompt. A short request such as `Install and initialize Agnir for this Project` is sufficient once this Skill has been found. This file is the Agent-facing procedure.
+Do not require the user to carry Agnir's implementation checklist in their prompt. A short request such as `Install and initialize Agnir for this Project` or `Upgrade Agnir to the latest stable release` is sufficient once this Skill has been found. This file is the Agent-facing procedure.
 
 ## Determine the operation
 
 Classify the request as one of:
 
 - **install / initialize** — the target Project does not yet have a valid Agnir setup;
-- **resume / use** — the Project is already Agnir-enabled;
+- **upgrade** — the Project is already Agnir-enabled and the Principal wants a newer Agnir operational package or compatibility line;
+- **resume / use** — the Project is already Agnir-enabled and no Agnir upgrade was requested;
 - **checkpoint** — persist material continuity updates;
 - **commit / push** — treat repository publication intent as a checkpoint boundary, then perform the requested VCS operation when authorized;
 - **repair** — the Project intends to use Agnir but activation, discovery, identity, or locators are broken.
 
-For repository/filesystem Projects, read `profiles/REPOSITORY_FILESYSTEM.md` when performing installation, activation repair, discovery repair, or repository commit/push integration. Read `spec/AGNIR_CORE.md` and `spec/AGNIR_DISCOVERY.md` when the operation depends on Core semantics or failure classification.
+For repository/filesystem Projects, read `profiles/REPOSITORY_FILESYSTEM.md` when performing installation, upgrade, activation repair, discovery repair, or repository commit/push integration. Read `spec/AGNIR_CORE.md` and `spec/AGNIR_DISCOVERY.md` when the operation depends on Core semantics or failure classification.
 
 ## Install or initialize Agnir
 
@@ -75,6 +76,53 @@ Project root
 
 The installation is incomplete if future continuation still depends on the installation conversation or the installing Agent's private memory.
 
+## Upgrade an existing Agnir Project
+
+Upgrade is **not re-initialization**. Start by activating the existing Project and loading its authoritative continuity. Preserve the Project identity, memory locators, durable State / Next Actions / Decisions / Evidence, unrelated README content, unrelated `AGENTS.md` instructions, and unrelated manifest extensions unless a separately authorized migration explicitly changes them.
+
+A short user request such as `Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir` is sufficient.
+
+### Resolve the upgrade target
+
+1. Resolve the requested Agnir distribution source and target release.
+2. When the Principal asks for the **latest stable release**, use an actually published stable release/tag. **Do not silently treat `main`, another moving branch, or an untagged revision as stable.**
+3. A pre-release branch or explicit revision may be used only when the Principal explicitly requests or authorizes that non-stable target.
+4. Record enough target provenance to make the applied operational package reproducible.
+
+### Classify before mutating
+
+Compare the existing Project's `agnir.version` and `agnir.discovery_profile` with the target:
+
+- **no-op** — the same operational package provenance is already applied and no material activation/procedure drift exists;
+- **compatible operational upgrade** — Core and profile compatibility lines are unchanged, but the operational package/procedure is newer or the Project has no recorded operational provenance;
+- **migration required** — Core or profile compatibility line changes. Do not silently rewrite the Project to the new line. Surface migration-required semantics equivalent to `AGNIR_UPGRADE_MIGRATION_REQUIRED` and follow a separately authorized migration procedure.
+
+A Project created before operational provenance existed is still a valid Agnir Project. Missing provenance does not justify re-initialization; after Core/profile compatibility is validated, it is a compatible-upgrade input.
+
+### Apply a compatible operational upgrade
+
+For `repository-filesystem/0.1`:
+
+1. Preserve `project.identity`, all `memory` locators, existing durable memory content, and unrelated `extensions`.
+2. Non-destructively merge the target Agnir activation/procedure contract into README `Agnir Project Instructions` and preserve the locator-only `AGENTS.md` behavior.
+3. Record the applied operational package under the optional reference extension:
+
+```yaml
+extensions:
+  agnir/operations:
+    distribution: "agnir-agent-skill"
+    release: "<stable repository release>"
+    source: "iorLab/agnir"
+    applied_revision: "<immutable source revision>"
+```
+
+The operational extension records which distribution procedure was applied. It does **not** replace `agnir.version`, `agnir.discovery_profile`, or Project identity and is not an Agnir Core requirement.
+4. Reconcile any material upgrade facts into Agnir continuity. Evidence should identify the previous operational baseline when known, the target release/revision, classification, and fresh-activation result.
+5. If the Project is in VCS, publish the compatible upgrade and its Agnir checkpoint as one coherent revision when possible; do not create a chain of per-file upgrade commits.
+6. Finish with the same fresh activation test required after initialization. The upgrade is incomplete if a fresh Executor cannot activate and resume from the Project root.
+
+If the target procedure is already applied and durable truth did not change, upgrade evaluation is a no-op: do not rewrite README, manifest, memory, Evidence, or create a repository revision just to say the check occurred.
+
 ## Resume or use an existing Agnir Project
 
 Do not ask the user for another Agnir bootstrap prompt.
@@ -90,6 +138,8 @@ Follow the target Project's durable activation instructions. For the reference r
 7. then perform the user's actual Project task.
 
 If the execution surface does not automatically inspect Project instruction files, treat that as one-time execution-surface configuration rather than a reason to make the user repeat Agnir's procedure every session.
+
+Normal resume does not automatically upgrade Agnir. Upgrade checks or mutations happen only according to explicit Principal intent or a durable Project upgrade policy. This keeps an initialized Project resumable without requiring network access to the Agnir distribution source.
 
 ## Checkpoint
 
@@ -145,5 +195,7 @@ After material activation or discovery repair, rerun fresh activation/cold start
 ## Report completion
 
 For installation, report only the useful result: which Project was initialized, where the Agnir anchor and durable memory live, whether README/`AGENTS.md` activation was installed or merged, whether any existing instruction conflict blocked completion, and whether fresh activation passed. Do not make the user learn or repeat the internal checklist.
+
+For upgrade, report the previous operational baseline when known, target release/revision, classification (`no-op`, compatible upgrade, or migration required), which Agnir-owned activation/provenance surfaces changed, whether Project identity/memory locators were preserved, fresh-activation result, and repository revision when relevant.
 
 For resume/checkpoint/commit/push/repair, report material continuity changes, whether checkpoint evaluation was a no-op or published transition, the resulting repository revision/remote verification when relevant, remaining blockers, and any failure class that prevents safe resumability.

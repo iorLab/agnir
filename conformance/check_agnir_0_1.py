@@ -41,6 +41,12 @@ def require_skill_package() -> None:
         "equivalent Agnir locator already exists",
         "do not guess and do not overwrite it",
         "report the exact conflict to the Principal",
+        "## Upgrade an existing Agnir Project",
+        "latest stable release",
+        "Do not silently treat `main`",
+        "AGNIR_UPGRADE_MIGRATION_REQUIRED",
+        "agnir/operations",
+        "applied_revision",
         "## Resume or use an existing Agnir Project",
         "## Checkpoint",
         "## Commit and push integration",
@@ -141,7 +147,9 @@ def require_full_repository_tree() -> None:
         "activation_reference.py",
         "agents_merge_reference.py",
         "checkpoint_reference.py",
+        "upgrade_reference.py",
         "test_checkpoint_semantics.py",
+        "test_upgrade_semantics.py",
         "test_agent_activation.py",
         "test_agents_merge.py",
         "test_skill_package.py",
@@ -231,13 +239,18 @@ def main() -> None:
         "fresh activation test",
         "SHOULD NOT need to repeat an Agnir bootstrap prompt",
         "MUST NOT guess or silently overwrite it",
+        "Existing Project upgrade and operational provenance",
+        "agnir/operations",
+        "applied_revision",
+        "latest stable release",
+        "MUST NOT silently interpret a moving `main`",
         "Commit and push event integration",
         "提交代码",
         "提交推送",
         "one revision",
     ):
         if marker not in profile_text:
-            fail(f"repository/filesystem profile missing activation/event contract marker: {marker}")
+            fail(f"repository/filesystem profile missing activation/upgrade/event contract marker: {marker}")
 
     release_text = (ROOT / "RELEASE.md").read_text(encoding="utf-8")
     for marker in (
@@ -245,6 +258,7 @@ def main() -> None:
         'Core compatibility line:** `0.1`',
         'repository-filesystem/0.1',
         'SKILL.md',
+        'upgrade',
         'AGENTS.md',
         'Agnir Project Instructions',
     ):
@@ -267,7 +281,9 @@ def main() -> None:
         "conformance/activation_reference.py",
         "conformance/agents_merge_reference.py",
         "conformance/checkpoint_reference.py",
+        "conformance/upgrade_reference.py",
         "conformance/test_checkpoint_semantics.py",
+        "conformance/test_upgrade_semantics.py",
         "conformance/test_agent_activation.py",
         "conformance/test_agents_merge.py",
         "conformance/test_skill_package.py",
@@ -337,7 +353,7 @@ def main() -> None:
 
     print(
         f"PASS: Agnir Skill + Core {snapshot.version} / {snapshot.profile} repository release {repository_version} "
-        f"for {snapshot.project_identity}; transactional checkpoint and repository commit-intent boundaries enforced"
+        f"for {snapshot.project_identity}; transactional checkpoint, compatible upgrade, and repository commit-intent boundaries enforced"
     )
 
 
