@@ -121,16 +121,33 @@ def require_readme_entry_guide(
         fail(f"{path} must keep the Agent implementation checklist in SKILL.md, not the user/Agent entry guide")
 
 
-def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
+def require_readme_diagrams(
+    path: str,
+    headings: tuple[str, str],
+    *,
+    architecture_markers: tuple[str, ...],
+    flow_forbidden_markers: tuple[str, ...],
+) -> None:
     text = (ROOT / path).read_text(encoding="utf-8")
     if text.count("```mermaid") < 2:
         fail(f"{path} must contain at least two Mermaid diagrams")
     for heading in headings:
         if heading not in text:
             fail(f"{path} missing required diagram section: {heading}")
-    for marker in ("SKILL.md", "AGENTS.md", "README", "AGNIR.yaml"):
-        if marker not in text:
-            fail(f"{path} diagrams/explanation missing install/activation marker: {marker}")
+
+    architecture_start = text.find(headings[0])
+    flow_start = text.find(headings[1])
+    if not (0 <= architecture_start < flow_start):
+        fail(f"{path} must place architecture before continuity flow")
+    architecture_text = text[architecture_start:flow_start]
+    for marker in architecture_markers:
+        if marker not in architecture_text:
+            fail(f"{path} architecture diagram missing Project-surface marker: {marker}")
+
+    flow_text = text[flow_start:]
+    for marker in flow_forbidden_markers:
+        if marker in flow_text:
+            fail(f"{path} continuity flow must describe runtime/resume behavior, not installation mutation: {marker}")
 
 
 def require_readme_repository_tree(path: str, heading: str) -> None:
@@ -347,8 +364,30 @@ def main() -> None:
         existing_marker="不需要再给 Agent 任何 Agnir bootstrap 提示词。",
         forbidden_checklist="要求：\n1.",
     )
-    require_readme_diagrams("README.md", ("## Architecture Diagram", "## Continuity Flow"))
-    require_readme_diagrams("README.zh-CN.md", ("## 架构图", "## 连续性流程"))
+    require_readme_diagrams(
+        "README.md",
+        ("## Architecture Diagram", "## Continuity Flow"),
+        architecture_markers=(
+            "non-destructive setup",
+            "EDIT: add activation locator only",
+            "EDIT: add Agnir instructions only",
+            "ADD: discovery anchor",
+            "ADD: durable continuity",
+        ),
+        flow_forbidden_markers=("EDIT: add", "ADD: discovery", "ADD: durable"),
+    )
+    require_readme_diagrams(
+        "README.zh-CN.md",
+        ("## 架构图", "## 连续性流程"),
+        architecture_markers=(
+            "非破坏性 setup",
+            "编辑：仅添加 activation locator",
+            "编辑：仅添加 Agnir instructions",
+            "新增：discovery anchor",
+            "新增：durable continuity",
+        ),
+        flow_forbidden_markers=("编辑：仅添加", "新增：discovery", "新增：durable"),
+    )
     require_readme_repository_tree("README.md", "## Repository structure")
     require_readme_repository_tree("README.zh-CN.md", "## 仓库结构")
     require_full_repository_tree()

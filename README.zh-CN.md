@@ -6,7 +6,7 @@ Agnir 是一个 **由 Project 自己拥有的持久连续性协议（durable con
 
 它让 Project 在 Agent、对话、执行环境或存储实现发生变化后仍然可以安全恢复和继续。Durable continuity 属于 Project，而不属于某个 execution surface。
 
-**名奷。** `Agnir` 取自冰岛语 `agnir`，是 `ögn` 的主格复数，意为“一小点”或“微粒（particle）”。这个名字对应 Agnir 的模型：Project 的持久连续性由一颗颗可发现的 Project truth 组成——Current State、Next Actions、Decisions 和 Evidence；这些“微粒”组合起来，使新的 Executor 即使没有前任的私有上下文，也能重新理解并继续 Project。
+**名字。** `Agnir` 取自冰岛语 `agnir`，是 `ögn` 的主格复数，意为“一小点”或“微粒（particle）”。这个名字对应 Agnir 的模型：Project 的持久连续性由一颗颗可发现的 Project truth 组成——Current State、Next Actions、Decisions 和 Evidence；这些“微粒”组合起来，使新的 Executor 即使没有前任的私有上下文，也能重新理解并继续 Project。
 
 ## 从这里开始
 
@@ -83,11 +83,20 @@ Agnir 增加的是 continuity metadata 与 durable Project truth；它**不会**
 ```mermaid
 flowchart TB
     U["用户<br/>只给一句安装意图"] --> K["Agnir Agent Skill<br/>SKILL.md 保存完整安装 procedure"]
-    K -. "初始化一次" .-> P["目标 Project 根目录"]
+    K -. "非破坏性 setup" .-> P["目标 Project 根目录"]
 
-    P --> G["持久 Agent 激活入口<br/>AGENTS.md → README Agnir Project Instructions"]
-    G --> D["发现适配层（Discovery Profile / Adapter）"]
-    D --> R["发现记录（Discovery Record）<br/>repository profile 中为 AGNIR.yaml"]
+    subgraph T["目标 Project surface"]
+        G["AGENTS.md<br/>编辑：仅添加 activation locator"]
+        H["README.md<br/>编辑：仅添加 Agnir instructions"]
+        A["AGNIR.yaml<br/>新增：discovery anchor"]
+        F[".agnir/<br/>新增：durable continuity"]
+        G --> H --> A
+    end
+
+    P --> G
+    A --> D["发现适配层（Discovery Profile / Adapter）<br/>repository-filesystem/0.1"]
+    D --> V
+    D --> F
 
     subgraph C[Agnir Core 0.1]
         V["版本与 Project identity 校验"]
@@ -95,15 +104,14 @@ flowchart TB
         V --> M
     end
 
-    R --> V
     M --> S["Current State"]
     M --> N["Next Actions"]
     M --> J["Decisions"]
     M --> E["Evidence / Checkpoints"]
-
-    D -. "当前 profile" .-> Y["repository-filesystem/0.1"]
-    Y --> A["AGNIR.yaml"]
-    A --> F["Durable locators<br/>本仓库为 .agnir/"]
+    F --> S
+    F --> N
+    F --> J
+    F --> E
 ```
 
 `SKILL.md` 是 Agent-facing packaging layer；`AGENTS.md → README` 是面向 Agent 的 repository activation convention。两者都不是 Agnir Core 的依赖。已经知道适用 profile 的 Executor / adapter 可以直接从 Project Entry Point / Discovery Record 开始。
@@ -202,7 +210,7 @@ Svif 是独立的 **Project orchestration product**，位于 `iorLab/svif`。当
 
 ## 文档同步规则
 
-`README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化旞，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
+`README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
 
 在架构图之前，README 只保留简短的 Project 身份 / 名称解释、面向用户的 **从这里开始**、面向 Agent 的 canonical **Agnir Project Instructions**，以及面向用户解释安装结果的 **Agnir 会给 Project 增加什么**。安装与升级提示词都保持一句话；packaging rationale、compatibility rationale、publication detail 与更深入的实现说明应放到架构入口之后或专门文档中。
 

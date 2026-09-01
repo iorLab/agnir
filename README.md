@@ -83,11 +83,20 @@ Agnir adds continuity metadata and durable Project truth; it does **not** copy t
 ```mermaid
 flowchart TB
     U[User\none-line install intent] --> K[Agnir Agent Skill\nSKILL.md owns install procedure]
-    K -. initializes .-> P[Target Project root]
+    K -. non-destructive setup .-> P[Target Project root]
 
-    P --> G[Durable Agent activation\nAGENTS.md → README Agnir instructions]
-    G --> D[Discovery Profile / Adapter]
-    D --> R[Discovery Record\nrepository profile: AGNIR.yaml]
+    subgraph T[Target Project surface]
+        G[AGENTS.md\nEDIT: add activation locator only]
+        H[README.md\nEDIT: add Agnir instructions only]
+        A[AGNIR.yaml\nADD: discovery anchor]
+        F[.agnir/\nADD: durable continuity]
+        G --> H --> A
+    end
+
+    P --> G
+    A --> D[Discovery Profile / Adapter\nrepository-filesystem/0.1]
+    D --> V
+    D --> F
 
     subgraph C[Agnir Core 0.1]
         V[Version + Project identity validation]
@@ -95,15 +104,14 @@ flowchart TB
         V --> M
     end
 
-    R --> V
     M --> S[Current State]
     M --> N[Next Actions]
     M --> J[Decisions]
     M --> E[Evidence / Checkpoints]
-
-    D -. current profile .-> Y[repository-filesystem/0.1]
-    Y --> A[AGNIR.yaml]
-    A --> F[Durable locators\nthis repo: .agnir/]
+    F --> S
+    F --> N
+    F --> J
+    F --> E
 ```
 
 `SKILL.md` is an Agent-facing packaging layer, and `AGENTS.md → README` is an Agent-operable repository activation convention. Neither is an Agnir Core dependency. An Executor or adapter that already knows the applicable profile may begin directly at the Project Entry Point / Discovery Record.
