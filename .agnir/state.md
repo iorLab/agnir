@@ -13,7 +13,7 @@ Agnir is the active greenfield project-owned durable continuity protocol on `ior
 
 ## Transactional checkpoint baseline
 
-Core `0.1` now treats checkpointing as an authoritative continuity transition:
+Core `0.1` treats checkpointing as an authoritative continuity transition:
 
 1. reconcile current Project truth;
 2. minimize writes to semantic categories that materially changed;
@@ -51,11 +51,17 @@ The transactional-checkpoint / commit-event implementation was published in chec
 
 Exact-revision verification for `05103320afa25085d2cb9b65b249a8ad63e883e9` passed GitHub Actions `Agnir conformance` run `33425996098`, job `99599577461`. Both `Self-hosting cold-start conformance` and the full `test_*.py` suite succeeded.
 
-`05103320afa25085d2cb9b65b249a8ad63e883e9` is therefore the currently verified Agnir `0.1.0` **publication candidate**. This later observation checkpoint records the external verification result; it does not redefine the already content-addressed candidate or require recursively treating its own Evidence commit as a new candidate.
+`05103320afa25085d2cb9b65b249a8ad63e883e9` remains the verified Agnir `0.1.0` **publication candidate**.
+
+## Observation checkpoint verification
+
+Observation checkpoint `9aa8f011c1a71bf80ae9e4b3d0d152639b0d75b9`, which durably recorded the candidate verification result without redefining the candidate, also passed GitHub Actions `Agnir conformance` run `33426224554`, job `99600331484`. Self-hosting and the full `test_*.py` suite both succeeded.
+
+This confirms that the observation checkpoint preserved the active Core/profile/Skill conformance baseline. It does not recursively promote `9aa8f011c1a71bf80ae9e4b3d0d152639b0d75b9` into a new publication candidate.
 
 ## Release status
 
-Development required for the initial `0.1.0` release is again complete. Publication remains a separate explicit action: only after Principal authorization should tag `v0.1.0` and/or the GitHub Release be created for the intended verified candidate.
+Development required for the initial `0.1.0` release is complete. Publication remains a separate explicit action: only after Principal authorization should tag `v0.1.0` and/or the GitHub Release be created for the intended verified candidate.
 
 Real mount-boundary behavior remains explicitly unproven and optional additional evidence; ordinary directories are not accepted as mount evidence.
 

@@ -1,18 +1,27 @@
 # Agnir Next Actions
 
-Agnir `0.1.0` is release-ready again after exact-revision verification of the transactional checkpoint / repository commit-event baseline.
+Agnir `0.1.0` is release-ready after exact-revision verification of the transactional checkpoint / repository commit-event baseline and subsequent successful verification of the observation checkpoint that recorded that result.
 
 Verified publication candidate:
 
 `05103320afa25085d2cb9b65b249a8ad63e883e9`
 
-Verification:
+Candidate verification:
 
 - GitHub Actions workflow: `Agnir conformance`
 - run: `33425996098`
 - job: `99599577461`
 - self-hosting cold-start conformance: success
 - full `test_*.py` suite: success
+
+Observation checkpoint verification:
+
+- checkpoint: `9aa8f011c1a71bf80ae9e4b3d0d152639b0d75b9`
+- run: `33426224554`
+- job: `99600331484`
+- self-hosting cold-start conformance: success
+- full `test_*.py` suite: success
+- interpretation: this verifies the durable observation but does not redefine the publication candidate.
 
 1. **Publication only:** after explicit Principal authorization, create tag `v0.1.0` on the intended verified candidate `05103320afa25085d2cb9b65b249a8ad63e883e9` and/or create the GitHub Release.
 2. After publication, keep Core `0.1` and `repository-filesystem/0.1` frozen compatibility lines. Any `0.1.x` maintenance must remain non-breaking.
