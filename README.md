@@ -10,11 +10,21 @@ It lets a Project resume safely when Agents, conversations, execution environmen
 
 This section is for users. Pick the action you want and give the Agent only the corresponding intent.
 
-| Goal | What to tell your Agent |
-| --- | --- |
-| Install Agnir in a new Project | `Install and initialize Agnir for this Project: https://github.com/iorLab/agnir` |
-| Upgrade an existing Agnir Project | `Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir` |
-| Continue normal work | **No recurring Agnir prompt is required.** Give the Agent access to the Project and ask for the actual task. |
+### Install Agnir in a new Project
+
+```text
+Install and initialize Agnir for this Project: https://github.com/iorLab/agnir
+```
+
+### Upgrade an existing Agnir Project
+
+```text
+Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir
+```
+
+### Continue normal work
+
+**No recurring Agnir prompt is required.** Give the Agent access to the Project and ask for the actual task.
 
 For install or upgrade operations, the Agent should use the root [`SKILL.md`](SKILL.md) as the canonical procedure. The user does not need to carry Agnir's internal checklist.
 

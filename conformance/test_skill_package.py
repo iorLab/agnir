@@ -70,18 +70,20 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
-    def test_readmes_keep_user_install_prompt_short(self) -> None:
+    def test_readmes_keep_user_prompts_short_and_copyable(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
         chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
 
-        self.assertIn(
-            "Install and initialize Agnir for this Project: https://github.com/iorLab/agnir",
-            english,
-        )
-        self.assertIn(
-            "为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir",
-            chinese,
-        )
+        install_en = "Install and initialize Agnir for this Project: https://github.com/iorLab/agnir"
+        upgrade_en = "Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir"
+        install_zh = "为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir"
+        upgrade_zh = "把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir"
+
+        for prompt in (install_en, upgrade_en):
+            self.assertIn(f"```text\n{prompt}\n```", english)
+        for prompt in (install_zh, upgrade_zh):
+            self.assertIn(f"```text\n{prompt}\n```", chinese)
+
         self.assertIn("SKILL.md", english)
         self.assertIn("SKILL.md", chinese)
 

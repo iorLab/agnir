@@ -10,11 +10,21 @@ Agnir 是一个 **由 Project 自己拥有的持久连续性协议（durable con
 
 本节只面向用户。找到你现在要做的事，把对应的一句话交给 Agent 即可。
 
-| 目标 | 给 Agent 的提示词 / 操作 |
-| --- | --- |
-| 在新 Project 安装 Agnir | `为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir` |
-| 升级已经使用 Agnir 的 Project | `把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir` |
-| 继续正常工作 | **不需要再给 Agent 任何 Agnir bootstrap 提示词。** 直接让 Agent 访问 Project，并提出真正要做的任务。 |
+### 在新 Project 安装 Agnir
+
+```text
+为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir
+```
+
+### 升级已经使用 Agnir 的 Project
+
+```text
+把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir
+```
+
+### 继续正常工作
+
+**不需要再给 Agent 任何 Agnir bootstrap 提示词。** 直接让 Agent 访问 Project，并提出真正要做的任务。
 
 安装或升级时，Agent 应把根目录 [`SKILL.md`](SKILL.md) 当作 canonical procedure；用户不需要携带 Agnir 的内部 checklist。
 
