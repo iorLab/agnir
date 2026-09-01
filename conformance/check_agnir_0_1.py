@@ -67,35 +67,38 @@ def require_skill_package() -> None:
             fail(f"SKILL.md missing required Agent procedure marker: {marker}")
 
 
-def require_readme_quick_start(
+def require_readme_entry_guide(
     path: str,
     *,
-    quick_start_heading: str,
+    start_heading: str,
     architecture_heading: str,
     install_prompt: str,
+    upgrade_prompt: str,
     existing_marker: str,
     forbidden_checklist: str,
 ) -> None:
     text = (ROOT / path).read_text(encoding="utf-8")
     for marker in (
-        quick_start_heading,
+        start_heading,
         install_prompt,
+        upgrade_prompt,
         existing_marker,
         "SKILL.md",
         "AGENTS.md",
         "Agnir Project Instructions",
     ):
         if marker not in text:
-            fail(f"{path} missing required user-facing Quick Start marker: {marker}")
+            fail(f"{path} missing required user/Agent entry-guide marker: {marker}")
 
-    quick_start_position = text.find(quick_start_heading)
+    start_position = text.find(start_heading)
+    agent_position = text.find("## Agnir Project Instructions")
     architecture_position = text.find(architecture_heading)
-    if quick_start_position < 0 or architecture_position < 0 or quick_start_position > architecture_position:
-        fail(f"{path} must present Quick Start before architecture material")
+    if not (0 <= start_position < agent_position < architecture_position):
+        fail(f"{path} must present Start Here, then Agnir Project Instructions, before architecture material")
 
-    quick_start = text[quick_start_position:architecture_position]
-    if forbidden_checklist in quick_start:
-        fail(f"{path} must keep the Agent implementation checklist in SKILL.md, not the user Quick Start")
+    pre_architecture = text[start_position:architecture_position]
+    if forbidden_checklist in pre_architecture:
+        fail(f"{path} must keep the Agent implementation checklist in SKILL.md, not the user/Agent entry guide")
 
 
 def require_readme_diagrams(path: str, headings: tuple[str, str]) -> None:
@@ -304,19 +307,21 @@ def main() -> None:
         if not (ROOT / path).exists():
             fail(f"missing active Agnir artifact: {path}")
 
-    require_readme_quick_start(
+    require_readme_entry_guide(
         "README.md",
-        quick_start_heading="## 30-second Quick Start",
+        start_heading="## Start Here",
         architecture_heading="## Architecture Diagram",
         install_prompt="Install and initialize Agnir for this Project: https://github.com/iorLab/agnir",
+        upgrade_prompt="Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir",
         existing_marker="No recurring Agnir prompt is required.",
         forbidden_checklist="Requirements:\n1.",
     )
-    require_readme_quick_start(
+    require_readme_entry_guide(
         "README.zh-CN.md",
-        quick_start_heading="## 30 秒快速开始",
+        start_heading="## 从这里开始",
         architecture_heading="## 架构图",
         install_prompt="为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir",
+        upgrade_prompt="把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir",
         existing_marker="不需要再给 Agent 任何 Agnir bootstrap 提示词。",
         forbidden_checklist="要求：\n1.",
     )

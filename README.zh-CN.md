@@ -6,23 +6,19 @@ Agnir 是一个 **由 Project 自己拥有的持久连续性协议（durable con
 
 它让 Project 在 Agent、对话、执行环境或存储实现发生变化后仍然可以安全恢复和继续。Durable continuity 属于 Project，而不属于某个 execution surface。
 
-## 30 秒快速开始
+## 从这里开始
 
-### 新 Project
+本节只面向用户。找到你现在要做的事，把对应的一句话交给 Agent 即可。
 
-只需要把这一句话交给 Agent：
+| 目标 | 给 Agent 的提示词 / 操作 |
+| --- | --- |
+| 在新 Project 安装 Agnir | `为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir` |
+| 升级已经使用 Agnir 的 Project | `把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir` |
+| 继续正常工作 | **不需要再给 Agent 任何 Agnir bootstrap 提示词。** 直接让 Agent 访问 Project，并提出真正要做的任务。 |
 
-```text
-为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir
-```
+安装或升级时，Agent 应把根目录 [`SKILL.md`](SKILL.md) 当作 canonical procedure；用户不需要携带 Agnir 的内部 checklist。
 
-这才是**给用户的安装提示词**。Agent 找到本仓库后，应读取根目录 [`SKILL.md`](SKILL.md)，由 Skill 自己接管完整的 Agent-side 安装 / 初始化流程。用户不需要把 Agnir 内部的任务清单复制到提示词里。
-
-Skill 会负责安装或校验 Project 的 Agnir continuity，包括让未来 Agent 能自动发现 Agnir 的持久激活入口。
-
-### 已经初始化 Agnir 的 Project
-
-**不需要再给 Agent 任何 Agnir bootstrap 提示词。** 正常使用时，正确初始化后的 Agent-operable Project 会自己持久保存激活路线：
+初始化完成后，Agent-operable repository Project 会自己持久保存激活路径：
 
 ```text
 Project 根目录
@@ -32,54 +28,23 @@ Project 根目录
 → durable memory
 ```
 
-把 Project 正常交给 Agent，然后直接开始真正的任务即可。如果某个 execution surface 不会自动读取 Project instruction files，应对该 execution surface 做一次性配置，而不是让用户每次会话都重复 Agnir 的内部 procedure。
-
-### 升级已经使用 Agnir 的 Project
-
-要把一个已经启用 Agnir 的 Project 升级到最新正式发布的稳定 operational release，只需要把这一句话交给 Agent：
-
-```text
-把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir
-```
-
-`latest stable` 只指已经正式发布的稳定 tag / release，不能把会移动的 `main` 分支偷偷当成 stable。兼容的 operational upgrade 必须保留 Project identity、memory locators / content、README / `AGENTS.md` 中无关的 Project 指令以及无关 extensions；如果 Core 或 discovery profile 的 compatibility line 发生变化，Agnir 必须进入 migration-required，而不是静默改写 Project。
+`latest stable` 只指已经正式发布的稳定 tag / release，不能把会移动的 `main` 分支当成 stable。兼容升级必须保留 Project identity 与 durable continuity；compatibility line 发生变化时应进入 migration，而不是静默改写。
 
 ## Agnir Project Instructions
 
-本仓库自己也使用 Agnir 保存 durable Project continuity。
+> **本节供 Agent 使用。** 普通用户通常不需要阅读。
 
-开始任何 Project 工作前，把本仓库根目录视为已授权的 Project Entry Point。先读取顶层 `AGNIR.yaml`，然后加载 Current State 和 Next Actions；需要时再加载 Decisions 和 Evidence。除非有更新的 Principal 指令或直接观察到的当前 Project 事实覆盖，否则 Agnir 中持久保存的 Project truth 优先于聊天记录或 Agent 私有记忆。
+1. **Discover。** 把本仓库根目录视为已授权的 Project Entry Point。读取顶层 `AGNIR.yaml`，校验声明的 Agnir Core/profile compatibility 与 Project identity。
+2. **Load。** 从声明的 durable memory 加载 Current State 与 Next Actions；当 Decisions 与 Evidence 会实质约束本次操作时再加载。除非有更新的 Principal 指令或直接观察到的当前 Project 事实覆盖，否则 durable Project truth 优先于聊天记录或 Agent 私有记忆。
+3. **Work。** 真正的 Project 工作发生在 Agnir Core 之外。安装、升级或 repair 时，根目录 `SKILL.md` 是 canonical Agent-facing procedure。
+4. **Checkpoint。** 在明确的 checkpoint、保存进度、结束工作或 repository commit boundary 上，只 reconcile 有实质变化的 continuity。Durable truth 未变化时做 no-op；发生变化时必须形成一致的 authoritative transition。若 authoritative base 已过期，返回 `AGNIR_CHECKPOINT_CONFLICT`，不得覆盖更新事实；发布后重新验证 fresh discovery。
+5. **Commit / push。** 在 repository / VCS 上下文中，已授权的 `commit`、`提交`、`提交代码` 或同义请求表示先 checkpoint 再 commit，并优先把 Project + Agnir 变化放进同一个 revision。`commit and push`、`提交推送` 或同义请求再加 push 与 authoritative-ref verification。只是观察到外部 commit，只触发 checkpoint evaluation，不代表无条件写入 Agnir。
 
-当进行 checkpoint、保存进度或结束工作时，把重要的状态、后续动作、决策和必要 Evidence reconcile 到 `AGNIR.yaml` 声明的位置。Checkpoint 应当是一个一致的 authoritative transition：durable truth 没有实质变化时做 no-op，不能把不同 checkpoint generation 拼成表面一致的状态，发布后还要重新验证 fresh discovery。
+根目录 `AGENTS.md` 只负责把 Agent 引导到本节，不得成为第二份 Project state 或 Agnir procedure。Canonical activation route 为：
 
-在 repository / VCS 上下文中，把已授权的 `commit`、`提交`、`提交代码` 或同义请求视为 checkpoint boundary：**先 reconcile Agnir，再 commit**，并优先把 Project 改动与 Agnir 改动放进同一个 revision。`commit and push`、`提交推送` 或同义请求表示 checkpoint + commit + push，并在声明了 authoritative remote/ref 时验证推送结果。只是观察到一个外部产生的 commit，只触发 checkpoint evaluation，不代表必须无条件再写一次 Agnir。
+`Project root -> AGENTS.md -> README.md / Agnir Project Instructions -> AGNIR.yaml -> declared durable memory`
 
-根目录 `AGENTS.md` 故意只做 locator，指向本 section；本 section 才是 canonical activation instruction。
-
-## Skill 与用户提示词的边界
-
-Agnir 明确把两层指令分开：
-
-- **给用户的安装提示词**：只有一句，表达“我要安装 Agnir”并给出 Agnir 源仓库。
-- **给 Agent 的 Skill procedure**：根目录 `SKILL.md`，完整负责 install / initialize / upgrade / resume / checkpoint / commit / push / repair。
-
-Skill 是发行和操作入口，不改变 Agnir Core 语义。初始化完成后，目标 Project 已经通过自己的 `AGENTS.md → README → AGNIR.yaml` 路线做到 self-describing；以后正常工作不需要再打开 Skill 来提醒 Agent “这个 Project 使用 Agnir”。
-
-对于 `repository-filesystem/0.1`，Skill 通常会建立或校验：
-
-```text
-Project/
-├── AGENTS.md                 # 指向 README 中 canonical Agnir 指令
-├── AGNIR.yaml                # repository/filesystem discovery anchor
-├── README.md                 # 包含 ## Agnir Project Instructions
-└── .agnir/
-    ├── state.md
-    ├── next-actions.md
-    ├── decisions.md
-    └── evidence/
-```
-
-规范性的初始化 / 激活要求由 [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md) 定义；根目录 `SKILL.md` 是把这些要求交给 Agent 执行的 procedure。
+如果 activation locator、Project identity、必需 memory locator 或 compatibility 校验失败，应显式暴露 failure，或在获得授权时修复最早出错的层；不得凭空补 Project state，也不得静默退回聊天历史、兄弟仓库或 retired layout。
 
 ## 架构图（Architecture Diagram）
 
@@ -112,6 +77,31 @@ flowchart TB
 `SKILL.md` 是 Agent-facing packaging layer；`AGENTS.md → README` 是面向 Agent 的 repository activation convention。两者都不是 Agnir Core 的依赖。已经知道适用 profile 的 Executor / adapter 可以直接从 Project Entry Point / Discovery Record 开始。
 
 Agnir Core **不要求** Git、GitHub、repository、ChatGPT、AI Agent、Skill system 或某种具体 storage backend。
+
+## Skill 与用户提示词的边界
+
+Agnir 明确把用户意图和 Agent procedure 分开：
+
+- **给用户的请求**保持简短：安装、升级，或者直接提出真正的 Project 任务。
+- **给 Agent 的 procedure**位于根目录 `SKILL.md`，完整负责 install / initialize / upgrade / resume / checkpoint / commit / push / repair。
+
+Skill 是发行和操作入口，不改变 Agnir Core 语义。初始化完成后，目标 Project 已经通过自己的 `AGENTS.md → README → AGNIR.yaml` 路线做到 self-describing；以后正常工作不需要再打开 Skill 来提醒 Agent “这个 Project 使用 Agnir”。
+
+对于 `repository-filesystem/0.1`，Skill 通常会建立或校验：
+
+```text
+Project/
+├── AGENTS.md                 # 指向 README 中 canonical Agnir 指令
+├── AGNIR.yaml                # repository/filesystem discovery anchor
+├── README.md                 # 包含 ## Agnir Project Instructions
+└── .agnir/
+    ├── state.md
+    ├── next-actions.md
+    ├── decisions.md
+    └── evidence/
+```
+
+规范性的初始化 / 激活要求由 [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md) 定义；根目录 `SKILL.md` 是把这些要求交给 Agent 执行的 procedure。
 
 ## 连续性流程（Continuity Flow）
 
@@ -196,7 +186,9 @@ Svif 是独立的 **Project orchestration product**，位于 `iorLab/svif`。当
 
 `README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
 
-README 的 Quick Start 必须始终面向用户并保持极简：**安装与升级提示词都各自只有一句；完整 Agent procedure 属于根目录 `SKILL.md`。** `REPOSITORY_TREE.md` 是完整结构地图；它说明 evidence 目录职责，不再重复登记每一个 checkpoint evidence 文件名。
+在架构图之前，README 只保留两类读者所需内容：**从这里开始**面向用户，**Agnir Project Instructions** 面向 Agent。安装与升级提示词都保持一句话；packaging、compatibility rationale、publication detail 与实现说明应放到架构入口之后或专门文档中。
+
+`REPOSITORY_TREE.md` 是完整结构地图；它说明 evidence 目录职责，不再重复登记每一个 checkpoint evidence 文件名。
 
 ## Conformance
 

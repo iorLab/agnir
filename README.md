@@ -6,23 +6,19 @@ Agnir is a **project-owned durable continuity protocol**.
 
 It lets a Project resume safely when Agents, conversations, execution environments, or storage implementations change. The Project owns the durable continuity; execution surfaces do not.
 
-## 30-second Quick Start
+## Start Here
 
-### New Project
+This section is for users. Pick the action you want and give the Agent only the corresponding intent.
 
-Give your Agent this one-line request:
+| Goal | What to tell your Agent |
+| --- | --- |
+| Install Agnir in a new Project | `Install and initialize Agnir for this Project: https://github.com/iorLab/agnir` |
+| Upgrade an existing Agnir Project | `Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir` |
+| Continue normal work | **No recurring Agnir prompt is required.** Give the Agent access to the Project and ask for the actual task. |
 
-```text
-Install and initialize Agnir for this Project: https://github.com/iorLab/agnir
-```
+For install or upgrade operations, the Agent should use the root [`SKILL.md`](SKILL.md) as the canonical procedure. The user does not need to carry Agnir's internal checklist.
 
-That is the **user-facing install prompt**. The Agent should find this repository, read the root [`SKILL.md`](SKILL.md), and execute the Agent-facing installation procedure there. The user does not need to carry Agnir's internal checklist in the prompt.
-
-The Skill installs or validates the Project's Agnir continuity, including the durable activation route needed by future Agents.
-
-### Existing Agnir Project
-
-**No recurring Agnir prompt is required.** For normal use, a correctly initialized Agent-operable Project persists its own activation route:
+After initialization, an Agent-operable repository Project persists its own activation route:
 
 ```text
 Project root
@@ -32,54 +28,23 @@ Project root
 → durable memory
 ```
 
-Give the Agent normal access to the Project and start the actual task. If an execution surface does not automatically inspect Project instruction files, configure that surface once; do not make the user repeat Agnir's procedure every session.
-
-### Upgrade an existing Agnir Project
-
-To upgrade an Agnir-enabled Project to the latest published stable operational release, give your Agent this one-line request:
-
-```text
-Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir
-```
-
-`latest stable` means an actually published stable tag/release, never a moving `main` branch. A compatible operational upgrade preserves Project identity, memory locators/content, unrelated README/`AGENTS.md` instructions, and unrelated extensions. If the Core or discovery-profile compatibility line changes, Agnir must surface migration-required semantics instead of silently rewriting the Project.
+`latest stable` means an actually published stable tag/release, never a moving `main` branch. Compatible upgrades preserve Project identity and durable continuity; compatibility-line changes require migration rather than silent rewriting.
 
 ## Agnir Project Instructions
 
-This repository itself uses Agnir for durable Project continuity.
+> **For Agents.** Users normally do not need to read this section.
 
-Before doing Project work, treat this repository root as the authorized Project Entry Point. Read top-level `AGNIR.yaml`, then load Current State and Next Actions. Load Decisions and Evidence when relevant. Prefer durable Agnir Project truth over chat history or private Agent memory unless a newer Principal instruction or directly observed current Project fact supersedes it.
+1. **Discover.** Treat this repository root as the authorized Project Entry Point. Read top-level `AGNIR.yaml` and validate the declared Agnir Core/profile compatibility and Project identity.
+2. **Load.** Load Current State and Next Actions from the declared durable memory. Load Decisions and Evidence when they materially constrain the current operation. Prefer durable Project truth over chat history or private Agent memory unless superseded by a newer Principal instruction or a directly observed current Project fact.
+3. **Work.** Perform the actual Project task outside Agnir Core. For install, upgrade, or repair operations, root `SKILL.md` is the canonical Agent-facing procedure.
+4. **Checkpoint.** At an intentional checkpoint, save-progress, finish, or repository commit boundary, reconcile only material continuity changes. Unchanged durable truth is a no-op. Material changes must form one coherent authoritative transition; reject stale-base publication with `AGNIR_CHECKPOINT_CONFLICT` rather than overwriting newer truth, then verify fresh discovery after publication.
+5. **Commit / push.** In repository/VCS context, authorized `commit`, `提交`, `提交代码`, or equivalent intent means checkpoint before commit and preferably one revision for Project + Agnir changes. `commit and push`, `提交推送`, or equivalent adds push plus authoritative-ref verification. Merely observing an external commit triggers checkpoint evaluation, not an unconditional Agnir write.
 
-When checkpointing, saving progress, or finishing work, reconcile material changes to state, next actions, decisions, and necessary evidence into the locations declared by `AGNIR.yaml`. A checkpoint should be a coherent authoritative transition: no-op when durable truth did not materially change, avoid mixed checkpoint generations, and verify fresh discovery after publication.
+Root `AGENTS.md` is intentionally only a locator to this section; it must not become a second copy of Project state or the Agnir procedure. The canonical activation route is:
 
-In repository/VCS context, treat an authorized request to `commit`, `提交`, `提交代码`, or equivalent as a checkpoint boundary: reconcile Agnir **before** the commit and prefer Project changes plus Agnir changes in one revision. Treat `commit and push`, `提交推送`, or equivalent as checkpoint + commit + push + verification of the declared authoritative remote/ref when available. Merely observing a commit triggers checkpoint evaluation, not an unconditional new Agnir write.
+`Project root -> AGENTS.md -> README.md / Agnir Project Instructions -> AGNIR.yaml -> declared durable memory`
 
-Root `AGENTS.md` is intentionally only a locator to this section; this section is the canonical activation instruction.
-
-## Skill packaging boundary
-
-Agnir deliberately separates the two instruction surfaces:
-
-- **User-facing install request** — one short sentence expressing intent and identifying the Agnir source repository.
-- **Agent-facing Skill procedure** — root `SKILL.md`, which owns the detailed install / initialize / upgrade / resume / checkpoint / commit / push / repair procedure.
-
-The Skill is a distribution and operational entry surface. It does not change Agnir Core semantics. After initialization, the target Project is self-describing through its own `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route; normal future work does not require reopening the Skill just to remind the Agent that Agnir exists.
-
-For the reference `repository-filesystem/0.1` setup, the Skill normally establishes or validates:
-
-```text
-Project/
-├── AGENTS.md                 # locator to README canonical Agnir instructions
-├── AGNIR.yaml                # repository/filesystem discovery anchor
-├── README.md                 # contains ## Agnir Project Instructions
-└── .agnir/
-    ├── state.md
-    ├── next-actions.md
-    ├── decisions.md
-    └── evidence/
-```
-
-The normative initialization/activation contract is defined by [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md); `SKILL.md` is the Agent-facing procedure that applies it.
+If an activation locator, identity, required memory locator, or compatibility check fails, surface the failure or repair the earliest faulty layer when authorized. Do not invent Project state or silently fall back to chat history, sibling repositories, or retired layouts.
 
 ## Architecture Diagram
 
@@ -112,6 +77,31 @@ flowchart TB
 `SKILL.md` is an Agent-facing packaging layer, and `AGENTS.md → README` is an Agent-operable repository activation convention. Neither is an Agnir Core dependency. An Executor or adapter that already knows the applicable profile may begin directly at the Project Entry Point / Discovery Record.
 
 Agnir Core defines durable continuity semantics and discovery invariants; it does **not** require Git, GitHub, a repository, ChatGPT, an AI Agent, a Skill system, or any specific storage backend.
+
+## Skill packaging boundary
+
+Agnir deliberately separates the user intent from the Agent procedure:
+
+- **User-facing requests** stay short: install, upgrade, or continue the real task.
+- **Agent-facing procedure** lives in root `SKILL.md`, which owns install / initialize / upgrade / resume / checkpoint / commit / push / repair behavior.
+
+The Skill is a distribution and operational entry surface. It does not change Agnir Core semantics. After initialization, the target Project is self-describing through its own `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route; normal future work does not require reopening the Skill just to remind the Agent that Agnir exists.
+
+For the reference `repository-filesystem/0.1` setup, the Skill normally establishes or validates:
+
+```text
+Project/
+├── AGENTS.md                 # locator to README canonical Agnir instructions
+├── AGNIR.yaml                # repository/filesystem discovery anchor
+├── README.md                 # contains ## Agnir Project Instructions
+└── .agnir/
+    ├── state.md
+    ├── next-actions.md
+    ├── decisions.md
+    └── evidence/
+```
+
+The normative initialization/activation contract is defined by [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md); `SKILL.md` is the Agent-facing procedure that applies it.
 
 ## Continuity Flow
 
@@ -196,7 +186,9 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Its curre
 
 `README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, or continuity flow must update the affected explanations/diagrams in both languages in the same change set.
 
-The README Quick Start must remain user-facing and minimal: **installation and upgrade prompts are one sentence each; the full Agent procedure belongs in root `SKILL.md`.** `REPOSITORY_TREE.md` is the exhaustive structural map; it describes evidence-directory responsibility rather than duplicating every checkpoint evidence filename.
+Before the Architecture Diagram, README content is deliberately limited to two audiences: **Start Here** for users and **Agnir Project Instructions** for Agents. Installation and upgrade prompts stay one sentence each; packaging, compatibility rationale, publication detail, and implementation explanation belong after the architecture entry point or in dedicated documents.
+
+`REPOSITORY_TREE.md` is the exhaustive structural map; it describes evidence-directory responsibility rather than duplicating every checkpoint evidence filename.
 
 ## Conformance
 
