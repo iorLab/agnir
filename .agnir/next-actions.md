@@ -1,29 +1,35 @@
 # Agnir Next Actions
 
-Agnir `v0.1.0` remains the published stable release. The execution-surface activation handoff repair is green on `main` at `b46656793a5e1ea7a94e39f2da1506fc73db177e`, with GitHub Actions run `33497764549` passing the full current conformance suite.
+Agnir `v0.1.0` remains the published stable release. The real `mattamior/skills-hub` ChatGPT execution-surface regression has passed, and `main` is being prepared as the repository `0.1.1` publication candidate without changing Core `0.1` or `repository-filesystem/0.1`.
 
-1. Complete the real `mattamior/skills-hub` ChatGPT Project regression case: append/merge the generated locator-only Agnir bootstrap into that ChatGPT Project's persistent Instructions without overwriting unrelated instructions.
-2. Open a genuinely fresh conversation in that ChatGPT Project and verify that the first substantive turn reaches `mattamior/skills-hub` → root `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable continuity without relying on the initialization conversation.
-3. If that real execution-surface test passes, prepare repository release `0.1.1`: update `VERSION`, `conformance/check_agnir_0_1.py` repository-version expectation, `README.md`, `README.zh-CN.md`, `RELEASE.md`, and Agnir continuity/evidence without changing Core `0.1` or `repository-filesystem/0.1` compatibility lines.
-4. Run the full conformance workflow on the exact `0.1.1` publication candidate and use only that verified revision as the immutable `v0.1.1` tag/release target.
-5. After `v0.1.1` is actually published, update stable-release state/provenance and validate a compatible existing-Project upgrade from `v0.1.0` to `v0.1.1` without changing Project identity or memory locators/content.
+1. Let the release-preparation changes settle on one final `0.1.1` publication-candidate revision and run the full GitHub Actions `Agnir conformance` workflow on that exact revision.
+2. If and only if that exact candidate passes, create immutable tag `v0.1.1` and GitHub Release `Agnir v0.1.1` pointing to that exact verified revision; do not retarget publication to a later moving `main` head.
+3. After publication, reconcile durable state/provenance to record the actual `v0.1.1` tag target, Release metadata, and verification run without changing the immutable tag.
+4. Validate a compatible existing-Project upgrade from published `v0.1.0` to published `v0.1.1`, preserving Project identity, memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions.
+5. Continue broader real Project/surface validation as useful, while preserving the distinction between Project-owned activation and execution-surface locator adapters.
 6. Preserve transactional checkpoint no-op/coherent publication semantics, stale-base safety, repository commit/push integration, prompt-free Project activation, non-destructive `AGENTS.md` merge, execution-surface handoff separation, and the README `Start Here -> Agnir Project Instructions -> Project surface -> Architecture` audience split.
 7. Keep real mount-boundary validation optional until a genuine mount-capable environment exists.
 
-## Current repair verification
+## Closed v0.1.1 regression gate
 
-- implementation/test head: `b46656793a5e1ea7a94e39f2da1506fc73db177e`
-- GitHub Actions workflow: `Agnir conformance`
-- run: `33497764549`
-- conclusion: `success`
+- real execution surface: ChatGPT web Project `skills-hub`
+- canonical target: `mattamior/skills-hub` / `main`
+- persistent locator-only Project Instructions: configured
+- genuinely fresh conversation: passed
+- repeated bootstrap prompt/repository address in fresh conversation: not required
+- durable Evidence: `.agnir/evidence/2026-09-01-v0.1.1-execution-surface-validation.md`
+
+## Candidate compatibility
+
 - Core compatibility: `0.1`
 - repository/filesystem profile: `repository-filesystem/0.1`
+- candidate repository SemVer: `0.1.1`
 - currently published stable repository release: `0.1.0`
 
 ## Stable maintenance constraints
 
 - Root `SKILL.md` is the canonical Agent-facing operational package.
 - Required execution-surface settings are adapters/locators, not Project memory or Agnir Core.
-- `RELEASE.md` is the publication/maintenance contract and must be synchronized before `v0.1.1` publication.
+- `RELEASE.md` is the publication contract for `0.1.1`.
 - `.agnir/evidence/` remains represented by directory responsibility rather than per-evidence filename registration.
 - `main` is the only intended long-lived authoritative branch.
