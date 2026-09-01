@@ -58,6 +58,26 @@ Root `AGENTS.md` is intentionally only a locator to this section; it must not be
 
 If an activation locator, identity, required memory locator, or compatibility check fails, surface the failure or repair the earliest faulty layer when authorized. Do not invent Project state or silently fall back to chat history, sibling repositories, or retired layouts.
 
+## What Agnir Adds to a Project
+
+When the reference Agnir Skill initializes a repository/filesystem Project, it establishes or validates a small **Project-owned continuity surface**. Existing Project files are merged non-destructively, so an item below may be created or minimally updated rather than blindly replaced.
+
+```text
+Project/
+├── AGENTS.md                 # activation locator: points future Agents to the README instructions
+├── AGNIR.yaml                # discovery anchor: Project identity, compatibility, and memory locators
+├── README.md                 # contains the canonical ## Agnir Project Instructions section
+└── .agnir/
+    ├── state.md              # current durable Project truth
+    ├── next-actions.md       # outstanding ordered work for the next Executor
+    ├── decisions.md          # durable decisions that constrain future work
+    └── evidence/             # evidence/checkpoints needed for recovery, audit, or material claims
+```
+
+The reference layout normally records at least one initialization Evidence object. `AGNIR.yaml` locators are authoritative, so `.agnir/` is the recommended colocated layout for this profile rather than a universal Agnir Core requirement.
+
+Agnir adds continuity metadata and durable Project truth; it does **not** copy the Project, require raw chat transcripts, or make Git/GitHub part of Agnir Core.
+
 ## Architecture Diagram
 
 ```mermaid
@@ -99,21 +119,7 @@ Agnir deliberately separates the user intent from the Agent procedure:
 
 The Skill is a distribution and operational entry surface. It does not change Agnir Core semantics. After initialization, the target Project is self-describing through its own `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route; normal future work does not require reopening the Skill just to remind the Agent that Agnir exists.
 
-For the reference `repository-filesystem/0.1` setup, the Skill normally establishes or validates:
-
-```text
-Project/
-├── AGENTS.md                 # locator to README canonical Agnir instructions
-├── AGNIR.yaml                # repository/filesystem discovery anchor
-├── README.md                 # contains ## Agnir Project Instructions
-└── .agnir/
-    ├── state.md
-    ├── next-actions.md
-    ├── decisions.md
-    └── evidence/
-```
-
-The normative initialization/activation contract is defined by [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md); `SKILL.md` is the Agent-facing procedure that applies it.
+The concrete repository/filesystem Project surface is summarized above in **What Agnir Adds to a Project**. The normative initialization/activation contract is defined by [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md); `SKILL.md` is the Agent-facing procedure that applies it.
 
 ## Continuity Flow
 
@@ -198,7 +204,7 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Its curre
 
 `README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, or continuity flow must update the affected explanations/diagrams in both languages in the same change set.
 
-Before the Architecture Diagram, README content is deliberately limited to a concise Project identity/name explanation followed by two operational audiences: **Start Here** for users and **Agnir Project Instructions** for Agents. Installation and upgrade prompts stay one sentence each; packaging, compatibility rationale, publication detail, and implementation explanation belong after the architecture entry point or in dedicated documents.
+Before the Architecture Diagram, README content is deliberately limited to a concise Project identity/name explanation, **Start Here** for users, the canonical **Agnir Project Instructions** for Agents, and **What Agnir Adds to a Project** as a concrete user-facing map of the installed Project surface. Installation and upgrade prompts stay one sentence each; packaging rationale, compatibility rationale, publication detail, and deeper implementation explanation belong after the architecture entry point or in dedicated documents.
 
 `REPOSITORY_TREE.md` is the exhaustive structural map; it describes evidence-directory responsibility rather than duplicating every checkpoint evidence filename.
 

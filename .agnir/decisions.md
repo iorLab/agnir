@@ -70,12 +70,13 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 ## README entry-point information architecture — 2026-09-01
 
-- Before the Architecture Diagram, both READMEs are deliberately limited to a concise Project identity/name explanation followed by two operational audiences: **Start Here / 从这里开始** for users, then the canonical **Agnir Project Instructions** for Agents.
+- Before the Architecture Diagram, both READMEs are deliberately limited to a concise Project identity/name explanation followed by: **Start Here / 从这里开始** for users; the canonical **Agnir Project Instructions** for Agents; and **What Agnir Adds to a Project / Agnir 会给 Project 增加什么** as a concrete user-facing map of the initialized repository/filesystem Project surface.
 - `Start Here` contains only minimal install, upgrade, and normal-use actions. User-facing install and upgrade intents remain one sentence each; users do not carry Agnir's internal implementation checklist.
 - `Agnir Project Instructions` remains the canonical heading resolved by `AGENTS.md` and is explicitly marked as Agent guidance for human readers.
-- Packaging rationale, compatibility explanation, release detail, repository structure, and implementation/conformance explanation belong after the architecture entry point or in dedicated documents.
+- `What Agnir Adds to a Project` shows the reference Skill's non-destructive Project surface: `AGENTS.md`, `AGNIR.yaml`, the README instruction section, and the declared `.agnir/` continuity layout with State, Next Actions, Decisions, and Evidence responsibilities. It must state that `AGNIR.yaml` locators are authoritative and that the file layout is profile/reference behavior rather than a universal Core requirement.
+- Packaging rationale, compatibility explanation, release detail, repository structure, and deeper implementation/conformance explanation belong after the architecture entry point or in dedicated documents.
 - Bilingual documentation must preserve the same audience split and operational meaning without requiring literal sentence-for-sentence translation.
-- Conformance enforces the ordering `Start Here -> Agnir Project Instructions -> Architecture` plus canonical install/upgrade intents, so the README front matter does not drift back into mixed user/Agent/implementation documentation.
+- Conformance enforces the ordering `Start Here -> Agnir Project Instructions -> installed Project surface -> Architecture`, canonical install/upgrade intents, and the required surface markers so the README front matter remains concrete without drifting back into a full implementation checklist.
 
 ## Versioning, release, and branch governance
 

@@ -34,13 +34,14 @@ Compatible upgrade preserves Project identity, memory locators/content, unrelate
 
 ## README entry architecture
 
-The repository entry documentation is now intentionally split by audience before architecture material:
+The repository entry documentation is now intentionally layered before architecture material:
 
 1. `Start Here` / `从这里开始` — minimal user actions for install, upgrade, and normal continuation;
 2. `Agnir Project Instructions` — canonical Agent activation/operation guidance;
-3. `Architecture Diagram` / `架构图` — beginning of explanatory architecture, packaging, compatibility, release, and implementation material.
+3. `What Agnir Adds to a Project` / `Agnir 会给 Project 增加什么` — concrete user-facing map of the files/directories the reference Skill creates, merges, or validates and the responsibility of each;
+4. `Architecture Diagram` / `架构图` — beginning of explanatory architecture, packaging, compatibility, release, and implementation material.
 
-The user-facing install/upgrade prompts remain one sentence each. Root `SKILL.md` owns the detailed Agent operational procedure. Conformance enforces the entry ordering so implementation detail does not drift back into the user-facing front section. Durable rationale is recorded in `.agnir/evidence/2026-09-01-readme-information-architecture.md` and `.agnir/decisions.md`.
+The Project-surface section documents `AGENTS.md`, `AGNIR.yaml`, the README instruction section, and the reference `.agnir/` State / Next Actions / Decisions / Evidence layout while explicitly preserving the distinction between profile-specific filesystem conventions and Agnir Core. The user-facing install/upgrade prompts remain one sentence each. Root `SKILL.md` owns the detailed Agent operational procedure. Conformance enforces the entry ordering and required surface markers. Durable rationale is recorded in `.agnir/evidence/2026-09-01-readme-information-architecture.md` and `.agnir/decisions.md`.
 
 ## Checkpoint and repository invariants
 

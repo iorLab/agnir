@@ -71,6 +71,7 @@ def require_readme_entry_guide(
     path: str,
     *,
     start_heading: str,
+    surface_heading: str,
     architecture_heading: str,
     install_prompt: str,
     upgrade_prompt: str,
@@ -86,15 +87,34 @@ def require_readme_entry_guide(
         "SKILL.md",
         "AGENTS.md",
         "Agnir Project Instructions",
+        surface_heading,
     ):
         if marker not in text:
             fail(f"{path} missing required user/Agent entry-guide marker: {marker}")
 
     start_position = text.find(start_heading)
     agent_position = text.find("## Agnir Project Instructions")
+    surface_position = text.find(surface_heading)
     architecture_position = text.find(architecture_heading)
-    if not (0 <= start_position < agent_position < architecture_position):
-        fail(f"{path} must present Start Here, then Agnir Project Instructions, before architecture material")
+    if not (0 <= start_position < agent_position < surface_position < architecture_position):
+        fail(
+            f"{path} must present Start Here, then Agnir Project Instructions, "
+            "then the installed Project surface, before architecture material"
+        )
+
+    surface_text = text[surface_position:architecture_position]
+    for marker in (
+        "AGENTS.md",
+        "AGNIR.yaml",
+        "README.md",
+        ".agnir/",
+        "state.md",
+        "next-actions.md",
+        "decisions.md",
+        "evidence/",
+    ):
+        if marker not in surface_text:
+            fail(f"{path} installed Project surface missing required marker: {marker}")
 
     pre_architecture = text[start_position:architecture_position]
     if forbidden_checklist in pre_architecture:
@@ -310,6 +330,7 @@ def main() -> None:
     require_readme_entry_guide(
         "README.md",
         start_heading="## Start Here",
+        surface_heading="## What Agnir Adds to a Project",
         architecture_heading="## Architecture Diagram",
         install_prompt="Install and initialize Agnir for this Project: https://github.com/iorLab/agnir",
         upgrade_prompt="Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir",
@@ -319,6 +340,7 @@ def main() -> None:
     require_readme_entry_guide(
         "README.zh-CN.md",
         start_heading="## 从这里开始",
+        surface_heading="## Agnir 会给 Project 增加什么",
         architecture_heading="## 架构图",
         install_prompt="为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir",
         upgrade_prompt="把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir",

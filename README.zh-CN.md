@@ -58,6 +58,26 @@ Project 根目录
 
 如果 activation locator、Project identity、必需 memory locator 或 compatibility 校验失败，应显式暴露 failure，或在获得授权时修复最早出错的层；不得凭空补 Project state，也不得静默退回聊天历史、兄弟仓库或 retired layout。
 
+## Agnir 会给 Project 增加什么
+
+当 reference Agnir Skill 初始化一个 repository/filesystem Project 时，它会建立或校验一小组 **由 Project 自己拥有的 continuity 文件**。如果这些文件已经存在，Skill 会非破坏性地合并或最小更新，而不是直接覆盖。
+
+```text
+Project/
+├── AGENTS.md                 # Agent 激活 locator：把未来 Agent 引导到 README 中的 Agnir 指令
+├── AGNIR.yaml                # discovery anchor：声明 Project identity、兼容版本和 memory locators
+├── README.md                 # 包含 canonical ## Agnir Project Instructions
+└── .agnir/
+    ├── state.md              # 当前仍然成立的 durable Project truth
+    ├── next-actions.md       # 下一位 Executor 应继续推进的有序工作
+    ├── decisions.md          # 会约束未来工作的持久决策
+    └── evidence/             # 恢复、审计或重要事实声明所需的 Evidence / Checkpoints
+```
+
+Reference layout 通常还会在 `evidence/` 中保存至少一份初始化 Evidence。真正权威的是 `AGNIR.yaml` 中的 locators，因此 `.agnir/` 是当前 profile 推荐的 colocated layout，而不是 Agnir Core 的普遍强制目录。
+
+Agnir 增加的是 continuity metadata 与 durable Project truth；它**不会**复制整个 Project，不要求保存原始聊天记录，也不会把 Git / GitHub 变成 Agnir Core 的依赖。
+
 ## 架构图（Architecture Diagram）
 
 ```mermaid
@@ -99,21 +119,7 @@ Agnir 明确把用户意图和 Agent procedure 分开：
 
 Skill 是发行和操作入口，不改变 Agnir Core 语义。初始化完成后，目标 Project 已经通过自己的 `AGENTS.md → README → AGNIR.yaml` 路线做到 self-describing；以后正常工作不需要再打开 Skill 来提醒 Agent “这个 Project 使用 Agnir”。
 
-对于 `repository-filesystem/0.1`，Skill 通常会建立或校验：
-
-```text
-Project/
-├── AGENTS.md                 # 指向 README 中 canonical Agnir 指令
-├── AGNIR.yaml                # repository/filesystem discovery anchor
-├── README.md                 # 包含 ## Agnir Project Instructions
-└── .agnir/
-    ├── state.md
-    ├── next-actions.md
-    ├── decisions.md
-    └── evidence/
-```
-
-规范性的初始化 / 激活要求由 [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md) 定义；根目录 `SKILL.md` 是把这些要求交给 Agent 执行的 procedure。
+具体的 repository/filesystem Project surface 已经在前面的 **Agnir 会给 Project 增加什么** 中说明。规范性的初始化 / 激活要求由 [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md) 定义；根目录 `SKILL.md` 是把这些要求交给 Agent 执行的 procedure。
 
 ## 连续性流程（Continuity Flow）
 
@@ -198,7 +204,7 @@ Svif 是独立的 **Project orchestration product**，位于 `iorLab/svif`。当
 
 `README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
 
-在架构图之前，README 只保留简短的 Project 身份 / 名称解释，以及两类操作读者所需内容：**从这里开始**面向用户，**Agnir Project Instructions** 面向 Agent。安装与升级提示词都保持一句话；packaging、compatibility rationale、publication detail 与实现说明应放到架构入口之后或专门文档中。
+在架构图之前，README 只保留简短的 Project 身份 / 名称解释、面向用户的 **从这里开始**、面向 Agent 的 canonical **Agnir Project Instructions**，以及面向用户解释安装结果的 **Agnir 会给 Project 增加什么**。安装与升级提示词都保持一句话；packaging rationale、compatibility rationale、publication detail 与更深入的实现说明应放到架构入口之后或专门文档中。
 
 `REPOSITORY_TREE.md` 是完整结构地图；它说明 evidence 目录职责，不再重复登记每一个 checkpoint evidence 文件名。
 
