@@ -7,61 +7,51 @@ Agnir is the active greenfield project-owned durable continuity protocol on `ior
 - Durable continuity belongs to the Project, not an Executor, conversation, execution environment, repository host, or storage implementation.
 - Agnir Core remains storage-, platform-, VCS-, repository-, agent-, Skill-, and execution-surface-neutral.
 - Required durable semantics are Current State, Next Actions, Decisions, and Evidence / Checkpoints.
-- Cold-start discovery must resolve the correct Project identity and coherent authoritative memory without predecessor-private context.
 - Agent-operable `repository-filesystem/0.1` Projects persist activation through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory.
 - Existing Project-owned `AGENTS.md` content is preserved; Agnir adds only a minimal locator and blocks on material instruction conflicts rather than silently overriding them.
 
-## Transactional checkpoint baseline
+## Transactional checkpoint and repository event baseline
 
 Core `0.1` treats checkpointing as an authoritative continuity transition: reconcile current truth, minimize material writes, no-op when unchanged, build a coherent candidate before publication, prevent fresh readers from accepting mixed generations, reject stale-base publication with `AGNIR_CHECKPOINT_CONFLICT`, and verify fresh discovery after publication.
 
-A backend-generated commit/revision/transaction identifier may be the checkpoint receipt and does not need to be embedded inside the content whose publication creates that identifier.
-
-## Repository commit and push integration
-
-- In repository context, `commit`, `提交`, `提交代码`, and equivalent intent are checkpoint boundaries: reconcile Agnir before commit and prefer Project changes plus Agnir changes in one VCS revision.
-- `commit and push`, `提交推送`, and equivalent intent mean checkpoint + commit + push + verification of the declared authoritative remote/ref when available.
-- A bare `提交` outside repository context is contextual, not a universal keyword.
-- An externally observed commit triggers checkpoint evaluation only; unchanged coherent continuity yields a no-op.
+Repository commit intent is a checkpoint boundary; compatible Project + Agnir changes should share one VCS revision. Commit-and-push adds authoritative-ref verification. Externally observed commits trigger evaluation, not unconditional continuity writes.
 
 ## Existing Project upgrade baseline
 
-Agnir now defines **upgrade** as a first-class Agent operation distinct from install/initialize.
+Agnir defines **upgrade** as a first-class Agent operation distinct from install/initialize.
 
-- Upgrade starts by activating and preserving the existing Project; it does not regenerate `.agnir/` from templates.
-- A compatible operational upgrade requires the target Core/profile lines to remain `0.1` / `repository-filesystem/0.1`.
-- A Core/profile compatibility-line change is migration-required and must surface semantics equivalent to `AGNIR_UPGRADE_MIGRATION_REQUIRED` rather than silently rewriting the Project.
-- `latest stable` resolves an actually published stable release/tag. Moving `main`, another branch, or an untagged revision is not silently treated as stable; non-stable targets require explicit authorization.
+- Upgrade activates and preserves the existing Project; it does not regenerate `.agnir/` from templates.
+- Compatible operational upgrade requires target Core/profile lines `0.1` / `repository-filesystem/0.1`.
+- Core/profile changes are migration-required and surface `AGNIR_UPGRADE_MIGRATION_REQUIRED` rather than silently rewriting the Project.
+- `latest stable` resolves an actually published stable tag/release. Moving `main`, another branch, or an untagged revision is not silently treated as stable; non-stable targets require explicit authorization.
 - Projects created before operational provenance existed remain valid compatible-upgrade inputs.
-- A compatible repository/filesystem upgrade preserves `project.identity`, all memory locators and durable memory contents, unrelated README/`AGENTS.md` content, and unrelated extensions.
+- Compatible upgrade preserves `project.identity`, memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions.
 - Optional `extensions.agnir/operations` provenance records distribution, repository release, source, and immutable applied revision without redefining Core/profile compatibility or Project identity.
 - Re-applying the same operational baseline with no material drift is a no-op.
-- Compatible VCS upgrades should publish Agnir-owned procedure/provenance changes and continuity evidence in one coherent revision and finish with fresh activation.
-- Normal resume does not auto-upgrade Agnir or require network access to the Agnir distribution source.
+- Normal resume does not auto-upgrade or require network access to the Agnir distribution source.
 
-## Executable pressure
+## Verified upgrade publication candidate
 
-The suite includes checkpoint no-op/coherent-publication/conflict pressure and a new substrate-light upgrade reference covering legacy Projects without provenance, compatible provenance application, same-baseline no-op, rejection of implicit unstable targets, and migration-required behavior for Core/profile changes.
+Implementation checkpoint `2a0cb7bf2068b11f361e315670b2f2dc497b2588` added the compatible existing-Project upgrade Skill procedure, repository/filesystem operational provenance/stable-target rules, executable upgrade classification, release-gate updates, repository structure updates, and durable Agnir continuity.
 
-Existing discovery, activation, safe `AGENTS.md` merge, SQLite continuity, external authorization, multi-project isolation, Locator Chain failure, symlink, and real Git worktree pressure remains in place.
+Exact-revision GitHub Actions `Agnir conformance` run `33463490510`, job `99718447961`, passed. Both self-hosting cold-start conformance and the full `test_*.py` suite succeeded.
 
-## Repository documentation behavior
-
-`REPOSITORY_TREE.md` is a structural responsibility map. `.agnir/evidence/` is represented by directory responsibility rather than duplicating every evidence filename.
+`2a0cb7bf2068b11f361e315670b2f2dc497b2588` is therefore the verified Agnir `0.1.0` **publication candidate**. This later observation checkpoint records that external verification and does not recursively redefine the candidate.
 
 ## Release status
 
-The previously verified publication candidate `05103320afa25085d2cb9b65b249a8ad63e883e9` predates the newly accepted existing-Project upgrade contract. The pre-publication baseline is therefore reopened: the upgrade implementation must be published as one coherent revision and pass the full exact-revision conformance workflow before a new `0.1.0` publication candidate is established.
+Development required for the initial `0.1.0` release, including the existing-Project upgrade contract, is complete and verified. Publication remains a separate explicit Principal action.
 
-Real mount-boundary behavior remains explicitly unproven and optional additional evidence; ordinary directories are not accepted as mount evidence.
+Until a stable tag/release is actually published, an old Project request to upgrade to `latest stable` must not silently use `main`. Existing Projects should wait for stable publication unless the Principal explicitly authorizes a pre-release revision.
+
+Real mount-boundary behavior remains explicitly unproven and optional additional evidence.
 
 ## Current resume point
 
-1. publish the upgrade Skill/profile/conformance/release documentation and this durable continuity update as one coherent revision;
-2. verify the full `Agnir conformance` workflow on that exact revision;
-3. if it passes, record that revision as the new verified `0.1.0` publication candidate without recursively promoting a later observation-only checkpoint;
-4. only after explicit Principal publication authorization should `v0.1.0` / GitHub Release be created;
-5. after stable publication, existing Agnir Projects may use the new `upgrade` operation to move to the published stable operational baseline.
+1. treat `2a0cb7bf2068b11f361e315670b2f2dc497b2588` as the verified `0.1.0` publication candidate;
+2. after explicit Principal authorization, publish `v0.1.0` / GitHub Release on that candidate;
+3. after stable publication, existing compatible Agnir Projects may be upgraded using the first-class `upgrade` operation and optional `agnir/operations` provenance;
+4. preserve transactional checkpoint, upgrade, commit/push, activation, and safe `AGENTS.md` merge invariants.
 
 ## Branch governance
 
