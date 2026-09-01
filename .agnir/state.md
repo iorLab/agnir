@@ -2,6 +2,8 @@
 
 Agnir `v0.1.0` is formally published.
 
+Durable continuity belongs to the Project, not an Executor, conversation, execution environment, repository host, or storage implementation.
+
 ## Published release
 
 - repository release: `0.1.0`
@@ -22,7 +24,7 @@ Later `main` checkpoints are post-candidate operational observations and do not 
 - Core compatibility: `0.1`
 - repository/filesystem profile: `repository-filesystem/0.1`
 - repository release: `0.1.0`
-- durable continuity remains Project-owned and storage/VCS/execution-surface neutral at Core level.
+- Agnir Core remains storage-, platform-, VCS-, repository-, Agent-, Skill-, and execution-surface-neutral.
 
 ## Stable upgrade status
 
