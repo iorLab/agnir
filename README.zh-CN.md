@@ -164,19 +164,20 @@ Agnir 不执行流程中间的 Project 工作。它负责让 continuity 持久�
 
 ## 当前版本线
 
-`main` 是 Agnir `0.1.0` 稳定发布线。兼容标识分别为 Core `0.1` 和 `repository-filesystem/0.1`；仓库 SemVer 独立记录在 `VERSION`。
+`main` 是 Agnir `0.1.1` publication-candidate line。最新已发布的稳定版本仍是 immutable `v0.1.0`，直到 `v0.1.1` 被单独创建 tag 与 Release。兼容标识仍然是 Core `0.1` 和 `repository-filesystem/0.1`；仓库 SemVer 独立记录在 `VERSION`。
 
 PPMP / PPM / Sandminni 等前身材料只属于 `history/` 与 immutable Git history，不属于当前兼容契约。
 
 ## 发布状态
 
-Agnir `v0.1.0` 已经正式发布，是当前稳定的 repository release。Immutable `v0.1.0` tag 直接指向经过完整验证的 publication candidate `2a0cb7bf2068b11f361e315670b2f2dc497b2588`；之后 `main` 上的 checkpoint 不会重新定义这个 release target。`RELEASE.md` 定义版本模型、发布范围、发布门槛和已知限制。
+Agnir `v0.1.0` 仍是当前正式发布的稳定 repository release。`main` 正在准备 repository release `0.1.1`，它是修复 execution-surface activation handoff 的非破坏性 operational patch。真实的 `mattamior/skills-hub` ChatGPT Project regression 已在配置持久 locator 后通过；精确的 `0.1.1` publication candidate 仍必须通过完整 conformance workflow，之后才能成为 immutable `v0.1.1` tag / Release。`RELEASE.md` 定义发布范围与 gate。
 
-三个版本层必须区分：
+版本层必须区分：
 
 - Core compatibility：`0.1`；
 - repository/filesystem profile：`repository-filesystem/0.1`；
-- repository release：`0.1.0`。
+- `main` 上的 repository release candidate：`0.1.1`；
+- 在发布完成前的最新稳定版本：`v0.1.0`。
 
 ## 仓库结构
 
@@ -204,7 +205,7 @@ agnir/
 ├── RELEASE.md
 ├── README.md
 ├── README.zh-CN.md
-└── VERSION                            # 0.1.0
+└── VERSION                            # 0.1.1
 ```
 
 需要查看完整 tracked file 级目录树，请看 **[REPOSITORY_TREE.md](REPOSITORY_TREE.md)**。
@@ -234,6 +235,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-`0.1.0` suite 覆盖 Agent Skill packaging、免重复提示的 Project activation、repository/filesystem discovery 与 failures、checkpoint atomic/no-op/conflict 语义、SQLite 非 repository continuity、external-memory authorization、multi-project isolation、Locator Chain failures、symlink boundaries 和真实 Git worktree cold start。
+`0.1.1` suite 覆盖 Agent Skill packaging、免重复提示的 Project activation、execution-surface handoff regression、repository/filesystem discovery 与 failures、checkpoint atomic/no-op/conflict 语义、SQLite 非 repository continuity、external-memory authorization、multi-project isolation、Locator Chain failures、symlink boundaries 和真实 Git worktree cold start。
 
 真实 mount-boundary 仍明确未验证；普通目录不能冒充 mount evidence。
