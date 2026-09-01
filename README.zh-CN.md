@@ -6,7 +6,7 @@ Agnir 是一个 **由 Project 自己拥有的持久连续性协议（durable con
 
 它让 Project 在 Agent、对话、执行环境或存储实现发生变化后仍然可以安全恢复和继续。Durable continuity 属于 Project，而不属于某个 execution surface。
 
-**名字。** `Agnir` 取自冰岛语 `agnir`，是 `ögn` 的主格复数，意为“一小点”或“微粒（particle）”。这个名字对应 Agnir 的模型：Project 的持久连续性由一颗颗可发现的 Project truth 组成——Current State、Next Actions、Decisions 和 Evidence；这些“微粒”组合起来，使新的 Executor 即使没有前任的私有上下文，也能重新理解并继续 Project。
+**名奷。** `Agnir` 取自冰岛语 `agnir`，是 `ögn` 的主格复数，意为“一小点”或“微粒（particle）”。这个名字对应 Agnir 的模型：Project 的持久连续性由一颗颗可发现的 Project truth 组成——Current State、Next Actions、Decisions 和 Evidence；这些“微粒”组合起来，使新的 Executor 即使没有前任的私有上下文，也能重新理解并继续 Project。
 
 ## 从这里开始
 
@@ -60,18 +60,18 @@ Project 根目录
 
 ## Agnir 会给 Project 增加什么
 
-当 reference Agnir Skill 初始化一个 repository/filesystem Project 时，它会建立或校验一小组 **由 Project 自己拥有的 continuity 文件**。如果这些文件已经存在，Skill 会非破坏性地合并或最小更新，而不是直接覆盖。
+当 reference Agnir Skill 初始化一个 repository/filesystem Project 时，它会建立或校验一小组 **由 Project 自己拥有的 continuity 文件**。**Agnir 不会接管已有 Project 文件。** 对 `AGENTS.md` 和 `README.md`，Skill 只添加 Agnir 所需的入口，并保留原有无关内容；其余 Agnir continuity artifacts 通常作为新的 Project-owned 文件加入。
 
 ```text
 Project/
-├── AGENTS.md                 # Agent 激活 locator：把未来 Agent 引导到 README 中的 Agnir 指令
-├── AGNIR.yaml                # discovery anchor：声明 Project identity、兼容版本和 memory locators
-├── README.md                 # 包含 canonical ## Agnir Project Instructions
-└── .agnir/
-    ├── state.md              # 当前仍然成立的 durable Project truth
-    ├── next-actions.md       # 下一位 Executor 应继续推进的有序工作
-    ├── decisions.md          # 会约束未来工作的持久决策
-    └── evidence/             # 恢复、审计或重要事实声明所需的 Evidence / Checkpoints
+├── AGENTS.md                 # [编辑：仅添加入口] 加入 Agnir activation locator；保留原有 instructions
+├── AGNIR.yaml                # [新增] discovery anchor：声明 Project identity、兼容版本和 memory locators
+├── README.md                 # [编辑：仅添加入口] 加入 ## Agnir Project Instructions；保留原有内容
+└── .agnir/                   # [新增] Project 自己拥有的 durable continuity
+    ├── state.md              # [新增] 当前仍然成立的 durable Project truth
+    ├── next-actions.md       # [新增] 下一位 Executor 应继续推进的有序工作
+    ├── decisions.md          # [新增] 会约束未来工作的持久决策
+    └── evidence/             # [新增] 恢复、审计或重要事实声明所需的 Evidence / Checkpoints
 ```
 
 Reference layout 通常还会在 `evidence/` 中保存至少一份初始化 Evidence。真正权威的是 `AGNIR.yaml` 中的 locators，因此 `.agnir/` 是当前 profile 推荐的 colocated layout，而不是 Agnir Core 的普遍强制目录。
@@ -202,7 +202,7 @@ Svif 是独立的 **Project orchestration product**，位于 `iorLab/svif`。当
 
 ## 文档同步规则
 
-`README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
+`README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化旞，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
 
 在架构图之前，README 只保留简短的 Project 身份 / 名称解释、面向用户的 **从这里开始**、面向 Agent 的 canonical **Agnir Project Instructions**，以及面向用户解释安装结果的 **Agnir 会给 Project 增加什么**。安装与升级提示词都保持一句话；packaging rationale、compatibility rationale、publication detail 与更深入的实现说明应放到架构入口之后或专门文档中。
 

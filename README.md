@@ -60,18 +60,18 @@ If an activation locator, identity, required memory locator, or compatibility ch
 
 ## What Agnir Adds to a Project
 
-When the reference Agnir Skill initializes a repository/filesystem Project, it establishes or validates a small **Project-owned continuity surface**. Existing Project files are merged non-destructively, so an item below may be created or minimally updated rather than blindly replaced.
+When the reference Agnir Skill initializes a repository/filesystem Project, it establishes or validates a small **Project-owned continuity surface**. **Agnir does not take over existing Project files.** For `AGENTS.md` and `README.md`, the Skill only adds the Agnir entry it needs while preserving unrelated existing content; the remaining Agnir continuity artifacts are normally added as new Project-owned files.
 
 ```text
 Project/
-├── AGENTS.md                 # activation locator: points future Agents to the README instructions
-├── AGNIR.yaml                # discovery anchor: Project identity, compatibility, and memory locators
-├── README.md                 # contains the canonical ## Agnir Project Instructions section
-└── .agnir/
-    ├── state.md              # current durable Project truth
-    ├── next-actions.md       # outstanding ordered work for the next Executor
-    ├── decisions.md          # durable decisions that constrain future work
-    └── evidence/             # evidence/checkpoints needed for recovery, audit, or material claims
+├── AGENTS.md                 # [EDIT: add entry only] add Agnir activation locator; preserve existing instructions
+├── AGNIR.yaml                # [ADD] discovery anchor: Project identity, compatibility, and memory locators
+├── README.md                 # [EDIT: add entry only] add ## Agnir Project Instructions; preserve existing content
+└── .agnir/                   # [ADD] Project-owned durable continuity
+    ├── state.md              # [ADD] current durable Project truth
+    ├── next-actions.md       # [ADD] outstanding ordered work for the next Executor
+    ├── decisions.md          # [ADD] durable decisions that constrain future work
+    └── evidence/             # [ADD] evidence/checkpoints needed for recovery, audit, or material claims
 ```
 
 The reference layout normally records at least one initialization Evidence object. `AGNIR.yaml` locators are authoritative, so `.agnir/` is the recommended colocated layout for this profile rather than a universal Agnir Core requirement.

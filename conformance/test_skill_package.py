@@ -92,6 +92,27 @@ class SkillPackageTests(unittest.TestCase):
         self.assertNotIn("Requirements:\n1.", user_entry_en)
         self.assertNotIn("要求：\n1.", user_entry_zh)
 
+    def test_readme_project_surface_marks_add_vs_entry_only(self) -> None:
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+
+        surface_en = english.split("## What Agnir Adds to a Project", 1)[1].split("## Architecture Diagram", 1)[0]
+        surface_zh = chinese.split("## Agnir 会给 Project 增加什么", 1)[1].split("## 架构图", 1)[0]
+
+        self.assertIn("Agnir does not take over existing Project files.", surface_en)
+        self.assertIn("[EDIT: add entry only]", surface_en)
+        self.assertGreaterEqual(surface_en.count("[EDIT: add entry only]"), 2)
+        self.assertGreaterEqual(surface_en.count("[ADD]"), 6)
+        self.assertIn("preserve existing instructions", surface_en)
+        self.assertIn("preserve existing content", surface_en)
+
+        self.assertIn("Agnir 不会接管已有 Project 文件。", surface_zh)
+        self.assertIn("[编辑：仅添加入口]", surface_zh)
+        self.assertGreaterEqual(surface_zh.count("[编辑：仅添加入口]"), 2)
+        self.assertGreaterEqual(surface_zh.count("[新增]"), 6)
+        self.assertIn("保留原有 instructions", surface_zh)
+        self.assertIn("保留原有内容", surface_zh)
+
     def test_initialized_project_instructions_persist_commit_boundary_semantics(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
         chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
