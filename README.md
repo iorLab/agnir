@@ -164,20 +164,19 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 ## Active line
 
-`main` is the Agnir `0.1.1` publication-candidate line. The latest published stable release remains immutable `v0.1.0` until `v0.1.1` is separately tagged and released. The compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.
+`main` is the active Agnir `0.1.1` maintenance line. The current published stable release is immutable `v0.1.1`. The compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.
 
 Predecessor PPMP / PPM / Sandminni material is archival under `history/` and immutable Git history; it is not part of the active compatibility contract.
 
 ## Release status
 
-Agnir `v0.1.0` remains the current published stable repository release. `main` is preparing repository release `0.1.1`, a non-breaking operational patch for execution-surface activation handoff. The real `mattamior/skills-hub` ChatGPT Project regression has passed after persistent locator configuration; the exact `0.1.1` publication candidate must still pass the full conformance workflow before it may become immutable tag/release `v0.1.1`. `RELEASE.md` defines the release scope and gate.
+Agnir `v0.1.1` is formally published as the current stable repository release. The immutable `v0.1.1` tag points directly to exact verified candidate `e9712357ab590e5c1e5357b3cf3219d07d789aff`; GitHub Actions `Agnir conformance` run `33499092957` passed on that exact revision, and GitHub Release `Agnir v0.1.1` was published as release id `380414987`. The real `mattamior/skills-hub` ChatGPT Project regression passed before publication. `RELEASE.md` records the release contract and verification.
 
 Keep the version layers distinct:
 
 - Core compatibility: `0.1`;
 - repository/filesystem profile: `repository-filesystem/0.1`;
-- repository release candidate on `main`: `0.1.1`;
-- latest published stable release until publication completes: `v0.1.0`.
+- published repository release: `0.1.1`.
 
 ## Repository structure
 

@@ -164,20 +164,19 @@ Agnir 不执行流程中间的 Project 工作。它负责让 continuity 持久�
 
 ## 当前版本线
 
-`main` 是 Agnir `0.1.1` publication-candidate line。最新已发布的稳定版本仍是 immutable `v0.1.0`，直到 `v0.1.1` 被单独创建 tag 与 Release。兼容标识仍然是 Core `0.1` 和 `repository-filesystem/0.1`；仓库 SemVer 独立记录在 `VERSION`。
+`main` 是 Agnir `0.1.1` 的当前维护线。当前正式发布的稳定版本是 immutable `v0.1.1`。兼容标识仍然是 Core `0.1` 和 `repository-filesystem/0.1`；仓库 SemVer 独立记录在 `VERSION`。
 
 PPMP / PPM / Sandminni 等前身材料只属于 `history/` 与 immutable Git history，不属于当前兼容契约。
 
 ## 发布状态
 
-Agnir `v0.1.0` 仍是当前正式发布的稳定 repository release。`main` 正在准备 repository release `0.1.1`，它是修复 execution-surface activation handoff 的非破坏性 operational patch。真实的 `mattamior/skills-hub` ChatGPT Project regression 已在配置持久 locator 后通过；精确的 `0.1.1` publication candidate 仍必须通过完整 conformance workflow，之后才能成为 immutable `v0.1.1` tag / Release。`RELEASE.md` 定义发布范围与 gate。
+Agnir `v0.1.1` 已正式发布，是当前稳定的 repository release。Immutable `v0.1.1` tag 直接指向经过完整验证的精确 candidate `e9712357ab590e5c1e5357b3cf3219d07d789aff`；GitHub Actions `Agnir conformance` run `33499092957` 在该 revision 上通过，GitHub Release `Agnir v0.1.1` 的 release id 为 `380414987`。真实的 `mattamior/skills-hub` ChatGPT Project regression 已在发布前通过。`RELEASE.md` 记录发布契约与验证结果。
 
 版本层必须区分：
 
 - Core compatibility：`0.1`；
 - repository/filesystem profile：`repository-filesystem/0.1`；
-- `main` 上的 repository release candidate：`0.1.1`；
-- 在发布完成前的最新稳定版本：`v0.1.0`。
+- 已发布 repository release：`0.1.1`。
 
 ## 仓库结构
 

@@ -8,7 +8,7 @@
 
 ## Status
 
-The current `main` is the Agnir `0.1.1` publication-candidate line. The previously published stable release remains immutable `v0.1.0` until an exact `0.1.1` publication candidate passes the full conformance workflow and is separately tagged/released as `v0.1.1`.
+Agnir `v0.1.1` is formally published. The immutable tag points directly to exact candidate `e9712357ab590e5c1e5357b3cf3219d07d789aff`, GitHub Actions `Agnir conformance` run `33499092957` passed on that exact revision, and GitHub Release id `380414987` was published at `2026-09-01T10:47:58Z`. Later `main` maintenance does not redefine the release target.
 
 Agnir `0.1.1` is a non-breaking operational patch. It does not change Agnir Core `0.1`, `repository-filesystem/0.1`, Project identity semantics, memory locators, checkpoint semantics, or discovery failure classes.
 
@@ -36,7 +36,7 @@ A real ChatGPT web Project initialization of `mattamior/skills-hub` exposed an o
 - ChatGPT Project Instructions are the first concrete surface adapter for this operational rule, not an Agnir Core dependency;
 - completion reports distinguish repository activation from execution-surface activation and prefer a genuinely fresh-context verification after configuration.
 
-The real `skills-hub` regression case was then re-tested after the locator-only ChatGPT Project Instructions were configured. A genuinely new conversation, given only an ordinary Project request, immediately located `mattamior/skills-hub`, followed root `AGENTS.md`, and began loading `AGNIR.yaml` and the declared durable continuity. The Principal supplied screenshot evidence and explicitly reported the regression as passed. Durable Evidence is stored under `.agnir/evidence/2026-09-01-v0.1.1-execution-surface-validation.md`.
+The real `skills-hub` regression case was re-tested after the locator-only ChatGPT Project Instructions were configured. A genuinely new conversation, given only an ordinary Project request, immediately located `mattamior/skills-hub`, followed root `AGENTS.md`, and began loading `AGNIR.yaml` and the declared durable continuity. The Principal supplied screenshot evidence and explicitly reported the regression as passed. Durable Evidence is stored under `.agnir/evidence/2026-09-01-v0.1.1-execution-surface-validation.md`.
 
 ## Skill packaging boundary
 
@@ -86,12 +86,12 @@ Execution surfaces differ in how they expose persistent Project/workspace config
 
 Repository hooks remain optional event-capture mechanisms; Agnir continuity does not depend on them.
 
-## Publication gate
+## Publication gate and result
 
-A `v0.1.1` publication commit is ready only when all of the following hold:
+The `v0.1.1` publication gate required all of the following:
 
 1. `VERSION` is `0.1.1` and the self-hosting checker expects repository release `0.1.1`;
-2. `AGNIR.yaml`, schema, Core spec, discovery spec, profile, README files, Skill package, and conformance baseline still agree on Core `0.1` / `repository-filesystem/0.1`;
+2. `AGNIR.yaml`, schema, Core spec, discovery spec, profile, README files, Skill package, and conformance baseline agree on Core `0.1` / `repository-filesystem/0.1`;
 3. root `SKILL.md` retains valid Agent Skill frontmatter and the full operational procedure;
 4. repository activation remains non-destructive and fresh-resumable from the Project root;
 5. execution-surface activation is evaluated separately and required persistent configuration is either applied or explicitly reported pending;
@@ -106,4 +106,4 @@ A `v0.1.1` publication commit is ready only when all of the following hold:
 14. known limitations remain stated without being represented as proven;
 15. the full self-hosting and executable conformance workflow passes on the exact publication-candidate revision.
 
-Only that exact verified revision may become the immutable `v0.1.1` tag/release target. Tagging `v0.1.1` and creating the GitHub Release are separate publication actions; they must not silently target a later moving `main` revision.
+The publication gate was satisfied by exact revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`. Tag `v0.1.1` resolves directly to that commit, and GitHub Release `Agnir v0.1.1` (id `380414987`) was created by publication workflow run `33499228486`. Future `main` revisions are post-release maintenance and do not redefine `v0.1.1`.

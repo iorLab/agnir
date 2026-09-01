@@ -39,7 +39,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Required surface configuration that is pending or unverified blocks a claim that **full fresh activation passed**. Completion reports distinguish repository activation status from execution-surface activation status.
 - ChatGPT Project Instructions are the first concrete execution-surface adapter for this rule. The handoff points to canonical repository/ref, root `AGENTS.md`, and `AGNIR.yaml`; it must not duplicate Current State, Next Actions, Decisions, Evidence, or the full Agnir procedure.
 - A fresh-context test is the preferred completion gate after required surface configuration is applied. If the execution surface cannot be genuinely restarted/tested by the current Executor, verification remains explicitly pending.
-- This repair is an operational Skill/integration patch within Core `0.1` and `repository-filesystem/0.1`; it does not change either compatibility line and is suitable for repository patch release `0.1.1` after the real surface regression case and exact-candidate conformance pass.
+- This repair shipped in repository release `v0.1.1` as an operational Skill/integration patch within Core `0.1` and `repository-filesystem/0.1`; it does not change either compatibility line.
 
 ## Transactional checkpoint semantics — 2026-09-01
 
@@ -94,8 +94,9 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 ## Versioning, release, and branch governance
 
-- Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; published repository SemVer is `0.1.0` until `v0.1.1` is actually created.
-- The execution-surface activation handoff repair is a non-breaking operational patch and is planned for repository release `0.1.1`; it does not justify changing Core/profile compatibility identifiers.
-- `RELEASE.md` is the publication contract. A material release-preparation change must pass the full conformance workflow on its exact revision before that revision is considered the publication candidate.
+- Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; published repository SemVer is now `0.1.1`.
+- The execution-surface activation handoff repair shipped in repository release `v0.1.1` as a non-breaking operational patch; it does not change Core/profile compatibility identifiers.
+- `RELEASE.md` is the publication contract. Repository release `v0.1.1` is immutably anchored to exact verified revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`; later `main` maintenance cannot redefine that release target.
+- `latest stable release` now resolves to published `v0.1.1` until a newer stable tag/release is actually published.
 - `main` is the only long-lived authoritative branch. Historical predecessor/branch recovery uses immutable commit SHAs and Git history rather than live legacy refs.
 - Real mount-boundary behavior remains explicitly unproven; ordinary directories are not accepted as substitute mount evidence.

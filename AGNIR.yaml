@@ -20,3 +20,8 @@ extensions:
   agnir/repository:
     canonical: "iorLab/agnir"
     authoritative_ref: "main"
+  agnir/operations:
+    distribution: "agnir-agent-skill"
+    release: "0.1.1"
+    source: "iorLab/agnir"
+    applied_revision: "e9712357ab590e5c1e5357b3cf3219d07d789aff"
