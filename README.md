@@ -22,7 +22,7 @@ The Skill installs or validates the Project's Agnir continuity, including the du
 
 ### Existing Agnir Project
 
-**No recurring Agnir prompt is required for normal use.** A correctly initialized Agent-operable Project persists its own activation route:
+**No recurring Agnir prompt is required.** For normal use, a correctly initialized Agent-operable Project persists its own activation route:
 
 ```text
 Project root

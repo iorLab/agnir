@@ -22,7 +22,7 @@ Skill 会负责安装或校验 Project 的 Agnir continuity，包括让未来 Ag
 
 ### 已经初始化 Agnir 的 Project
 
-**正常使用时不需要再给 Agent 任何 Agnir bootstrap 提示词。** 正确初始化后的 Agent-operable Project 会自己持久保存激活路线：
+**不需要再给 Agent 任何 Agnir bootstrap 提示词。** 正常使用时，正确初始化后的 Agent-operable Project 会自己持久保存激活路线：
 
 ```text
 Project 根目录
