@@ -74,7 +74,7 @@ Project root
 → declared durable memory
 ```
 
-Repository activation is incomplete if continuation from the Project root still depends on the installation conversation or the installing Agent's private memory.
+Repository activation is incomplete if continuation from the Project root still depends on the installation conversation or the installing Agent's private memory. This repository-layer check remains the `fresh activation test`; it does not by itself prove execution-surface activation.
 
 ### Complete execution-surface activation
 
