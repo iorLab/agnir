@@ -22,7 +22,7 @@ The Skill installs or validates the Project's Agnir continuity, including the du
 
 ### Existing Agnir Project
 
-**No recurring Agnir prompt is required.** A correctly initialized Agent-operable Project persists its own activation route:
+**No recurring Agnir prompt is required for normal use.** A correctly initialized Agent-operable Project persists its own activation route:
 
 ```text
 Project root
@@ -33,6 +33,16 @@ Project root
 ```
 
 Give the Agent normal access to the Project and start the actual task. If an execution surface does not automatically inspect Project instruction files, configure that surface once; do not make the user repeat Agnir's procedure every session.
+
+### Upgrade an existing Agnir Project
+
+To upgrade an Agnir-enabled Project to the latest published stable operational release, give your Agent this one-line request:
+
+```text
+Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir
+```
+
+`latest stable` means an actually published stable tag/release, never a moving `main` branch. A compatible operational upgrade preserves Project identity, memory locators/content, unrelated README/`AGENTS.md` instructions, and unrelated extensions. If the Core or discovery-profile compatibility line changes, Agnir must surface migration-required semantics instead of silently rewriting the Project.
 
 ## Agnir Project Instructions
 
@@ -51,7 +61,7 @@ Root `AGENTS.md` is intentionally only a locator to this section; this section i
 Agnir deliberately separates the two instruction surfaces:
 
 - **User-facing install request** — one short sentence expressing intent and identifying the Agnir source repository.
-- **Agent-facing Skill procedure** — root `SKILL.md`, which owns the detailed install / initialize / resume / checkpoint / repair procedure.
+- **Agent-facing Skill procedure** — root `SKILL.md`, which owns the detailed install / initialize / upgrade / resume / checkpoint / commit / push / repair procedure.
 
 The Skill is a distribution and operational entry surface. It does not change Agnir Core semantics. After initialization, the target Project is self-describing through its own `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route; normal future work does not require reopening the Skill just to remind the Agent that Agnir exists.
 
@@ -135,7 +145,7 @@ Predecessor PPMP / PPM / Sandminni material is archival under `history/` and imm
 
 ## Release status
 
-The repository is closing the final pre-publication Agnir `0.1.0` baseline. `RELEASE.md` defines the version model, release surface, gates, and known limits. Creating tag `v0.1.0` and/or the GitHub Release remains a separate publication action.
+Agnir `v0.1.0` is formally published as the current stable repository release. The immutable `v0.1.0` tag points to the exact verified publication candidate `2a0cb7bf2068b11f361e315670b2f2dc497b2588`; later `main` checkpoints do not redefine that release target. `RELEASE.md` defines the version model, release surface, gates, and known limits.
 
 Keep the three version layers distinct:
 
@@ -186,7 +196,7 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Its curre
 
 `README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, or continuity flow must update the affected explanations/diagrams in both languages in the same change set.
 
-The README Quick Start must remain user-facing and minimal: **the install prompt is one sentence; the full Agent procedure belongs in root `SKILL.md`.** `REPOSITORY_TREE.md` is the exhaustive structural map; it describes evidence-directory responsibility rather than duplicating every checkpoint evidence filename.
+The README Quick Start must remain user-facing and minimal: **installation and upgrade prompts are one sentence each; the full Agent procedure belongs in root `SKILL.md`.** `REPOSITORY_TREE.md` is the exhaustive structural map; it describes evidence-directory responsibility rather than duplicating every checkpoint evidence filename.
 
 ## Conformance
 

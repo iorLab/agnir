@@ -22,7 +22,7 @@ Skill 会负责安装或校验 Project 的 Agnir continuity，包括让未来 Ag
 
 ### 已经初始化 Agnir 的 Project
 
-**不需要再给 Agent 任何 Agnir bootstrap 提示词。** 正确初始化后的 Agent-operable Project 会自己持久保存激活路线：
+**正常使用时不需要再给 Agent 任何 Agnir bootstrap 提示词。** 正确初始化后的 Agent-operable Project 会自己持久保存激活路线：
 
 ```text
 Project 根目录
@@ -33,6 +33,16 @@ Project 根目录
 ```
 
 把 Project 正常交给 Agent，然后直接开始真正的任务即可。如果某个 execution surface 不会自动读取 Project instruction files，应对该 execution surface 做一次性配置，而不是让用户每次会话都重复 Agnir 的内部 procedure。
+
+### 升级已经使用 Agnir 的 Project
+
+要把一个已经启用 Agnir 的 Project 升级到最新正式发布的稳定 operational release，只需要把这一句话交给 Agent：
+
+```text
+把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir
+```
+
+`latest stable` 只指已经正式发布的稳定 tag / release，不能把会移动的 `main` 分支偷偷当成 stable。兼容的 operational upgrade 必须保留 Project identity、memory locators / content、README / `AGENTS.md` 中无关的 Project 指令以及无关 extensions；如果 Core 或 discovery profile 的 compatibility line 发生变化，Agnir 必须进入 migration-required，而不是静默改写 Project。
 
 ## Agnir Project Instructions
 
@@ -51,7 +61,7 @@ Project 根目录
 Agnir 明确把两层指令分开：
 
 - **给用户的安装提示词**：只有一句，表达“我要安装 Agnir”并给出 Agnir 源仓库。
-- **给 Agent 的 Skill procedure**：根目录 `SKILL.md`，完整负责 install / initialize / resume / checkpoint / repair。
+- **给 Agent 的 Skill procedure**：根目录 `SKILL.md`，完整负责 install / initialize / upgrade / resume / checkpoint / commit / push / repair。
 
 Skill 是发行和操作入口，不改变 Agnir Core 语义。初始化完成后，目标 Project 已经通过自己的 `AGENTS.md → README → AGNIR.yaml` 路线做到 self-describing；以后正常工作不需要再打开 Skill 来提醒 Agent “这个 Project 使用 Agnir”。
 
@@ -135,7 +145,7 @@ PPMP / PPM / Sandminni 等前身材料只属于 `history/` 与 immutable Git his
 
 ## 发布状态
 
-当前仓库正在完成 Agnir `0.1.0` 的正式发布前收口。`RELEASE.md` 定义版本模型、发布范围、发布门槛和已知限制。创建 `v0.1.0` Git tag / GitHub Release 仍是单独的 publication 动作。
+Agnir `v0.1.0` 已经正式发布，是当前稳定的 repository release。Immutable `v0.1.0` tag 直接指向经过完整验证的 publication candidate `2a0cb7bf2068b11f361e315670b2f2dc497b2588`；之后 `main` 上的 checkpoint 不会重新定义这个 release target。`RELEASE.md` 定义版本模型、发布范围、发布门槛和已知限制。
 
 三个版本层必须区分：
 
@@ -186,7 +196,7 @@ Svif 是独立的 **Project orchestration product**，位于 `iorLab/svif`。当
 
 `README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
 
-README 的 Quick Start 必须始终面向用户并保持极简：**安装提示词只有一句；完整 Agent procedure 属于根目录 `SKILL.md`。** `REPOSITORY_TREE.md` 是完整结构地图；它说明 evidence 目录职责，不再重复登记每一个 checkpoint evidence 文件名。
+README 的 Quick Start 必须始终面向用户并保持极简：**安装与升级提示词都各自只有一句；完整 Agent procedure 属于根目录 `SKILL.md`。** `REPOSITORY_TREE.md` 是完整结构地图；它说明 evidence 目录职责，不再重复登记每一个 checkpoint evidence 文件名。
 
 ## Conformance
 
