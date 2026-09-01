@@ -28,9 +28,11 @@ Agnir 是一个 **由 Project 自己拥有的持久连续性协议（durable con
 
 **不需要再给 Agent 任何 Agnir bootstrap 提示词。** 直接让 Agent 访问 Project，并提出真正要做的任务。
 
+有些 execution surface 需要一次性的持久 Project locator，新的执行上下文才能进入 Project 自己的 activation route。安装或升级时，Agnir Skill 必须在能够直接配置时完成配置，否则就自动给用户一段可直接复制的 handoff；只要必需的 execution-surface configuration 仍未完成，就不得宣称完整 activation 已通过。这属于 execution-surface integration，不属于 Agnir Core，也不是 Project memory。
+
 安装或升级时，Agent 应把根目录 [`SKILL.md`](SKILL.md) 当作 canonical procedure；用户不需要携带 Agnir 的内部 checklist。
 
-初始化完成后，Agent-operable repository Project 会自己持久保存激活路径：
+Repository 初始化完成，并完成任何必需的一次性 execution-surface configuration 后，Agent-operable repository Project 会自己持久保存激活路径：
 
 ```text
 Project 根目录
@@ -74,6 +76,8 @@ Project/
     └── evidence/             # [新增] 恢复、审计或重要事实声明所需的 Evidence / Checkpoints
 ```
 
+Execution-surface configuration 不是 Project 文件，也不属于上面的 Project-owned tree。如果某个 surface 需要一次性持久设置——例如 ChatGPT Project Instructions——Skill 应只追加或要求用户追加一个指向本 Project 的 locator，并保留 surface 原有的无关 instructions。Project 自己的 `AGENTS.md → README → AGNIR.yaml` 路线仍然是 canonical。
+
 Reference layout 通常还会在 `evidence/` 中保存至少一份初始化 Evidence。真正权威的是 `AGNIR.yaml` 中的 locators，因此 `.agnir/` 是当前 profile 推荐的 colocated layout，而不是 Agnir Core 的普遍强制目录。
 
 Agnir 增加的是 continuity metadata 与 durable Project truth；它**不会**复制整个 Project，不要求保存原始聊天记录，也不会把 Git / GitHub 变成 Agnir Core 的依赖。
@@ -83,7 +87,9 @@ Agnir 增加的是 continuity metadata 与 durable Project truth；它**不会**
 ```mermaid
 flowchart TB
     U["用户<br/>只给一句安装意图"] --> K["Agnir Agent Skill<br/>SKILL.md 保存完整安装 procedure"]
-    K -. "非破坏性 setup" .-> P["目标 Project 根目录"]
+    K -. "需要时：surface handoff" .-> X["Execution-surface bootstrap<br/>编辑：仅追加 Project locator"]
+    X --> P["目标 Project 根目录"]
+    K -. "非破坏性 setup" .-> P
 
     subgraph T["目标 Project surface"]
         G["AGENTS.md<br/>编辑：仅添加 activation locator"]
@@ -114,7 +120,7 @@ flowchart TB
     F --> E
 ```
 
-`SKILL.md` 是 Agent-facing packaging layer；`AGENTS.md → README` 是面向 Agent 的 repository activation convention。两者都不是 Agnir Core 的依赖。已经知道适用 profile 的 Executor / adapter 可以直接从 Project Entry Point / Discovery Record 开始。
+`SKILL.md` 是 Agent-facing packaging layer；`AGENTS.md → README` 是面向 Agent 的 repository activation convention。Execution-surface bootstrap 是单独的 adapter concern：当 surface 不能自动进入 Project 时，只持久保存足够的 locator 信息来进入这条路线。它们都不是 Agnir Core 的依赖。已经知道适用 profile 的 Executor / adapter 可以直接从 Project Entry Point / Discovery Record 开始。
 
 Agnir Core **不要求** Git、GitHub、repository、ChatGPT、AI Agent、Skill system 或某种具体 storage backend。
 
@@ -127,15 +133,18 @@ Agnir 明确把用户意图和 Agent procedure 分开：
 
 Skill 是发行和操作入口，不改变 Agnir Core 语义。初始化完成后，目标 Project 已经通过自己的 `AGENTS.md → README → AGNIR.yaml` 路线做到 self-describing；以后正常工作不需要再打开 Skill 来提醒 Agent “这个 Project 使用 Agnir”。
 
+如果 execution surface 自身需要持久配置才能进入 Project，Skill 会把它作为一次性的 surface handoff 处理：保留 surface 原有的无关 instructions，只写入 locator，并把 surface activation 与 repository activation 分开报告，不能在 handoff 尚未配置时宣称 fresh context 已经可用。
+
 具体的 repository/filesystem Project surface 已经在前面的 **Agnir 会给 Project 增加什么** 中说明。规范性的初始化 / 激活要求由 [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md) 定义；根目录 `SKILL.md` 是把这些要求交给 Agent 执行的 procedure。
 
 ## 连续性流程（Continuity Flow）
 
-安装完成后，正常 Project continuity 不再依赖最初那句用户安装提示词，也不依赖初始化对话：
+安装完成，并完成任何必需的一次性 execution-surface configuration 后，正常 Project continuity 不再依赖最初那句用户安装提示词，也不依赖初始化对话：
 
 ```mermaid
 flowchart TD
-    C["新的 Agent / 新执行上下文"] --> P["获得已授权的 Project 根目录"]
+    C["新的 Agent / 新执行上下文"] --> X["解析持久 execution-surface Project locator<br/>仅在该 surface 需要时"]
+    X --> P["获得已授权的 Project 根目录"]
     P --> A["读取 AGENTS.md"]
     A --> I["跟随 README 的 Agnir Project Instructions"]
     I --> R["读取 AGNIR.yaml / 解析 Discovery Record"]
@@ -148,7 +157,7 @@ flowchart TD
     U --> K["Reconcile + 原子发布一致 checkpoint"]
     K --> S["持久连续性存储"]
     S --> N["未来新的 Agent / 环境"]
-    N --> P
+    N --> X
 ```
 
 Agnir 不执行流程中间的 Project 工作。它负责让 continuity 持久、可发现、绑定到正确 Project，并让未来 Executor 可以安全恢复。Not-found、ambiguity、unsupported version、Project mismatch、authorization failure、cycle、stale locator、material inconsistency 等 failure 都必须显式暴露，不能靠猜测静默修复。
@@ -210,7 +219,7 @@ Svif 是独立的 **Project orchestration product**，位于 `iorLab/svif`。当
 
 ## 文档同步规则
 
-`README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
+`README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary、execution-surface handoff 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
 
 在架构图之前，README 只保留简短的 Project 身份 / 名称解释、面向用户的 **从这里开始**、面向 Agent 的 canonical **Agnir Project Instructions**，以及面向用户解释安装结果的 **Agnir 会给 Project 增加什么**。安装与升级提示词都保持一句话；packaging rationale、compatibility rationale、publication detail 与更深入的实现说明应放到架构入口之后或专门文档中。
 

@@ -119,6 +119,28 @@ class SkillPackageTests(unittest.TestCase):
         self.assertNotIn("Requirements:\n1.", user_entry_en)
         self.assertNotIn("要求：\n1.", user_entry_zh)
 
+    def test_readmes_explain_execution_surface_handoff(self) -> None:
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+
+        for marker in (
+            "one-time persistent Project locator",
+            "copy-ready handoff",
+            "execution-surface activation",
+            "Execution-surface bootstrap",
+            "append Project locator only",
+        ):
+            self.assertIn(marker, english)
+
+        for marker in (
+            "一次性的持久 Project locator",
+            "可直接复制的 handoff",
+            "execution-surface configuration",
+            "Execution-surface bootstrap",
+            "仅追加 Project locator",
+        ):
+            self.assertIn(marker, chinese)
+
     def test_readme_project_surface_marks_add_vs_entry_only(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
         chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")

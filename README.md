@@ -28,9 +28,11 @@ Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir
 
 **No recurring Agnir prompt is required.** Give the Agent access to the Project and ask for the actual task.
 
+Some execution surfaces need a one-time persistent Project locator before a fresh context can reach the Project's own activation route. During install or upgrade, the Agnir Skill must either configure that surface when it can or give the user a copy-ready handoff; it must not claim full activation while required execution-surface configuration is pending. This is execution-surface integration, not Agnir Core or Project memory.
+
 For install or upgrade operations, the Agent should use the root [`SKILL.md`](SKILL.md) as the canonical procedure. The user does not need to carry Agnir's internal checklist.
 
-After initialization, an Agent-operable repository Project persists its own activation route:
+After repository initialization and any required one-time execution-surface configuration, an Agent-operable repository Project persists its own activation route:
 
 ```text
 Project root
@@ -74,6 +76,8 @@ Project/
     └── evidence/             # [ADD] evidence/checkpoints needed for recovery, audit, or material claims
 ```
 
+Execution-surface configuration is not a Project file and is not part of this Project-owned tree. If a surface needs one-time persistent settings — for example, ChatGPT Project Instructions — the Skill should append or ask the user to append only a locator to this Project, preserving unrelated surface instructions. The Project's own `AGENTS.md → README → AGNIR.yaml` route remains canonical.
+
 The reference layout normally records at least one initialization Evidence object. `AGNIR.yaml` locators are authoritative, so `.agnir/` is the recommended colocated layout for this profile rather than a universal Agnir Core requirement.
 
 Agnir adds continuity metadata and durable Project truth; it does **not** copy the Project, require raw chat transcripts, or make Git/GitHub part of Agnir Core.
@@ -83,7 +87,9 @@ Agnir adds continuity metadata and durable Project truth; it does **not** copy t
 ```mermaid
 flowchart TB
     U[User\none-line install intent] --> K[Agnir Agent Skill\nSKILL.md owns install procedure]
-    K -. non-destructive setup .-> P[Target Project root]
+    K -. when required: surface handoff .-> X[Execution-surface bootstrap\nEDIT: append Project locator only]
+    X --> P[Target Project root]
+    K -. non-destructive setup .-> P
 
     subgraph T[Target Project surface]
         G[AGENTS.md\nEDIT: add activation locator only]
@@ -114,7 +120,7 @@ flowchart TB
     F --> E
 ```
 
-`SKILL.md` is an Agent-facing packaging layer, and `AGENTS.md → README` is an Agent-operable repository activation convention. Neither is an Agnir Core dependency. An Executor or adapter that already knows the applicable profile may begin directly at the Project Entry Point / Discovery Record.
+`SKILL.md` is an Agent-facing packaging layer, and `AGENTS.md → README` is an Agent-operable repository activation convention. Execution-surface bootstrap is a separate adapter concern: when a surface does not automatically reach the Project, it stores only enough persistent locator information to enter this route. None of these are Agnir Core dependencies. An Executor or adapter that already knows the applicable profile may begin directly at the Project Entry Point / Discovery Record.
 
 Agnir Core defines durable continuity semantics and discovery invariants; it does **not** require Git, GitHub, a repository, ChatGPT, an AI Agent, a Skill system, or any specific storage backend.
 
@@ -127,15 +133,18 @@ Agnir deliberately separates the user intent from the Agent procedure:
 
 The Skill is a distribution and operational entry surface. It does not change Agnir Core semantics. After initialization, the target Project is self-describing through its own `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route; normal future work does not require reopening the Skill just to remind the Agent that Agnir exists.
 
+When the execution surface itself needs persistent configuration to reach the Project, the Skill treats that as a one-time surface handoff. It preserves unrelated surface instructions, keeps the handoff locator-only, and reports surface activation separately from repository activation instead of claiming a fresh context is ready before the handoff is configured.
+
 The concrete repository/filesystem Project surface is summarized above in **What Agnir Adds to a Project**. The normative initialization/activation contract is defined by [`profiles/REPOSITORY_FILESYSTEM.md`](profiles/REPOSITORY_FILESYSTEM.md); `SKILL.md` is the Agent-facing procedure that applies it.
 
 ## Continuity Flow
 
-Once installation is complete, normal Project continuity does not depend on the original user install prompt or installation conversation:
+Once installation and any required one-time execution-surface configuration are complete, normal Project continuity does not depend on the original user install prompt or installation conversation:
 
 ```mermaid
 flowchart TD
-    C[Fresh Agent / new execution context] --> P[Receive authorized Project root]
+    C[Fresh Agent / new execution context] --> X[Resolve persistent execution-surface Project locator\nwhen the surface requires one]
+    X --> P[Receive authorized Project root]
     P --> A[Read AGENTS.md]
     A --> I[Follow README Agnir Project Instructions]
     I --> R[Read AGNIR.yaml / resolve Discovery Record]
@@ -148,7 +157,7 @@ flowchart TD
     U --> K[Reconcile + publish coherent checkpoint]
     K --> S[Durable continuity store]
     S --> N[Future Agent / environment]
-    N --> P
+    N --> X
 ```
 
 Agnir does not perform the Project work shown in the middle of the flow. It makes continuity durable, discoverable, attributable to the correct Project, and safe to resume. Discovery failures such as not-found, ambiguity, unsupported version, Project mismatch, authorization failure, cycles, stale locators, and material inconsistency must be surfaced rather than silently repaired by guessing.
@@ -210,7 +219,7 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Its curre
 
 ## Documentation synchronization rule
 
-`README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, or continuity flow must update the affected explanations/diagrams in both languages in the same change set.
+`README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, execution-surface handoff, or continuity flow must update the affected explanations/diagrams in both languages in the same change set.
 
 Before the Architecture Diagram, README content is deliberately limited to a concise Project identity/name explanation, **Start Here** for users, the canonical **Agnir Project Instructions** for Agents, and **What Agnir Adds to a Project** as a concrete user-facing map of the installed Project surface. Installation and upgrade prompts stay one sentence each; packaging rationale, compatibility rationale, publication detail, and deeper implementation explanation belong after the architecture entry point or in dedicated documents.
 
