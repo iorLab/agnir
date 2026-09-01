@@ -9,6 +9,13 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Required durable semantics are Current State, Next Actions, Decisions, and Evidence / Checkpoints.
 - Svif is a separate Project orchestration product and may consume Agnir through a Continuity Provider integration. Agnir remains independently usable without Svif.
 
+## Name origin and product meaning — 2026-09-01
+
+- The project name **Agnir** is taken from Icelandic `agnir`, the nominative plural of `ögn`, meaning a tiny bit or particle.
+- The name maps to Agnir's product model: durable Project continuity is composed from small, discoverable pieces of Project truth rather than depending on one Executor's private context or one monolithic conversation transcript.
+- The canonical conceptual pieces are Current State, Next Actions, Decisions, and Evidence / Checkpoints. Together they let a fresh compatible Executor reconstruct enough Project truth to continue safely.
+- This is a naming and product metaphor, not a Core storage-layout requirement. Implementations are not required to persist each semantic category as a physically separate file, row, object, or backend record.
+
 ## Discovery and repository/filesystem profile
 
 - `AGNIR.yaml` is the top-level discovery anchor for `repository-filesystem/0.1`; that filename/layout is profile behavior, not a Core requirement.
@@ -63,7 +70,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 ## README entry-point information architecture — 2026-09-01
 
-- Before the Architecture Diagram, both READMEs are deliberately limited to two operational audiences: **Start Here / 从这里开始** for users, followed by the canonical **Agnir Project Instructions** for Agents.
+- Before the Architecture Diagram, both READMEs are deliberately limited to a concise Project identity/name explanation followed by two operational audiences: **Start Here / 从这里开始** for users, then the canonical **Agnir Project Instructions** for Agents.
 - `Start Here` contains only minimal install, upgrade, and normal-use actions. User-facing install and upgrade intents remain one sentence each; users do not carry Agnir's internal implementation checklist.
 - `Agnir Project Instructions` remains the canonical heading resolved by `AGENTS.md` and is explicitly marked as Agent guidance for human readers.
 - Packaging rationale, compatibility explanation, release detail, repository structure, and implementation/conformance explanation belong after the architecture entry point or in dedicated documents.

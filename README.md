@@ -6,6 +6,8 @@ Agnir is a **project-owned durable continuity protocol**.
 
 It lets a Project resume safely when Agents, conversations, execution environments, or storage implementations change. The Project owns the durable continuity; execution surfaces do not.
 
+**Name.** `Agnir` is taken from Icelandic `agnir`, the nominative plural of `ögn`, meaning a tiny bit or particle. The name matches Agnir's model: durable Project continuity is composed from small, discoverable pieces of Project truth — Current State, Next Actions, Decisions, and Evidence — that together let a fresh Executor understand and resume the Project.
+
 ## Start Here
 
 This section is for users. Pick the action you want and give the Agent only the corresponding intent.
@@ -196,7 +198,7 @@ Svif is a separate **Project orchestration product** at `iorLab/svif`. Its curre
 
 `README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, or continuity flow must update the affected explanations/diagrams in both languages in the same change set.
 
-Before the Architecture Diagram, README content is deliberately limited to two audiences: **Start Here** for users and **Agnir Project Instructions** for Agents. Installation and upgrade prompts stay one sentence each; packaging, compatibility rationale, publication detail, and implementation explanation belong after the architecture entry point or in dedicated documents.
+Before the Architecture Diagram, README content is deliberately limited to a concise Project identity/name explanation followed by two operational audiences: **Start Here** for users and **Agnir Project Instructions** for Agents. Installation and upgrade prompts stay one sentence each; packaging, compatibility rationale, publication detail, and implementation explanation belong after the architecture entry point or in dedicated documents.
 
 `REPOSITORY_TREE.md` is the exhaustive structural map; it describes evidence-directory responsibility rather than duplicating every checkpoint evidence filename.
 

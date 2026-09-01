@@ -6,6 +6,8 @@ Agnir 是一个 **由 Project 自己拥有的持久连续性协议（durable con
 
 它让 Project 在 Agent、对话、执行环境或存储实现发生变化后仍然可以安全恢复和继续。Durable continuity 属于 Project，而不属于某个 execution surface。
 
+**名字。** `Agnir` 取自冰岛语 `agnir`，是 `ögn` 的主格复数，意为“一小点”或“微粒（particle）”。这个名字对应 Agnir 的模型：Project 的持久连续性由一颗颗可发现的 Project truth 组成——Current State、Next Actions、Decisions 和 Evidence；这些“微粒”组合起来，使新的 Executor 即使没有前任的私有上下文，也能重新理解并继续 Project。
+
 ## 从这里开始
 
 本节只面向用户。找到你现在要做的事，把对应的一句话交给 Agent 即可。
@@ -196,7 +198,7 @@ Svif 是独立的 **Project orchestration product**，位于 `iorLab/svif`。当
 
 `README.md` 与 `README.zh-CN.md` 是并行入口。Layer model、Skill / install 边界、activation path、discovery path、durable-memory semantics、Project boundary 或 continuity flow 变化时，必须在同一个 change set 同步更新两种语言中受影响的说明 / 图。
 
-在架构图之前，README 只保留两类读者所需内容：**从这里开始**面向用户，**Agnir Project Instructions** 面向 Agent。安装与升级提示词都保持一句话；packaging、compatibility rationale、publication detail 与实现说明应放到架构入口之后或专门文档中。
+在架构图之前，README 只保留简短的 Project 身份 / 名称解释，以及两类操作读者所需内容：**从这里开始**面向用户，**Agnir Project Instructions** 面向 Agent。安装与升级提示词都保持一句话；packaging、compatibility rationale、publication detail 与实现说明应放到架构入口之后或专门文档中。
 
 `REPOSITORY_TREE.md` 是完整结构地图；它说明 evidence 目录职责，不再重复登记每一个 checkpoint evidence 文件名。
 
