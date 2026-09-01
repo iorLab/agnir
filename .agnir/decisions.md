@@ -27,8 +27,19 @@ This file records active durable decisions required to operate and evolve Agnir 
 ## Agent-operable activation and Skill packaging
 
 - Root `SKILL.md` is the canonical Agent-facing Agnir operational package. User-facing install/upgrade requests remain short intent statements plus the canonical distribution location; the user does not carry Agnir's internal procedure.
-- An initialized Agent-operable repository Project persists activation through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory, so normal continuation does not depend on the installation conversation or reopening the Skill repository.
-- Target `AGENTS.md` remains locator-only for Agnir. Existing unrelated Project-owned instructions are preserved; equivalent locators are idempotent; material instruction conflicts are surfaced to the Principal and block completed installation until explicitly resolved.
+- An initialized Agent-operable repository Project persists its Project-owned activation route through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory.
+- Target `AGENTS.md` remains locator-only for Agnir. Existing unrelated Project-owned instructions are preserved; equivalent locators are idempotent; material instruction conflicts are surfaced to the Principal and block completed repository activation until explicitly resolved.
+
+## Execution-surface activation handoff — 2026-09-01
+
+- **Repository activation and execution-surface activation are separate completion dimensions.** A repository can be correctly self-describing while a surrounding execution surface still lacks the persistent locator needed for a future fresh context to reach that repository.
+- Execution-surface configuration is an adapter/integration concern, not Agnir Core and not Project-owned durable memory. It must contain only enough persistent locator/bootstrap information to reach the authorized Project Entry Point and then defer to the Project's canonical activation route.
+- When the active surface automatically begins Project work from the authorized Project root and inspects Project instruction files, no separate surface configuration is required.
+- When persistent surface configuration is required and the active Agent can modify it with Principal authority, the Agent should configure it. When it cannot, installation/upgrade must produce a copy-ready handoff, preserve unrelated existing surface instructions, and report `pending user configuration` rather than pretending the surface is ready.
+- Required surface configuration that is pending or unverified blocks a claim that **full fresh activation passed**. Completion reports distinguish repository activation status from execution-surface activation status.
+- ChatGPT Project Instructions are the first concrete execution-surface adapter for this rule. The handoff points to canonical repository/ref, root `AGENTS.md`, and `AGNIR.yaml`; it must not duplicate Current State, Next Actions, Decisions, Evidence, or the full Agnir procedure.
+- A fresh-context test is the preferred completion gate after required surface configuration is applied. If the execution surface cannot be genuinely restarted/tested by the current Executor, verification remains explicitly pending.
+- This repair is an operational Skill/integration patch within Core `0.1` and `repository-filesystem/0.1`; it does not change either compatibility line and is suitable for repository patch release `0.1.1` after the real surface regression case and exact-candidate conformance pass.
 
 ## Transactional checkpoint semantics — 2026-09-01
 
@@ -44,7 +55,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 - Repository/VCS intent is integration/profile behavior, not a Core VCS dependency.
 - In repository context, an authorized request to `commit`, `提交`, `提交代码`, or equivalent is a checkpoint boundary. Agnir continuity is evaluated/reconciled **before** the VCS commit.
-- When Project changes and Agnir continuity changes can be represented in one VCS revision, implementations should publish them together in that one revision instead of creating a follow-up checkpoint-only commit.
+- When Project changes and Agnir continuity changes can be represented in one VCS revision, implementations should publish them together in that one revision instead of creating a follow-up checkpoint-only revision.
 - `commit and push`, `提交推送`, or equivalent means checkpoint + commit + push + verification of the declared authoritative remote/ref when available.
 - A commit observed after another human, Agent, IDE, CI, web UI, or automation action triggers checkpoint evaluation only; coherent unchanged continuity yields a no-op.
 - `提交` is contextual integration vocabulary, not a universal literal trigger.
@@ -66,7 +77,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 - Evidence is retained only when needed for recovery, audit, conformance, or support of material claims; it is not an activity log.
 - `REPOSITORY_TREE.md` is a structural responsibility map. `.agnir/evidence/` is represented by directory responsibility rather than enumerating every Evidence filename.
-- `README.md` and `README.zh-CN.md` are parallel entry documents. Changes to architecture, activation, durable-memory/checkpoint semantics, Project boundary, or continuity flow update both languages in the same change set.
+- `README.md` and `README.zh-CN.md` are parallel entry documents. Changes to architecture, activation, execution-surface handoff, durable-memory/checkpoint semantics, Project boundary, or continuity flow update both languages in the same change set.
 
 ## README entry-point information architecture — 2026-09-01
 
@@ -74,16 +85,17 @@ This file records active durable decisions required to operate and evolve Agnir 
 - `Start Here` contains only minimal install, upgrade, and normal-use actions. User-facing install and upgrade intents remain one sentence each; users do not carry Agnir's internal implementation checklist.
 - `Agnir Project Instructions` remains the canonical heading resolved by `AGENTS.md` and is explicitly marked as Agent guidance for human readers.
 - `What Agnir Adds to a Project` shows the reference Skill's non-destructive Project surface: `AGENTS.md`, `AGNIR.yaml`, the README instruction section, and the declared `.agnir/` continuity layout with State, Next Actions, Decisions, and Evidence responsibilities. It must state that `AGNIR.yaml` locators are authoritative and that the file layout is profile/reference behavior rather than a universal Core requirement.
-- The Architecture Diagram mirrors that surface without duplicating the full file tree: `AGENTS.md` and `README.md` are shown as non-destructive **EDIT / add-entry-only** surfaces, while `AGNIR.yaml` and the reference `.agnir/` continuity layout are shown as Agnir **ADD** surfaces feeding discovery and Core continuity semantics.
-- The Continuity Flow describes post-install resume/runtime behavior, not installation mutation. It remains free of ADD/EDIT installation labels unless the runtime semantics themselves change.
+- Execution-surface bootstrap is shown outside the Project-owned surface. If needed, it is labeled as an edit/append-only locator rather than a new canonical memory surface.
+- The Architecture Diagram mirrors the Project surface without duplicating the full file tree: `AGENTS.md` and `README.md` are non-destructive **EDIT / add-entry-only** surfaces, while `AGNIR.yaml` and the reference `.agnir/` continuity layout are Agnir **ADD** surfaces feeding discovery and Core continuity semantics.
+- The Continuity Flow describes post-install resume/runtime behavior and may begin with resolving a persistent execution-surface Project locator when the surface requires one; it must not turn surface settings into Project truth.
 - Packaging rationale, compatibility explanation, release detail, repository structure, and deeper implementation/conformance explanation belong after the architecture entry point or in dedicated documents.
 - Bilingual documentation must preserve the same audience split and operational meaning without requiring literal sentence-for-sentence translation.
 - Conformance enforces the ordering `Start Here -> Agnir Project Instructions -> installed Project surface -> Architecture`, canonical install/upgrade intents, and the required surface markers so the README front matter remains concrete without drifting back into a full implementation checklist.
 
 ## Versioning, release, and branch governance
 
-- Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; repository SemVer for the initial publication is `0.1.0`.
-- Transactional checkpoint, commit-event, and compatible existing-Project upgrade semantics are incorporated before the first `v0.1.0` publication and therefore belong to the initial operational distribution line.
-- `RELEASE.md` is the publication contract. A material pre-publication change must pass the full conformance workflow on its exact revision before that revision is considered the publication candidate.
+- Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; published repository SemVer is `0.1.0` until `v0.1.1` is actually created.
+- The execution-surface activation handoff repair is a non-breaking operational patch and is planned for repository release `0.1.1`; it does not justify changing Core/profile compatibility identifiers.
+- `RELEASE.md` is the publication contract. A material release-preparation change must pass the full conformance workflow on its exact revision before that revision is considered the publication candidate.
 - `main` is the only long-lived authoritative branch. Historical predecessor/branch recovery uses immutable commit SHAs and Git history rather than live legacy refs.
 - Real mount-boundary behavior remains explicitly unproven; ordinary directories are not accepted as substitute mount evidence.
