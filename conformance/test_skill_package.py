@@ -126,7 +126,7 @@ class SkillPackageTests(unittest.TestCase):
         for marker in (
             "one-time persistent Project locator",
             "copy-ready handoff",
-            "execution-surface activation",
+            "surface activation separately from repository activation",
             "Execution-surface bootstrap",
             "append Project locator only",
         ):
