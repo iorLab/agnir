@@ -1,0 +1,86 @@
+name: Publish Agnir v0.1.1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-v0.1.1.yml
+
+permissions:
+  contents: write
+
+env:
+  TARGET_SHA: e9712357ab590e5c1e5357b3cf3219d07d789aff
+  TAG: v0.1.1
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git show "$TARGET_SHA:VERSION" | tr -d '\r\n')" = "0.1.1"
+          test "$(git show "$TARGET_SHA:conformance/check_agnir_0_1.py" | grep -F 'REPOSITORY_VERSION = "0.1.1"' | wc -l)" -eq 1
+          conclusion="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$TARGET_SHA" --jq '.workflow_runs[] | select(.name == "Agnir conformance") | .conclusion' | head -n1)"
+          test "$conclusion" = "success"
+
+      - name: Create immutable release tag
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            existing="$(git ls-remote --tags origin "refs/tags/$TAG" | awk '{print $1}')"
+            test "$existing" = "$TARGET_SHA"
+          else
+            git push origin "$TARGET_SHA:refs/tags/$TAG"
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            exit 0
+          fi
+          cat > /tmp/release-notes.md <<'EOF'
+          ## Agnir v0.1.1
+
+          Agnir `v0.1.1` is a non-breaking operational patch on Core `0.1` and `repository-filesystem/0.1`.
+
+          ### Highlights
+
+          - Separates repository activation from execution-surface activation.
+          - Generates a copy-ready, locator-only handoff when a surface such as ChatGPT Project needs persistent Project Instructions.
+          - Preserves unrelated execution-surface instructions and keeps durable Project truth canonical in the Project.
+          - Prevents full fresh-activation success claims while required surface configuration is pending or unverified.
+          - Adds regression conformance for execution-surface handoff behavior.
+          - Adds a real ChatGPT web Project regression case using `mattamior/skills-hub`; a genuinely fresh conversation successfully located the repository and began loading `AGENTS.md`, `AGNIR.yaml`, and declared durable continuity without a repeated bootstrap prompt.
+          - Synchronizes English and Simplified Chinese architecture/activation documentation.
+
+          ### Compatibility
+
+          - Agnir Core: `0.1`
+          - Repository/filesystem profile: `repository-filesystem/0.1`
+          - Repository release: `0.1.1`
+
+          Existing compatible Agnir Projects can upgrade from `v0.1.0` to `v0.1.1` without changing Project identity or durable memory locators/content.
+
+          ### Verification
+
+          Exact release target:
+
+          `e9712357ab590e5c1e5357b3cf3219d07d789aff`
+
+          GitHub Actions `Agnir conformance` run `33499092957` passed on this exact revision, including self-hosting cold-start conformance and the full executable test suite.
+          EOF
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Agnir v0.1.1" \
+            --notes-file /tmp/release-notes.md
