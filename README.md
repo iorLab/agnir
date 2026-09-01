@@ -164,19 +164,20 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 ## Active line
 
-`main` is the stable Agnir `0.1.0` release line. The compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.
+`main` is the Agnir `0.1.1` publication-candidate line. The latest published stable release remains immutable `v0.1.0` until `v0.1.1` is separately tagged and released. The compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.
 
 Predecessor PPMP / PPM / Sandminni material is archival under `history/` and immutable Git history; it is not part of the active compatibility contract.
 
 ## Release status
 
-Agnir `v0.1.0` is formally published as the current stable repository release. The immutable `v0.1.0` tag points to the exact verified publication candidate `2a0cb7bf2068b11f361e315670b2f2dc497b2588`; later `main` checkpoints do not redefine that release target. `RELEASE.md` defines the version model, release surface, gates, and known limits.
+Agnir `v0.1.0` remains the current published stable repository release. `main` is preparing repository release `0.1.1`, a non-breaking operational patch for execution-surface activation handoff. The real `mattamior/skills-hub` ChatGPT Project regression has passed after persistent locator configuration; the exact `0.1.1` publication candidate must still pass the full conformance workflow before it may become immutable tag/release `v0.1.1`. `RELEASE.md` defines the release scope and gate.
 
-Keep the three version layers distinct:
+Keep the version layers distinct:
 
 - Core compatibility: `0.1`;
 - repository/filesystem profile: `repository-filesystem/0.1`;
-- repository release: `0.1.0`.
+- repository release candidate on `main`: `0.1.1`;
+- latest published stable release until publication completes: `v0.1.0`.
 
 ## Repository structure
 
@@ -204,7 +205,7 @@ agnir/
 ├── RELEASE.md
 ├── README.md
 ├── README.zh-CN.md
-└── VERSION                            # 0.1.0
+└── VERSION                            # 0.1.1
 ```
 
 For the exhaustive tracked-file map, see **[REPOSITORY_TREE.md](REPOSITORY_TREE.md)**.
@@ -234,6 +235,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-The `0.1.0` suite covers Agent Skill packaging, durable prompt-free Project activation, repository/filesystem discovery and failures, checkpoint atomic/no-op/conflict semantics, SQLite non-repository continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start.
+The `0.1.1` suite covers Agent Skill packaging, durable prompt-free Project activation, execution-surface handoff regression, repository/filesystem discovery and failures, checkpoint atomic/no-op/conflict semantics, SQLite non-repository continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start.
 
 Real mount-boundary behavior remains explicitly unproven; an ordinary directory is not accepted as mount evidence.
