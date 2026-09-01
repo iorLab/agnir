@@ -28,19 +28,27 @@ Later `main` checkpoints are post-candidate operational observations and do not 
 
 ## Stable upgrade status
 
-`latest stable` now has a real published stable target. Existing compatible Agnir Projects may use the first-class upgrade operation against `v0.1.0`.
+`latest stable` has a real published stable target. Existing compatible Agnir Projects may use the first-class upgrade operation against `v0.1.0`.
 
 Compatible upgrade preserves Project identity, memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions. Projects without historical `agnir/operations` provenance remain valid upgrade inputs. Core/profile compatibility changes remain migration-required and surface `AGNIR_UPGRADE_MIGRATION_REQUIRED` rather than silently changing compatibility lines.
+
+## README entry architecture
+
+The repository entry documentation is now intentionally split by audience before architecture material:
+
+1. `Start Here` / `从这里开始` — minimal user actions for install, upgrade, and normal continuation;
+2. `Agnir Project Instructions` — canonical Agent activation/operation guidance;
+3. `Architecture Diagram` / `架构图` — beginning of explanatory architecture, packaging, compatibility, release, and implementation material.
+
+The user-facing install/upgrade prompts remain one sentence each. Root `SKILL.md` owns the detailed Agent operational procedure. Conformance enforces the entry ordering so implementation detail does not drift back into the user-facing front section. Durable rationale is recorded in `.agnir/evidence/2026-09-01-readme-information-architecture.md` and `.agnir/decisions.md`.
 
 ## Checkpoint and repository invariants
 
 Transactional checkpoint semantics, stale-base `AGNIR_CHECKPOINT_CONFLICT`, contextual commit/push intent, one-revision preference, prompt-free activation, and safe non-destructive `AGENTS.md` merge remain active.
 
-## Remaining release cleanup
+## Post-release maintenance
 
-A temporary branch `release-v0.1.0-candidate` was created only to let the GitHub web Release UI target the verified candidate. It is not a long-lived branch and should be deleted now that `v0.1.0` exists. The current connected GitHub tool does not expose branch deletion.
-
-README/RELEASE pre-publication wording also needs post-release synchronization on `main`; this is documentation maintenance and does not affect the already-published tag.
+The temporary branch `release-v0.1.0-candidate` has been deleted; `main` remains the only intended long-lived branch. `README.md` and `README.zh-CN.md` now describe the published `v0.1.0` state. `RELEASE.md` still contains pre-publication wording and remains a documentation-maintenance item; this does not affect the immutable published tag.
 
 ## Branch governance
 

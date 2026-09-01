@@ -61,6 +61,15 @@ This file records active durable decisions required to operate and evolve Agnir 
 - `REPOSITORY_TREE.md` is a structural responsibility map. `.agnir/evidence/` is represented by directory responsibility rather than enumerating every Evidence filename.
 - `README.md` and `README.zh-CN.md` are parallel entry documents. Changes to architecture, activation, durable-memory/checkpoint semantics, Project boundary, or continuity flow update both languages in the same change set.
 
+## README entry-point information architecture — 2026-09-01
+
+- Before the Architecture Diagram, both READMEs are deliberately limited to two operational audiences: **Start Here / 从这里开始** for users, followed by the canonical **Agnir Project Instructions** for Agents.
+- `Start Here` contains only minimal install, upgrade, and normal-use actions. User-facing install and upgrade intents remain one sentence each; users do not carry Agnir's internal implementation checklist.
+- `Agnir Project Instructions` remains the canonical heading resolved by `AGENTS.md` and is explicitly marked as Agent guidance for human readers.
+- Packaging rationale, compatibility explanation, release detail, repository structure, and implementation/conformance explanation belong after the architecture entry point or in dedicated documents.
+- Bilingual documentation must preserve the same audience split and operational meaning without requiring literal sentence-for-sentence translation.
+- Conformance enforces the ordering `Start Here -> Agnir Project Instructions -> Architecture` plus canonical install/upgrade intents, so the README front matter does not drift back into mixed user/Agent/implementation documentation.
+
 ## Versioning, release, and branch governance
 
 - Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; repository SemVer for the initial publication is `0.1.0`.
