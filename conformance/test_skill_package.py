@@ -32,7 +32,8 @@ class SkillPackageTests(unittest.TestCase):
             ".agnir/evidence/",
             "## Agnir Project Instructions",
             "AGENTS.md",
-            "fresh activation test",
+            "fresh repository activation test",
+            "### Complete execution-surface activation",
             "## Upgrade an existing Agnir Project",
             "## Resume or use an existing Agnir Project",
             "## Checkpoint",
@@ -40,6 +41,32 @@ class SkillPackageTests(unittest.TestCase):
             "## Repair",
         ):
             self.assertIn(marker, text)
+
+    def test_skill_defines_execution_surface_activation_handoff(self) -> None:
+        text = SKILL.read_text(encoding="utf-8")
+        for marker in (
+            "Repository activation and execution-surface activation are separate completion dimensions",
+            "copy-ready execution-surface handoff",
+            "pending user configuration",
+            "Do not report full fresh activation as passed",
+            "ChatGPT Project",
+            "Agnir Project bootstrap",
+            "Canonical Project: <owner/repository>",
+            "Authoritative ref: <ref>",
+            "At the first substantive turn of every new conversation",
+            "append or merge",
+            "do not overwrite unrelated existing Project Instructions",
+            "repository activation status",
+            "execution-surface activation status",
+        ):
+            self.assertIn(marker, text)
+
+        chatgpt_block = text.split("```text\nAgnir Project bootstrap", 1)[1].split("```", 1)[0]
+        self.assertIn("read root AGENTS.md", chatgpt_block)
+        self.assertIn("AGNIR.yaml", chatgpt_block)
+        self.assertIn("canonical durable Project truth", chatgpt_block)
+        self.assertNotIn("Current State", chatgpt_block)
+        self.assertNotIn("Next Actions", chatgpt_block)
 
     def test_skill_defines_transactional_checkpoint_and_repository_intent(self) -> None:
         text = SKILL.read_text(encoding="utf-8")

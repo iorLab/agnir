@@ -64,7 +64,7 @@ For the reference `repository-filesystem/0.1` setup:
    - treat an authorized request to commit Project changes as a checkpoint boundary: reconcile material continuity before the VCS commit, prefer code and Agnir changes in one revision, and treat a commit-and-push request as checkpoint + commit + push + verification when repository context applies.
 5. Create or update root `AGENTS.md` according to **Merge existing AGENTS.md safely** above so it points to the README `Agnir Project Instructions` section and does not fork a second copy of the full Agnir contract.
 6. Validate every locator and Project identity.
-7. Finish with a fresh activation test using only the target Project root:
+7. Finish with a fresh repository activation test using only the target Project root:
 
 ```text
 Project root
@@ -74,7 +74,35 @@ Project root
 → declared durable memory
 ```
 
-The installation is incomplete if future continuation still depends on the installation conversation or the installing Agent's private memory.
+Repository activation is incomplete if continuation from the Project root still depends on the installation conversation or the installing Agent's private memory.
+
+### Complete execution-surface activation
+
+Repository activation and execution-surface activation are separate completion dimensions. After the repository activation test, inspect whether the current execution surface will give a future fresh context enough persistent information to reach the authorized Project Entry Point and its Agnir activation route.
+
+1. If the execution surface automatically starts future Project work from the authorized Project root and inspects the Project instruction route, report execution-surface activation as **not separately required**.
+2. If the execution surface requires persistent workspace/project configuration, configure that locator when the available tools and Principal authority allow it.
+3. If the execution surface requires such configuration but the Agent cannot modify it directly, produce a **copy-ready execution-surface handoff**, ask the Principal to append or merge it into the surface's persistent Project/workspace instructions, preserve unrelated existing instructions, and report execution-surface activation as **pending user configuration**.
+4. Keep the handoff locator-only. Do not copy Current State, Next Actions, Decisions, Evidence, or the full Agnir procedure into execution-surface settings. The surface configuration points to the Project; the Project remains canonical.
+5. Do not report full fresh activation as passed while required execution-surface configuration is still pending or unverified. Report repository activation and execution-surface activation separately.
+6. After required configuration is applied, verify from a genuinely fresh execution context when possible. If a fresh-context test cannot be performed, report verification as pending rather than claiming success.
+
+For a **ChatGPT Project** backed by a repository declared under `extensions.agnir/repository`, and when ChatGPT does not automatically inspect the repository's Project instructions, generate a block equivalent to the following with the target Project's actual values:
+
+```text
+Agnir Project bootstrap
+
+Canonical Project: <owner/repository>
+Authoritative ref: <ref>
+
+At the first substantive turn of every new conversation, open the canonical Project repository, read root AGENTS.md, and follow its Agnir activation locator before doing Project work.
+
+Load the Project continuity declared by AGNIR.yaml. Treat repository-managed Agnir state as canonical durable Project truth; ChatGPT Project memory and conversation context are working memory only.
+
+When Project work materially changes durable continuity, follow the Project's Agnir checkpoint instructions before finishing, committing, or pushing.
+```
+
+Ask the Principal to **append or merge** this block into the ChatGPT Project's persistent Instructions; do not overwrite unrelated existing Project Instructions. The block is an execution-surface adapter, not Agnir Core and not a second canonical copy of Project memory.
 
 ## Upgrade an existing Agnir Project
 
@@ -119,7 +147,7 @@ extensions:
 The operational extension records which distribution procedure was applied. It does **not** replace `agnir.version`, `agnir.discovery_profile`, or Project identity and is not an Agnir Core requirement.
 4. Reconcile any material upgrade facts into Agnir continuity. Evidence should identify the previous operational baseline when known, the target release/revision, classification, and fresh-activation result.
 5. If the Project is in VCS, publish the compatible upgrade and its Agnir checkpoint as one coherent revision when possible; do not create a chain of per-file upgrade commits.
-6. Finish with the same fresh activation test required after initialization. The upgrade is incomplete if a fresh Executor cannot activate and resume from the Project root.
+6. Finish with the same repository activation test and execution-surface activation evaluation required after initialization. The upgrade is incomplete for a surface that requires persistent configuration until that configuration is applied or explicitly reported as pending.
 
 If the target procedure is already applied and durable truth did not change, upgrade evaluation is a no-op: do not rewrite README, manifest, memory, Evidence, or create a repository revision just to say the check occurred.
 
@@ -137,7 +165,7 @@ Follow the target Project's durable activation instructions. For the reference r
 6. load Decisions and Evidence when relevant;
 7. then perform the user's actual Project task.
 
-If the execution surface does not automatically inspect Project instruction files, treat that as one-time execution-surface configuration rather than a reason to make the user repeat Agnir's procedure every session.
+If the execution surface does not automatically inspect Project instruction files, use its one-time persistent Project/workspace configuration to reach the authorized Project Entry Point. If that configuration is missing, treat it as an activation repair/handoff problem; do not make the user repeat Agnir's internal procedure every session.
 
 Normal resume does not automatically upgrade Agnir. Upgrade checks or mutations happen only according to explicit Principal intent or a durable Project upgrade policy. This keeps an initialized Project resumable without requiring network access to the Agnir distribution source.
 
@@ -168,7 +196,7 @@ For an authorized commit request:
 
 1. load and validate current Agnir continuity before building the commit;
 2. reconcile material continuity changes;
-3. if both Project work and Agnir memory changed, prefer staging them into **one VCS revision** so the revision itself is a coherent Project snapshot;
+3. if both Project changes and Agnir memory changed, prefer staging them into **one VCS revision** so the revision itself is a coherent Project snapshot;
 4. do not create a second checkpoint-only commit after the Project commit unless a later independent material truth change requires it;
 5. if checkpoint evaluation is a no-op, commit only the requested Project changes;
 6. treat the resulting VCS revision identifier as a backend receipt when useful; do not try to embed a commit SHA inside the content whose commit would determine that same SHA.
@@ -184,18 +212,19 @@ Git hooks such as `pre-commit` or `pre-push` may be used by an implementation to
 Repair the earliest faulty layer without inventing Project state.
 
 - Missing activation locator or canonical README instruction: repair the Project instruction route while preserving unrelated content.
+- Missing required execution-surface Project/workspace locator: configure it when authorized, or produce the copy-ready surface handoff and report `pending user configuration`; do not claim full activation passed.
 - Existing `AGENTS.md` conflict: preserve the existing instruction, surface the conflict, and require explicit Principal resolution before replacing or overriding it.
 - Missing or incompatible `AGNIR.yaml`: surface or repair the repository/filesystem discovery anchor according to the active profile.
 - Identity mismatch: do not silently adopt another Project's memory.
 - Broken required locator: repair the declared locator or durable object; do not search arbitrary sibling repositories, home directories, old chats, or historical layouts.
 - Authorization, cycle, stale, or inconsistency failures: preserve the semantic failure rather than guessing around it.
 
-After material activation or discovery repair, rerun fresh activation/cold start from the Project Entry Point.
+After material activation or discovery repair, rerun repository activation/cold start from the Project Entry Point and reevaluate execution-surface activation.
 
 ## Report completion
 
-For installation, report only the useful result: which Project was initialized, where the Agnir anchor and durable memory live, whether README/`AGENTS.md` activation was installed or merged, whether any existing instruction conflict blocked completion, and whether fresh activation passed. Do not make the user learn or repeat the internal checklist.
+For installation, report only the useful result: which Project was initialized, where the Agnir anchor and durable memory live, whether README/`AGENTS.md` activation was installed or merged, whether any existing instruction conflict blocked completion, **repository activation status**, and **execution-surface activation status**. If surface configuration is pending, include the copy-ready handoff and do not report full fresh activation as passed. Do not make the user learn or repeat the internal checklist.
 
-For upgrade, report the previous operational baseline when known, target release/revision, classification (`no-op`, compatible upgrade, or migration required), which Agnir-owned activation/provenance surfaces changed, whether Project identity/memory locators were preserved, fresh-activation result, and repository revision when relevant.
+For upgrade, report the previous operational baseline when known, target release/revision, classification (`no-op`, compatible upgrade, or migration required), which Agnir-owned activation/provenance surfaces changed, whether Project identity/memory locators were preserved, repository activation result, execution-surface activation result when relevant, and repository revision when relevant.
 
 For resume/checkpoint/commit/push/repair, report material continuity changes, whether checkpoint evaluation was a no-op or published transition, the resulting repository revision/remote verification when relevant, remaining blockers, and any failure class that prevents safe resumability.
