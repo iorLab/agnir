@@ -45,9 +45,26 @@ Evidence:
 - `.agnir/evidence/2026-09-01-v0.1.1-execution-surface-validation.md`
 - `.agnir/evidence/2026-09-01-v0.1.1-publication.md`
 
+## Existing-Project upgrade validation
+
+A real compatible upgrade from the pre-provenance Agnir setup in `mattamior/skills-hub` to published `v0.1.1` has passed.
+
+- target Project pre-upgrade revision: `f94c3894ec9412724607febbc27b25408a9a90cc`
+- upgrade revision: `f8ec9fbb429df6a8eaa0aa837906a5897ffbb210`
+- classification: compatible operational upgrade
+- preserved Core/profile: `0.1` / `repository-filesystem/0.1`
+- preserved Project identity and all declared memory locators/content
+- recorded `extensions.agnir/operations` release `0.1.1` with applied revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`
+- target repository validation workflow: `Validate skills` run `33500075237`
+- target validation conclusion: `success`
+
+The target Project's existing README Agnir contract and locator-only `AGENTS.md` already satisfied the v0.1.1 repository activation contract, so they were not rewritten. The ChatGPT Project locator established during the earlier fresh-context regression remained valid because canonical repository/ref, activation route, Project identity, and memory locators did not change.
+
+Evidence: `.agnir/evidence/2026-09-01-v0.1.1-existing-project-upgrade-validation.md`.
+
 ## Stable upgrade status
 
-`latest stable release` now resolves to published `v0.1.1`. Existing compatible Agnir Projects on Core `0.1` / `repository-filesystem/0.1` may upgrade from `v0.1.0` to `v0.1.1` as a compatible operational upgrade. Such an upgrade preserves Project identity, declared memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions, while optionally recording `extensions.agnir/operations` provenance.
+`latest stable release` resolves to published `v0.1.1`. Existing compatible Agnir Projects on Core `0.1` / `repository-filesystem/0.1` may upgrade to `v0.1.1` as a compatible operational upgrade. Such an upgrade preserves Project identity, declared memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions, while optionally recording `extensions.agnir/operations` provenance.
 
 Core/profile compatibility changes remain migration-required and must surface `AGNIR_UPGRADE_MIGRATION_REQUIRED` rather than being silently rewritten.
 
