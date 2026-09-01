@@ -1,0 +1,221 @@
+name: Reconcile Agnir v0.1.1 publication
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/post-release-v0.1.1.yml
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconcile durable release state
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          target = "e9712357ab590e5c1e5357b3cf3219d07d789aff"
+          release_id = "380414987"
+          published_at = "2026-09-01T10:47:58Z"
+          verify_run = "33499092957"
+          publish_run = "33499228486"
+
+          def replace_exact(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding="utf-8")
+              if old not in text:
+                  raise SystemExit(f"expected text not found in {path}: {old[:80]!r}")
+              p.write_text(text.replace(old, new), encoding="utf-8")
+
+          replace_exact(
+              "README.md",
+              "`main` is the Agnir `0.1.1` publication-candidate line. The latest published stable release remains immutable `v0.1.0` until `v0.1.1` is separately tagged and released. The compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.",
+              "`main` is the active Agnir `0.1.1` maintenance line. The current published stable release is immutable `v0.1.1`. The compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.",
+          )
+          replace_exact(
+              "README.md",
+              "Agnir `v0.1.0` remains the current published stable repository release. `main` is preparing repository release `0.1.1`, a non-breaking operational patch for execution-surface activation handoff. The real `mattamior/skills-hub` ChatGPT Project regression has passed after persistent locator configuration; the exact `0.1.1` publication candidate must still pass the full conformance workflow before it may become immutable tag/release `v0.1.1`. `RELEASE.md` defines the release scope and gate.\n\nKeep the version layers distinct:\n\n- Core compatibility: `0.1`;\n- repository/filesystem profile: `repository-filesystem/0.1`;\n- repository release candidate on `main`: `0.1.1`;\n- latest published stable release until publication completes: `v0.1.0`.",
+              f"Agnir `v0.1.1` is formally published as the current stable repository release. The immutable `v0.1.1` tag points directly to exact verified candidate `{target}`; GitHub Actions `Agnir conformance` run `{verify_run}` passed on that exact revision, and GitHub Release `Agnir v0.1.1` was published as release id `{release_id}`. The real `mattamior/skills-hub` ChatGPT Project regression passed before publication. `RELEASE.md` records the release contract and verification.\n\nKeep the version layers distinct:\n\n- Core compatibility: `0.1`;\n- repository/filesystem profile: `repository-filesystem/0.1`;\n- published repository release: `0.1.1`.",
+          )
+
+          replace_exact(
+              "README.zh-CN.md",
+              "`main` 是 Agnir `0.1.1` publication-candidate line。最新已发布的稳定版本仍是 immutable `v0.1.0`，直到 `v0.1.1` 被单独创建 tag 与 Release。兼容标识仍然是 Core `0.1` 和 `repository-filesystem/0.1`；仓库 SemVer 独立记录在 `VERSION`。",
+              "`main` 是 Agnir `0.1.1` 的当前维护线。当前正式发布的稳定版本是 immutable `v0.1.1`。兼容标识仍然是 Core `0.1` 和 `repository-filesystem/0.1`；仓库 SemVer 独立记录在 `VERSION`。",
+          )
+          replace_exact(
+              "README.zh-CN.md",
+              "Agnir `v0.1.0` 仍是当前正式发布的稳定 repository release。`main` 正在准备 repository release `0.1.1`，它是修复 execution-surface activation handoff 的非破坏性 operational patch。真实的 `mattamior/skills-hub` ChatGPT Project regression 已在配置持久 locator 后通过；精确的 `0.1.1` publication candidate 仍必须通过完整 conformance workflow，之后才能成为 immutable `v0.1.1` tag / Release。`RELEASE.md` 定义发布范围与 gate。\n\n版本层必须区分：\n\n- Core compatibility：`0.1`；\n- repository/filesystem profile：`repository-filesystem/0.1`；\n- `main` 上的 repository release candidate：`0.1.1`；\n- 在发布完成前的最新稳定版本：`v0.1.0`。",
+              f"Agnir `v0.1.1` 已正式发布，是当前稳定的 repository release。Immutable `v0.1.1` tag 直接指向经过完整验证的精确 candidate `{target}`；GitHub Actions `Agnir conformance` run `{verify_run}` 在该 revision 上通过，GitHub Release `Agnir v0.1.1` 的 release id 为 `{release_id}`。真实的 `mattamior/skills-hub` ChatGPT Project regression 已在发布前通过。`RELEASE.md` 记录发布契约与验证结果。\n\n版本层必须区分：\n\n- Core compatibility：`0.1`；\n- repository/filesystem profile：`repository-filesystem/0.1`；\n- 已发布 repository release：`0.1.1`。",
+          )
+
+          replace_exact(
+              "RELEASE.md",
+              "The current `main` is the Agnir `0.1.1` publication-candidate line. The previously published stable release remains immutable `v0.1.0` until an exact `0.1.1` publication candidate passes the full conformance workflow and is separately tagged/released as `v0.1.1`.\n\nAgnir `0.1.1` is a non-breaking operational patch. It does not change Agnir Core `0.1`, `repository-filesystem/0.1`, Project identity semantics, memory locators, checkpoint semantics, or discovery failure classes.",
+              f"Agnir `v0.1.1` is formally published. The immutable tag points directly to exact candidate `{target}`, GitHub Actions `Agnir conformance` run `{verify_run}` passed on that exact revision, and GitHub Release id `{release_id}` was published at `{published_at}`. Later `main` maintenance does not redefine the release target.\n\nAgnir `0.1.1` is a non-breaking operational patch. It does not change Agnir Core `0.1`, `repository-filesystem/0.1`, Project identity semantics, memory locators, checkpoint semantics, or discovery failure classes.",
+          )
+          replace_exact(
+              "RELEASE.md",
+              "Only that exact verified revision may become the immutable `v0.1.1` tag/release target. Tagging `v0.1.1` and creating the GitHub Release are separate publication actions; they must not silently target a later moving `main` revision.",
+              f"The publication gate was satisfied by exact revision `{target}`. Tag `v0.1.1` resolves directly to that commit, and GitHub Release `Agnir v0.1.1` (id `{release_id}`) was created by publication workflow run `{publish_run}`. Future `main` revisions are post-release maintenance and do not redefine `v0.1.1`.",
+          )
+
+          Path(".agnir/state.md").write_text(f"""# Agnir Current State
+
+Agnir `v0.1.1` is formally published as the current stable repository release. The execution-surface activation handoff repair passed repository conformance and the real ChatGPT `skills-hub` fresh-context regression before publication.
+
+Durable continuity belongs to the Project, not an Executor, conversation, execution environment, repository host, or storage implementation.
+
+## Published release
+
+- repository release: `0.1.1`
+- Git tag: `v0.1.1`
+- tag target: `{target}`
+- GitHub Release id: `{release_id}`
+- Release title: `Agnir v0.1.1`
+- published at: `{published_at}`
+- draft: false
+- prerelease: false
+- exact-candidate conformance run: `{verify_run}`
+- publication workflow run: `{publish_run}`
+
+The tag resolves directly to exact verified candidate `{target}`. Later `main` checkpoints are post-release maintenance and do not redefine the immutable `v0.1.1` release target.
+
+## Active compatibility contract
+
+- Core compatibility: `0.1`
+- repository/filesystem profile: `repository-filesystem/0.1`
+- published repository release: `0.1.1`
+- Agnir Core remains storage-, platform-, VCS-, repository-, Agent-, Skill-, and execution-surface-neutral.
+
+## v0.1.1 patch result
+
+The patch closes the execution-surface completion gap discovered during real ChatGPT web Project initialization of `mattamior/skills-hub`:
+
+- repository activation and execution-surface activation are separate completion dimensions;
+- surfaces that require persistent Project/workspace configuration are configured when possible or receive a copy-ready locator-only handoff;
+- pending/unverified required surface configuration blocks a claim that full fresh activation passed;
+- ChatGPT Project Instructions remain an execution-surface adapter and do not duplicate Project durable truth or the full Agnir procedure;
+- completion reporting distinguishes repository activation from execution-surface activation;
+- bilingual README architecture/continuity documentation and executable regression pressure preserve the boundary.
+
+The real `skills-hub` regression passed after the persistent locator-only Project Instructions were configured: a genuinely fresh conversation, given only an ordinary Project-status request, located `mattamior/skills-hub` and began reading root `AGENTS.md`, `AGNIR.yaml`, and declared durable continuity without a repeated Agnir bootstrap prompt.
+
+Evidence:
+
+- `.agnir/evidence/2026-09-01-execution-surface-activation-regression.md`
+- `.agnir/evidence/2026-09-01-v0.1.1-execution-surface-validation.md`
+- `.agnir/evidence/2026-09-01-v0.1.1-publication.md`
+
+## Stable upgrade status
+
+`latest stable release` now resolves to published `v0.1.1`. Existing compatible Agnir Projects on Core `0.1` / `repository-filesystem/0.1` may upgrade from `v0.1.0` to `v0.1.1` as a compatible operational upgrade. Such an upgrade preserves Project identity, declared memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions, while optionally recording `extensions.agnir/operations` provenance.
+
+Core/profile compatibility changes remain migration-required and must surface `AGNIR_UPGRADE_MIGRATION_REQUIRED` rather than being silently rewritten.
+
+## Repository and documentation invariants
+
+Root `SKILL.md` remains the canonical Agent-facing operational package. The Project-owned activation route remains `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory. Execution-surface configuration stays outside the Project-owned tree and remains locator-only.
+
+Transactional checkpoint semantics, stale-base `AGNIR_CHECKPOINT_CONFLICT`, contextual commit/push intent, one-revision preference, prompt-free Project activation, and safe non-destructive `AGENTS.md` merge remain active.
+
+## Branch governance
+
+`main` remains the only intended long-lived authoritative branch. Historical recovery and releases use immutable commit SHAs/tags rather than live legacy refs.
+""", encoding="utf-8")
+
+          Path(".agnir/next-actions.md").write_text(f"""# Agnir Next Actions
+
+Agnir `v0.1.1` is formally published on exact verified target `{target}`. The execution-surface activation handoff regression is closed.
+
+1. Validate a real compatible existing-Project upgrade from published `v0.1.0` to published `v0.1.1`, preserving Project identity, memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions; record operational provenance when appropriate.
+2. Use additional real Projects/execution surfaces to broaden evidence for the execution-surface handoff rule without making any platform-specific adapter part of Agnir Core.
+3. Preserve transactional checkpoint no-op/coherent publication semantics, stale-base safety, repository commit/push integration, prompt-free Project activation, non-destructive `AGENTS.md` merge, and the README `Start Here -> Agnir Project Instructions -> Project surface -> Architecture` audience split.
+4. Keep `latest stable release` resolution pinned to actual published tags/releases; never silently substitute moving `main`.
+5. Keep real mount-boundary validation optional until a genuine mount-capable environment exists.
+
+## Current stable release
+
+- repository release: `0.1.1`
+- tag: `v0.1.1`
+- exact target: `{target}`
+- GitHub Release id: `{release_id}`
+- exact-candidate conformance run: `{verify_run}`
+- Core compatibility: `0.1`
+- repository/filesystem profile: `repository-filesystem/0.1`
+
+## Stable maintenance constraints
+
+- Root `SKILL.md` is the canonical Agent-facing operational package.
+- Required execution-surface settings are adapters/locators, not Project memory or Agnir Core.
+- `.agnir/evidence/` is represented by directory responsibility rather than per-evidence filename registration in repository maps.
+- `main` is the only intended long-lived authoritative branch.
+""", encoding="utf-8")
+
+          replace_exact(
+              ".agnir/decisions.md",
+              "- Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; published repository SemVer is `0.1.0` until `v0.1.1` is actually created.\n- The execution-surface activation handoff repair is a non-breaking operational patch and is planned for repository release `0.1.1`; it does not justify changing Core/profile compatibility identifiers.\n- `RELEASE.md` is the publication contract. A material release-preparation change must pass the full conformance workflow on its exact revision before that revision is considered the publication candidate.",
+              f"- Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; published repository SemVer is now `0.1.1`.\n- The execution-surface activation handoff repair shipped in repository release `v0.1.1` as a non-breaking operational patch; it does not change Core/profile compatibility identifiers.\n- `RELEASE.md` is the publication contract. Repository release `v0.1.1` is immutably anchored to exact verified revision `{target}`; later `main` maintenance cannot redefine that release target.\n- `latest stable release` now resolves to published `v0.1.1` until a newer stable tag/release is actually published.",
+          )
+
+          manifest = Path("AGNIR.yaml").read_text(encoding="utf-8")
+          old_manifest = """extensions:\n  agnir/repository:\n    canonical: \"iorLab/agnir\"\n    authoritative_ref: \"main\"\n"""
+          new_manifest = f"""extensions:\n  agnir/repository:\n    canonical: \"iorLab/agnir\"\n    authoritative_ref: \"main\"\n  agnir/operations:\n    distribution: \"agnir-agent-skill\"\n    release: \"0.1.1\"\n    source: \"iorLab/agnir\"\n    applied_revision: \"{target}\"\n"""
+          if old_manifest not in manifest:
+              raise SystemExit("expected AGNIR.yaml extension block not found")
+          Path("AGNIR.yaml").write_text(manifest.replace(old_manifest, new_manifest), encoding="utf-8")
+
+          Path(".agnir/evidence/2026-09-01-v0.1.1-publication.md").write_text(f"""# Agnir v0.1.1 publication — 2026-09-01
+
+## Release identity
+
+- repository release: `0.1.1`
+- Git tag: `v0.1.1`
+- exact tag target: `{target}`
+- GitHub Release id: `{release_id}`
+- Release title: `Agnir v0.1.1`
+- published at: `{published_at}`
+- draft: false
+- prerelease: false
+
+## Verification chain
+
+The exact publication candidate `{target}` contained repository `VERSION` `0.1.1`, synchronized release/readme/continuity preparation, and the execution-surface activation repair. GitHub Actions `Agnir conformance` run `{verify_run}` completed successfully on that exact revision, including self-hosting cold-start conformance and the full executable test suite.
+
+A temporary publication workflow then independently verified that exact-candidate conformance result, created lightweight tag `v0.1.1` pointing directly to `{target}`, and created GitHub Release `Agnir v0.1.1`. Publication workflow run `{publish_run}` completed successfully.
+
+The Git ref was verified after publication to resolve directly to commit `{target}` rather than to a moving branch or annotated-tag indirection.
+
+## Patch scope
+
+`v0.1.1` is a non-breaking operational patch. Core remains `0.1`; the repository/filesystem profile remains `repository-filesystem/0.1`. The release repairs execution-surface activation completion semantics and does not change Project identity, durable memory semantics, checkpoint invariants, or discovery failure classes.
+
+The real `mattamior/skills-hub` ChatGPT web Project fresh-context regression passed before publication and is recorded separately in `.agnir/evidence/2026-09-01-v0.1.1-execution-surface-validation.md`.
+
+## Post-publication rule
+
+Later `main` revisions are post-release maintenance. They do not redefine immutable tag/release `v0.1.1`. `latest stable release` resolves to `v0.1.1` until a newer stable release is actually published.
+""", encoding="utf-8")
+
+          Path(".github/workflows/publish-v0.1.1.yml").unlink(missing_ok=True)
+          Path(".github/workflows/post-release-v0.1.1.yml").unlink(missing_ok=True)
+          PY
+
+      - name: Publish post-release checkpoint
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "checkpoint: record Agnir v0.1.1 publication"
+          git push origin HEAD:main
