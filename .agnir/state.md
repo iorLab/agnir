@@ -1,6 +1,6 @@
 # Agnir Current State
 
-Agnir is the active greenfield project-owned durable continuity protocol on `iorLab/agnir` `main`. Core compatibility is `0.1`, the repository/filesystem profile is `repository-filesystem/0.1`, and the intended initial repository release is `0.1.0`. No `v0.1.0` tag or GitHub Release has been created.
+Agnir is the active greenfield project-owned durable continuity protocol on `iorLab/agnir` `main`. Core compatibility is `0.1`, the repository/filesystem profile is `repository-filesystem/0.1`, and the intended initial repository release is `0.1.0`.
 
 ## Current pre-publication contract
 
@@ -30,28 +30,39 @@ Agnir defines **upgrade** as a first-class Agent operation distinct from install
 - Re-applying the same operational baseline with no material drift is a no-op.
 - Normal resume does not auto-upgrade or require network access to the Agnir distribution source.
 
-## Verified upgrade publication candidate
+## Verified publication candidate
 
-Implementation checkpoint `2a0cb7bf2068b11f361e315670b2f2dc497b2588` added the compatible existing-Project upgrade Skill procedure, repository/filesystem operational provenance/stable-target rules, executable upgrade classification, release-gate updates, repository structure updates, and durable Agnir continuity.
+Implementation checkpoint `2a0cb7bf2068b11f361e315670b2f2dc497b2588` added the compatible existing-Project upgrade contract and passed exact-revision GitHub Actions `Agnir conformance` run `33463490510`, job `99718447961`. Both self-hosting cold-start conformance and the full `test_*.py` suite succeeded.
 
-Exact-revision GitHub Actions `Agnir conformance` run `33463490510`, job `99718447961`, passed. Both self-hosting cold-start conformance and the full `test_*.py` suite succeeded.
+`2a0cb7bf2068b11f361e315670b2f2dc497b2588` remains the verified Agnir `0.1.0` **publication candidate**. Observation checkpoint `e0ee44f7e156c6b5c81023b3e9da655d120106a0` recorded that verification and also passed conformance.
 
-`2a0cb7bf2068b11f361e315670b2f2dc497b2588` is therefore the verified Agnir `0.1.0` **publication candidate**. This later observation checkpoint records that external verification and does not recursively redefine the candidate.
+## Publication authorization and current blocker
+
+On 2026-09-01 the Principal explicitly authorized formal publication of Agnir `v0.1.0`.
+
+Publication target remains the verified candidate `2a0cb7bf2068b11f361e315670b2f2dc497b2588`, not the later observation-only `main` checkpoint.
+
+Pre-publication verification confirmed that neither the `v0.1.0` Git tag nor a GitHub Release for `v0.1.0` currently exists.
+
+The current execution surface's connected GitHub capability exposes repository commit/ref operations but does not expose a mutation for creating Git tags or GitHub Releases. It is therefore not safe to represent publication as complete, and a branch named `v0.1.0` must not be substituted for a tag.
+
+The release is **authorized but not yet published**. The next capable Executor should create the real `v0.1.0` tag on `2a0cb7bf2068b11f361e315670b2f2dc497b2588`, create the GitHub Release from that tag, and verify both exist before marking publication complete.
 
 ## Release status
 
-Development required for the initial `0.1.0` release, including the existing-Project upgrade contract, is complete and verified. Publication remains a separate explicit Principal action.
+Development required for the initial `0.1.0` release, including the existing-Project upgrade contract, is complete and verified. Principal publication authorization has been granted; only execution of the actual Git tag + GitHub Release remains blocked by the current tool surface.
 
-Until a stable tag/release is actually published, an old Project request to upgrade to `latest stable` must not silently use `main`. Existing Projects should wait for stable publication unless the Principal explicitly authorizes a pre-release revision.
+Until the stable tag/release is actually published, an old Project request to upgrade to `latest stable` must not silently use `main`.
 
 Real mount-boundary behavior remains explicitly unproven and optional additional evidence.
 
 ## Current resume point
 
-1. treat `2a0cb7bf2068b11f361e315670b2f2dc497b2588` as the verified `0.1.0` publication candidate;
-2. after explicit Principal authorization, publish `v0.1.0` / GitHub Release on that candidate;
-3. after stable publication, existing compatible Agnir Projects may be upgraded using the first-class `upgrade` operation and optional `agnir/operations` provenance;
-4. preserve transactional checkpoint, upgrade, commit/push, activation, and safe `AGENTS.md` merge invariants.
+1. publication authorization is already granted; do not ask the Principal to authorize `v0.1.0` again;
+2. create real Git tag `v0.1.0` on verified candidate `2a0cb7bf2068b11f361e315670b2f2dc497b2588` using an execution surface with tag-write capability;
+3. create the GitHub Release for `v0.1.0` from that tag and verify the tag resolves to the intended candidate;
+4. only after that verification, mark `0.1.0` published and allow existing compatible Projects to use `latest stable` upgrade;
+5. preserve transactional checkpoint, upgrade, commit/push, activation, and safe `AGENTS.md` merge invariants.
 
 ## Branch governance
 
