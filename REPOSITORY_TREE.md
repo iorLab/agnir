@@ -48,6 +48,7 @@ agnir/                                                    # Agnir Agent Skill + 
 │   ├── core_0_2_migration_reference.py                   # storage-neutral Core 0.1 → 0.2 preservation/idempotence reference
 │   ├── repository_filesystem_reference.py                # published repository-filesystem/0.1 resolver reference
 │   ├── repository_filesystem_0_2_reference.py            # experimental selected-root logical-lineage resolver
+│   ├── repository_filesystem_0_2_migration_reference.py  # concrete staged/atomic AGNIR.yaml Core/profile 0.1 → 0.2 migration
 │   ├── sqlite_backend_reference.py                       # stable non-repository SQLite durable backend reference
 │   ├── sqlite_lineage_reference.py                       # non-VCS Core 0.2 logical-lineage transactional backend
 │   ├── vcs_branch_continuity_reference.py                # VCS branch snapshot / staged integration / reconciliation model
@@ -61,8 +62,9 @@ agnir/                                                    # Agnir Agent Skill + 
 │   ├── test_upgrade_semantics.py                         # compatible/no-op upgrade + migration classification
 │   ├── test_core_0_2_parallel_continuity.py              # non-VCS lineage selection/isolation/integration/conflict tests
 │   ├── test_core_0_2_vcs_mapping.py                      # selector != identity + receipt/integration Core mapping tests
-│   ├── test_core_0_2_migration.py                        # explicit/idempotent Core 0.1 → 0.2 preservation tests
+│   ├── test_core_0_2_migration.py                        # explicit/idempotent Core 0.1 → 0.2 semantic migration tests
 │   ├── test_repository_filesystem_0_2.py                 # Core/profile 0.2 manifest/discovery/compatibility tests
+│   ├── test_repository_filesystem_0_2_migration.py       # concrete repository manifest migration/stale/no-op/fresh-discovery tests
 │   ├── test_vcs_lineage_binding.py                       # branch fork / ref rebind / external mismatch binding tests
 │   ├── test_external_memory_authorization.py             # external authorization failure semantics
 │   ├── test_locator_chain_failures.py                    # cycle / stale / inconsistency tests
