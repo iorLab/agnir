@@ -57,19 +57,36 @@ Before an implementation claims the target branch is continuity-complete after i
 
 The resulting Current State and Next Actions MUST describe the target branch after integration. Source-only blockers, completed branch-local tasks, superseded decisions, and temporary review/deployment steps MUST NOT survive merely because a text merge carried them into the target tree.
 
-If an integration result exists but target continuity has not yet been reconciled, the implementation MUST surface semantics equivalent to:
+### Target-ref advancement is a publication boundary
+
+When an Agnir-aware implementation controls the integration operation, it MUST NOT advance the target ref to an integration result whose target continuity has not yet been reconciled.
+
+The safe order is:
+
+1. capture the target ref/revision and its coherent target continuity;
+2. construct or stage the integration result **without advancing the target ref** (`merge --no-commit`, `cherry-pick --no-commit`, an equivalent index/tree transaction, or another backend-specific staging primitive);
+3. reconcile the staged Project result with target continuity, relevant source continuity/Evidence, and Principal intent;
+4. construct the target checkpoint candidate;
+5. publish the integrated Project result and reconciled target continuity together in the revision/transaction that advances the target ref;
+6. verify the destination ref and fresh target discovery.
+
+A normal Agnir-aware integration MUST therefore not rely on “merge first, repair Agnir in a follow-up commit” when that first merge would expose source-branch continuity as target truth.
+
+If an external human, hosting UI, automation, or VCS mechanism has **already** advanced the target ref to an unreconciled result, the implementation MUST surface semantics equivalent to:
 
 `AGNIR_VCS_RECONCILIATION_REQUIRED`
 
-and MUST NOT report target continuity as fully reconciled.
+and MUST NOT report target continuity as complete. Repair should reconcile and checkpoint the target as soon as authorized, but this is a recovery path after an unsafe/unmanaged integration, not the preferred conforming publication sequence.
 
-## 5. Merge
+## 5. Merge and server-side integration
 
-A merge MAY allow VCS to merge Agnir-owned files mechanically, but a clean text merge is not evidence that Project truth is semantically reconciled.
+A merge MAY allow VCS to merge Agnir-owned files mechanically while constructing a candidate, but a clean text merge is not evidence that Project truth is semantically reconciled.
 
-After merge, the target branch owns the resulting checkpoint. The target checkpoint MUST preserve the target Project identity and MUST be verified from the target Project root/ref.
+When the implementation controls merge publication, the target branch MUST advance only to a revision whose Agnir continuity already describes the integrated target Project. The target checkpoint MUST preserve the target Project identity and MUST be verified from the target Project root/ref.
 
-When Project changes and the reconciled Agnir update can be represented in the same merge/result revision, implementations SHOULD publish them together rather than creating a follow-up checkpoint-only revision.
+A server-side merge, squash merge, rebase-and-merge, fast-forward, or other hosting operation that cannot preserve/reconcile target continuity **before** advancing the target ref MUST NOT be described as branch-continuity-safe merely because a follow-up checkpoint can repair it. Such a mechanism requires an Agnir-aware integration hook/adapter, or the operation must be staged through a mechanism that can publish the integrated Project + reconciled target checkpoint coherently.
+
+An implementation MAY deliberately exclude source branch-local continuity changes from the target integration candidate, preserve target continuity as the reconciliation base, then write the reconciled target continuity into the final integrated revision.
 
 ## 6. Rebase and history rewriting
 
@@ -82,11 +99,15 @@ Therefore:
 - after a history rewrite, the implementation MUST re-resolve the selected branch and verify that its Agnir continuity still describes the rewritten Project state;
 - if material Project truth changed during conflict resolution, checkpoint reconciliation is required before continuity-complete status is claimed.
 
+Rebasing a non-authoritative feature branch onto a newer base may rewrite that feature ref after reconciliation without advancing the base/target ref. A hosting feature named “rebase and merge” that advances another target ref is an integration publication and is subject to Section 4's target-ref advancement rule.
+
 ## 7. Cherry-pick
 
 Cherry-pick transfers selected Project changes, not the source branch's entire continuity state.
 
 A target branch MUST NOT copy source Current State or Next Actions wholesale merely because one or more source commits were cherry-picked. Relevant Decisions/Evidence MAY inform target reconciliation when they remain true and useful after transfer.
+
+When an Agnir-aware implementation cherry-picks into a target ref, it SHOULD stage/apply the change without committing when possible, reconcile target continuity, and then publish the Project change + target checkpoint together rather than advancing the target ref first and repairing continuity afterward.
 
 ## 8. Repository authority and push verification
 
@@ -136,8 +157,9 @@ A branch-aware conformance case SHOULD prove at least:
 1. two Git branches/worktrees with the same `project.identity` can resolve different branch-local Agnir Current State after divergence;
 2. checkpointing one branch does not mutate a sibling branch's continuity snapshot;
 3. merge, rebase, and cherry-pick require explicit target continuity reconciliation rather than source-state promotion;
-4. cross-Project integration is rejected as a Project identity mismatch;
-5. rebase/history rewriting may change revision receipts without changing Project identity or otherwise coherent continuity;
-6. feature-branch push verification targets the actual destination ref, while authoritative publication claims additionally enforce the declared authoritative ref.
+4. an Agnir-aware Git integration can stage a merge without advancing the target ref, reconcile target continuity, and advance the target exactly once to a merge revision containing the reconciled target truth;
+5. cross-Project integration is rejected as a Project identity mismatch;
+6. rebase/history rewriting may change revision receipts without changing Project identity or otherwise coherent continuity;
+7. feature-branch push verification targets the actual destination ref, while authoritative publication claims additionally enforce the declared authoritative ref.
 
 The reference suite implements these cases in `conformance/test_vcs_branch_continuity.py`.
