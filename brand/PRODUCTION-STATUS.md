@@ -21,9 +21,21 @@ The following files are therefore the **branch-approved production masters**:
 
 The v0.3 candidate files remain provenance/review evidence only. v0.2 and earlier work are superseded and must not be used as production masters.
 
-## Production derivatives
+## Materialized production exports
 
-Approved-board derivative work is now active from the locked masters only:
+Directly usable package-level SVG exports now exist under `brand/exports/`:
+
+- `agnir-horizontal-light.svg`;
+- `agnir-horizontal-dark.svg`;
+- `agnir-horizontal-monochrome.svg`;
+- `agnir-app-icon.svg`;
+- `agnir-favicon.svg`.
+
+These exports deliberately reference `../masters/` instead of duplicating the approved geometry. Their job is treatment/canvas packaging only; `brand/masters/` remains the single geometry authority. Keep the relative `brand/exports/` + `brand/masters/` package layout intact when using these files.
+
+`brand/tools/build-production-derivatives.py` remains the deterministic builder for PNG delivery exports and for the visibility-pruned 32/16px favicon sources.
+
+### Approved derivative rules
 
 - light-background horizontal treatment: brand-color wordmark with the approved particle A;
 - dark-background horizontal treatment: white wordmark with the approved particle A;
@@ -34,6 +46,16 @@ Approved-board derivative work is now active from the locked masters only:
 ### Small-size rule
 
 Directly shrinking the full particle field to 16px loses the A reading. The approved board itself defines a favicon-size family, so 32px and 16px exports use a deterministic visibility derivative of the same master: only particles below a fixed rendered-visibility threshold are pruned. The A geometry, major particles, pale inner A and central anchor are unchanged. This is a size derivative, not a new logo design.
+
+## QA status
+
+Final local target-size QA has been completed across:
+
+- light / dark / monochrome horizontal treatments;
+- app icon;
+- 128 / 64 / 32 / 16 favicon targets.
+
+The approved production masters remain unchanged through this derivative pass. The complete local delivery package includes manifests/hashes and the clean QA sheet.
 
 ## QA rules
 
@@ -46,11 +68,10 @@ Directly shrinking the full particle field to 16px loses the A reading. The appr
 
 The byte-exact approved 10:42 AM source board remains locked by SHA-256 and preserved in the reference package. Final byte-exact source-board repository preservation remains a pre-`main` integration gate.
 
-## Next actions
+## Remaining integration gates
 
-1. Persist the current light/dark/monochrome and app/favicon exports with hashes.
-2. Build the approved social-card derivative and repository/avatar package from the production masters.
-3. Run final target-size QA across the complete Agnir asset package.
-4. Write `brand/brand-handoff.md` with canonical usage rules and file map.
-5. Preserve the byte-exact approved board in repository storage before final integration.
-6. Re-resolve latest `main`, reconcile Agnir continuity, then integrate the brand package coherently.
+1. Preserve the byte-exact approved Agnir board in repository storage.
+2. Materialize any desired PNG delivery exports/social/repository-avatar derivatives through a byte-preserving path and verify hashes; the SVG package is already directly usable.
+3. Re-resolve latest `main` and reconcile branch-local Agnir continuity.
+4. Integrate the approved brand package coherently.
+5. Verify authoritative `main` after publication.
