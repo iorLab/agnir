@@ -2,16 +2,17 @@
 
 Agnir `v0.1.1` remains the published stable release on immutable target `e9712357ab590e5c1e5357b3cf3219d07d789aff`. Current development is isolated on temporary branch `feature/multibranch-continuity` and draft PR `#4`; it does not redefine stable `main` truth or compatibility lines.
 
+The first full remote branch conformance has passed: GitHub Actions run `33583654296` succeeded on checkpoint head `1acb38a81a9661cd42efc8a69b2bc42b8e0cd16d`, including stable self-hosting, the explicit experimental branch-continuity gate, and the full unittest suite.
+
 ## Active branch work
 
-1. Obtain a full repository conformance result for the current feature-branch head. The focused seven-case branch suite passed in an isolated execution, but GitHub has not emitted a PR Actions run/status for connector-created synchronizations. Do not classify the branch as remotely verified until an actual full-suite result exists.
-2. If the full suite exposes regressions, repair the branch without weakening the stable Core `0.1` / `repository-filesystem/0.1` baseline or promoting experimental VCS behavior into Core.
-3. Pressure-test at least one additional real multi-branch Project workflow beyond the synthetic/self-host worktree case, ideally including branch divergence → independent checkpoint → target advancement → merge or rebase → explicit target reconciliation.
-4. Keep `project.identity` stable across ordinary branches/worktrees; keep branch/ref names as VCS locators/runtime observations and commit SHAs as revision/checkpoint receipts.
-5. Keep `authoritative_ref` as publication authority rather than the only legal Agnir branch. Verify actual destination refs for ordinary pushes; enforce the authoritative ref only when authoritative publication is claimed.
-6. Do not introduce a generic durable `lineage.id` or Core `0.2` solely from Git evidence. Gather a non-VCS parallel-continuity case first if promotion into Core is later considered.
-7. Before merging PR `#4`, review the final diff and verify the experimental/stable boundary remains explicit in profile, Skill, READMEs, repository map, and CI.
-8. If PR `#4` is merged, perform **target/main reconciliation** after observing the actual merge result: remove feature-only blockers/next actions, preserve only decisions that remain true on `main`, record merge evidence as needed, and publish a new `main` Agnir checkpoint. Do not carry this feature-branch state wholesale into `main`.
+1. Review the final PR diff and ensure the experimental/stable boundary remains explicit in profile, Skill, READMEs, repository map, CI, and durable Agnir state.
+2. Pressure-test at least one additional real multi-branch Project workflow beyond the synthetic worktree fixture and this self-hosting branch, ideally including branch divergence → independent checkpoint → target advancement → merge or rebase → explicit target reconciliation. Do not mutate an unrelated Project merely to manufacture this evidence; use an explicitly authorized real case.
+3. Keep `project.identity` stable across ordinary branches/worktrees; keep branch/ref names as VCS locators/runtime observations and commit SHAs as revision/checkpoint receipts.
+4. Keep `authoritative_ref` as publication authority rather than the only legal Agnir branch. Verify actual destination refs for ordinary pushes; enforce the authoritative ref only when authoritative publication is claimed.
+5. Do not introduce a generic durable `lineage.id` or Core `0.2` solely from Git evidence. Gather a non-VCS parallel-continuity case first if promotion into Core is later considered.
+6. Once the PR diff is reviewed and the current head's conformance remains green, move PR `#4` out of draft if no new blocker appears. Merging remains a separate decision because target/main continuity must be reconciled from the actual merge result.
+7. If PR `#4` is merged, perform **target/main reconciliation** after observing the actual merge result: remove feature-only blockers/next actions, preserve only decisions that remain true on `main`, record merge evidence as needed, and publish a new `main` Agnir checkpoint. Do not carry this feature-branch state wholesale into `main`.
 
 ## Stable maintenance work still open
 

@@ -20,6 +20,7 @@ The work is isolated on temporary branch `feature/multibranch-continuity` and dr
 - `README.md` + `README.zh-CN.md` — parallel user/Agent documentation of experimental branch continuity.
 - `conformance/agnir-0.1.md` + `REPOSITORY_TREE.md` — registered experimental pressure without redefining the stable baseline.
 - `.github/workflows/conformance.yml` — stable self-hosting gate remains separate from an explicit experimental VCS branch-continuity gate, followed by full unittest discovery.
+- `.agnir/state.md`, `.agnir/next-actions.md`, and `.agnir/decisions.md` on the feature branch — self-hosted branch-local continuity for the same Project identity used by `main`.
 
 ## Key semantic decisions proven/pressured
 
@@ -46,16 +47,20 @@ A locally reconstructed isolated execution of the seven new `VCSBranchContinuity
 
 Result: `Ran 7 tests ... OK`.
 
-This focused result does **not** substitute for the repository's complete conformance suite.
+## Remote CI evidence
 
-## Remote CI status
+GitHub Actions run `33583654296` executed on feature-branch checkpoint head `1acb38a81a9661cd42efc8a69b2bc42b8e0cd16d` and completed with overall conclusion `success`.
 
-At the checkpoint base ending in CI-gate commit `0953c45cfb2aa2438be794082d81478bed4bdd6a`, GitHub returned no combined commit statuses and no Actions run had been emitted for the connector-created PR updates. Therefore remote/full-suite verification is explicitly **pending**, not passed.
+The `repository-filesystem` job reported all substantive gates successful:
 
-The repository execution environment available to this conversation cannot clone GitHub directly, so a full local checkout run could not be performed from the current runtime.
+1. `Stable self-hosting cold-start conformance` — success;
+2. `Experimental VCS branch continuity` — success;
+3. `Full conformance suite` — success.
+
+This establishes remote repository-level conformance for the implemented A+B branch slice at that checkpoint. A later continuity-only checkpoint does not change the extension implementation, but its own PR head should still remain green before merge.
 
 ## Self-hosting significance
 
-This feature branch itself is the first Project-level demonstration of the intended isolation rule: it retains the same Agnir Project identity as `main` but now carries branch-local Current State / Next Actions / Decisions describing work that is not yet true on `main`.
+This feature branch is the first Project-level demonstration of the intended isolation rule: it retains the same Agnir Project identity as `main` but carries branch-local Current State / Next Actions / Decisions describing work that is not yet true on `main`.
 
 If PR `#4` is eventually merged, the target `main` branch must observe the actual merge result and reconcile a fresh main checkpoint. The feature branch's memory is not valid as a wholesale textual replacement for target truth.

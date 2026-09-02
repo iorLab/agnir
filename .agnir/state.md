@@ -25,9 +25,12 @@ The branch currently implements:
 - Agent Skill and bilingual README guidance for the same semantics;
 - an explicit experimental CI step separate from stable `0.1` self-hosting conformance.
 
-A focused isolated execution of the seven new branch-continuity tests passed, including a real Git worktree divergence case. Full repository CI is **not yet proven on this branch**: GitHub has not emitted an Actions run/status for the connector-created PR synchronizations, and the current head has no combined commit statuses. This absence must not be reported as a pass.
+Verification now has two positive layers:
 
-The feature branch now carries its own Agnir checkpoint rather than pretending `main`'s pre-branch Current State is sufficient. If/when this work is merged, `main` MUST reconcile the actual merge result and publish a new target-branch checkpoint; this feature-branch Current State MUST NOT be promoted wholesale into `main`.
+- a focused isolated execution of the seven new branch-continuity tests passed, including a real Git worktree divergence case;
+- GitHub Actions run `33583654296` completed successfully on branch checkpoint head `1acb38a81a9661cd42efc8a69b2bc42b8e0cd16d`; the stable self-hosting check, explicit experimental VCS branch-continuity gate, and full conformance suite all concluded `success`.
+
+The feature branch carries its own Agnir checkpoint rather than pretending `main`'s pre-branch Current State is sufficient. If/when this work is merged, `main` MUST reconcile the actual merge result and publish a new target-branch checkpoint; this feature-branch Current State MUST NOT be promoted wholesale into `main`.
 
 Evidence: `.agnir/evidence/2026-09-02-multibranch-continuity-development.md`.
 
