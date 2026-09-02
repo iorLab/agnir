@@ -212,7 +212,7 @@ For merge/rebase/cherry-pick or another lineage integration:
 
 1. validate source/target Project identity;
 2. capture target and relevant source receipts/continuity;
-3. stage the actual integrated candidate without advancing target when Agnir controls the path;
+3. stage the actual integrated candidate without advancing the target when Agnir controls the path;
 4. reconcile target truth from integrated Project result + prior target continuity + relevant source continuity/Evidence + current Principal intent;
 5. source continuity is input, not automatic target truth;
 6. target/source advancement after staging invalidates the candidate;
