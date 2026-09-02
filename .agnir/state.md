@@ -4,6 +4,33 @@ Agnir `v0.1.1` is formally published as the current stable repository release. T
 
 Durable continuity belongs to the Project, not an Executor, conversation, execution environment, repository host, or storage implementation.
 
+## Active experimental branch — 2026-09-02
+
+A temporary development branch, `feature/multibranch-continuity`, is actively pressure-testing multi-branch Agnir behavior while `main` remains the only long-lived authoritative branch for this repository.
+
+- Project identity remains `urn:agnir:project:agnir-core` on both `main` and the feature branch.
+- Draft PR: `#4` — `Add branch-aware VCS continuity extension`.
+- Experimental extension: `agnir/vcs-branch-continuity/0.1` in `profiles/VCS_BRANCH_CONTINUITY.md`.
+- Stable compatibility is unchanged: Agnir Core `0.1` + `repository-filesystem/0.1`.
+- Branch/ref names remain VCS locators/runtime observations, not Project identity and not a new Core field.
+- A generic durable `lineage.id` remains deliberately deferred until non-VCS evidence shows that a storage-neutral lineage concept belongs in Core.
+
+The branch currently implements:
+
+- branch-local continuity isolation for divergent refs/worktrees;
+- merge/rebase/cherry-pick as explicit continuity-reconciliation boundaries;
+- `AGNIR_VCS_RECONCILIATION_REQUIRED` when an integration result exists but target continuity has not been reconciled;
+- Project-identity preservation across rebase/history rewrite while commit/revision IDs remain checkpoint receipts rather than identity;
+- destination-ref-first push verification, with `authoritative_ref` enforced only for an explicit authoritative-publication claim;
+- Agent Skill and bilingual README guidance for the same semantics;
+- an explicit experimental CI step separate from stable `0.1` self-hosting conformance.
+
+A focused isolated execution of the seven new branch-continuity tests passed, including a real Git worktree divergence case. Full repository CI is **not yet proven on this branch**: GitHub has not emitted an Actions run/status for the connector-created PR synchronizations, and the current head has no combined commit statuses. This absence must not be reported as a pass.
+
+The feature branch now carries its own Agnir checkpoint rather than pretending `main`'s pre-branch Current State is sufficient. If/when this work is merged, `main` MUST reconcile the actual merge result and publish a new target-branch checkpoint; this feature-branch Current State MUST NOT be promoted wholesale into `main`.
+
+Evidence: `.agnir/evidence/2026-09-02-multibranch-continuity-development.md`.
+
 ## Published release
 
 - repository release: `0.1.1`
@@ -72,8 +99,8 @@ Core/profile compatibility changes remain migration-required and must surface `A
 
 Root `SKILL.md` remains the canonical Agent-facing operational package. The Project-owned activation route remains `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory. Execution-surface configuration stays outside the Project-owned tree and remains locator-only.
 
-Transactional checkpoint semantics, stale-base `AGNIR_CHECKPOINT_CONFLICT`, contextual commit/push intent, one-revision preference, prompt-free Project activation, and safe non-destructive `AGENTS.md` merge remain active.
+Transactional checkpoint semantics, stale-base `AGNIR_CHECKPOINT_CONFLICT`, contextual commit/push intent, one-revision preference, prompt-free Project activation, and safe non-destructive `AGENTS.md` merge remain active. On the experimental branch, branch-local checkpoint isolation and integration reconciliation are additional extension-level invariants under pressure.
 
 ## Branch governance
 
-`main` remains the only intended long-lived authoritative branch. Historical recovery and releases use immutable commit SHAs/tags rather than live legacy refs.
+`main` remains the only intended long-lived authoritative branch. `feature/multibranch-continuity` is a temporary development branch with branch-local continuity for the duration of its work. Historical recovery and releases use immutable commit SHAs/tags rather than live legacy refs.

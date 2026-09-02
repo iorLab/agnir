@@ -1,6 +1,19 @@
 # Agnir Next Actions
 
-Agnir `v0.1.1` is formally published on exact verified target `e9712357ab590e5c1e5357b3cf3219d07d789aff`. The execution-surface activation handoff regression is closed, and a real compatible upgrade of `mattamior/skills-hub` from a pre-provenance setup to `v0.1.1` has passed.
+Agnir `v0.1.1` remains the published stable release on immutable target `e9712357ab590e5c1e5357b3cf3219d07d789aff`. Current development is isolated on temporary branch `feature/multibranch-continuity` and draft PR `#4`; it does not redefine stable `main` truth or compatibility lines.
+
+## Active branch work
+
+1. Obtain a full repository conformance result for the current feature-branch head. The focused seven-case branch suite passed in an isolated execution, but GitHub has not emitted a PR Actions run/status for connector-created synchronizations. Do not classify the branch as remotely verified until an actual full-suite result exists.
+2. If the full suite exposes regressions, repair the branch without weakening the stable Core `0.1` / `repository-filesystem/0.1` baseline or promoting experimental VCS behavior into Core.
+3. Pressure-test at least one additional real multi-branch Project workflow beyond the synthetic/self-host worktree case, ideally including branch divergence → independent checkpoint → target advancement → merge or rebase → explicit target reconciliation.
+4. Keep `project.identity` stable across ordinary branches/worktrees; keep branch/ref names as VCS locators/runtime observations and commit SHAs as revision/checkpoint receipts.
+5. Keep `authoritative_ref` as publication authority rather than the only legal Agnir branch. Verify actual destination refs for ordinary pushes; enforce the authoritative ref only when authoritative publication is claimed.
+6. Do not introduce a generic durable `lineage.id` or Core `0.2` solely from Git evidence. Gather a non-VCS parallel-continuity case first if promotion into Core is later considered.
+7. Before merging PR `#4`, review the final diff and verify the experimental/stable boundary remains explicit in profile, Skill, READMEs, repository map, and CI.
+8. If PR `#4` is merged, perform **target/main reconciliation** after observing the actual merge result: remove feature-only blockers/next actions, preserve only decisions that remain true on `main`, record merge evidence as needed, and publish a new `main` Agnir checkpoint. Do not carry this feature-branch state wholesale into `main`.
+
+## Stable maintenance work still open
 
 1. Use additional real Projects/execution surfaces to broaden evidence for the execution-surface handoff rule and compatible upgrade behavior without making any platform-specific adapter part of Agnir Core.
 2. When useful, add a second upgrade case with different existing Project instructions or operational provenance to pressure preservation/idempotence beyond `skills-hub`.
@@ -32,4 +45,4 @@ Agnir `v0.1.1` is formally published on exact verified target `e9712357ab590e5c1
 - Root `SKILL.md` is the canonical Agent-facing operational package.
 - Required execution-surface settings are adapters/locators, not Project memory or Agnir Core.
 - `.agnir/evidence/` is represented by directory responsibility rather than per-evidence filename registration in repository maps.
-- `main` is the only intended long-lived authoritative branch.
+- `main` is the only intended long-lived authoritative branch; temporary development branches may carry branch-local continuity while active.

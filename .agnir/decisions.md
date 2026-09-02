@@ -51,15 +51,32 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Checkpoint completion includes post-publication discovery verification.
 - A backend-generated revision/transaction/commit identifier may serve as the checkpoint receipt without being embedded inside the content that determines it.
 
-## Repository commit / push event semantics — 2026-09-01
+## Repository commit / push event semantics — updated 2026-09-02
 
 - Repository/VCS intent is integration/profile behavior, not a Core VCS dependency.
 - In repository context, an authorized request to `commit`, `提交`, `提交代码`, or equivalent is a checkpoint boundary. Agnir continuity is evaluated/reconciled **before** the VCS commit.
 - When Project changes and Agnir continuity changes can be represented in one VCS revision, implementations should publish them together in that one revision instead of creating a follow-up checkpoint-only revision.
-- `commit and push`, `提交推送`, or equivalent means checkpoint + commit + push + verification of the declared authoritative remote/ref when available.
+- `commit and push`, `提交推送`, or equivalent means checkpoint + commit + push + verification of the **actual destination ref** selected by the authorized operation.
+- A declared `authoritative_ref` is a repository publication-authority boundary, not the only ref on which Agnir may checkpoint or publish branch-local work.
+- Only an operation that additionally claims to publish authoritative repository truth must target and verify the declared `authoritative_ref` when one exists. A feature-branch push must not be silently redirected to or reported as publication of `main` merely because `main` is authoritative.
 - A commit observed after another human, Agent, IDE, CI, web UI, or automation action triggers checkpoint evaluation only; coherent unchanged continuity yields a no-op.
 - `提交` is contextual integration vocabulary, not a universal literal trigger.
 - Git hooks may capture events but remain optional adapter mechanisms and must never become Agnir discovery/continuity dependencies.
+
+## Experimental VCS branch continuity — 2026-09-02
+
+- Multi-branch behavior is being introduced first as experimental extension `agnir/vcs-branch-continuity/0.1`, not as an Agnir Core `0.2` change and not as a breaking change to `repository-filesystem/0.1` discovery.
+- Ordinary branch creation, checkout, worktree creation, rebase, merge, cherry-pick, branch rename, or history rewrite does **not** create a new Project identity. The same continuing Project retains the same `project.identity` unless the Principal explicitly creates a distinct Project.
+- After divergence, each selected branch/worktree resolves and checkpoints its own branch-local Current State, Next Actions, Decisions, and Evidence. A branch-local checkpoint must not mutate sibling branch continuity merely because both refs belong to the same Project.
+- Branch/ref names are VCS locators/runtime observations for this extension. They are not Project identity and are not standardized as durable generic continuity-line identities.
+- Commit/revision identifiers may be checkpoint receipts. Rebase/amend/squash/force-rewrite may replace those receipts without redefining Project identity or otherwise coherent Project truth.
+- Merge, rebase, and cherry-pick are continuity-integration boundaries. Source continuity is reconciliation input only and must not be automatically promoted to target truth.
+- Before target continuity is reported complete after an integration event, the implementation must reconcile the actual resulting Project state, target continuity, relevant source continuity/Evidence, and current Principal intent/policy, then publish a target checkpoint.
+- If an integration result exists but target continuity has not been reconciled, surface extension semantics equivalent to `AGNIR_VCS_RECONCILIATION_REQUIRED` rather than claiming continuity completion.
+- Cross-Project integration must preserve the existing Project-identity mismatch boundary; source continuity from a different Project must not be adopted merely because VCS can transfer files/commits.
+- A generic storage-neutral `lineage.id` remains deliberately deferred. Promotion into Core requires evidence outside Git/VCS showing that parallel continuity lineage is a substrate-neutral invariant rather than a repository convenience.
+- Stable Core self-hosting and experimental branch-continuity conformance remain separate CI gates. Passing the extension tests must not silently redefine the stable Core/profile compatibility contract.
+- For `iorLab/agnir` itself, `main` remains the only intended long-lived authoritative branch. Temporary development branches may carry branch-local continuity while active; merge into `main` requires target/main reconciliation rather than wholesale promotion of feature-branch Agnir state.
 
 ## Existing Project upgrade semantics — 2026-09-01
 
@@ -98,5 +115,6 @@ This file records active durable decisions required to operate and evolve Agnir 
 - The execution-surface activation handoff repair shipped in repository release `v0.1.1` as a non-breaking operational patch; it does not change Core/profile compatibility identifiers.
 - `RELEASE.md` is the publication contract. Repository release `v0.1.1` is immutably anchored to exact verified revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`; later `main` maintenance cannot redefine that release target.
 - `latest stable release` now resolves to published `v0.1.1` until a newer stable tag/release is actually published.
-- `main` is the only long-lived authoritative branch. Historical predecessor/branch recovery uses immutable commit SHAs and Git history rather than live legacy refs.
+- `main` is the only long-lived authoritative branch. Temporary development branches MAY exist and MAY carry branch-local continuity while active; they do not redefine stable publication authority.
+- Historical predecessor/branch recovery uses immutable commit SHAs and Git history rather than live legacy refs.
 - Real mount-boundary behavior remains explicitly unproven; ordinary directories are not accepted as substitute mount evidence.
