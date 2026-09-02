@@ -30,7 +30,7 @@ A **Continuity Lineage** is an independently advancing continuity line owned by 
 
 Each active lineage MUST make its own Current State and Next Actions durably recoverable. Decisions and Evidence remain optional only when no material content in those categories is required for safe continuation.
 
-A lineage is not a Project. Creating, selecting, advancing, integrating, or retiring a lineage MUST NOT implicitly create a new Project identity.
+A lineage is not a Project. Creating, selecting, advancing, integrating, renaming/rebinding at a backend layer, or retiring a lineage MUST NOT implicitly create a new Project identity.
 
 ### Lineage identity
 
@@ -38,7 +38,11 @@ A lineage identity MUST be non-empty and durable within the Project scope in whi
 
 Lineage identity MUST NOT be defined by a backend revision receipt. A Git commit SHA, database transaction number, snapshot version, object generation, or equivalent receipt MAY identify a checkpoint but MUST NOT itself be the lineage identity unless an adapter has separately established that value as a durable logical lineage identity independent of revision changes.
 
-Core does not mandate a string format, URI scheme, YAML key name, database column, or physical encoding for lineage identity.
+A backend locator or selector is also not automatically lineage identity. A branch name, worktree path, workspace handle, database namespace selector, UI tab, or equivalent MAY be used by a profile/adapter to **select or bind to** a lineage. The backend MAY choose a selector whose value happens to equal the logical lineage identity, but Core does not require this and implementations MUST NOT infer identity equivalence merely from matching strings.
+
+Changing a backend selector, locator, or revision receipt MUST NOT by itself be treated as creating a new Project. If a profile supports renaming/rebinding a selector while preserving one logical lineage, that operation MUST preserve the lineage identity or perform an explicit lineage-identity migration; it MUST NOT silently mint or switch identity merely because a locator changed.
+
+Core does not mandate a string format, URI scheme, YAML key name, database column, UUID scheme, or physical encoding for lineage identity.
 
 ## 4. Required durable memory semantics
 
@@ -55,21 +59,23 @@ Project-wide facts MAY be shared physically across lineages, but an implementati
 
 A Core `0.2` operation that reads or mutates lineage-local continuity MUST resolve exactly one selected lineage unless the operation explicitly names multiple lineages as integration inputs.
 
-Selection MAY come from:
+Selection input MAY be either a logical lineage identity or a backend/profile selector that deterministically resolves to one logical lineage identity. Selection context MAY come from:
 
 1. explicit Principal/task/adapter input;
 2. an already selected execution/profile/backend context;
-3. an explicitly declared default lineage.
+3. an explicitly declared default lineage or default selector.
 
 Profiles and adapters MAY define a stricter precedence order. They MUST NOT require heuristic scanning of sibling lineages to guess which lineage the Principal intended.
 
-If a lineage-local operation requires a lineage and none can be selected deterministically, the implementation MUST fail with semantics equivalent to `AGNIR_LINEAGE_REQUIRED`.
+If a lineage-local operation requires a lineage and no identity/selector can be selected deterministically, the implementation MUST fail with semantics equivalent to `AGNIR_LINEAGE_REQUIRED`.
 
-If a selected lineage identity is known but does not resolve, the implementation MUST fail with semantics equivalent to `AGNIR_LINEAGE_NOT_FOUND` rather than silently selecting another lineage.
+If a selected identity or selector is known but does not resolve to one valid lineage, the implementation MUST fail with semantics equivalent to `AGNIR_LINEAGE_NOT_FOUND` rather than silently selecting another lineage. Profiles MAY expose a more specific binding/selector failure in addition to the Core semantic class.
+
+Selection is not enumeration. Core does not require an implementation to list all sibling lineages before resolving one selected lineage.
 
 ## 6. Discovery Record semantics
 
-A Core `0.2` Discovery Record MUST provide semantics equivalent to:
+After any profile/backend selector has been resolved, a Core `0.2` Discovery Record MUST provide semantics equivalent to:
 
 ```yaml
 agnir:
@@ -77,7 +83,7 @@ agnir:
 project:
   identity: <durable-project-identity>
 continuity:
-  lineage: <selected-durable-lineage-identity>
+  lineage: <selected-durable-logical-lineage-identity>
 memory:
   state: <locator>
   next_actions: <locator>
@@ -85,7 +91,9 @@ memory:
   evidence: <locator-or-null>
 ```
 
-The representation is semantic, not serialization-specific. A backend MAY resolve the selected lineage before materializing a Discovery Record, provided a fresh compatible Executor can determine which lineage was selected and load the corresponding continuity without private predecessor context.
+The representation is semantic, not serialization-specific. A backend MAY resolve the selector before materializing a Discovery Record, provided a fresh compatible Executor can determine which logical lineage was selected and load the corresponding continuity without private predecessor context.
+
+A profile MAY retain selector/binding metadata outside the Core semantic record when needed to resolve backend context to the logical lineage identity.
 
 Core does not require a Discovery Record to enumerate sibling lineages.
 
@@ -97,10 +105,10 @@ A compatible fresh Executor given only an authorized Project Entry Point, the re
 2. validate Core compatibility;
 3. verify Project identity sufficiently to detect accidental cross-Project resolution;
 4. resolve exactly one selected lineage for ordinary lineage-local work;
-5. verify the selected lineage identity;
+5. resolve any backend selector/binding to the logical lineage identity and verify that identity;
 6. resolve and load that lineage's Current State and Next Actions;
 7. load Decisions and Evidence when required by the current operation;
-8. surface material inconsistencies or discovery failures;
+8. surface material inconsistencies or discovery/binding failures;
 9. resume without replaying predecessor-private context.
 
 ## 8. Lineage-local checkpoints
@@ -158,6 +166,8 @@ If the backend supports an atomic transaction, implementations SHOULD use it. If
 
 If the target authoritative generation changes after the integration candidate was based but before publication, the implementation MUST fail rather than overwrite the newer target. The failure MUST preserve semantics equivalent to `AGNIR_LINEAGE_INTEGRATION_CONFLICT` or the more general `AGNIR_CHECKPOINT_CONFLICT` when the implementation does not expose a distinct integration class.
 
+If a relevant source lineage is part of the staged candidate and its authoritative generation changes before publication, the implementation MUST re-resolve/reconcile or fail rather than knowingly publish against stale source evidence.
+
 An external mechanism MAY advance a target outside Agnir's control. If that produces a target whose Project state and continuity are known to be unreconciled, the state is recovery-required, not a conforming completed integration.
 
 ## 11. Truth reconciliation
@@ -184,13 +194,13 @@ Core `0.2` retains the Core `0.1` discovery and checkpoint failure semantics and
 
 Existing classes including `AGNIR_DISCOVERY_PROJECT_MISMATCH`, `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`, `AGNIR_DISCOVERY_UNRESOLVABLE`, and `AGNIR_CHECKPOINT_CONFLICT` remain valid.
 
-Profiles and adapters MAY expose more specific backend failures in addition to these semantic classes.
+Profiles and adapters MAY expose more specific backend selector/binding/integration failures in addition to these semantic classes.
 
 ## 13. Backend neutrality
 
 Core `0.2` conformance requires evidence from materially different backend models. At minimum before publication:
 
-- one VCS-backed model MUST demonstrate branches/workspaces mapped to lineages without making VCS concepts Core requirements;
+- one VCS-backed model MUST demonstrate branches/workspaces selecting/binding logical lineages without making VCS concepts Core requirements;
 - one non-VCS transactional model MUST demonstrate the same lineage invariants without Git branches, commits, worktrees, refs, or repository semantics.
 
 Passing only a Git/VCS implementation is insufficient evidence for accepting Continuity Lineage as a Core abstraction.
@@ -200,12 +210,15 @@ Passing only a Git/VCS implementation is insufficient evidence for accepting Con
 A VCS profile/adapter MAY map concepts approximately as follows:
 
 ```text
-selected branch/ref/worktree -> selected Continuity Lineage
+selected branch/ref/worktree -> backend selector/binding for one Continuity Lineage
+logical lineage identity     -> durable identity resolved by the VCS profile/adapter
 branch-local checkpoint      -> lineage-local checkpoint
 merge/rebase/cherry-pick     -> lineage integration boundary
 commit/revision SHA          -> backend checkpoint receipt
 ref advancement              -> backend publication boundary
 ```
+
+A branch/ref name MUST NOT be assumed by Core to equal the logical lineage identity. A VCS profile MAY deliberately make them equal only if it also defines safe behavior for branch creation, rename/rebinding, deletion/recreation, and ambiguity without silently conflating locator changes with lineage identity changes.
 
 The mapping is informative for adapters/profiles. None of these VCS terms is required by Core.
 
@@ -213,6 +226,6 @@ The mapping is informative for adapters/profiles. None of these VCS terms is req
 
 Core `0.2` preserves the project-owned continuity principles, required memory semantics, cold-start recoverability, Project identity checks, truth reconciliation, confidentiality, checkpoint consistency, and backend independence established by Core `0.1`.
 
-The breaking addition is that continuity is no longer assumed to have exactly one implicit Project-global line. Lineage selection, identity, isolation, integration, and coherent target publication become explicit protocol semantics.
+The breaking addition is that continuity is no longer assumed to have exactly one implicit Project-global line. Lineage selection, logical identity, selector/binding resolution, isolation, integration, and coherent target publication become explicit protocol semantics.
 
 A migration from Core `0.1` to `0.2` MAY represent an existing single continuity line as one initial/default lineage, but migration behavior must be specified and conformance-tested before Core `0.2` is published stable.
