@@ -1,75 +1,108 @@
 # Agnir Current State
 
-Agnir `v0.1.1` remains the formally published stable repository release. `main` remains authoritative and unchanged by the active experimental work. **Durable continuity belongs to the Project**, not to an Executor, conversation, execution environment, storage implementation, repository host, VCS branch, or Continuity Lineage.
+Agnir `v0.1.1` remains the formally published stable repository release. `main` remains authoritative and unchanged by the active experimental work. **Durable continuity belongs to the Project**, not to an Executor, conversation, execution environment, storage implementation, repository host, VCS branch, selector, or Continuity Lineage.
 
 ## Active Core 0.2 line — 2026-09-02
 
 Core `0.2` Parallel Continuity development is active on temporary branch `feature/core-0.2-lineage` in draft PR `#5`, stacked on `feature/multibranch-continuity` / draft PR `#4`.
 
-- Project identity remains `urn:agnir:project:agnir-core` across `main`, the VCS experiment, and the Core 0.2 design branch.
-- Stable self-hosting remains Core `0.1` + `repository-filesystem/0.1`. The root Project does **not** yet claim Core `0.2` compatibility while the new line is under conformance pressure.
-- Intended next feature release, if the new compatibility line passes its gates: repository `v0.2.0` with Core compatibility `0.2`.
-- `v1.0.0` is defined as a stability/compatibility commitment milestone rather than a feature-count threshold; criteria are recorded in `V1_RELEASE_CRITERIA.md`.
+- Project identity remains `urn:agnir:project:agnir-core` across `main`, the VCS experiment, and the Core `0.2` design branch.
+- Stable self-hosting remains Core `0.1` + `repository-filesystem/0.1`; the root Project does **not** yet claim Core `0.2` compatibility.
+- Intended next feature release if all remaining gates pass: repository `v0.2.0` with Core compatibility `0.2` and `repository-filesystem/0.2`.
+- `v1.0.0` remains a stability/compatibility commitment governed by `V1_RELEASE_CRITERIA.md`, not a feature-count threshold.
 
-## Core 0.2 design now under test
+## Core 0.2 model currently passing conformance
 
-The working normative draft is `spec/AGNIR_CORE_0_2_DRAFT.md`, with design rationale in `spec/CORE_0_2_DESIGN.md` and the dual-backend plan in `conformance/agnir-0.2-plan.md`.
+Working artifacts:
 
-Core `0.2` generalizes one implicit Project-global continuity line into multiple independently advancing **Continuity Lineages**.
+- `spec/AGNIR_CORE_0_2_DRAFT.md` — normative Core draft;
+- `spec/CORE_0_2_DESIGN.md` — design rationale;
+- `spec/CORE_0_1_TO_0_2_MIGRATION.md` — compatibility-line migration contract;
+- `profiles/REPOSITORY_FILESYSTEM_0_2_DRAFT.md` — concrete repository/filesystem profile draft;
+- `schemas/agnir-manifest-0.2.schema.json` — experimental manifest schema;
+- `conformance/agnir-0.2-plan.md` — acceptance pressure map.
 
-Current design decisions under conformance:
+Current accepted design direction under experiment:
 
-1. Project identity is independent of lineage identity.
-2. Lineage identity is a durable logical semantic within Project scope, not a mandated storage field or serialization.
-3. Backend revisions such as Git SHAs, database generations, or snapshot versions are checkpoint receipts, not lineage identity.
-4. Ordinary lineage-local work resolves exactly one lineage from explicit input, selected context, or declared default; Core does not require sibling enumeration/heuristic scanning.
-5. A specifically selected missing lineage fails rather than falling back to another lineage.
-6. Checkpoints are lineage-local unless explicit Project policy defines a broader transaction.
-7. Integration is target reconciliation, not source-continuity copying.
-8. Target publication must publish integrated Project state and reconciled target continuity coherently.
-9. A staged integration candidate becomes stale if its target or relevant source authoritative generation advances before publication.
-10. Cross-Project integration still respects the Project identity boundary.
+1. One Project may own multiple independently advancing Continuity Lineages.
+2. Project identity is distinct from logical lineage identity.
+3. Logical lineage identity is distinct from backend selector/locator and revision receipt.
+4. A Git ref/worktree is a **selector/binding**, not automatically lineage identity; a Git SHA is a checkpoint receipt/conflict token.
+5. Ordinary work resolves exactly one lineage from explicit/context/default selection without sibling scanning.
+6. Selected missing/unbound lineage context fails rather than silently falling back.
+7. Checkpoints are lineage-local by default.
+8. Integration is target reconciliation, not source-continuity copying.
+9. Integrated Project state + reconciled target continuity publish coherently.
+10. Target or relevant source advancement invalidates a staged integration candidate.
+11. Core `0.1` → `0.2` is explicit migration; the existing implicit line becomes exactly one initial/default logical lineage while preserving Project identity and durable truth.
 
-## Non-VCS evidence
+## Backend evidence
 
-A first backend-neutral pressure test is implemented in:
+### Non-VCS
 
-- `conformance/core_0_2_reference.py`
-- `conformance/sqlite_lineage_reference.py`
-- `conformance/test_core_0_2_parallel_continuity.py`
+`conformance/sqlite_lineage_reference.py` implements logical lineage namespaces in SQLite with no repository/branch/ref/worktree/commit concepts. SQLite transactions provide atomic publication; integer generations are receipts/conflict tokens. The suite proves independent lineage advancement, selection/failure behavior, reconciliation, source/target stale-candidate rejection, atomic target publication, and cross-Project rejection.
 
-The SQLite fixture deliberately has no repository, VCS branch, ref, worktree, commit, or merge concept. It models one Project with multiple logical lineage namespaces and uses SQLite transactions plus integer generations for coherent publication and stale-candidate detection.
+### VCS mapping
 
-The focused cases cover:
-
-- explicit/context/default lineage selection and `AGNIR_LINEAGE_REQUIRED`;
-- selected-missing-lineage rejection via `AGNIR_LINEAGE_NOT_FOUND`;
-- same Project identity with independent lineage checkpoints;
-- revision/generation receipt changes without lineage-identity changes;
-- staged integration that leaves target authoritative truth unchanged until publication;
-- rejection of unreconciled publication;
-- target-generation conflict after staging;
-- source-generation conflict after staging;
-- cross-Project integration rejection.
-
-CI has already exposed two self-hosting regressions in the Core `0.2` workstream before the new experimental test could run: first, an invalid top-level `docs/` directory violated the repository's stable structural contract; second, the branch-local state rewrite omitted the still-true Project ownership invariant required by stable cold-start conformance. The structural content has been moved into the repository's existing `spec/`, `conformance/`, and root policy surfaces, and this state restores the required Project-level invariant rather than weakening the stable checker.
-
-## VCS evidence retained from PR #4
-
-`agnir/vcs-branch-continuity/0.1` remains the Git/VCS evidence source. It already demonstrates branch-local continuity, selected-ref isolation, merge/rebase/cherry-pick reconciliation, history-rewrite receipt changes, and pre-target-advance reconciliation.
-
-For Core `0.2`, those VCS concepts are mapped rather than promoted directly:
+`conformance/core_0_2_vcs_mapping_reference.py` and `test_core_0_2_vcs_mapping.py` prove:
 
 ```text
-selected Git ref/worktree -> selected Continuity Lineage
-branch/ref logical name   -> profile-level lineage identity mapping
-branch-local checkpoint   -> lineage-local checkpoint
-merge/rebase/cherry-pick  -> lineage integration boundary
-commit SHA                -> backend checkpoint receipt
-ref advancement           -> backend publication boundary
+selected ref/worktree     -> backend selector/binding
+logical lineage identity  -> separately resolved durable identity
+commit/revision SHA       -> checkpoint receipt/conflict token
 ```
 
-PR `#4` and PR `#5` must eventually be integrated with target continuity already reconciled in the revision that advances `main`; ordinary server-side merge that temporarily publishes feature-local `.agnir` truth onto `main` remains unsafe for this repository's branch-local continuity model.
+An earlier mapping that equated ref name with lineage identity was rejected because ref rename would silently change identity. The corrected tests prove selector string != identity, unbound selected ref does not fall back, SHA rewrite preserves logical identity, and explicit ref rename/rebinding may preserve logical identity.
+
+`conformance/vcs_lineage_binding_reference.py` further proves that an Agnir-aware branch fork gets a new logical lineage identity while preserving Project identity/inherited baseline; ref rename preserves the lineage ID; external copied/stale bindings require explicit fork-vs-rebind resolution rather than guessing.
+
+### Repository/filesystem 0.2
+
+`repository-filesystem/0.2` now has a concrete draft resolver/schema. A selected Project root must expose one logical `continuity.lineage`; sibling enumeration is not required. Stable `repository-filesystem/0.1` discovery explicitly rejects the Core/profile `0.2` line.
+
+For VCS-aware use, the profile draft separates durable `continuity.lineage` from optional selector binding metadata. External binding mismatch is a repair/classification condition, not automatic lineage creation.
+
+## Migration evidence
+
+The storage-neutral migration reference proves:
+
+- unauthorized Core-line change remains `AGNIR_UPGRADE_MIGRATION_REQUIRED`;
+- Project identity, State, Next Actions, Decisions, and Evidence are preserved;
+- exactly one initial/default lineage is produced from the Core `0.1` implicit line;
+- repeated identical migration is a no-op;
+- conflicting second lineage rebinding fails;
+- stale source generation blocks migration publication;
+- fresh Core `0.2` resume recovers preserved truth.
+
+A concrete repository/filesystem migration implementation should be added only against the now-defined `repository-filesystem/0.2` draft shape.
+
+## CI and self-hosting evidence
+
+Two early stable self-hosting failures were useful regressions rather than reasons to weaken the stable checker:
+
+1. top-level `docs/` violated the repository's established active structure; content was moved into `spec/`, `conformance/`, or root policy files;
+2. branch-local state rewrite dropped the still-valid `Durable continuity belongs to the Project` invariant; the state was repaired.
+
+GitHub Actions run `33591706263` completed successfully after selector/identity correction and concrete profile pressure. The job passed:
+
+1. Stable self-hosting cold-start conformance;
+2. Experimental VCS branch continuity;
+3. Experimental Core `0.2` non-VCS parallel continuity;
+4. Experimental Core `0.2` VCS mapping;
+5. Experimental `repository-filesystem/0.2` discovery;
+6. Experimental VCS lineage binding;
+7. Experimental Core `0.1` → `0.2` migration;
+8. Full conformance suite.
+
+Detailed evidence is recorded in `.agnir/evidence/2026-09-02-core-0.2-parallel-continuity.md`.
+
+## Remaining release boundary
+
+The synthetic/backend/profile evidence is now strong enough to proceed to a **real Project consumer validation**, but not yet to publish Core `0.2` stable.
+
+Preferred first real consumer: Svif, because it already consumes Agnir Core `0.1` through a defined Continuity Provider boundary. The real validation should cover explicit migration, two genuinely divergent continuity lineages, independent checkpoints, VCS selector binding, staged target reconciliation, and fresh resume.
+
+PR `#4` / `#5` eventual integration into authoritative `main` still must obey the target-publication invariant. Final `main` continuity must already be reconciled in the revision that advances `main`; do not knowingly publish an intermediate `main` revision carrying feature-local continuity truth.
 
 ## Published stable release
 
@@ -79,5 +112,3 @@ PR `#4` and PR `#5` must eventually be integrated with target continuity already
 - GitHub Release id: `380414987`
 - Core compatibility: `0.1`
 - repository/filesystem profile: `repository-filesystem/0.1`
-
-The immutable stable release remains unaffected by the Core `0.2` draft.
