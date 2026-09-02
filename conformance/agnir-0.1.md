@@ -42,9 +42,12 @@ The reference models under `conformance/` are executable pressure tools, not pro
 - a real Git `main` worktree and feature worktree can resolve the same `project.identity` while carrying different branch-local Current State after divergence;
 - a branch-local checkpoint snapshot does not mutate a sibling branch snapshot;
 - merge, rebase, and cherry-pick are continuity-integration boundaries that require explicit target reconciliation rather than automatic source-state promotion;
+- a real Git merge can be staged without advancing `main`, have conflicting branch-local continuity explicitly reconciled, and then advance the target exactly once to a two-parent merge revision whose Agnir state already describes the integrated target;
 - integration across different Project identities is rejected;
 - rebase/history rewrite can replace revision receipts without redefining Project identity or otherwise coherent branch truth;
 - push verification follows the actual destination ref, while a claim of authoritative publication additionally requires the declared `authoritative_ref`.
+
+The target-ref publication case is important: “merge first, repair Agnir afterward” is not the preferred branch-continuity-safe sequence when the first merge revision would expose source-branch state as target truth. An Agnir-aware integration should stage the Project merge/result, reconcile target continuity, and publish both together when it controls target ref advancement. External/server-side integration that has already advanced an unreconciled target is recovery territory and must surface `AGNIR_VCS_RECONCILIATION_REQUIRED` until repaired.
 
 These cases intentionally do **not** introduce a durable generic `lineage.id`, change Agnir Core `0.1`, or change the `repository-filesystem/0.1` discovery schema. Their purpose is to pressure-test branch-aware repository behavior before deciding whether any storage-neutral continuity-lineage invariant deserves a future Core compatibility line.
 
