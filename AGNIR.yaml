@@ -23,6 +23,9 @@ extensions:
   agnir/vcs:
     branch_continuity: "branch-local"
     integration_reconciliation: "required"
+  agnir/experiments:
+    core_0_2_parallel_continuity: "draft-conformance"
+    core_0_2_spec: "spec/AGNIR_CORE_0_2_DRAFT.md"
   agnir/operations:
     distribution: "agnir-agent-skill"
     release: "0.1.1"
