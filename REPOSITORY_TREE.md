@@ -1,6 +1,6 @@
 # Repository Tree / 目录树
 
-本页是 `iorLab/agnir` 当前仓库的**仓库结构与职责地图**。README 中的仓库树只用于快速导航；这里进一步展开 active protocol、profile / extension、conformance、Project continuity 和历史参考的主要 tracked 结构。
+本页是 `iorLab/agnir` 当前仓库的**仓库结构与职责地图**。README 中的仓库树只用于快速导航；这里进一步展开 active protocol、profile / extension、conformance、Project continuity、品牌系统和历史参考的主要 tracked 结构。
 
 维护规则：只要这里明确列出的文件 / 目录被新增、删除、移动，或者职责发生实质变化，就必须在同一个 change set 中同步更新本页；README 中的简略目录树若受影响，也必须一起更新。`.agnir/evidence/` 是刻意按**目录职责**记录的 append-style evidence collection，不逐个重复登记 checkpoint evidence 文件名；新增 evidence 本身不再要求为了更新本树而制造额外仓库 mutation。
 
@@ -17,6 +17,20 @@ agnir/                                                    # Agnir Agent Skill + 
 ├── .github/
 │   └── workflows/
 │       └── conformance.yml                               # CI：stable self-host + experimental VCS/Core/profile/migration + full suite
+│
+├── brand/                                                # Agnir 品牌识别与 production asset surface
+│   ├── README.md                                         # 品牌目录职责、production authority 与 integration status
+│   ├── APPROVED-VISUAL-REFERENCE.md                      # Principal 批准的 10:42 AM 视觉基准与 source hash
+│   ├── PRODUCTION-STATUS.md                              # 当前 master / derivative / QA / integration gates
+│   ├── brand-handoff.md                                  # 下游使用规则与禁止替换项
+│   ├── brand-process-log.md                              # 品牌设计与生产过程记录
+│   ├── INTEGRATION-NOTE.md                               # 品牌分支与最新 main 的 reconcile 说明
+│   ├── reference/                                       # extraction coordinates / source-reference manifests
+│   ├── masters/                                         # 批准的 Agnir vector production masters
+│   │   └── candidates/                                  # 历史 review candidates；不作为 production truth
+│   ├── exports/                                         # light/dark/mono/app/favicon 等 materialized derivatives
+│   ├── qa/                                              # 对称 13 项 final QA 范围与 evidence metadata
+│   └── tools/                                           # deterministic derivative / raster / review tooling
 │
 ├── spec/                                                 # 当前 / 候选 Agnir Core 协议层规范
 │   ├── AGNIR_CORE.md                                     # published Core 0.1 durable continuity / identity / checkpoint / version semantics
@@ -96,5 +110,7 @@ agnir/                                                    # Agnir Agent Skill + 
 ## 如何使用这张树
 
 第一次安装 Agnir 时，用户只需要 README 开头的一句话提示词；Agent 找到本仓库后读取根目录 `SKILL.md`，由 Skill 持有完整 procedure。已经初始化的 Project 正常使用时仍通过自己的 `AGENTS.md → README → AGNIR.yaml` 路线 activation；只有用户明确要求升级 Agnir 时才重新调用 distribution/Skill 的 upgrade procedure。
+
+品牌目录是产品/发布表面，不改变 Agnir Core 的协议依赖边界。Production geometry、视觉基准和使用约束以 `brand/` 内批准文件为准；品牌分支完成 integration reconciliation 后才可进入 authoritative `main`。
 
 本页不是第二套协议或 Skill procedure。**Agent procedure 以根目录 `SKILL.md` 为准；published Core `0.1` 语义以 `spec/AGNIR_CORE.md` 为准；实验 Core `0.2` 以 `spec/AGNIR_CORE_0_2_DRAFT.md` 为工作规范；published repository/filesystem 行为以 `profiles/REPOSITORY_FILESYSTEM.md` 为准；实验 `0.2` profile 以 `profiles/REPOSITORY_FILESYSTEM_0_2_DRAFT.md` 为准；Core `0.1` 的实验 VCS branch continuity 以 `profiles/VCS_BRANCH_CONTINUITY.md` 为准；机器可读 manifest 约束以 `schemas/` 为准；`history/` 仅保存 predecessor lineage。**
