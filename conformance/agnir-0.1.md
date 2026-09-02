@@ -39,6 +39,7 @@ The reference models under `conformance/` are executable pressure tools, not pro
 
 `profiles/VCS_BRANCH_CONTINUITY.md` adds an experimental extension layer on top of the stable repository/filesystem profile. Its executable pressure currently proves:
 
+- working-ref selection prefers explicit task/adapter scope, then current checkout/worktree context, then a declared default; it never scans sibling branches to guess, and missing selection surfaces `AGNIR_VCS_REF_REQUIRED`;
 - a real Git `main` worktree and feature worktree can resolve the same `project.identity` while carrying different branch-local Current State after divergence;
 - a branch-local checkpoint snapshot does not mutate a sibling branch snapshot;
 - merge, rebase, and cherry-pick are continuity-integration boundaries that require explicit target reconciliation rather than automatic source-state promotion;
