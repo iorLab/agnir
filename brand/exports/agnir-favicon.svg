@@ -1,0 +1,4 @@
+<!-- Production full-mark favicon source derived from Principal-approved Agnir mark. Use build-production-derivatives.py for 32/16px visibility-pruned variants. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Agnir favicon">
+  <image href="../masters/agnir-mark.svg" x="18" y="43" width="220" height="158" preserveAspectRatio="none"/>
+</svg>
