@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
@@ -77,10 +78,8 @@ def _insert_continuity_before_memory(text: str, *, lineage_identity: str) -> str
             "AGNIR_DISCOVERY_INCONSISTENT",
             "Core 0.1 manifest does not contain a top-level memory section",
         )
-    block = (
-        "continuity:\n"
-        f'  lineage: "{lineage_identity}"\n\n'
-    )
+    serialized = json.dumps(lineage_identity, ensure_ascii=False)
+    block = "continuity:\n" f"  lineage: {serialized}\n\n"
     return text[:index] + block + text[index:]
 
 
