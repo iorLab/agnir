@@ -1,109 +1,125 @@
-# Agnir 0.1.1 Release
+# Agnir 0.2.0-rc.1 Release Candidate
 
-**Repository version:** `0.1.1`
+**Repository version:** `0.2.0-rc.1`
 
-**Core compatibility line:** `0.1`
+**Core compatibility line:** `0.2`
 
-**Repository/filesystem profile:** `repository-filesystem/0.1`
+**Repository/filesystem profile:** `repository-filesystem/0.2`
 
 ## Status
 
-The current `main` is the Agnir `0.1.1` publication-candidate line. The previously published stable release remains immutable `v0.1.0` until an exact `0.1.1` publication candidate passes the full conformance workflow and is separately tagged/released as `v0.1.1`.
+Agnir `v0.2.0-rc.1` is the active release-candidate line on temporary branch `release/v0.2.0-rc.1`. It is **not yet published** at this checkpoint, and no RC tag/release should be claimed until an exact candidate revision passes the complete publication gate below.
 
-Agnir `0.1.1` is a non-breaking operational patch. It does not change Agnir Core `0.1`, `repository-filesystem/0.1`, Project identity semantics, memory locators, checkpoint semantics, or discovery failure classes.
+The latest published **stable** release remains immutable `v0.1.1` at exact revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`, GitHub Release id `380414987`. A prerelease, release branch, or moving `main` must not be silently selected as `latest stable`.
 
 ## Version model
 
-Agnir separates three version layers:
+Agnir keeps distinct version layers:
 
-- `agnir.version: "0.1"` identifies the Core compatibility line in a Discovery Record.
-- `repository-filesystem/0.1` identifies the compatibility line of the repository/filesystem discovery profile.
-- `VERSION` records the SemVer release of this reference specification/conformance/Skill repository.
+- repository SemVer: `0.2.0-rc.1` for this candidate package/spec/conformance repository;
+- Core compatibility: `0.2`;
+- repository/filesystem compatibility: `repository-filesystem/0.2`;
+- VCS/adapter extension identifiers remain separately versioned where applicable.
 
-Breaking Core semantics require a new Core compatibility line. Breaking repository/filesystem profile semantics require a new profile compatibility line. Patch releases may clarify text, strengthen non-breaking conformance, or fix reference/Skill/integration tooling without changing those compatibility identifiers.
+Core/profile `0.2` is a compatibility-line change from `0.1`, not a compatible operational patch.
 
-## Patch purpose: execution-surface activation handoff
+## Core 0.2 release-candidate scope
 
-A real ChatGPT web Project initialization of `mattamior/skills-hub` exposed an operational completion bug. The target repository had a valid Project-owned route — `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → durable memory — but the surrounding ChatGPT Project did not yet have the persistent locator needed for a genuinely fresh conversation to reach that repository. The initializer nevertheless reported fresh activation too broadly.
+The RC introduces **Continuity Lineages** as an explicit Core abstraction:
 
-`0.1.1` repairs that boundary:
+- one Project may own multiple independently advancing logical lineages;
+- Project identity is distinct from lineage identity;
+- logical lineage identity is distinct from backend selector/locator and revision receipt;
+- ordinary work resolves one selected lineage without sibling guessing;
+- checkpoints are lineage-local by default;
+- integration reconciles target continuity rather than copying source continuity;
+- an Agnir-controlled target publication must publish integrated Project state and reconciled target continuity coherently;
+- stale target or relevant source generations invalidate a staged integration candidate;
+- an Agnir-controlled lineage fork publishes the new lineage identity, selector binding, and coherent inherited/reconciled continuity together.
 
-- repository activation and execution-surface activation are separate completion dimensions;
-- when a surface automatically starts from the authorized Project root and reads Project instructions, no extra surface configuration is required;
-- when persistent surface configuration is required, the Skill configures it when authorized/capable or emits a copy-ready locator-only handoff;
-- pending or unverified required surface configuration blocks a claim that full fresh activation passed;
-- execution-surface settings must preserve unrelated instructions and must not duplicate Current State, Next Actions, Decisions, Evidence, or the full Agnir procedure;
-- ChatGPT Project Instructions are the first concrete surface adapter for this operational rule, not an Agnir Core dependency;
-- completion reports distinguish repository activation from execution-surface activation and prefer a genuinely fresh-context verification after configuration.
+Normative RC contracts:
 
-The real `skills-hub` regression case was then re-tested after the locator-only ChatGPT Project Instructions were configured. A genuinely new conversation, given only an ordinary Project request, immediately located `mattamior/skills-hub`, followed root `AGENTS.md`, and began loading `AGNIR.yaml` and the declared durable continuity. The Principal supplied screenshot evidence and explicitly reported the regression as passed. Durable Evidence is stored under `.agnir/evidence/2026-09-01-v0.1.1-execution-surface-validation.md`.
+- `spec/AGNIR_CORE_0_2.md`;
+- `profiles/REPOSITORY_FILESYSTEM_0_2.md`;
+- `spec/CORE_0_1_TO_0_2_MIGRATION.md`;
+- `schemas/agnir-manifest-0.2.schema.json`.
 
-## Skill packaging boundary
+## Compatibility and migration boundary
 
-Root `SKILL.md` is the canonical Agent-facing Agnir Skill entrypoint. It owns the detailed install / initialize / upgrade / resume / checkpoint / commit / push / repair procedure.
+A Core/profile `0.1` Project must not be silently rewritten as `0.2` during an ordinary compatible upgrade.
 
-The README deliberately exposes only short user-facing intent, for example:
+Explicit `0.1` → `0.2` migration must preserve Project identity and material durable truth, establish exactly one initial/default logical lineage for the preexisting implicit continuity line, preserve/resolve its memory locators, establish backend selector binding separately when applicable, and verify fresh Core/profile `0.2` discovery.
 
-```text
-Install and initialize Agnir for this Project: https://github.com/iorLab/agnir
-```
+Repeating the same migration is a no-op; attempting to silently rebind an already migrated Project to a different initial lineage is a conflict. Stale source state must not be overwritten.
 
-An upgrade remains distinct from re-initialization. Compatible upgrades preserve Project identity, declared memory locators/content, unrelated README/`AGENTS.md` instructions, and unrelated extensions.
+The published Core/profile `0.1` specifications, schemas, reference models, and regression tests remain in the repository as supported compatibility/history surfaces.
 
-## Existing-Project upgrade boundary
+## Evidence before this RC branch
 
-For `repository-filesystem/0.1`, an operational upgrade is compatible only while Core remains `0.1` and the profile remains `repository-filesystem/0.1`. Therefore upgrading an existing compatible Project from repository release `0.1.0` to `0.1.1` is an operational patch upgrade, not a Core/profile migration.
+The pre-RC line already passed:
 
-A Project may record the applied operational package under optional `extensions.agnir/operations` provenance with distribution, repository release, source, and immutable applied revision. Projects created before this provenance existed remain valid and can be upgraded non-destructively.
+- non-VCS SQLite lineage conformance;
+- VCS lineage mapping/binding and branch-aware integration pressure;
+- repository-filesystem `0.2` discovery and schema pressure;
+- storage-neutral and concrete repository/filesystem `0.1`→`0.2` migration conformance;
+- a real Svif consumer migration, two-lineage divergence, staged integration, target reconciliation, coherent publication, and independent source resume;
+- safe integration of Core `0.2` into Agnir authoritative `main` with exact-candidate validation before target advancement and successful authoritative-main conformance afterward.
 
-`latest stable release` means an actually published stable tag/release. A moving `main` branch or untagged publication candidate is not stable and must not be silently selected as an upgrade target.
+Key Agnir receipts:
 
-## Release scope
+- Core `0.2` source checkpoint `68cc443d6c44929f1b71d9d534e9b0f73f9745bf`, CI `33620080730`;
+- safe-main candidate `a32c9143687b72426617ddd701b90ffd237a111c`, candidate CI `33653019074`;
+- authoritative-main CI `33653087179`;
+- post-integration main checkpoint `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`, CI `33653383024`.
 
-The `0.1.1` release includes the complete `0.1.0` compatibility surface plus the execution-surface activation repair:
+## RC self-host boundary
 
-- stable normative Core continuity semantics;
-- checkpoint no-op, coherent authoritative transition, mixed-generation prevention, and stale-base `AGNIR_CHECKPOINT_CONFLICT` semantics;
-- normative discovery and failure semantics;
-- `repository-filesystem/0.1` profile and manifest schema;
-- compatible existing-Project upgrade semantics and optional `agnir/operations` provenance;
-- repository/VCS checkpoint-before-commit and commit-and-push verification semantics;
-- root `SKILL.md` Agent Skill packaging with one-line user installation UX;
-- non-destructive existing-`AGENTS.md` merge behavior;
-- Project-owned activation through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory;
-- execution-surface activation evaluation, copy-ready handoff, separate status reporting, and no premature full-activation claim;
-- real ChatGPT Project fresh-context regression evidence;
-- self-hosting cold-start validation and executable regression pressure;
-- SQLite non-repository continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree pressure;
-- bilingual README architecture/activation/handoff documentation;
-- main-only long-lived branch governance and immutable release targets.
+The release branch explicitly migrates Agnir's own Project from Core/profile `0.1` to Core/profile `0.2` while preserving Project identity `urn:agnir:project:agnir-core` and the existing durable memory layout.
+
+RC logical lineage:
+
+`urn:agnir:lineage:v0.2.0-rc.1`
+
+VCS selector binding:
+
+`refs/heads/release/v0.2.0-rc.1`
+
+These values are intentionally distinct. The ref is a backend selector/binding; it is not logical lineage identity. A commit SHA is a receipt, not identity.
+
+## Operational package boundary
+
+The repository's operational Skill/documentation package is being synchronized during this RC cycle. Until that package is complete and an exact verified candidate revision exists, `extensions.agnir/operations` may truthfully continue to record the actually applied published `v0.1.1` package rather than inventing a self-referential RC applied revision.
+
+Before RC publication, the final exact candidate must align `SKILL.md`, both READMEs, release/version metadata, repository maps, self-host compatibility, and applied RC provenance used by installation/migration validation.
+
+## RC publication gate
+
+`v0.2.0-rc.1` may be tagged/released only when all of the following are true on one exact candidate revision:
+
+1. `VERSION` is `0.2.0-rc.1`;
+2. root `AGNIR.yaml` fresh-resolves Core `0.2` / `repository-filesystem/0.2`, Project `urn:agnir:project:agnir-core`, and the RC logical lineage;
+3. logical lineage identity and VCS selector binding are explicit and distinct semantic concepts;
+4. `spec/AGNIR_CORE_0_2.md`, `profiles/REPOSITORY_FILESYSTEM_0_2.md`, migration spec, and 0.2 schema agree on the compatibility contract;
+5. stale draft documents no longer compete with RC normative contracts;
+6. both READMEs and root `SKILL.md` describe the Core/profile `0.2` RC model consistently while preserving the rule that `latest stable` is still `v0.1.1`;
+7. `REPOSITORY_TREE.md` and release-facing structural maps match the actual repository;
+8. RC Core `0.2` self-host cold-start passes;
+9. Core/profile `0.1` compatibility regressions remain green;
+10. Core `0.2` non-VCS/VCS, repository-filesystem `0.2`, lineage binding, semantic/concrete migration, and full conformance suites pass;
+11. a genuinely fresh Project can be initialized with the explicit RC target and cold-start resume without predecessor-private context;
+12. at least one explicitly authorized real Project migrates from published `v0.1.1` / Core/profile `0.1` to `0.2`, preserving Project identity/durable truth and passing fresh resume;
+13. the final operational package provenance used by the validation points to an actual immutable RC candidate revision;
+14. the RC tag/release is created only after exact-candidate verification and is marked prerelease;
+15. the RC tag is never moved after publication and the RC is never presented as `latest stable`.
 
 ## Known limitations
 
-Real mount-boundary behavior remains explicitly unproven because the current conformance environment does not provide a genuine mount-capable test case. Ordinary directories are not accepted as substitute evidence.
+Real mount-boundary behavior remains explicitly unproven because the current conformance environment has not supplied a genuine mount-capable case. Ordinary directories are not accepted as substitute evidence.
 
-Execution surfaces differ in how they expose persistent Project/workspace configuration. The reference Skill can define the required handoff semantics and generate a copy-ready locator, but whether a specific surface can be configured automatically depends on that surface's available tools and Principal authority. This remains an integration concern outside Agnir Core.
+Execution-surface persistence/configuration remains adapter behavior outside Agnir Core. The Skill may define locator-only handoff semantics, but automatic configuration depends on the active surface's tools and Principal authority.
 
-Repository hooks remain optional event-capture mechanisms; Agnir continuity does not depend on them.
+The optional VCS extension serialization may evolve independently so long as the normative Core/profile distinction between logical lineage identity, selector/binding, and revision receipt is preserved.
 
-## Publication gate
+## Publication result
 
-A `v0.1.1` publication commit is ready only when all of the following hold:
-
-1. `VERSION` is `0.1.1` and the self-hosting checker expects repository release `0.1.1`;
-2. `AGNIR.yaml`, schema, Core spec, discovery spec, profile, README files, Skill package, and conformance baseline still agree on Core `0.1` / `repository-filesystem/0.1`;
-3. root `SKILL.md` retains valid Agent Skill frontmatter and the full operational procedure;
-4. repository activation remains non-destructive and fresh-resumable from the Project root;
-5. execution-surface activation is evaluated separately and required persistent configuration is either applied or explicitly reported pending;
-6. the ChatGPT Project handoff remains locator-only, preserves unrelated surface instructions, and does not fork Project durable truth;
-7. the real `mattamior/skills-hub` fresh-conversation regression gate is recorded as passed;
-8. both READMEs preserve the short install/upgrade UX and synchronized execution-surface explanation;
-9. Core checkpoint, stale-base conflict, repository commit/push, and compatible upgrade semantics remain unchanged;
-10. existing `AGENTS.md` merge behavior remains preservation-first, idempotent, and conflict-blocking;
-11. all named discovery/authorization/boundary pressure remains green;
-12. active protocol/profile files contain no dependency on retired predecessor layouts or execution-surface-specific Project memory;
-13. `main` remains the only intended long-lived authoritative branch;
-14. known limitations remain stated without being represented as proven;
-15. the full self-hosting and executable conformance workflow passes on the exact publication-candidate revision.
-
-Only that exact verified revision may become the immutable `v0.1.1` tag/release target. Tagging `v0.1.1` and creating the GitHub Release are separate publication actions; they must not silently target a later moving `main` revision.
+Pending. This section must be updated only after an exact verified RC candidate is immutably tagged and a prerelease is actually created. Until then, do not claim `v0.2.0-rc.1` has been published.
