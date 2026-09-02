@@ -8,49 +8,49 @@ Canonical Project ref remains: `main`
 
 The Principal-approved Today 10:42 AM Agnir board is the sole Agnir-only visual authority. See `APPROVED-VISUAL-REFERENCE.md` and `reference/EXTRACTION-MANIFEST.md`.
 
-## Completed
+## Approved production master
 
-- concept exploration ended;
-- approved visual reference locked by exact source SHA-256;
-- rejected deterministic reconstruction removed from the active branch;
-- earlier clipped/debug-heavy v0.2 review evidence invalidated after Principal inspection;
-- QA-safe crops corrected again, including a wider/cleaner primary-mark crop that excludes neighboring title text while retaining mark safety margin;
-- `brand/tools/render-vector-review.py` now has two explicit modes: **clean review by default** and engineering-only `--diagnostic` bounds mode;
-- `brand/masters/candidates/agnir-mark-trace-v0.3.svg` is the new particle-A candidate, rebuilt from the approved raster using direct multi-scale circle detection plus source-sampled particle colors;
-- `brand/masters/candidates/agnir-wordmark-outline-v0.3.svg` is the new smooth outline candidate. It replaces the pixel-dense contour approach and stores only vector outlines, with no runtime font dependency;
-- `agnir-horizontal-lockup-v0.3.svg` and `agnir-vertical-lockup-v0.3.svg` encode source-measured v0.3 component scale/spacing;
-- v0.2 remains historical candidate evidence only and is not promoted;
-- `brand/tools/derive-raster-assets.py` remains the deterministic interim raster-production path.
+The Principal reviewed the clean Agnir v0.3 source-vs-vector sheet and explicitly accepted the set as having no material visual problem.
 
-## Current production gate
+The following files are therefore the **branch-approved production masters**:
 
-**Agnir v0.3 is the current review candidate. It is not yet a locked master.**
+- `brand/masters/agnir-mark.svg` — particle-built A with central anchor;
+- `brand/masters/agnir-wordmark.svg` — smooth outline wordmark, no runtime font dependency;
+- `brand/masters/agnir-horizontal-lockup.svg` — self-contained horizontal composition;
+- `brand/masters/agnir-vertical-lockup.svg` — self-contained vertical composition.
 
-The specific defects identified by the Principal in the previous review have been addressed at the QA/candidate level:
+The v0.3 candidate files remain provenance/review evidence only. v0.2 and earlier work are superseded and must not be used as production masters.
 
-- blue artwork-bound boxes are no longer shown in Principal-facing review output; they exist only in explicit diagnostic mode;
-- the wordmark no longer uses the jagged pixel-dense trace that produced black merged blobs at the `g` descender and in lockups;
-- the particle A now recovers the broad outer field and discrete circle hierarchy much more faithfully than v0.2;
-- horizontal/vertical lockups have been rebuilt from source-measured component bounding boxes rather than the earlier compressed assembly.
+## Production derivatives
 
-Remaining review is visual fidelity only. No candidate may be promoted merely because it renders cleanly.
+Approved-board derivative work is now active from the locked masters only:
 
-The quality rule remains: **absence of a locked master is preferable to a visually drifting master.**
+- light-background horizontal treatment: brand-color wordmark with the approved particle A;
+- dark-background horizontal treatment: white wordmark with the approved particle A;
+- monochrome treatment: grayscale mark plus black wordmark;
+- app-icon treatment derived from the approved mark;
+- favicon exports at 128/64/32/16px.
 
-## QA validity rule
+### Small-size rule
 
-Principal approval uses a **clean review image** with no debug boxes or engineering overlays. Diagnostic artwork bounds are generated separately with `--diagnostic`. Both modes use `contain`, never crop/cover.
+Directly shrinking the full particle field to 16px loses the A reading. The approved board itself defines a favicon-size family, so 32px and 16px exports use a deterministic visibility derivative of the same master: only particles below a fixed rendered-visibility threshold are pruned. The A geometry, major particles, pale inner A and central anchor are unchanged. This is a size derivative, not a new logo design.
+
+## QA rules
+
+- Principal-facing review is clean: no blue bounds boxes or debug overlays.
+- Engineering diagnostics may show bounds only under explicit diagnostic mode.
+- Review/render uses `contain`, never crop/cover.
+- No derivative may modify the approved core geometry.
 
 ## Binary reference boundary
 
-The byte-exact approved board and crop PNGs remain preserved by SHA-256 and in the locked local reference package. Final byte-exact repository preservation remains a pre-`main` integration gate.
+The byte-exact approved 10:42 AM source board remains locked by SHA-256 and preserved in the reference package. Final byte-exact source-board repository preservation remains a pre-`main` integration gate.
 
 ## Next actions
 
-1. Run Principal visual review on the clean Agnir v0.3 mark / wordmark / horizontal / vertical comparison.
-2. If any shape/spacing mismatch remains, correct only what the locked source demonstrates and repeat clean QA.
-3. If accepted, promote the v0.3 mark and wordmark to production masters and flatten the lockups into self-contained SVGs.
-4. Rebuild light-background, dark-background and monochrome variants from the promoted masters while matching the approved examples.
-5. Produce repository/app/favicon/social derivatives and target-size QA.
-6. Preserve the byte-exact approved source in repository storage before final integration.
-7. Re-resolve latest `main`, reconcile approved brand continuity, and integrate coherently only after the brand asset gate is complete.
+1. Persist the current light/dark/monochrome and app/favicon exports with hashes.
+2. Build the approved social-card derivative and repository/avatar package from the production masters.
+3. Run final target-size QA across the complete Agnir asset package.
+4. Write `brand/brand-handoff.md` with canonical usage rules and file map.
+5. Preserve the byte-exact approved board in repository storage before final integration.
+6. Re-resolve latest `main`, reconcile Agnir continuity, then integrate the brand package coherently.
