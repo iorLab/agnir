@@ -1,43 +1,45 @@
-# Agnir brand vectorization candidate — 2026-09-02
+# Agnir brand vectorization evidence — 2026-09-02
 
-Status: **branch-local candidate evidence; not canonical until reconciled and merged to authoritative `main`.**
+Status: **branch-local approved brand evidence; not canonical Project truth until reconciled and merged to authoritative `main`.**
 
 ## Locked source
 
-The Principal-approved Today 10:42 AM Agnir board remains the sole Agnir-only visual authority. Its source SHA-256 and QA-safe extraction coordinates are recorded in `brand/APPROVED-VISUAL-REFERENCE.md` and `brand/reference/EXTRACTION-MANIFEST.md`.
+The Principal-approved Today 10:42 AM Agnir board remains the sole Agnir-only visual authority. Source SHA-256 and QA-safe crop coordinates are recorded in `brand/APPROVED-VISUAL-REFERENCE.md` and `brand/reference/EXTRACTION-MANIFEST.md`.
 
-## Superseded v0.2 review
+## Superseded work
 
-The first Agnir v0.2 master-review sheet is invalid evidence. Principal inspection identified clipped/incomplete presentation and debug artifacts. A subsequent unclipped diagnostic review also revealed real candidate mismatch: a narrow/dense particle A, jagged wordmark contours, and compressed lockup proportions.
+- v0.2 review evidence was invalidated because of clipped/debug-heavy presentation and genuine vector mismatch.
+- v0.2 and earlier candidates are not production assets.
+- the pixel-dense wordmark trace that created merged black blobs is superseded.
 
-Therefore **v0.2 is not approved and must not be promoted to master**.
+## v0.3 approval
 
-## Current v0.3 candidate set
+The v0.3 clean review separated Principal-facing review from engineering diagnostics and presented the mark, wordmark, horizontal lockup and vertical lockup without crop/debug artifacts.
 
-- `brand/masters/candidates/agnir-mark-trace-v0.3.svg` — particle-A candidate rebuilt from the locked raster with direct multi-scale circle detection and source-sampled particle colors. The broader outer particle field and circle hierarchy are recovered instead of approximated by block geometry.
-- `brand/masters/candidates/agnir-wordmark-outline-v0.3.svg` — smooth outline reconstruction fitted against the locked raster wordmark. It intentionally avoids the previous pixel-dense trace and has no runtime font dependency.
-- `brand/masters/candidates/agnir-horizontal-lockup-v0.3.svg` — source-measured horizontal assembly.
-- `brand/masters/candidates/agnir-vertical-lockup-v0.3.svg` — source-measured vertical assembly.
+The Principal reviewed that clean set and stated that the set had no material problem. This is the approval event for promotion.
 
-The previous v0.2 candidate files remain branch history / comparison evidence only.
+Promoted production files:
+
+- `brand/masters/agnir-mark.svg`;
+- `brand/masters/agnir-wordmark.svg`;
+- `brand/masters/agnir-horizontal-lockup.svg`;
+- `brand/masters/agnir-vertical-lockup.svg`.
+
+The horizontal and vertical production lockups are self-contained rather than external component references.
+
+## Derivative rule
+
+All light/dark/monochrome, app-icon, favicon, repository/avatar and social derivatives must be generated from the promoted masters and the applicable approved-board examples. No replacement font, regenerated A, palette cleanup, particle redesign or aesthetic reinterpretation is authorized.
+
+For 32px and 16px favicon targets, low-visibility micro-particles may be pruned deterministically because the approved board defines a small-size family and the complete particle field becomes unreadable at those raster sizes. Major particles, A geometry, pale inner A and central anchor remain unchanged.
 
 ## QA-system decision
 
-Principal-facing review and engineering diagnostics are now separate products:
-
-- normal `brand/tools/render-vector-review.py` output is **clean review** with no blue bounds boxes, crop boxes, or debug overlays;
-- `--diagnostic` is engineering-only and may draw detected artwork bounds;
-- both modes use contain-only scaling;
-- debug information must never obscure or visually compete with the brand artwork being approved.
-
-The primary-mark crop was also widened/cleaned again so review does not include neighboring title text while retaining safe margin.
-
-## Decision boundary
-
-No regenerated A, replacement wordmark design, palette cleanup, particle-field redesign, or aesthetic reinterpretation is authorized. The v0.3 wordmark construction may use a geometric outline template internally, but the approved raster remains the authority and the committed result is outline geometry only; no inferred font identity is canonical.
-
-A technically valid SVG that drifts from the locked reference must still be rejected.
+- clean Principal review contains no blue bounds boxes or diagnostic overlays;
+- engineering bounds are explicit diagnostic-only output;
+- all review placement uses contain-only scaling;
+- a technically valid derivative that drifts from the approved reference must still be rejected.
 
 ## Next acceptable move
 
-Run Principal clean review of the v0.3 component/lockup set. Correct only mismatches demonstrated by the locked source. If accepted, promote/flatten masters and continue to light/dark/monochrome, icon, favicon and social derivatives.
+Complete the derivative/export package, run target-size QA, write the brand handoff, preserve the byte-exact approved board in repository storage, then reconcile this approved branch-local evidence into the latest canonical `main` during integration.
