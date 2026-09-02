@@ -14,6 +14,7 @@ from vcs_branch_continuity_reference import (
     integration_requires_reconciliation,
     reconcile_integration,
     rewrite_revision,
+    select_working_ref,
     verification_ref,
 )
 
@@ -33,6 +34,24 @@ def _write_project(root: Path, state: str, next_actions: str) -> None:
 
 
 class VCSBranchContinuityTests(unittest.TestCase):
+    def test_working_ref_selection_never_guesses_sibling_branch(self) -> None:
+        self.assertEqual(
+            select_working_ref(
+                requested_ref="feature/a",
+                current_context_ref="main",
+                default_ref="main",
+            ),
+            "feature/a",
+        )
+        self.assertEqual(
+            select_working_ref(current_context_ref="feature/worktree", default_ref="main"),
+            "feature/worktree",
+        )
+        self.assertEqual(select_working_ref(default_ref="main"), "main")
+        with self.assertRaises(VCSContinuityFailure) as ctx:
+            select_working_ref()
+        self.assertEqual(ctx.exception.code, "AGNIR_VCS_REF_REQUIRED")
+
     def test_real_git_worktree_resolves_branch_local_truth(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp) / "project"
