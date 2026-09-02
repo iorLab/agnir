@@ -1,0 +1,1 @@
+Core 0.2 work has started on `feature/core-0.2-lineage`. The branch currently contains the parallel-continuity design hypothesis, a dual-backend conformance plan, explicit versioning dimensions, and draft v1.0.0 release gates. No normative Core 0.2 contract has been accepted yet; acceptance depends on VCS and non-VCS conformance plus subsequent real-Project validation.
