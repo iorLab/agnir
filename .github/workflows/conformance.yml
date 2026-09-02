@@ -45,5 +45,8 @@ jobs:
         run: python -m unittest discover -s conformance -p 'test_core_0_2_migration.py' -v
       - name: repository-filesystem 0.1 to 0.2 migration
         run: python -m unittest discover -s conformance -p 'test_repository_filesystem_0_2_migration.py' -v
+      - name: RC fresh install and published v0.1.1 migration
+        if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.head_ref, 'release/')
+        run: python -m unittest discover -s conformance -p 'test_rc_release_gates.py' -v
       - name: Full conformance suite
         run: python -m unittest discover -s conformance -p 'test_*.py' -v
