@@ -21,6 +21,26 @@ class BranchContinuitySnapshot:
     next_actions: str
 
 
+def select_working_ref(
+    *,
+    requested_ref: str | None = None,
+    current_context_ref: str | None = None,
+    default_ref: str | None = None,
+) -> str:
+    """Select one VCS working ref without guessing among sibling branches.
+
+    Explicit task/adapter scope wins, then an already selected checkout/worktree ref,
+    then an explicitly declared default. The helper never searches branch names.
+    """
+    for candidate in (requested_ref, current_context_ref, default_ref):
+        if candidate:
+            return candidate
+    raise VCSContinuityFailure(
+        "AGNIR_VCS_REF_REQUIRED",
+        "branch-local continuity requires an explicit selected ref/worktree or declared default ref",
+    )
+
+
 def branch_from(base: BranchContinuitySnapshot, *, ref: str, revision: str) -> BranchContinuitySnapshot:
     """Start a branch-local continuity line from an already coherent base checkpoint."""
     if not ref or not revision:
@@ -61,10 +81,11 @@ def reconcile_integration(
     reconciled_state: str | None,
     reconciled_next_actions: str | None,
 ) -> BranchContinuitySnapshot:
-    """Construct target truth after a VCS integration event.
+    """Construct target truth for a staged VCS integration candidate.
 
     Source continuity is an input to reconciliation, never an implicit replacement
-    for target continuity. The caller must provide explicit reconciled target truth.
+    for target continuity. The caller must provide explicit reconciled target truth
+    before the target ref is advanced to ``result_revision``.
     """
     if event not in INTEGRATION_EVENTS:
         raise ValueError(f"unsupported integration event: {event}")
@@ -76,7 +97,7 @@ def reconcile_integration(
     if reconciled_state is None or reconciled_next_actions is None:
         raise VCSContinuityFailure(
             "AGNIR_VCS_RECONCILIATION_REQUIRED",
-            f"{event} requires explicit target-branch continuity reconciliation",
+            f"{event} requires explicit target-branch continuity reconciliation before target publication",
         )
     if not result_revision:
         raise ValueError("result_revision must be non-empty")
