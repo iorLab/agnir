@@ -30,11 +30,15 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/release/v0.2.0-rc.1"
   agnir/release:
-    phase: "rc"
+    phase: "rc-published"
     repository_version: "0.2.0-rc.1"
     core_contract: "spec/AGNIR_CORE_0_2.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_0_2.md"
     baseline_main: "f0b2cbd5329adb6ac7309076d7ea09337bb057c5"
+    published_tag: "v0.2.0-rc.1"
+    published_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"
+    github_release_id: 381532232
+    publication_workflow_run: 33675638723
   agnir/operations:
     distribution: "agnir-agent-skill"
     release: "0.2.0-rc.1"

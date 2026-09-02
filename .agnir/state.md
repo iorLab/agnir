@@ -1,27 +1,45 @@
 # Agnir Current State
 
-Agnir `v0.1.1` remains the latest formally published **stable** repository release, immutably anchored to `e9712357ab590e5c1e5357b3cf3219d07d789aff`. **Durable continuity belongs to the Project**, not to an Executor, conversation, execution environment, storage implementation, repository host, VCS branch, selector, revision receipt, or Continuity Lineage.
+Agnir `v0.2.0-rc.1` is now formally published as a **prerelease**. **Durable continuity belongs to the Project**, not to an Executor, conversation, execution environment, storage implementation, repository host, VCS branch, selector, revision receipt, or Continuity Lineage.
 
-## v0.2.0-rc.1 publication-armed candidate — 2026-09-03
+## Published RC — 2026-09-03
 
-Temporary branch `release/v0.2.0-rc.1` self-hosts Core `0.2` / `repository-filesystem/0.2` for Project `urn:agnir:project:agnir-core` on logical lineage `urn:agnir:lineage:v0.2.0-rc.1`, separately bound to selector `refs/heads/release/v0.2.0-rc.1`.
+- tag: `v0.2.0-rc.1`
+- immutable tag target: `50a8cd565954e7e8055b8b628e2d620ac7357bab`
+- tag object type: commit
+- GitHub Release id: `381532232`
+- Release title: `Agnir v0.2.0-rc.1`
+- `prerelease`: true
+- `draft`: false
+- published at: `2026-09-02T19:50:04Z`
+- publication/conformance workflow: `33675638723`
 
-The RC normative contracts, bilingual READMEs, Skill, migration contract, schema, release-gate fixtures, and real published-v0.1.1 migration evidence are synchronized. Operational provenance truthfully records immutable applied RC package baseline `bee78b2c9bb8c5ce5916d08691019dcde939b813`.
+The workflow first passed the complete `repository-filesystem` conformance job on the exact tag target, then its dependent publication job created and verified the tag/release. External post-publication reads confirmed `refs/tags/v0.2.0-rc.1` resolves directly to `50a8cd...` and the Release metadata is prerelease/non-draft.
 
-Final pre-publication candidate `79f8eb071d0b29bc4505d3448550c55619bd7cc9` passed exact-head GitHub Actions run `33675222129`: RC self-host, stable Core `0.1` regressions, VCS/lineage/profile pressure, semantic/concrete migration, fresh Core `0.2` install, exact published-v0.1.1 migration fixture, and full suite all succeeded.
+GitHub `releases/latest` still resolves to stable `v0.1.1` Release id `380414987`; therefore RC publication did not replace stable upgrade resolution.
 
-Real-repository migration from immutable published `v0.1.1` also passed on validation head `2219c5c8c37f1d62d3a839cc321e67d564b36f97`, run `33674731595`.
+## RC compatibility contract
 
-## Publication mechanism
+- repository SemVer: `0.2.0-rc.1`
+- Core: `0.2`
+- profile: `repository-filesystem/0.2`
+- Project: `urn:agnir:project:agnir-core`
+- release-line logical lineage: `urn:agnir:lineage:v0.2.0-rc.1`
+- release-line selector: `refs/heads/release/v0.2.0-rc.1`
+- applied operational-package baseline: `bee78b2c9bb8c5ce5916d08691019dcde939b813`
 
-Because the connected GitHub write surface does not expose direct tag/release creation, the repository conformance workflow now contains a narrowly scoped publication job. It has `contents:write` only after the ordinary `repository-filesystem` conformance job succeeds and only when all of these are true:
+Normative RC contracts are `spec/AGNIR_CORE_0_2.md`, `profiles/REPOSITORY_FILESYSTEM_0_2.md`, `spec/CORE_0_1_TO_0_2_MIGRATION.md`, and `schemas/agnir-manifest-0.2.schema.json`.
 
-- event is a push;
-- ref is exactly `refs/heads/release/v0.2.0-rc.1`;
-- head commit message is exactly `rc: arm v0.2.0-rc.1 publication`.
+## Verification evidence
 
-The publication job is fail-closed and idempotent: an existing tag must already point at the exact workflow SHA or publication fails; a correctly created tag is never moved; an existing Release must match the tag; final verification requires tag SHA = workflow SHA, `prerelease=true`, and `draft=false`.
+Prepublication gates included RC self-host, stable Core `0.1` regression, Core `0.2` VCS/non-VCS/profile/binding/migration pressure, a genuinely fresh Core `0.2` install, exact published-v0.1.1 manifest migration, and a stronger real-repository migration starting directly from immutable published `v0.1.1`. The real validation head `2219c5c8c37f1d62d3a839cc321e67d564b36f97` passed run `33674731595`.
 
-This checkpoint arms that one publication event but does **not** pre-claim its result. The commit containing this state and publication workflow must first pass the complete conformance job; only then may its dependent job create immutable `v0.2.0-rc.1` and the GitHub prerelease. `v0.1.1` remains latest stable.
+Final prepublication candidate `79f8eb071d0b29bc4505d3448550c55619bd7cc9` passed run `33675222129`. Publication-armed exact tag target `50a8cd565954e7e8055b8b628e2d620ac7357bab` then passed the complete conformance job in run `33675638723` before its dependent publication job succeeded.
 
-After publication succeeds, the release branch must record the actual tag target, Release id, and workflow receipt in a later post-publication checkpoint without changing the tag. `main` is not moved by RC publication.
+Durable receipts are recorded under `.agnir/evidence/2026-09-03-v0.2.0-rc.1-release-gates.md`, `.agnir/evidence/2026-09-03-v0.2.0-rc.1-publication-mechanism.md`, and `.agnir/evidence/2026-09-03-v0.2.0-rc.1-publication-result.md`.
+
+## Current boundary
+
+The RC tag is immutable and must not be moved to this or any later checkpoint. This post-publication branch checkpoint records facts that only became knowable after publication; it does not redefine the release target.
+
+`main` has not moved as part of RC publication. The next major engineering boundary is an RC observation/stabilization cycle followed by safe reconciliation of accepted RC changes back into authoritative `main`. Final stable `v0.2.0` is a separate publication decision and must not be inferred merely from RC success.
