@@ -50,3 +50,70 @@ jobs:
         run: python -m unittest discover -s conformance -p 'test_rc_release_gates.py' -v
       - name: Full conformance suite
         run: python -m unittest discover -s conformance -p 'test_*.py' -v
+
+  publish-v0-2-0-rc-1:
+    name: Publish v0.2.0-rc.1 prerelease
+    needs: repository-filesystem
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/release/v0.2.0-rc.1' &&
+      github.event.head_commit.message == 'rc: arm v0.2.0-rc.1 publication'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact publication candidate
+        run: |
+          set -euo pipefail
+          test "$(cat VERSION)" = "0.2.0-rc.1"
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+      - name: Create immutable tag and prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="v0.2.0-rc.1"
+          repo="${GITHUB_REPOSITORY}"
+
+          if tag_json=$(gh api "repos/${repo}/git/ref/tags/${tag}" 2>/dev/null); then
+            existing_sha=$(printf '%s' "${tag_json}" | jq -r '.object.sha')
+            test "${existing_sha}" = "${GITHUB_SHA}"
+          else
+            gh api --method POST "repos/${repo}/git/refs" \
+              -f ref="refs/tags/${tag}" \
+              -f sha="${GITHUB_SHA}" >/dev/null
+          fi
+
+          body=$(cat <<EOF
+          Agnir v0.2.0-rc.1 prerelease.
+
+          Exact candidate: ${GITHUB_SHA}
+          Conformance workflow: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          Core: 0.2
+          Profile: repository-filesystem/0.2
+
+          This is a prerelease. v0.1.1 remains the latest stable release until a later stable v0.2.0 publication.
+          EOF
+          )
+
+          if release_json=$(gh api "repos/${repo}/releases/tags/${tag}" 2>/dev/null); then
+            release_tag=$(printf '%s' "${release_json}" | jq -r '.tag_name')
+            test "${release_tag}" = "${tag}"
+          else
+            gh api --method POST "repos/${repo}/releases" \
+              -f tag_name="${tag}" \
+              -f target_commitish="${GITHUB_SHA}" \
+              -f name="Agnir ${tag}" \
+              -f body="${body}" \
+              -F draft=false \
+              -F prerelease=true >/dev/null
+          fi
+
+          tag_sha=$(gh api "repos/${repo}/git/ref/tags/${tag}" --jq '.object.sha')
+          prerelease=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.prerelease')
+          draft=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.draft')
+          test "${tag_sha}" = "${GITHUB_SHA}"
+          test "${prerelease}" = "true"
+          test "${draft}" = "false"
+          echo "PASS: ${tag} -> ${tag_sha}; prerelease=${prerelease}; draft=${draft}"
