@@ -1,11 +1,14 @@
 agnir:
-  version: "0.1"
-  discovery_profile: "repository-filesystem/0.1"
+  version: "0.2"
+  discovery_profile: "repository-filesystem/0.2"
 
 project:
   identity: "urn:agnir:project:agnir-core"
   profiles:
     - generic
+
+continuity:
+  lineage: "urn:agnir:lineage:v0.2.0-rc.1"
 
 memory:
   state: ".agnir/state.md"
@@ -21,12 +24,17 @@ extensions:
     canonical: "iorLab/agnir"
     authoritative_ref: "main"
   agnir/vcs:
-    branch_continuity: "branch-local"
+    branch_continuity: "lineage-bound"
     integration_reconciliation: "required"
-  agnir/experiments:
-    core_0_2_parallel_continuity: "real-consumer-validated"
-    core_0_2_spec: "spec/AGNIR_CORE_0_2_DRAFT.md"
-    core_0_2_release_phase: "pre-rc"
+    lineage_binding:
+      kind: "vcs-ref"
+      selector: "refs/heads/release/v0.2.0-rc.1"
+  agnir/release:
+    phase: "rc"
+    repository_version: "0.2.0-rc.1"
+    core_contract: "spec/AGNIR_CORE_0_2.md"
+    profile_contract: "profiles/REPOSITORY_FILESYSTEM_0_2.md"
+    baseline_main: "f0b2cbd5329adb6ac7309076d7ea09337bb057c5"
   agnir/operations:
     distribution: "agnir-agent-skill"
     release: "0.1.1"
