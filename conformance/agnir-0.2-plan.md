@@ -8,17 +8,20 @@ This plan tests whether Parallel Continuity belongs in Agnir Core rather than on
 
 ## Acceptance rule
 
-Core 0.2 may adopt Continuity Lineage only if the same backend-neutral invariants pass in both a VCS-backed implementation and a non-VCS implementation.
+Core 0.2 may adopt Continuity Lineage only if the same backend-neutral invariants pass in both a VCS-backed implementation and a non-VCS implementation without confusing backend selectors/locators with logical lineage identity.
 
 ## Conformance matrix
 
 | Invariant | VCS-backed case | Non-VCS case |
 | --- | --- | --- |
 | Same Project identity across lineages | branches/worktrees | logical namespaces |
-| Durable lineage identity distinct from revision | branch/ref logical mapping vs SHA | lineage key vs generation |
-| Explicit lineage selection | selected ref/worktree | namespace selector |
+| Durable logical lineage identity distinct from revision | logical lineage ID vs SHA | lineage key vs generation |
+| Selector/binding distinct from identity when backend requires it | ref/worktree -> logical lineage binding | namespace may equal identity by backend design |
+| Explicit deterministic selection | selected ref/worktree | namespace selector |
+| Selected unbound/missing value does not fall back | unbound ref | missing namespace |
+| Selector rename can preserve logical identity | explicit ref rebind/rename | namespace alias/rebind where supported |
 | Independent checkpoint advancement | branch-local checkpoint | namespace-local checkpoint |
-| Fresh resume isolation | checkout/worktree resolve | namespace resolve |
+| Fresh resume isolation | ref/worktree binding resolve | namespace resolve |
 | Integration uses source as input, not truth | merge/rebase/cherry-pick | staged namespace integration |
 | Target remains unpublished until reconciliation | ref unchanged during staged integration | transaction not committed |
 | Coherent target publication | reconciled target commit/ref advance | atomic transaction publish |
@@ -29,7 +32,17 @@ Core 0.2 may adopt Continuity Lineage only if the same backend-neutral invariant
 
 Reuse and evolve `agnir/vcs-branch-continuity/0.1` and `conformance/test_vcs_branch_continuity.py`. The real Git fixture must continue to prove that the target ref remains unchanged until reconciliation is complete.
 
-A focused Core mapping layer must additionally prove that branch/ref, commit SHA, and merge/rebase/cherry-pick are adapter/profile mappings of generic lineage identity, receipt, and integration semantics rather than Core concepts.
+`conformance/core_0_2_vcs_mapping_reference.py` is the Core mapping pressure layer. It MUST treat:
+
+```text
+ref/worktree             = backend selector/binding
+logical lineage identity = separately resolved durable identity
+commit SHA               = checkpoint receipt/conflict token
+```
+
+The mapping layer must prove that a selected ref can resolve to a logical identity that is not equal to the ref string, that an unbound selected ref fails rather than falling back, and that an explicit ref rename/rebinding can preserve the same logical lineage identity.
+
+This prevents branch/ref, commit SHA, and merge/rebase/cherry-pick from leaking into Core semantics.
 
 ## Non-VCS fixture
 
@@ -43,6 +56,8 @@ It persists:
 - integer generation receipts;
 - staged integration candidates;
 - atomic target publication through SQLite transactions.
+
+In this fixture the namespace key intentionally serves as both selector and logical lineage identity. This is a backend choice, not a Core requirement.
 
 ## Required non-VCS scenarios
 
@@ -62,16 +77,23 @@ It persists:
 
 ## Migration gate
 
-Before Core `0.2` can be published stable, conformance must cover Core `0.1` → `0.2` migration. Current hypothesis:
+Before Core `0.2` can be published stable, conformance must cover Core `0.1` → `0.2` migration:
 
 - preserve Project identity;
 - preserve existing durable continuity content;
-- map the existing single continuity line into one initial/default lineage;
+- map the existing single continuity line into exactly one initial/default logical lineage;
+- obtain that initial lineage identity explicitly or from deterministic profile/backend policy;
 - make migration explicit rather than silently treating `0.2` as compatible with `0.1`;
-- make repeated migration idempotent or explicitly no-op after successful completion;
-- cold-start the migrated Project as Core `0.2` from authorized entry point + lineage context/default.
+- make repeated identical migration a no-op;
+- reject an attempt to silently rebind an already migrated Project to another initial lineage identity;
+- reject stale-source migration publication;
+- cold-start the migrated Project as Core `0.2` from authorized selector/identity context or default.
+
+## Current acceptance status
+
+The first dual-backend + migration run passed all focused gates and the full conformance suite before the selector/identity distinction was tightened. The tightened VCS mapping adds explicit unbound-ref and rename-preserves-identity cases; CI must remain green after this refinement before the abstraction is considered accepted for the next profile-design step.
 
 ## Decision after conformance
 
-- If both backend classes satisfy the same invariants without backend leakage, accept the generic lineage semantics into Core `0.2` and keep backend mapping in profiles/adapters.
+- If both backend classes satisfy the same invariants without backend leakage, accept the generic lineage semantics into Core `0.2` and keep backend selector/binding mapping in profiles/adapters.
 - If materially different backend semantics are required, revise the Core abstraction before publication instead of weakening tests or claiming premature compatibility.
