@@ -61,6 +61,68 @@ class VCSBranchContinuityTests(unittest.TestCase):
             self.assertEqual(main.state, "main state\n")
             self.assertEqual(feature.state, "feature state\n")
 
+    def test_real_git_merge_reconciles_before_target_ref_advances(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp) / "project"
+            repo.mkdir()
+            subprocess.run(["git", "init", "-b", "main", str(repo)], check=True, capture_output=True)
+            _git(repo, "config", "user.name", "Agnir Conformance")
+            _git(repo, "config", "user.email", "agnir@example.invalid")
+            _write_project(repo, "base state\n", "base next\n")
+            (repo / "project.txt").write_text("base\n", encoding="utf-8")
+            _git(repo, "add", ".")
+            _git(repo, "commit", "-m", "base")
+            _git(repo, "branch", "feature/parallel")
+
+            (repo / ".agnir" / "state.md").write_text("main state\n", encoding="utf-8")
+            (repo / ".agnir" / "next-actions.md").write_text("main next\n", encoding="utf-8")
+            (repo / "main.txt").write_text("main work\n", encoding="utf-8")
+            _git(repo, "add", ".")
+            _git(repo, "commit", "-m", "main advances")
+            main_before_merge = _git(repo, "rev-parse", "HEAD")
+
+            _git(repo, "checkout", "feature/parallel")
+            (repo / ".agnir" / "state.md").write_text("feature state\n", encoding="utf-8")
+            (repo / ".agnir" / "next-actions.md").write_text("feature next\n", encoding="utf-8")
+            (repo / "feature.txt").write_text("feature work\n", encoding="utf-8")
+            _git(repo, "add", ".")
+            _git(repo, "commit", "-m", "feature advances")
+            _git(repo, "checkout", "main")
+
+            merge = subprocess.run(
+                ["git", "-C", str(repo), "merge", "--no-commit", "--no-ff", "feature/parallel"],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertNotEqual(merge.returncode, 0, "divergent continuity should require explicit conflict resolution")
+            self.assertEqual(
+                _git(repo, "rev-parse", "HEAD"),
+                main_before_merge,
+                "target ref must not advance while the integration candidate is unreconciled",
+            )
+
+            (repo / ".agnir" / "state.md").write_text(
+                "feature integrated; main work preserved\n",
+                encoding="utf-8",
+            )
+            (repo / ".agnir" / "next-actions.md").write_text(
+                "verify integrated target\n",
+                encoding="utf-8",
+            )
+            _git(repo, "add", ".")
+            _git(repo, "commit", "-m", "merge feature with reconciled target continuity")
+
+            merge_head = _git(repo, "rev-parse", "HEAD")
+            self.assertNotEqual(merge_head, main_before_merge)
+            parents = _git(repo, "rev-list", "--parents", "-n", "1", "HEAD").split()
+            self.assertEqual(len(parents), 3, "final target publication should be one two-parent merge revision")
+
+            target = discover_repository_filesystem(repo)
+            self.assertEqual(target.project_identity, "urn:agnir:test:parallel")
+            self.assertEqual(target.state, "feature integrated; main work preserved\n")
+            self.assertEqual(target.next_actions, "verify integrated target\n")
+
     def test_branch_checkpoint_is_isolated_from_sibling_snapshot(self) -> None:
         main = BranchContinuitySnapshot("urn:p", "main", "a", "base", "ship")
         feature = branch_from(main, ref="feature/a", revision="b")
