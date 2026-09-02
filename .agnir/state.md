@@ -1,6 +1,6 @@
 # Agnir Current State
 
-Agnir `v0.1.1` remains the formally published stable repository release. `main` remains authoritative and unchanged by the active experimental work.
+Agnir `v0.1.1` remains the formally published stable repository release. `main` remains authoritative and unchanged by the active experimental work. **Durable continuity belongs to the Project**, not to an Executor, conversation, execution environment, storage implementation, repository host, VCS branch, or Continuity Lineage.
 
 ## Active Core 0.2 line — 2026-09-02
 
@@ -9,11 +9,11 @@ Core `0.2` Parallel Continuity development is active on temporary branch `featur
 - Project identity remains `urn:agnir:project:agnir-core` across `main`, the VCS experiment, and the Core 0.2 design branch.
 - Stable self-hosting remains Core `0.1` + `repository-filesystem/0.1`. The root Project does **not** yet claim Core `0.2` compatibility while the new line is under conformance pressure.
 - Intended next feature release, if the new compatibility line passes its gates: repository `v0.2.0` with Core compatibility `0.2`.
-- `v1.0.0` is defined as a stability/compatibility commitment milestone rather than a feature-count threshold; criteria are recorded in `docs/V1_RELEASE_CRITERIA.md`.
+- `v1.0.0` is defined as a stability/compatibility commitment milestone rather than a feature-count threshold; criteria are recorded in `V1_RELEASE_CRITERIA.md`.
 
 ## Core 0.2 design now under test
 
-The working normative draft is `spec/AGNIR_CORE_0_2_DRAFT.md`.
+The working normative draft is `spec/AGNIR_CORE_0_2_DRAFT.md`, with design rationale in `spec/CORE_0_2_DESIGN.md` and the dual-backend plan in `conformance/agnir-0.2-plan.md`.
 
 Core `0.2` generalizes one implicit Project-global continuity line into multiple independently advancing **Continuity Lineages**.
 
@@ -52,7 +52,7 @@ The focused cases cover:
 - source-generation conflict after staging;
 - cross-Project integration rejection.
 
-The CI workflow now has a separate `Experimental Core 0.2 parallel continuity` gate in addition to stable Core `0.1`, experimental VCS branch continuity, and the full suite. GitHub Actions run `33590715589` is the first run exercising this gate and is currently in progress at this checkpoint.
+CI has already exposed two self-hosting regressions in the Core `0.2` workstream before the new experimental test could run: first, an invalid top-level `docs/` directory violated the repository's stable structural contract; second, the branch-local state rewrite omitted the still-true Project ownership invariant required by stable cold-start conformance. The structural content has been moved into the repository's existing `spec/`, `conformance/`, and root policy surfaces, and this state restores the required Project-level invariant rather than weakening the stable checker.
 
 ## VCS evidence retained from PR #4
 
