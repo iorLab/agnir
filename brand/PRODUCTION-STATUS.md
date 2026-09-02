@@ -12,44 +12,42 @@ The Principal-approved Today 10:42 AM Agnir board is the sole Agnir-only visual 
 
 - concept exploration ended;
 - approved visual reference locked by exact source SHA-256;
-- rejected deterministic v0.1 reconstruction removed from the active branch;
-- lossless source-board crops prepared for primary mark, wordmark, horizontal/vertical lockups, light/dark/monochrome examples, app-icon example, and social-card example;
-- crop coordinates and derived hashes persisted for reproducible trace/QA;
-- raster-board limitation recorded: board labels such as `512px` are presentation labels, not proof that a true 512px source asset exists;
-- `brand/masters/candidates/agnir-wordmark-trace-v0.1.svg` contains a raster-derived trace candidate of the approved standalone `Agnir` wordmark;
-- `brand/masters/candidates/agnir-mark-trace-v0.1.svg` contains a raster-derived candidate of the approved particle-built A with central anchor;
-- `brand/tools/derive-raster-assets.py` now provides a deterministic white-matte extraction path for approved white-background crops, producing transparent PNG derivatives plus a SHA-256 manifest;
-- local QA of that raster path preserves the approved Agnir appearance on white while recovering usable transparency for the particle A/lockups; 128/64/32/16 icon derivatives have been visually checked;
-- the derivation manifest explicitly marks outputs larger than the native approved crop as raster-derived upscales rather than pretending they are native source masters.
+- rejected deterministic reconstruction removed from the active branch;
+- source-board extraction manifest corrected after QA found several earlier crop bounds were too tight;
+- corrected primary-mark / wordmark / horizontal-lockup regions now preserve the approved content without clipping;
+- `brand/masters/candidates/agnir-mark-trace-v0.2.svg` is the current particle-A review candidate, derived from the corrected approved primary-mark crop;
+- `brand/masters/candidates/agnir-wordmark-trace-v0.2.svg` is the current black standalone wordmark review candidate, derived from the corrected approved wordmark crop;
+- `brand/masters/candidates/agnir-horizontal-lockup-v0.2.svg` and `agnir-vertical-lockup-v0.2.svg` encode the current source-aligned candidate assemblies;
+- superseded v0.1 mark/wordmark traces were removed from the active branch to prevent accidental use;
+- `brand/tools/derive-raster-assets.py` provides the deterministic interim white-matte → transparent PNG / target-size raster path;
+- raster derivation continues to preserve the approved Agnir appearance without pretending raster upscales are native masters.
 
 ## Current production gate
 
-**Faithful vectorization remains the master gate.**
+**v0.2 is ready for master-review, not yet a locked master.**
 
-A vector master may be accepted only when it is traced/reconstructed from the approved crop and visually compared with that crop. No new image generation, ribbon-based A replacement, typography substitution, palette reconciliation, particle-field redesign, or aesthetic cleanup is allowed.
+A vector master may be promoted only after visual comparison against the corrected approved crop. No new image generation, ribbon-based A replacement, typography substitution, palette reconciliation, particle-field redesign, or aesthetic cleanup is allowed.
 
-The raster derivation tool is an interim/reproducible production path, not permission to redefine the master.
+### Current v0.2 review status
 
-### Candidate status
+- Particle A: **best current vector candidate**. It preserves the approved discrete-particle hierarchy, pale inner A, outer field and central anchor. Automated source-vs-render SSIM during local QA is approximately `0.894`; that metric is supporting evidence only, not the approval criterion.
+- Wordmark: **best current vector candidate**. It is a corrected dense contour trace of the actual approved black wordmark, not a substituted font.
+- Horizontal lockup: **review candidate assembled and visually aligned** to the corrected approved horizontal region.
+- Vertical lockup: **review candidate assembled and visually aligned** to the approved vertical region.
+- Candidate lockups intentionally reference the candidate component SVGs at this stage; if/when promoted, they must be flattened/self-contained.
+- Light/dark/monochrome vector variants remain blocked until the v0.2 primary mark and wordmark are accepted masters.
 
-- Particle A trace: **candidate only**. The reconstruction preserves the approved particle hierarchy, pale inner A field, outer particle field, and central-anchor reading closely enough to continue QA, but it is not yet a locked master.
-- Wordmark trace: **candidate only**. Geometry is derived from the locked raster reference and has been iteratively tightened; it is not yet promoted to a master.
-- Horizontal lockup: a source-aligned assembly of the current mark/wordmark candidates has passed preliminary visual alignment locally; it remains unpromoted until the two component masters are accepted.
-- Raster primary/lockup derivation: **reproducible candidate path**. White-background source appearance is retained and transparency can be recovered deterministically; this does not make the result a vector master.
-- Final variants remain blocked until primary mark and wordmark pass the master gate.
-
-The quality rule is explicit: **absence of a vector master is preferable to a visually drifting vector master.**
+The quality rule remains: **absence of a locked master is preferable to a visually drifting master.**
 
 ## Binary reference boundary
 
-The byte-exact approved board and crop PNGs remain preserved by SHA-256 and in the locked local reference package. They are not falsely claimed to be repository binaries. The current connector can create Git blobs from supplied base64 text, but there is no direct local-file upload bridge; final binary preservation should be completed on a Git-capable execution surface before `main` integration.
+The byte-exact approved board and crop PNGs remain preserved by SHA-256 and in the locked local reference package. The current connector does not provide a practical local-file binary upload bridge for the multi-megabyte exact approved PNG, so final byte-exact repository preservation remains a pre-`main` integration gate.
 
 ## Next actions
 
-1. Continue visual regression on the particle-A candidate and correct only mismatches demonstrated by the approved crop.
-2. Continue visual regression on the `Agnir` wordmark candidate and correct only demonstrated mismatches.
-3. Use `brand/tools/derive-raster-assets.py` for reproducible interim transparent/icon derivatives once the approved crop files are present on the execution surface; keep upscale flags intact.
-4. Promote/rebuild horizontal and vertical vector lockups only after both primary mark and wordmark are accepted masters.
-5. Build light/dark/monochrome vector variants only from locked masters and approved examples.
-6. Run target-size QA for repository, app, favicon, and social surfaces.
-7. Before final integration, preserve the byte-exact approved source in repository storage, re-resolve latest `main`, reconcile Agnir continuity, and integrate coherently.
+1. Run Principal visual review of Agnir v0.2 mark / wordmark / horizontal / vertical candidates against the locked board.
+2. If accepted, promote the mark and wordmark to production masters and flatten the two lockups into self-contained SVGs.
+3. Rebuild light-background, dark-background and monochrome variants from those locked masters while matching the approved examples.
+4. Produce repository/app/favicon/social derivatives and target-size QA.
+5. Preserve the byte-exact approved source in repository storage before final integration.
+6. Re-resolve latest `main`, reconcile approved brand continuity, and integrate coherently only after the brand asset gate is complete.
