@@ -1,6 +1,6 @@
 # Agnir 0.1 Conformance
 
-This conformance layer validates stable Agnir Core `0.1`, `repository-filesystem/0.1`, and the repository's Agnir Agent Skill packaging without importing predecessor protocol requirements.
+This conformance layer validates stable Agnir Core `0.1`, `repository-filesystem/0.1`, and the repository's Agnir Agent Skill packaging without importing predecessor protocol requirements. It also contains experimental pressure for the repository/VCS branch-continuity extension; those extension cases do not redefine the stable Core/profile compatibility lines.
 
 ## Stable baseline
 
@@ -35,12 +35,29 @@ The executable suite covers:
 
 The reference models under `conformance/` are executable pressure tools, not promoted production implementations or mandatory backends.
 
+## Experimental repository/VCS branch-continuity pressure
+
+`profiles/VCS_BRANCH_CONTINUITY.md` adds an experimental extension layer on top of the stable repository/filesystem profile. Its executable pressure currently proves:
+
+- a real Git `main` worktree and feature worktree can resolve the same `project.identity` while carrying different branch-local Current State after divergence;
+- a branch-local checkpoint snapshot does not mutate a sibling branch snapshot;
+- merge, rebase, and cherry-pick are continuity-integration boundaries that require explicit target reconciliation rather than automatic source-state promotion;
+- integration across different Project identities is rejected;
+- rebase/history rewrite can replace revision receipts without redefining Project identity or otherwise coherent branch truth;
+- push verification follows the actual destination ref, while a claim of authoritative publication additionally requires the declared `authoritative_ref`.
+
+These cases intentionally do **not** introduce a durable generic `lineage.id`, change Agnir Core `0.1`, or change the `repository-filesystem/0.1` discovery schema. Their purpose is to pressure-test branch-aware repository behavior before deciding whether any storage-neutral continuity-lineage invariant deserves a future Core compatibility line.
+
 ## Known unproven boundary
 
 A real mount-boundary case remains unproven because the current environment does not provide a real mount-capable fixture. An ordinary directory MUST NOT be represented as equivalent mount evidence.
 
+A generic non-VCS continuity-lineage abstraction is also intentionally unproven. Current branch tests establish repository/VCS behavior only; they are insufficient evidence by themselves to promote `lineage` into Agnir Core.
+
 ## Release interpretation
 
-Passing this suite establishes the reference repository's stable `0.1.0` conformance baseline for Core `0.1`, profile `repository-filesystem/0.1`, and the published Agent Skill packaging boundary. For checkpoint semantics it additionally proves no-op behavior, coherent single-generation publication, and stale-base conflict rejection in a substrate-neutral reference model. For an Agent-operable repository initialized under the reference convention, it additionally proves that existing root Agent instructions are preserved during Agnir locator installation, explicit contradictory instructions are surfaced rather than overwritten, the activation route itself is durable, future Agents do not require the original initialization prompt or conversation, and repository-context commit/push intent remains a durable checkpoint boundary.
+Passing the stable portion of this suite establishes the reference repository's published Core `0.1` / profile `repository-filesystem/0.1` conformance baseline and the Agent Skill packaging boundary. For checkpoint semantics it additionally proves no-op behavior, coherent single-generation publication, and stale-base conflict rejection in a substrate-neutral reference model. For an Agent-operable repository initialized under the reference convention, it additionally proves that existing root Agent instructions are preserved during Agnir locator installation, explicit contradictory instructions are surfaced rather than overwritten, the activation route itself is durable, future Agents do not require the original initialization prompt or conversation, and repository-context commit/push intent remains a durable checkpoint boundary.
+
+Passing the experimental branch-continuity tests establishes only the behavior claimed by `agnir/vcs-branch-continuity/0.1`; it does not by itself graduate that extension into the stable Core/profile contract.
 
 It does not imply that every possible backend, adapter, filesystem, authorization system, Agent Skill installer, VCS, repository hook, Agent instruction mechanism, semantic conflict form, or execution environment has been tested.
