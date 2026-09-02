@@ -11,21 +11,21 @@ Status: **branch-local production-preparation record**. The visual authority rem
 
 The co-brand/family authority remains attachment `1d00fb70-189b-4742-b4ac-c79be2668559.png`, SHA-256 `4110d285243b6241ac709e750cca1815a10ca41e27c3bb15e6c94b56e57fa4fb`.
 
-## Lossless raster extraction map
+## Final lossless raster extraction map
 
-Coordinates are `(left, top, right, bottom)` in approved-source pixels. These crops are QA/trace references, **not independently approved redesigns or vector masters**.
+Coordinates are `(left, top, right, bottom)` in approved-source pixels. These final crops were visually inspected to exclude board headings/dividers where practical. They are QA/trace references, **not independently approved redesigns or vector masters**.
 
 | Asset role | Crop box | Size | Derived PNG SHA-256 |
 | --- | --- | --- | --- |
-| Primary mark | `(105, 145, 355, 390)` | `250×245` | `57ab06e4b0698de37a6c797cdc7dfa7e47ea827d4f9e110961e5251dc4d9aba6` |
-| Wordmark | `(505, 135, 885, 235)` | `380×100` | `e048f59bf7c1c02c6f0bbd37933ea067d8f8b03562060b6cdc634a481229c643` |
-| Horizontal lockup | `(965, 160, 1362, 305)` | `397×145` | `4e68ac463fbcf6b18c5900ab8e2e5cdb01763a1189add80e9a1b62cb5cc6a871` |
-| Vertical lockup | `(500, 270, 900, 500)` | `400×230` | `c1653c0d4f0f21cb25bf3ddc20a09a389324a7339553c304e78b988fcbf499c4` |
-| Light-background example | `(40, 556, 447, 740)` | `407×184` | `cda9b4c536f27d0f8cd8a68bb74a246e56dcf01f893c071afbd656e41cd9d321` |
-| Dark-background example | `(482, 556, 920, 740)` | `438×184` | `d690191d9f6320f45d25681b6a17419ce9a8a9e9983a144445a8575a5b9187fd` |
-| Monochrome example | `(958, 556, 1368, 740)` | `410×184` | `de6183931d9c6dbff8be1cb574a1a8495400d510514a794f0e886f0c578fca62` |
-| App-icon example | `(42, 802, 190, 965)` | `148×163` | `b8b4ac3827261a7ae1544073829ad49916e89929f7682c68c05f450415c19850` |
-| Social-card example | `(635, 802, 1015, 972)` | `380×170` | `80e203afd3ab5faf4287c2a1fac60a5ca5b5659cbafb72900b07e3dee4c60f62` |
+| Primary mark | `(110, 155, 355, 390)` | `245×235` | `66edc2f6dff61507775284a273b08222bc2d946a8f933bfce79a75657e3b9df0` |
+| Wordmark | `(505, 145, 900, 245)` | `395×100` | `c93c3743284e14bcc3750472a7a31476ed8f30cdb5673117b3721140d1bd45c0` |
+| Horizontal lockup | `(970, 165, 1400, 310)` | `430×145` | `d7f3d08be5d5c0efd20995f5cefa5665a1983300b1f8e22d07ce4f4fdc22bda6` |
+| Vertical lockup | `(600, 295, 805, 455)` | `205×160` | `4320300782c57b8679e10caa85098a6ce07e4cf9fbd4ce8d58fb5b0705c6ad3f` |
+| Light-background example | `(38, 575, 450, 740)` | `412×165` | `acb895e9be89c79c25a51ca7822c0629ebfbbfc1d4e37bedfa05a2467d763ec2` |
+| Dark-background example | `(480, 575, 925, 740)` | `445×165` | `fa985aa9822864140c3f76555fe8ba7908c25ea5ac4d4b059bf530976551a30e` |
+| Monochrome example | `(955, 575, 1375, 740)` | `420×165` | `eee75df574b046690bc38886738e46ea1f131be3c5da96166513f76cef074085` |
+| App-icon example | `(40, 815, 190, 970)` | `150×155` | `14cf2ad3d7949e30e14855a57a3d04f15ca027cc53224f39bdd141a8fd1da219` |
+| Social-card example | `(645, 820, 1015, 970)` | `370×150` | `20e95c74ee3acfca3e072429facffda836d5e1586394d1226e7f572b17766cd2` |
 
 ## Production rule
 
