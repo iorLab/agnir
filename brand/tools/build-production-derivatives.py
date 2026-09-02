@@ -19,7 +19,7 @@ BRAND_ORANGE = "#C2812E"
 
 
 def body(text: str) -> str:
-    match = re.search(r"<svg\\b[^>]*>(.*)</svg>\\s*$", text, re.S)
+    match = re.search(r"<svg\b[^>]*>(.*)</svg>\s*$", text, re.S)
     if not match:
         raise ValueError("invalid SVG")
     return match.group(1)
