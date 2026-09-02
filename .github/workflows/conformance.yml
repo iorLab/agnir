@@ -16,7 +16,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Self-hosting cold-start conformance
+      - name: Stable self-hosting cold-start conformance
         run: python conformance/check_agnir_0_1.py
-      - name: Negative discovery fixtures
+      - name: Experimental VCS branch continuity
+        run: python -m unittest discover -s conformance -p 'test_vcs_branch_continuity.py' -v
+      - name: Experimental Core 0.2 non-VCS parallel continuity
+        run: python -m unittest discover -s conformance -p 'test_core_0_2_parallel_continuity.py' -v
+      - name: Experimental Core 0.2 VCS mapping
+        run: python -m unittest discover -s conformance -p 'test_core_0_2_vcs_mapping.py' -v
+      - name: Experimental repository-filesystem 0.2 discovery
+        run: python -m unittest discover -s conformance -p 'test_repository_filesystem_0_2.py' -v
+      - name: Experimental VCS lineage binding
+        run: python -m unittest discover -s conformance -p 'test_vcs_lineage_binding.py' -v
+      - name: Experimental Core 0.1 to 0.2 migration semantics
+        run: python -m unittest discover -s conformance -p 'test_core_0_2_migration.py' -v
+      - name: Experimental repository-filesystem 0.1 to 0.2 migration
+        run: python -m unittest discover -s conformance -p 'test_repository_filesystem_0_2_migration.py' -v
+      - name: Full conformance suite
         run: python -m unittest discover -s conformance -p 'test_*.py' -v

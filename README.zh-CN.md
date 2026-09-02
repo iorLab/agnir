@@ -52,7 +52,7 @@ Project 根目录
 2. **Load。** 从声明的 durable memory 加载 Current State 与 Next Actions；当 Decisions 与 Evidence 会实质约束本次操作时再加载。除非有更新的 Principal 指令或直接观察到的当前 Project 事实覆盖，否则 durable Project truth 优先于聊天记录或 Agent 私有记忆。
 3. **Work。** 真正的 Project 工作发生在 Agnir Core 之外。安装、升级或 repair 时，根目录 `SKILL.md` 是 canonical Agent-facing procedure。
 4. **Checkpoint。** 在明确的 checkpoint、保存进度、结束工作或 repository commit boundary 上，只 reconcile 有实质变化的 continuity。Durable truth 未变化时做 no-op；发生变化时必须形成一致的 authoritative transition。若 authoritative base 已过期，返回 `AGNIR_CHECKPOINT_CONFLICT`，不得覆盖更新事实；发布后重新验证 fresh discovery。
-5. **Commit / push。** 在 repository / VCS 上下文中，已授权的 `commit`、`提交`、`提交代码` 或同义请求表示先 checkpoint 再 commit，并优先把 Project + Agnir 变化放进同一个 revision。`commit and push`、`提交推送` 或同义请求再加 push 与 authoritative-ref verification。只是观察到外部 commit，只触发 checkpoint evaluation，不代表无条件写入 Agnir。
+5. **Commit / push。** 在 repository / VCS 上下文中，已授权的 `commit`、`提交`、`提交代码` 或同义请求表示先 checkpoint 再 commit，并优先把 Project + Agnir 变化放进同一个 revision。`commit and push`、`提交推送` 或同义请求再加 push 与实际 destination ref verification；只有当操作声称发布了 authoritative truth 时，才额外要求命中已声明的 authoritative ref。只是观察到外部 commit，只触发 checkpoint evaluation，不代表无条件写入 Agnir。
 
 根目录 `AGENTS.md` 只负责把 Agent 引导到本节，不得成为第二份 Project state 或 Agnir procedure。Canonical activation route 为：
 
@@ -162,6 +162,32 @@ flowchart TD
 
 Agnir 不执行流程中间的 Project 工作。它负责让 continuity 持久、可发现、绑定到正确 Project，并让未来 Executor 可以安全恢复。Not-found、ambiguity、unsupported version、Project mismatch、authorization failure、cycle、stale locator、material inconsistency 等 failure 都必须显式暴露，不能靠猜测静默修复。
 
+## 实验性多分支连续性
+
+对于 repository / VCS implementation，Agnir 现在可以在不把 Git branch 放进 Core 的前提下验证 **branch-local continuity**。`profiles/VCS_BRANCH_CONTINUITY.md` 定义了实验性的 `agnir/vcs-branch-continuity/0.1` extension。
+
+模型是：
+
+```text
+同一个 Project identity
+        │
+   ┌────┴────┐
+   ▼         ▼
+ main     feature/a
+   │         │
+Agnir M   Agnir F
+   └────┬────┘
+        │ merge / rebase / cherry-pick
+        ▼
+ target continuity reconciliation
+        ▼
+ 新的 target checkpoint
+```
+
+分支发生 divergence 之后，每个已选中的 branch / worktree 都解析并 checkpoint 自己的 continuity。`authoritative_ref` 是 publication authority boundary，而不是唯一可以使用 Agnir 的分支。Merge、rebase、cherry-pick **不会**自动把 source Current State / Next Actions 晋升为 target truth；source continuity 只是 reconciliation input，target branch 必须 checkpoint 自己在集成后的真实状态。Rebase / history rewrite 可以改变 commit receipt，但不改变 Project identity。
+
+这一能力目前刻意保持在 extension 层，不是 Core `0.2` 变更。通用、storage-neutral 的 `lineage.id` 继续延后，直到非 VCS 场景也能证明这个概念确实属于 Core。
+
 ## 当前版本线
 
 `main` 是 Agnir `0.1.1` 的当前维护线。当前正式发布的稳定版本是 immutable `v0.1.1`。兼容标识仍然是 Core `0.1` 和 `repository-filesystem/0.1`；仓库 SemVer 独立记录在 `VERSION`。
@@ -186,13 +212,15 @@ agnir/
 │   ├── AGNIR_CORE.md                  # Core 0.1，含 transactional checkpoint 语义
 │   └── AGNIR_DISCOVERY.md             # discovery / Locator Chain / failures
 ├── profiles/
-│   └── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1 activation/init + VCS event integration
+│   ├── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1 activation/init + VCS event integration
+│   └── VCS_BRANCH_CONTINUITY.md       # 实验性 parallel branch continuity + integration reconciliation
 ├── schemas/
 │   └── agnir-manifest.schema.json     # AGNIR.yaml schema
 ├── conformance/
 │   ├── check_agnir_0_1.py             # self-host + release-readiness
 │   ├── activation_reference.py        # AGENTS → README activation resolver
 │   ├── checkpoint_reference.py        # atomic/no-op/conflict checkpoint reference model
+│   ├── vcs_branch_continuity_reference.py # branch/integration reference model
 │   ├── test_skill_package.py          # Skill / 用户提示词边界 + commit intent 测试
 │   └── test_*.py                      # 其他 executable conformance
 ├── .agnir/                            # 本 Project 的 canonical durable continuity
@@ -234,6 +262,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-`0.1.1` suite 覆盖 Agent Skill packaging、免重复提示的 Project activation、execution-surface handoff regression、repository/filesystem discovery 与 failures、checkpoint atomic/no-op/conflict 语义、SQLite 非 repository continuity、external-memory authorization、multi-project isolation、Locator Chain failures、symlink boundaries 和真实 Git worktree cold start。
+Stable `0.1.1` suite 覆盖 Agent Skill packaging、免重复提示的 Project activation、execution-surface handoff regression、repository/filesystem discovery 与 failures、checkpoint atomic/no-op/conflict 语义、SQLite 非 repository continuity、external-memory authorization、multi-project isolation、Locator Chain failures、symlink boundaries 和真实 Git worktree cold start。当前 development suite 另外验证实验性的 branch-local continuity、merge/rebase/cherry-pick reconciliation、history rewrite 下的 identity preservation，以及 destination-ref 与 authoritative-ref publication verification 的区分。
 
 真实 mount-boundary 仍明确未验证；普通目录不能冒充 mount evidence。

@@ -156,7 +156,11 @@ extensions:
 
 This extension is profile/backend metadata, not Core identity. A non-default authoritative ref MUST be durably discoverable.
 
+`authoritative_ref` identifies repository publication authority; it is not necessarily the active checkout/ref and MUST NOT be interpreted as the only ref on which Agnir continuity may be evaluated or checkpointed.
+
 A Git worktree is a valid filesystem-style Project root when the selected worktree contains authoritative top-level `AGNIR.yaml` and its declared continuity locators resolve for that worktree. Discovery MUST NOT depend on `.git` being a directory rather than Git worktree metadata.
+
+Branch-aware repository implementations MAY additionally apply the experimental `agnir/vcs-branch-continuity/0.1` extension defined in `profiles/VCS_BRANCH_CONTINUITY.md`. That extension treats branch/ref names as VCS locators/runtime observations rather than Project identity, permits branch-local continuity after divergence, and requires explicit target continuity reconciliation across merge/rebase/cherry-pick integration boundaries. It does not change Agnir Core `0.1` or this profile's discovery compatibility line.
 
 ### Commit and push event integration
 
@@ -165,7 +169,8 @@ For a repository-aware implementation that can create or observe VCS revisions, 
 - When an authorized Principal asks the Executor to commit Project changes, the implementation SHOULD evaluate and reconcile material Agnir continuity **before** creating the VCS revision.
 - When both Project changes and Agnir continuity changes can be represented in the same VCS revision, the implementation SHOULD publish them together in one revision rather than creating a follow-up checkpoint-only revision.
 - If checkpoint evaluation finds no material continuity change, the implementation SHOULD leave Agnir memory unchanged and proceed with the requested commit.
-- When the request includes push/publication and `agnir/repository.authoritative_ref` is declared, the implementation SHOULD verify after push that the intended published revision reached that authoritative ref.
+- When the request includes push/publication, the implementation SHOULD verify after push that the intended published revision reached the **actual destination ref** selected by the authorized operation.
+- If the operation additionally claims that authoritative repository truth was published and `agnir/repository.authoritative_ref` is declared, the destination MUST match that authoritative ref and the implementation SHOULD verify the intended revision there. A feature-branch push MUST NOT be silently redirected to or reported as publication of the authoritative ref merely because `authoritative_ref` exists.
 - Observing a commit created by another Executor, web UI, CI, IDE, or other mechanism MAY trigger checkpoint evaluation. Observation alone MUST NOT imply an unconditional continuity write.
 - Repository hooks such as `pre-commit` or `pre-push` MAY implement these events, but hooks are adapter/implementation mechanisms and MUST NOT become a discovery or continuity dependency.
 - A VCS-generated revision identifier MAY be used as the backend checkpoint receipt. The checkpoint content MUST NOT be required to embed its own resulting revision identifier.
@@ -199,6 +204,6 @@ An Agent-operable initialization conformance case additionally MUST prove fresh 
 
 Compatible-upgrade conformance SHOULD prove that an old Project with valid Core/profile compatibility but missing operational provenance can be upgraded without changing Project identity or memory locators; that the same applied provenance yields a no-op; that non-stable targets require explicit opt-in; and that Core/profile changes are classified as migration rather than silently applied.
 
-The active reference suite additionally pressure-tests non-destructive `AGENTS.md` merge, all named discovery failures, multi-project isolation, transactional checkpoint semantics, external authorization, symlink boundaries, and real Git worktree cold start.
+The active reference suite additionally pressure-tests non-destructive `AGENTS.md` merge, all named discovery failures, multi-project isolation, transactional checkpoint semantics, external authorization, symlink boundaries, real Git worktree cold start, and experimental branch-local VCS continuity/reconciliation behavior.
 
 Real mount-boundary behavior remains an environment-dependent pressure case. It MUST NOT be claimed proven by simulating a mount with an ordinary directory.
