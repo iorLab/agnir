@@ -1,0 +1,1 @@
+Generated export files in this directory are derived from the Principal-approved Agnir v0.3 production masters. Geometry authority remains `brand/masters/`; small-size favicon pruning is allowed only under the documented thresholds in `brand/brand-handoff.md` and `brand/tools/build-production-derivatives.py`.
