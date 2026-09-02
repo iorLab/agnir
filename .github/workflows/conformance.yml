@@ -24,7 +24,7 @@ jobs:
       - name: Published v0.1.1 real-repository migration root
         if: github.ref == 'refs/heads/release/validation-v0.2.0-rc.1-from-v0.1.1'
         run: |
-          python - <<'PY'
+          PYTHONPATH=conformance python - <<'PY'
           from pathlib import Path
           from activation_reference import resolve_agent_activation
           from repository_filesystem_0_2_reference import discover_repository_filesystem_0_2
