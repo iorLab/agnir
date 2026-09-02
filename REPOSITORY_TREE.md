@@ -64,6 +64,7 @@ agnir/                                                    # Agnir Skill + protoc
 │   ├── test_core_0_2_migration.py                        # explicit/idempotent semantic migration
 │   ├── test_repository_filesystem_0_2.py                 # 0.2 discovery/schema compatibility
 │   ├── test_repository_filesystem_0_2_migration.py       # concrete migration/stale/no-op/fresh-discovery
+│   ├── test_rc_release_gates.py                          # exact v0.1.1 manifest anchor + fresh RC install/migration release gates
 │   ├── test_vcs_lineage_binding.py                       # fork/rebind/external mismatch binding pressure
 │   ├── test_vcs_branch_continuity.py                     # real worktree + staged target publication pressure
 │   ├── test_repository_filesystem_failures.py            # 0.1 discovery failures
@@ -99,6 +100,7 @@ agnir/                                                    # Agnir Skill + protoc
 - **Core 0.2 normative candidate:** `spec/AGNIR_CORE_0_2.md`.
 - **Profile 0.2 normative candidate:** `profiles/REPOSITORY_FILESYSTEM_0_2.md`.
 - **Migration contract:** `spec/CORE_0_1_TO_0_2_MIGRATION.md` plus semantic/concrete executable conformance.
+- **RC release gate:** `conformance/test_rc_release_gates.py` anchors the exact published `v0.1.1` manifest shape and verifies fresh Core `0.2` install plus explicit migration/fresh resume.
 - **VCS mapping:** `profiles/VCS_BRANCH_CONTINUITY.md` and VCS reference/tests. A VCS selector is not automatically logical lineage identity; a commit SHA is a receipt, not identity.
 
 The former `_DRAFT` Core/profile files were development artifacts and are removed when the RC normative candidates become the active 0.2 contracts. Historical `.agnir/evidence/` and Git history may still mention those filenames because they accurately describe earlier development checkpoints.

@@ -37,6 +37,6 @@ extensions:
     baseline_main: "f0b2cbd5329adb6ac7309076d7ea09337bb057c5"
   agnir/operations:
     distribution: "agnir-agent-skill"
-    release: "0.1.1"
+    release: "0.2.0-rc.1"
     source: "iorLab/agnir"
-    applied_revision: "e9712357ab590e5c1e5357b3cf3219d07d789aff"
+    applied_revision: "bee78b2c9bb8c5ce5916d08691019dcde939b813"
