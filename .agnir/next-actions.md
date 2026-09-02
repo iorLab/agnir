@@ -1,36 +1,40 @@
 # Agnir Next Actions
 
-Agnir `v0.1.1` remains the published stable release. Multi-branch work is isolated on `feature/multibranch-continuity` / draft PR `#4`; current head behavior has passed stable + experimental + full PR conformance, while `main` remains authoritative and unchanged.
+Agnir `v0.1.1` remains the published stable release. Core `0.2` Parallel Continuity work is active on `feature/core-0.2-lineage` / draft PR `#5`, stacked on the VCS evidence branch `feature/multibranch-continuity` / draft PR `#4`.
 
-## Active branch work
+## Core 0.2 active work
 
-1. Pressure-test one additional **explicitly authorized real Project** using a genuine parallel branch workflow beyond this self-hosting branch and the synthetic worktree fixture. Prefer: branch selection → divergence → independent checkpoint → target advancement → staged merge/rebase/cherry-pick → target continuity reconciliation. Do not mutate an unrelated Project merely to manufacture evidence.
-2. Keep working-ref selection explicit: task/adapter ref > current checkout/worktree ref > declared default. Do not infer a feature branch by scanning sibling refs; surface `AGNIR_VCS_REF_REQUIRED` when branch-specific work has no selected ref.
-3. Keep `authoritative_ref` as publication authority/default only when policy says so; do not treat it as active branch identity or the only legal checkpoint destination.
-4. Preserve the target-ref publication invariant. An Agnir-aware merge/cherry-pick must stage the integration while the target ref is unchanged, reconcile target continuity, then publish integrated Project + target checkpoint together. Treat merge-first/follow-up-repair as recovery, not the normal safe path.
-5. Before PR `#4` is integrated, perform one final diff/CI review and choose an integration mechanism that can construct a reconciled target revision **before** advancing `main`. Do not use an ordinary server-side merge that would first publish feature-branch `.agnir` state onto `main`.
-6. If PR `#4` is integrated, the final target revision must contain `main`-appropriate Current State / Next Actions / Decisions from the integration candidate itself. Verify `main` fresh discovery after the ref advances; there should be no intermediate published `main` revision whose continuity is knowingly feature-local.
-7. After a safe integration, decide whether the experimental extension is mature enough for a repository patch release or should remain development-only pending more real Project evidence. Do not promote it into Core `0.2` solely because Git evidence passes.
-8. Gather a non-VCS parallel-continuity case before considering any generic durable `lineage.id` or Core continuity-lineage semantics.
+1. Complete the first CI cycle for the new non-VCS Core `0.2` gate. Fix any reference-model/test failures without weakening the lineage invariants.
+2. Add an explicit VCS→Core mapping conformance layer showing that the existing real Git branch/worktree cases satisfy the same generic invariants as the SQLite namespace backend: shared Project identity, durable logical lineage identity, explicit selection, independent checkpointing, reconciliation, stale-candidate rejection where applicable, and coherent target publication.
+3. Specify and test Core `0.1` → `0.2` migration. The default migration hypothesis is: an existing single continuity line becomes one initial/default lineage while preserving Project identity and existing durable truth. Migration must be explicit and idempotent; Core/profile line changes must not be silently treated as compatible upgrade.
+4. Decide the final Core `0.2` Discovery Record semantics after dual-backend pressure. Current direction is one selected lineage per ordinary discovery result; Core does not require sibling-lineage enumeration.
+5. Once synthetic VCS + non-VCS conformance pass, validate Core `0.2` against one explicitly authorized real Project, preferably Svif, using genuine parallel work and target reconciliation.
+6. Before integrating PR `#4` / PR `#5`, construct an integration mechanism that reconciles final `main` Current State / Next Actions / Decisions before `main` advances. Do not use a normal server-side merge that first exposes feature-local `.agnir` truth as authoritative `main` continuity.
+7. If Core `0.2`, migration, dual-backend, and real-Project gates pass, prepare repository `v0.2.0` as the next feature release. Do not call the result `v0.1.2` merely to be conservative about version numbers.
+8. Keep `v1.0.0` gated by `docs/V1_RELEASE_CRITERIA.md`: stable Core architecture, explicit compatibility/migration discipline, conformance/failure/publication integrity, multiple real Projects/execution surfaces, real upgrade evidence, independent implementability, repeatable release engineering, and an RC with no release-blocking Core defect.
 
-## Stable maintenance work still open
+## Invariants to preserve
 
-1. Use additional real Projects/execution surfaces to broaden evidence for the execution-surface handoff rule and compatible upgrade behavior without making any platform-specific adapter part of Agnir Core.
-2. When useful, add a second compatible-upgrade case with different existing Project instructions or operational provenance to pressure preservation/idempotence beyond `skills-hub`.
-3. Keep real mount-boundary validation optional until a genuine mount-capable environment exists.
+- Project identity is not lineage identity.
+- Lineage identity is logical and durable within Project scope; backend revision receipts are not identity.
+- Lineage selection is explicit/contextual/default and never guessed by scanning siblings.
+- A selected missing lineage does not silently fall back.
+- Checkpoints are lineage-local by default.
+- Source continuity is integration input, not automatic target truth.
+- Integrated Project state and reconciled target continuity publish coherently.
+- Stale target/source integration candidates fail rather than overwrite newer truth.
+- Cross-Project identity mismatch remains a hard boundary.
+- Stable Core `0.1` remains unchanged until Core `0.2` is accepted and intentionally published.
+
+## Stable maintenance still open
+
+- Broaden execution-surface handoff and compatible-upgrade evidence with additional real Projects when useful.
+- Keep real mount-boundary validation explicitly unproven until a genuine mount-capable environment is available.
 
 ## Current stable release
 
 - repository release: `0.1.1`
 - tag: `v0.1.1`
 - exact target: `e9712357ab590e5c1e5357b3cf3219d07d789aff`
-- GitHub Release id: `380414987`
 - Core compatibility: `0.1`
 - repository/filesystem profile: `repository-filesystem/0.1`
-
-## Stable maintenance constraints
-
-- Root `SKILL.md` is the canonical Agent-facing operational package.
-- Required execution-surface settings are adapters/locators, not Project memory or Agnir Core.
-- `.agnir/evidence/` is represented by directory responsibility rather than per-evidence filename registration in repository maps.
-- `main` is the only intended long-lived authoritative branch; temporary development branches may carry branch-local continuity while active.
