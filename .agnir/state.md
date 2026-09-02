@@ -6,40 +6,60 @@ Agnir `v0.1.1` remains the latest formally published **stable** repository relea
 
 Temporary branch `release/v0.2.0-rc.1` is the release-candidate evidence carrier forked from verified authoritative-main checkpoint `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`.
 
-Project identity remains `urn:agnir:project:agnir-core`. This branch has explicitly migrated its self-hosting compatibility from Core `0.1` / `repository-filesystem/0.1` to Core `0.2` / `repository-filesystem/0.2`.
+Project identity remains `urn:agnir:project:agnir-core`. This branch explicitly self-hosts Core `0.2` / `repository-filesystem/0.2` on logical Continuity Lineage `urn:agnir:lineage:v0.2.0-rc.1`, separately bound to selector `refs/heads/release/v0.2.0-rc.1`. Selector and revision receipt are not lineage identity.
 
-The selected logical Continuity Lineage is `urn:agnir:lineage:v0.2.0-rc.1`, bound separately to VCS selector `refs/heads/release/v0.2.0-rc.1`. The selector string and branch revision are not lineage identity.
+The self-host migration preserves the inherited durable truth and existing `.agnir/state.md`, `.agnir/next-actions.md`, `.agnir/decisions.md`, `.agnir/evidence/` locators from the verified main baseline. Migration evidence is recorded in `.agnir/evidence/2026-09-03-v0.2.0-rc.1-self-host-migration.md`.
 
-The migration preserves the inherited durable Project truth from the verified main baseline and existing `.agnir/state.md`, `.agnir/next-actions.md`, `.agnir/decisions.md`, and `.agnir/evidence/` locator layout. It adds the logical lineage/binding required by Core/profile `0.2` rather than relocating memory merely to change compatibility lines.
+## RC contract and operational documentation synchronized
 
-## RC contract status
+The RC normative compatibility candidates are now:
 
-The release branch now contains RC normative compatibility candidates:
+- `spec/AGNIR_CORE_0_2.md` — Core `0.2`;
+- `profiles/REPOSITORY_FILESYSTEM_0_2.md` — `repository-filesystem/0.2`;
+- `spec/CORE_0_1_TO_0_2_MIGRATION.md` — explicit `0.1`→`0.2` migration;
+- `schemas/agnir-manifest-0.2.schema.json` — manifest contract.
 
-- `spec/AGNIR_CORE_0_2.md` — Core `0.2` normative release-candidate contract;
-- `profiles/REPOSITORY_FILESYSTEM_0_2.md` — `repository-filesystem/0.2` normative release-candidate profile;
-- `schemas/agnir-manifest-0.2.schema.json` — Core/profile `0.2` manifest schema;
-- `conformance/check_agnir_0_2_rc.py` — RC self-host cold-start/release consistency gate.
+`README.md`, `README.zh-CN.md`, root `SKILL.md`, `REPOSITORY_TREE.md`, and durable Decisions have been synchronized to the RC model:
 
-Repository SemVer on this branch is `0.2.0-rc.1`. This is a prerelease candidate, not `latest stable`. Published stable `v0.1.1`, its tag/release, and its Core/profile `0.1` compatibility artifacts remain immutable and supported regression surfaces.
+- Core `0.2` Continuity Lineages are no longer described as deferred;
+- Project identity, logical lineage identity, VCS selector/binding, and revision receipt are separated consistently;
+- stable `latest stable` resolution still points to published `v0.1.1` until final `v0.2.0` publication;
+- an explicitly authorized RC target may install/migrate to Core/profile `0.2` through the explicit migration contract;
+- user-facing install/upgrade prompts remain short;
+- non-destructive `AGENTS.md` / README activation and execution-surface handoff semantics are preserved;
+- lineage integration uses staged target reconciliation/coherent publication;
+- repository structure now exposes the normative RC contracts and RC self-host checker.
+
+The former `_DRAFT` Core/profile documents are no longer active compatibility contracts and are removed from the RC source tree. Historical Evidence and Git history may still name them because those references describe earlier development checkpoints accurately.
+
+## RC self-host verification baseline
+
+Self-host migration revision `a72654060c21600e1b7a4345634e09f9222ca4fb` passed exact-head release-branch CI run `33654332505`:
+
+- RC Core `0.2` self-host cold start: success;
+- stable Core/profile `0.1` regression: success;
+- VCS branch continuity: success;
+- Core `0.2` non-VCS and VCS mapping: success;
+- repository-filesystem `0.2`: success;
+- VCS lineage binding: success;
+- semantic + concrete `0.1`→`0.2` migration: success;
+- full suite: success.
+
+The current documentation/Skill synchronization checkpoint must now pass the same exact-head gate before the RC package is treated as candidate-ready.
 
 ## Operational provenance boundary
 
-`extensions.agnir/operations` intentionally still records the actually applied published operational package `v0.1.1` at `e9712357...`. The RC Skill/README operational procedure has not yet been fully synchronized and assigned an exact immutable applied revision, so this checkpoint does not invent self-referential RC operational provenance.
+`extensions.agnir/operations` still records the actually applied published operational package `v0.1.1` at `e9712357...`. This is intentional: an immutable RC `applied_revision` cannot truthfully be recorded until the full RC package has an exact verified candidate revision.
 
-After the RC operational package is synchronized and an exact candidate revision exists, provenance may be advanced coherently as part of that candidate/installation validation.
+After documentation/Skill conformance is green, the next material boundary is to construct an exact RC candidate, use its immutable revision for fresh-install and real migration/resume validation, then record the actual applied RC provenance coherently before tagging.
 
-## Completed pre-RC evidence
+## Remaining RC gates
 
-- Core `0.2` source checkpoint `68cc443d6c44929f1b71d9d534e9b0f73f9745bf` passed conformance run `33620080730`.
-- Svif real-consumer validation completed at `d42489f72cc8985d353ccbf2f9b6ae7249fe6480`, CI `33619807614`.
-- Safe main integration candidate `a32c9143687b72426617ddd701b90ffd237a111c`, tree `759766c34e0f39f0c8d51bea1af22d7d41ad591c`, passed candidate CI `33653019074` and authoritative-main CI `33653087179`.
-- Post-integration main checkpoint `f0b2cbd5329adb6ac7309076d7ea09337bb057c5` passed run `33653383024`.
+1. pass exact-head CI for the synchronized docs/Skill/draft cleanup checkpoint;
+2. construct one exact RC candidate revision with truthful `agnir/operations` provenance;
+3. validate a genuinely fresh Project installation against that exact RC candidate;
+4. validate at least one explicitly authorized real Project migration from published `v0.1.1` / Core/profile `0.1` to `0.2`, preserving Project identity/durable truth and passing fresh resume;
+5. re-run exact-candidate conformance;
+6. tag/publish immutable `v0.2.0-rc.1` as a prerelease only after all gates pass.
 
-## Remaining RC work
-
-The next work is to synchronize `README.md`, `README.zh-CN.md`, `SKILL.md`, `REPOSITORY_TREE.md`, and release documentation with Core/profile `0.2`; remove or clearly demote the obsolete draft-contract files; then run exact RC branch conformance, fresh-install validation, and at least one real published-`v0.1.1` → Core/profile `0.2` migration plus cold-start resume.
-
-Do not publish/tag `v0.2.0-rc.1` until those gates are green. Do not treat the RC as `latest stable`; stable resolution remains `v0.1.1` until final `v0.2.0` is intentionally published.
-
-`.agnir/next-actions.md` is the ordered resume plan. `.agnir/decisions.md` remains the durable decision set inherited from authoritative main plus the already integrated Core `0.2` decisions.
+Do not present the RC as `latest stable`. Do not move the RC tag after publication. `.agnir/next-actions.md` is the ordered resume plan.
