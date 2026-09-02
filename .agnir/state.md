@@ -1,95 +1,83 @@
 # Agnir Current State
 
-Agnir `v0.1.1` remains the formally published stable repository release. Durable continuity belongs to the Project, not an Executor, conversation, execution environment, repository host, storage implementation, or VCS branch.
+Agnir `v0.1.1` remains the formally published stable repository release. `main` remains authoritative and unchanged by the active experimental work.
 
-## Active experimental multi-branch line — 2026-09-02
+## Active Core 0.2 line — 2026-09-02
 
-Development is isolated on temporary branch `feature/multibranch-continuity` and draft PR `#4` while `main` remains the only long-lived authoritative branch for `iorLab/agnir`.
+Core `0.2` Parallel Continuity development is active on temporary branch `feature/core-0.2-lineage` in draft PR `#5`, stacked on `feature/multibranch-continuity` / draft PR `#4`.
 
-- Project identity remains `urn:agnir:project:agnir-core` on `main` and the feature branch.
-- Experimental extension: `agnir/vcs-branch-continuity/0.1` in `profiles/VCS_BRANCH_CONTINUITY.md`.
-- The feature branch self-declares the policy under `extensions.agnir/vcs` in `AGNIR.yaml`:
-  - `branch_continuity: branch-local`;
-  - `integration_reconciliation: required`.
-- Stable compatibility is unchanged: Agnir Core `0.1` + `repository-filesystem/0.1` + repository release `0.1.1`.
-- A generic storage-neutral `lineage.id` remains deliberately deferred; current evidence is VCS-specific.
+- Project identity remains `urn:agnir:project:agnir-core` across `main`, the VCS experiment, and the Core 0.2 design branch.
+- Stable self-hosting remains Core `0.1` + `repository-filesystem/0.1`. The root Project does **not** yet claim Core `0.2` compatibility while the new line is under conformance pressure.
+- Intended next feature release, if the new compatibility line passes its gates: repository `v0.2.0` with Core compatibility `0.2`.
+- `v1.0.0` is defined as a stability/compatibility commitment milestone rather than a feature-count threshold; criteria are recorded in `docs/V1_RELEASE_CRITERIA.md`.
 
-### Working-ref selection
+## Core 0.2 design now under test
 
-Branch-local continuity requires one selected working ref/worktree. The experimental rule is:
+The working normative draft is `spec/AGNIR_CORE_0_2_DRAFT.md`.
 
-1. explicit task/adapter ref;
-2. already selected checkout/worktree/current-ref context;
-3. explicitly declared default ref.
+Core `0.2` generalizes one implicit Project-global continuity line into multiple independently advancing **Continuity Lineages**.
 
-`authoritative_ref` may be used as an unscoped default only when adapter/Project policy says so. It does not override an explicitly selected feature branch and is not Project identity. Implementations must not scan sibling branches and guess which feature branch a fresh Executor meant; missing selection surfaces `AGNIR_VCS_REF_REQUIRED`.
+Current design decisions under conformance:
 
-This keeps shared execution surfaces safe: unscoped work can continue on a declared default such as `main`, while a branch-specific ChatGPT/API task must carry the selected ref as task/adapter context rather than changing Project identity or globally rebinding the shared Project.
+1. Project identity is independent of lineage identity.
+2. Lineage identity is a durable logical semantic within Project scope, not a mandated storage field or serialization.
+3. Backend revisions such as Git SHAs, database generations, or snapshot versions are checkpoint receipts, not lineage identity.
+4. Ordinary lineage-local work resolves exactly one lineage from explicit input, selected context, or declared default; Core does not require sibling enumeration/heuristic scanning.
+5. A specifically selected missing lineage fails rather than falling back to another lineage.
+6. Checkpoints are lineage-local unless explicit Project policy defines a broader transaction.
+7. Integration is target reconciliation, not source-continuity copying.
+8. Target publication must publish integrated Project state and reconciled target continuity coherently.
+9. A staged integration candidate becomes stale if its target or relevant source authoritative generation advances before publication.
+10. Cross-Project integration still respects the Project identity boundary.
 
-### Branch-local checkpoint isolation
+## Non-VCS evidence
 
-After divergence, each selected branch/worktree may carry different Current State, Next Actions, Decisions, and Evidence while retaining the same Project identity. A checkpoint on one ref must not silently mutate sibling branch continuity.
+A first backend-neutral pressure test is implemented in:
 
-This feature branch is now itself a self-hosting example: its Agnir continuity describes experimental work that is not yet true on stable `main`.
+- `conformance/core_0_2_reference.py`
+- `conformance/sqlite_lineage_reference.py`
+- `conformance/test_core_0_2_parallel_continuity.py`
 
-### Integration safety: reconcile before target-ref advancement
+The SQLite fixture deliberately has no repository, VCS branch, ref, worktree, commit, or merge concept. It models one Project with multiple logical lineage namespaces and uses SQLite transactions plus integer generations for coherent publication and stale-candidate detection.
 
-Final diff review exposed and closed a material design gap: ordinary server-side merge/squash/rebase/fast-forward can copy feature-branch `.agnir` continuity into `main` before a later repair checkpoint, creating a window where target discovery exposes the wrong branch truth.
+The focused cases cover:
 
-The extension now treats **target-ref advancement as a publication boundary**. When Agnir controls merge/cherry-pick/integration, the safe sequence is:
+- explicit/context/default lineage selection and `AGNIR_LINEAGE_REQUIRED`;
+- selected-missing-lineage rejection via `AGNIR_LINEAGE_NOT_FOUND`;
+- same Project identity with independent lineage checkpoints;
+- revision/generation receipt changes without lineage-identity changes;
+- staged integration that leaves target authoritative truth unchanged until publication;
+- rejection of unreconciled publication;
+- target-generation conflict after staging;
+- source-generation conflict after staging;
+- cross-Project integration rejection.
 
-1. capture coherent target continuity and target revision;
-2. stage/construct the integration result without advancing the target ref;
-3. reconcile the staged Project result against target continuity, relevant source continuity/Evidence, and Principal intent;
-4. construct the target checkpoint;
-5. publish integrated Project + reconciled target continuity together in the revision/transaction that advances the target;
-6. verify destination ref and fresh target discovery.
+The CI workflow now has a separate `Experimental Core 0.2 parallel continuity` gate in addition to stable Core `0.1`, experimental VCS branch continuity, and the full suite. GitHub Actions run `33590715589` is the first run exercising this gate and is currently in progress at this checkpoint.
 
-A normal Agnir-aware path must not rely on “merge first, repair Agnir afterward” when that merge would expose source continuity as target truth. If an external mechanism already advanced an unreconciled target, the Project is in recovery state and must surface `AGNIR_VCS_RECONCILIATION_REQUIRED` until repaired.
+## VCS evidence retained from PR #4
 
-For PR `#4` itself, an ordinary GitHub server-side merge that first places this feature branch's `.agnir` State / Next Actions / Decisions onto `main` is explicitly not the intended safe integration path.
+`agnir/vcs-branch-continuity/0.1` remains the Git/VCS evidence source. It already demonstrates branch-local continuity, selected-ref isolation, merge/rebase/cherry-pick reconciliation, history-rewrite receipt changes, and pre-target-advance reconciliation.
 
-### Verification
+For Core `0.2`, those VCS concepts are mapped rather than promoted directly:
 
-The experimental suite now contains nine focused branch-continuity cases, including:
+```text
+selected Git ref/worktree -> selected Continuity Lineage
+branch/ref logical name   -> profile-level lineage identity mapping
+branch-local checkpoint   -> lineage-local checkpoint
+merge/rebase/cherry-pick  -> lineage integration boundary
+commit SHA                -> backend checkpoint receipt
+ref advancement           -> backend publication boundary
+```
 
-- working-ref selection without sibling-branch guessing;
-- real Git worktree divergence with the same Project identity and different branch-local state;
-- branch checkpoint isolation;
-- merge/rebase/cherry-pick reconciliation requirement;
-- real Git `merge --no-commit` pressure showing `main` stays at the old revision while continuity conflicts are unresolved, followed by one two-parent merge revision containing reconciled target continuity;
-- cross-Project integration rejection;
-- history-rewrite identity preservation;
-- destination-ref vs authoritative-ref publication verification.
+PR `#4` and PR `#5` must eventually be integrated with target continuity already reconciled in the revision that advances `main`; ordinary server-side merge that temporarily publishes feature-local `.agnir` truth onto `main` remains unsafe for this repository's branch-local continuity model.
 
-GitHub Actions run `33584167605` completed successfully on head `77567bc89fd54bbd82d6aa61e8542f314b436582` after these rules and tests were in place. The workflow's stable self-hosting gate, explicit experimental VCS branch-continuity gate, and full conformance suite all passed.
-
-Evidence: `.agnir/evidence/2026-09-02-multibranch-continuity-development.md`.
-
-## Published release
+## Published stable release
 
 - repository release: `0.1.1`
 - Git tag: `v0.1.1`
 - tag target: `e9712357ab590e5c1e5357b3cf3219d07d789aff`
 - GitHub Release id: `380414987`
-- published at: `2026-09-01T10:47:58Z`
-- exact-candidate conformance run: `33499092957`
-- publication workflow run: `33499228486`
+- Core compatibility: `0.1`
+- repository/filesystem profile: `repository-filesystem/0.1`
 
-The immutable `v0.1.1` release is unaffected by this development branch.
-
-## Existing stable validations
-
-The execution-surface activation handoff regression and the real compatible upgrade of `mattamior/skills-hub` remain passed evidence for the published `v0.1.1` line. Existing Projects on Core `0.1` / `repository-filesystem/0.1` may continue to resolve `latest stable` to `v0.1.1`; compatibility-line changes remain migration-required.
-
-## Repository invariants
-
-- Root `SKILL.md` remains the canonical Agent-facing operational package.
-- Project activation remains `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory.
-- Execution-surface configuration remains locator-only and outside Project durable truth.
-- Transactional checkpoint no-op/coherent publication, stale-base `AGNIR_CHECKPOINT_CONFLICT`, prompt-free activation, non-destructive `AGENTS.md` merge, and actual-destination push verification remain active.
-- On the experimental branch, selected-ref isolation and pre-target-advance integration reconciliation are additional extension-level invariants under pressure.
-
-## Branch governance
-
-`main` remains the only intended long-lived authoritative branch. `feature/multibranch-continuity` is temporary and carries branch-local continuity only for its active development lifetime. Historical recovery/releases continue to use immutable SHAs/tags rather than live legacy refs.
+The immutable stable release remains unaffected by the Core `0.2` draft.
