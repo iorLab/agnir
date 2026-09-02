@@ -20,6 +20,9 @@ extensions:
   agnir/repository:
     canonical: "iorLab/agnir"
     authoritative_ref: "main"
+  agnir/vcs:
+    branch_continuity: "branch-local"
+    integration_reconciliation: "required"
   agnir/operations:
     distribution: "agnir-agent-skill"
     release: "0.1.1"
