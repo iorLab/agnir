@@ -1,6 +1,6 @@
 # Agnir brand production status
 
-Date: 2026-09-02
+Date: 2026-09-03
 Branch: `brand/identity-system`
 Canonical Project ref remains: `main`
 
@@ -23,7 +23,7 @@ The v0.3 candidate files remain provenance/review evidence only. v0.2 and earlie
 
 ## Materialized production exports
 
-Directly usable package-level SVG exports now exist under `brand/exports/`:
+Directly usable package-level SVG exports exist under `brand/exports/`:
 
 - `agnir-horizontal-light.svg`;
 - `agnir-horizontal-dark.svg`;
@@ -47,15 +47,42 @@ These exports deliberately reference `../masters/` instead of duplicating the ap
 
 Directly shrinking the full particle field to 16px loses the A reading. The approved board itself defines a favicon-size family, so 32px and 16px exports use a deterministic visibility derivative of the same master: only particles below a fixed rendered-visibility threshold are pruned. The A geometry, major particles, pale inner A and central anchor are unchanged. This is a size derivative, not a new logo design.
 
-## QA status
+## Complete QA status
 
-Final local target-size QA has been completed across:
+The earlier final-QA sheet was incomplete because it covered only derivative exports. It is superseded by the complete symmetric 13-item QA recorded in `brand/qa/FINAL-QA.md`.
 
-- light / dark / monochrome horizontal treatments;
-- app icon;
-- 128 / 64 / 32 / 16 favicon targets.
+The completed QA scope is:
 
-The approved production masters remain unchanged through this derivative pass. The complete local delivery package includes manifests/hashes and the clean QA sheet.
+1. mark;
+2. wordmark;
+3. horizontal lockup;
+4. vertical lockup;
+5. light usage;
+6. dark usage;
+7. monochrome usage;
+8. app icon;
+9. favicon 128;
+10. favicon 64;
+11. favicon 32;
+12. favicon 16;
+13. social card.
+
+Complete QA sheet SHA-256: `145ab94e4458cdd9165bd61ceed71e4a12302b7cb71077443414ee8683302cfa`.
+
+The current cross-brand production delivery ZIP SHA-256 is `171b974b62fabc9eb286104d6bc090563e381ac4fd4fb8d2157b6b3cceaad2c7`.
+
+The approved production masters remain unchanged through this derivative/QA pass.
+
+## Main reconciliation status
+
+During final QA, authoritative `main` advanced with Core 0.2 Parallel Continuity and the brand branch became stale by 88 commits. This was repaired before integration work continued.
+
+- authoritative main observed: `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`;
+- reverse-sync PR: `#8`, `main` → `brand/identity-system`;
+- brand merge commit: `b00e0d7c544e74d4b0245569450ecebb271461d5`;
+- post-sync comparison: **behind `main` = 0**.
+
+The remaining branch diff is brand-local. Newer canonical `AGNIR.yaml`, Current State, Next Actions, Decisions, Core 0.2 contracts and release/repository metadata are no longer shadowed by the brand branch. See `.agnir/evidence/2026-09-03-brand-main-reconciliation.md`.
 
 ## QA rules
 
@@ -66,12 +93,14 @@ The approved production masters remain unchanged through this derivative pass. T
 
 ## Binary reference boundary
 
-The byte-exact approved 10:42 AM source board remains locked by SHA-256 and preserved in the reference package. Final byte-exact source-board repository preservation remains a pre-`main` integration gate.
+The byte-exact approved 10:42 AM source board remains locked by SHA-256 and preserved in the external reference/delivery package. The complete 13-item PNG package exists and is hash-recorded, but large binary payloads still cannot be attached safely through the current execution bridge without truncation risk.
+
+Final byte-exact source-board and large-PNG repository preservation therefore remains a pre-`main` integration gate.
 
 ## Remaining integration gates
 
-1. Preserve the byte-exact approved Agnir board in repository storage.
-2. Materialize any desired PNG delivery exports/social/repository-avatar derivatives through a byte-preserving path and verify hashes; the SVG package is already directly usable.
-3. Re-resolve latest `main` and reconcile branch-local Agnir continuity.
-4. Integrate the approved brand package coherently.
+1. Preserve the byte-exact approved Agnir board and desired large PNG delivery files through a binary-safe repository path; verify hashes after storage.
+2. Synchronize top-level repository structure documentation (`REPOSITORY_TREE.md` and affected README compact trees) with the new `brand/` product surface.
+3. Re-check latest `main` immediately before publication and reconcile again if it moved.
+4. Integrate the approved brand package coherently without replacing newer Core 0.2 continuity/release truth.
 5. Verify authoritative `main` after publication.
