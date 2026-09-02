@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agnir.dev/schema/repository-filesystem/0.2/agnir-manifest.schema.json",
+  "title": "Agnir Repository/Filesystem Discovery Manifest 0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["agnir", "project", "continuity", "memory"],
+  "properties": {
+    "agnir": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "discovery_profile"],
+      "properties": {
+        "version": {"const": "0.2"},
+        "discovery_profile": {"const": "repository-filesystem/0.2"}
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "profiles": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      }
+    },
+    "continuity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lineage"],
+      "properties": {
+        "lineage": {"type": "string", "minLength": 1, "maxLength": 1024}
+      }
+    },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "next_actions", "decisions", "evidence"],
+      "properties": {
+        "state": {"type": "string", "minLength": 1},
+        "next_actions": {"type": "string", "minLength": 1},
+        "decisions": {"type": ["string", "null"]},
+        "evidence": {"type": ["string", "null"]}
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint": {
+          "type": "string",
+          "enum": ["event-driven", "manual", "implementation-defined"]
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9._-]*/[a-z0-9][a-z0-9._-]*$"
+      },
+      "additionalProperties": true
+    }
+  }
+}
