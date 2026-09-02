@@ -1,26 +1,23 @@
 # Agnir Next Actions
 
-Agnir `v0.1.1` remains the published stable release on immutable target `e9712357ab590e5c1e5357b3cf3219d07d789aff`. Current development is isolated on temporary branch `feature/multibranch-continuity` and draft PR `#4`; it does not redefine stable `main` truth or compatibility lines.
-
-The first full remote branch conformance has passed: GitHub Actions run `33583654296` succeeded on checkpoint head `1acb38a81a9661cd42efc8a69b2bc42b8e0cd16d`, including stable self-hosting, the explicit experimental branch-continuity gate, and the full unittest suite.
+Agnir `v0.1.1` remains the published stable release. Multi-branch work is isolated on `feature/multibranch-continuity` / draft PR `#4`; current head behavior has passed stable + experimental + full PR conformance, while `main` remains authoritative and unchanged.
 
 ## Active branch work
 
-1. Review the final PR diff and ensure the experimental/stable boundary remains explicit in profile, Skill, READMEs, repository map, CI, and durable Agnir state.
-2. Pressure-test at least one additional real multi-branch Project workflow beyond the synthetic worktree fixture and this self-hosting branch, ideally including branch divergence → independent checkpoint → target advancement → merge or rebase → explicit target reconciliation. Do not mutate an unrelated Project merely to manufacture this evidence; use an explicitly authorized real case.
-3. Keep `project.identity` stable across ordinary branches/worktrees; keep branch/ref names as VCS locators/runtime observations and commit SHAs as revision/checkpoint receipts.
-4. Keep `authoritative_ref` as publication authority rather than the only legal Agnir branch. Verify actual destination refs for ordinary pushes; enforce the authoritative ref only when authoritative publication is claimed.
-5. Do not introduce a generic durable `lineage.id` or Core `0.2` solely from Git evidence. Gather a non-VCS parallel-continuity case first if promotion into Core is later considered.
-6. Once the PR diff is reviewed and the current head's conformance remains green, move PR `#4` out of draft if no new blocker appears. Merging remains a separate decision because target/main continuity must be reconciled from the actual merge result.
-7. If PR `#4` is merged, perform **target/main reconciliation** after observing the actual merge result: remove feature-only blockers/next actions, preserve only decisions that remain true on `main`, record merge evidence as needed, and publish a new `main` Agnir checkpoint. Do not carry this feature-branch state wholesale into `main`.
+1. Pressure-test one additional **explicitly authorized real Project** using a genuine parallel branch workflow beyond this self-hosting branch and the synthetic worktree fixture. Prefer: branch selection → divergence → independent checkpoint → target advancement → staged merge/rebase/cherry-pick → target continuity reconciliation. Do not mutate an unrelated Project merely to manufacture evidence.
+2. Keep working-ref selection explicit: task/adapter ref > current checkout/worktree ref > declared default. Do not infer a feature branch by scanning sibling refs; surface `AGNIR_VCS_REF_REQUIRED` when branch-specific work has no selected ref.
+3. Keep `authoritative_ref` as publication authority/default only when policy says so; do not treat it as active branch identity or the only legal checkpoint destination.
+4. Preserve the target-ref publication invariant. An Agnir-aware merge/cherry-pick must stage the integration while the target ref is unchanged, reconcile target continuity, then publish integrated Project + target checkpoint together. Treat merge-first/follow-up-repair as recovery, not the normal safe path.
+5. Before PR `#4` is integrated, perform one final diff/CI review and choose an integration mechanism that can construct a reconciled target revision **before** advancing `main`. Do not use an ordinary server-side merge that would first publish feature-branch `.agnir` state onto `main`.
+6. If PR `#4` is integrated, the final target revision must contain `main`-appropriate Current State / Next Actions / Decisions from the integration candidate itself. Verify `main` fresh discovery after the ref advances; there should be no intermediate published `main` revision whose continuity is knowingly feature-local.
+7. After a safe integration, decide whether the experimental extension is mature enough for a repository patch release or should remain development-only pending more real Project evidence. Do not promote it into Core `0.2` solely because Git evidence passes.
+8. Gather a non-VCS parallel-continuity case before considering any generic durable `lineage.id` or Core continuity-lineage semantics.
 
 ## Stable maintenance work still open
 
 1. Use additional real Projects/execution surfaces to broaden evidence for the execution-surface handoff rule and compatible upgrade behavior without making any platform-specific adapter part of Agnir Core.
-2. When useful, add a second upgrade case with different existing Project instructions or operational provenance to pressure preservation/idempotence beyond `skills-hub`.
-3. Preserve transactional checkpoint no-op/coherent publication semantics, stale-base safety, repository commit/push integration, prompt-free Project activation, non-destructive `AGENTS.md` merge, and the README `Start Here -> Agnir Project Instructions -> Project surface -> Architecture` audience split.
-4. Keep `latest stable release` resolution pinned to actual published tags/releases; never silently substitute moving `main`.
-5. Keep real mount-boundary validation optional until a genuine mount-capable environment exists.
+2. When useful, add a second compatible-upgrade case with different existing Project instructions or operational provenance to pressure preservation/idempotence beyond `skills-hub`.
+3. Keep real mount-boundary validation optional until a genuine mount-capable environment exists.
 
 ## Current stable release
 
@@ -28,18 +25,8 @@ The first full remote branch conformance has passed: GitHub Actions run `3358365
 - tag: `v0.1.1`
 - exact target: `e9712357ab590e5c1e5357b3cf3219d07d789aff`
 - GitHub Release id: `380414987`
-- exact-candidate conformance run: `33499092957`
 - Core compatibility: `0.1`
 - repository/filesystem profile: `repository-filesystem/0.1`
-
-## Real compatible-upgrade evidence
-
-- Project: `mattamior/skills-hub`
-- upgrade revision: `f8ec9fbb429df6a8eaa0aa837906a5897ffbb210`
-- target repository validation run: `33500075237`
-- conclusion: `success`
-- applied operational release: `0.1.1`
-- applied Agnir revision: `e9712357ab590e5c1e5357b3cf3219d07d789aff`
 
 ## Stable maintenance constraints
 

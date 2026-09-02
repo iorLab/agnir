@@ -1,120 +1,112 @@
 # Agnir Active Decisions
 
-This file records active durable decisions required to operate and evolve Agnir safely. Superseded implementation chronology remains available through Git history and `.agnir/evidence/`; it is not repeated here unless still required for current Project truth.
+This file records active durable decisions required to operate and evolve Agnir safely. Superseded chronology remains available through Git history and `.agnir/evidence/`.
 
 ## Project ownership and protocol boundary
 
-- Agnir is a **project-owned durable continuity protocol**. The Project persists; Executors, conversations, execution environments, storage mechanisms, repository hosts, and integrations may change.
+- Agnir is a **project-owned durable continuity protocol**. The Project persists; Executors, conversations, execution environments, storage mechanisms, repository hosts, VCS refs, and integrations may change.
 - Agnir Core is storage-, platform-, VCS-, repository-, Agent-, Skill-, and execution-surface-neutral.
 - Required durable semantics are Current State, Next Actions, Decisions, and Evidence / Checkpoints.
 - Svif is a separate Project orchestration product and may consume Agnir through a Continuity Provider integration. Agnir remains independently usable without Svif.
 
 ## Name origin and product meaning — 2026-09-01
 
-- The project name **Agnir** is taken from Icelandic `agnir`, the nominative plural of `ögn`, meaning a tiny bit or particle.
-- The name maps to Agnir's product model: durable Project continuity is composed from small, discoverable pieces of Project truth rather than depending on one Executor's private context or one monolithic conversation transcript.
-- The canonical conceptual pieces are Current State, Next Actions, Decisions, and Evidence / Checkpoints. Together they let a fresh compatible Executor reconstruct enough Project truth to continue safely.
-- This is a naming and product metaphor, not a Core storage-layout requirement. Implementations are not required to persist each semantic category as a physically separate file, row, object, or backend record.
+- `Agnir` is taken from Icelandic `agnir`, the nominative plural of `ögn`, meaning a tiny bit or particle.
+- The name maps to the product model: durable Project continuity is composed from small, discoverable pieces of Project truth rather than one Executor's private context.
+- Current State, Next Actions, Decisions, and Evidence / Checkpoints are semantic categories, not mandatory one-file-per-category physical storage.
 
 ## Discovery and repository/filesystem profile
 
-- `AGNIR.yaml` is the top-level discovery anchor for `repository-filesystem/0.1`; that filename/layout is profile behavior, not a Core requirement.
-- `.agnir/` is the recommended colocated memory layout in this repository, but `AGNIR.yaml` locators are authoritative.
-- Cold-start discovery begins from an authorized Project Entry Point, validates version and Project identity, resolves required continuity, and must not guess through arbitrary sibling repositories, old chats, predecessor paths, or private Executor memory.
-- Discovery preserves explicit failure semantics including not-found, ambiguity, unsupported version, Project mismatch, unresolvable, unauthorized, cycle, stale, and inconsistent state.
+- `AGNIR.yaml` is the top-level discovery anchor for `repository-filesystem/0.1`; this filename/layout is profile behavior, not Core.
+- `.agnir/` is the recommended colocated layout in this repository; `AGNIR.yaml` locators are authoritative.
+- Cold-start discovery begins from an authorized Project Entry Point, validates version/Project identity, resolves required continuity, and does not guess through arbitrary sibling repositories, old chats, predecessor paths, private Executor memory, or VCS sibling refs.
 - Current State and Next Actions from different known checkpoint generations must not be accepted as one coherent Project truth.
 
 ## Agent-operable activation and Skill packaging
 
-- Root `SKILL.md` is the canonical Agent-facing Agnir operational package. User-facing install/upgrade requests remain short intent statements plus the canonical distribution location; the user does not carry Agnir's internal procedure.
-- An initialized Agent-operable repository Project persists its Project-owned activation route through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory.
-- Target `AGENTS.md` remains locator-only for Agnir. Existing unrelated Project-owned instructions are preserved; equivalent locators are idempotent; material instruction conflicts are surfaced to the Principal and block completed repository activation until explicitly resolved.
+- Root `SKILL.md` is the canonical Agent-facing Agnir operational package. Users provide short install/upgrade/resume intent; the Skill owns procedure.
+- An Agent-operable repository persists activation through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory.
+- `AGENTS.md` remains locator-only for Agnir; unrelated Project instructions are preserved and material conflicts block completed activation until explicitly resolved.
 
 ## Execution-surface activation handoff — 2026-09-01
 
-- **Repository activation and execution-surface activation are separate completion dimensions.** A repository can be correctly self-describing while a surrounding execution surface still lacks the persistent locator needed for a future fresh context to reach that repository.
-- Execution-surface configuration is an adapter/integration concern, not Agnir Core and not Project-owned durable memory. It must contain only enough persistent locator/bootstrap information to reach the authorized Project Entry Point and then defer to the Project's canonical activation route.
-- When the active surface automatically begins Project work from the authorized Project root and inspects Project instruction files, no separate surface configuration is required.
-- When persistent surface configuration is required and the active Agent can modify it with Principal authority, the Agent should configure it. When it cannot, installation/upgrade must produce a copy-ready handoff, preserve unrelated existing surface instructions, and report `pending user configuration` rather than pretending the surface is ready.
-- Required surface configuration that is pending or unverified blocks a claim that **full fresh activation passed**. Completion reports distinguish repository activation status from execution-surface activation status.
-- ChatGPT Project Instructions are the first concrete execution-surface adapter for this rule. The handoff points to canonical repository/ref, root `AGENTS.md`, and `AGNIR.yaml`; it must not duplicate Current State, Next Actions, Decisions, Evidence, or the full Agnir procedure.
-- A fresh-context test is the preferred completion gate after required surface configuration is applied. If the execution surface cannot be genuinely restarted/tested by the current Executor, verification remains explicitly pending.
-- This repair shipped in repository release `v0.1.1` as an operational Skill/integration patch within Core `0.1` and `repository-filesystem/0.1`; it does not change either compatibility line.
+- Repository activation and execution-surface activation are separate completion dimensions.
+- Execution-surface configuration is adapter/integration behavior, not Agnir Core or Project durable memory; it stores only enough locator/bootstrap information to reach the authorized Project Entry Point.
+- Required surface configuration that is pending/unverified blocks a claim that full fresh activation passed.
+- ChatGPT Project Instructions are the first concrete surface adapter. They point to Project/repository/ref and activation files; they do not duplicate State, Next Actions, Decisions, Evidence, or the full Agnir procedure.
 
 ## Transactional checkpoint semantics — 2026-09-01
 
-- A checkpoint is an **authoritative continuity transition**, not merely a sequence of related writes.
-- Checkpoint evaluation first reconciles Project truth and applies a materiality filter. If authoritative Agnir memory already represents the reconciled truth, the correct result is a **no-op**.
-- When material continuity changed, an implementation should construct a coherent candidate before publication and minimize writes to semantic categories that actually changed.
-- A completed checkpoint must not expose mixed old/new generations as coherent truth. Backends should use an atomic publication primitive when available; otherwise they must provide durable generation/revision/transaction/pointer semantics sufficient for a fresh resolver to reject mixed generations.
-- A stale-base writer must not silently overwrite newer truth; it surfaces `AGNIR_CHECKPOINT_CONFLICT`, then re-resolves and reconciles.
-- Checkpoint completion includes post-publication discovery verification.
-- A backend-generated revision/transaction/commit identifier may serve as the checkpoint receipt without being embedded inside the content that determines it.
+- A checkpoint is an **authoritative continuity transition**, not an activity-log append.
+- Reconcile Project truth first. If authoritative continuity already represents it, checkpoint evaluation is a no-op.
+- Material checkpoints construct a coherent candidate before publication and minimize writes to semantic categories that changed.
+- Completed checkpoints must not expose mixed generations as coherent truth. Use atomic publication when available or durable generation/revision/transaction/pointer semantics otherwise.
+- Stale-base writers must not silently overwrite newer truth; surface `AGNIR_CHECKPOINT_CONFLICT`, re-resolve, and reconcile.
+- Checkpoint completion includes post-publication discovery verification. Backend revision/transaction/commit IDs may be checkpoint receipts without being embedded in content that determines them.
 
-## Repository commit / push event semantics — updated 2026-09-02
+## Repository commit / push semantics — updated 2026-09-02
 
-- Repository/VCS intent is integration/profile behavior, not a Core VCS dependency.
-- In repository context, an authorized request to `commit`, `提交`, `提交代码`, or equivalent is a checkpoint boundary. Agnir continuity is evaluated/reconciled **before** the VCS commit.
-- When Project changes and Agnir continuity changes can be represented in one VCS revision, implementations should publish them together in that one revision instead of creating a follow-up checkpoint-only revision.
-- `commit and push`, `提交推送`, or equivalent means checkpoint + commit + push + verification of the **actual destination ref** selected by the authorized operation.
-- A declared `authoritative_ref` is a repository publication-authority boundary, not the only ref on which Agnir may checkpoint or publish branch-local work.
-- Only an operation that additionally claims to publish authoritative repository truth must target and verify the declared `authoritative_ref` when one exists. A feature-branch push must not be silently redirected to or reported as publication of `main` merely because `main` is authoritative.
-- A commit observed after another human, Agent, IDE, CI, web UI, or automation action triggers checkpoint evaluation only; coherent unchanged continuity yields a no-op.
-- `提交` is contextual integration vocabulary, not a universal literal trigger.
-- Git hooks may capture events but remain optional adapter mechanisms and must never become Agnir discovery/continuity dependencies.
+- Repository/VCS intent is integration/profile behavior, not a Core dependency.
+- Authorized repository `commit`, `提交`, `提交代码`, or equivalent is a checkpoint boundary; reconcile Agnir continuity before the VCS commit.
+- Prefer Project changes + material Agnir changes in one VCS revision when possible.
+- `commit and push`, `提交推送`, or equivalent means checkpoint + commit + push + verification of the **actual destination ref**.
+- `authoritative_ref` is publication authority, not branch identity and not the only ref where branch-local checkpointing is allowed.
+- Only a claim of authoritative publication must target/verify the declared `authoritative_ref` when one exists. A feature push verifies its feature destination and must not be reported as publishing `main` merely because `main` is authoritative.
+- Observed external commits trigger checkpoint evaluation, not unconditional memory mutation. Git hooks remain optional adapter mechanisms.
 
 ## Experimental VCS branch continuity — 2026-09-02
 
-- Multi-branch behavior is being introduced first as experimental extension `agnir/vcs-branch-continuity/0.1`, not as an Agnir Core `0.2` change and not as a breaking change to `repository-filesystem/0.1` discovery.
-- Ordinary branch creation, checkout, worktree creation, rebase, merge, cherry-pick, branch rename, or history rewrite does **not** create a new Project identity. The same continuing Project retains the same `project.identity` unless the Principal explicitly creates a distinct Project.
-- After divergence, each selected branch/worktree resolves and checkpoints its own branch-local Current State, Next Actions, Decisions, and Evidence. A branch-local checkpoint must not mutate sibling branch continuity merely because both refs belong to the same Project.
-- Branch/ref names are VCS locators/runtime observations for this extension. They are not Project identity and are not standardized as durable generic continuity-line identities.
-- Commit/revision identifiers may be checkpoint receipts. Rebase/amend/squash/force-rewrite may replace those receipts without redefining Project identity or otherwise coherent Project truth.
-- Merge, rebase, and cherry-pick are continuity-integration boundaries. Source continuity is reconciliation input only and must not be automatically promoted to target truth.
-- Before target continuity is reported complete after an integration event, the implementation must reconcile the actual resulting Project state, target continuity, relevant source continuity/Evidence, and current Principal intent/policy, then publish a target checkpoint.
-- If an integration result exists but target continuity has not been reconciled, surface extension semantics equivalent to `AGNIR_VCS_RECONCILIATION_REQUIRED` rather than claiming continuity completion.
-- Cross-Project integration must preserve the existing Project-identity mismatch boundary; source continuity from a different Project must not be adopted merely because VCS can transfer files/commits.
-- A generic storage-neutral `lineage.id` remains deliberately deferred. Promotion into Core requires evidence outside Git/VCS showing that parallel continuity lineage is a substrate-neutral invariant rather than a repository convenience.
-- Stable Core self-hosting and experimental branch-continuity conformance remain separate CI gates. Passing the extension tests must not silently redefine the stable Core/profile compatibility contract.
-- For `iorLab/agnir` itself, `main` remains the only intended long-lived authoritative branch. Temporary development branches may carry branch-local continuity while active; merge into `main` requires target/main reconciliation rather than wholesale promotion of feature-branch Agnir state.
+- Multi-branch behavior is experimental extension `agnir/vcs-branch-continuity/0.1` layered on Core `0.1` + `repository-filesystem/0.1`; it is not a Core `0.2` change.
+- `iorLab/agnir` opts into the experimental policy on this feature branch through `extensions.agnir/vcs.branch_continuity: branch-local` and `integration_reconciliation: required`.
+- Ordinary branch creation/checkout/worktree/rebase/merge/cherry-pick/ref rename/history rewrite does not create a new Project identity unless the Principal explicitly creates a distinct Project.
+- After divergence, each selected ref/worktree may hold different branch-local Current State / Next Actions / Decisions / Evidence for the same Project identity. A checkpoint on one branch must not mutate sibling branch continuity.
+- Branch/ref names are VCS locators/runtime observations, not Project identity and not a standardized durable generic continuity-line identity. Commit/revision IDs are receipts and may change across rebase/history rewrite.
+
+### Working-ref selection
+
+- Before loading branch-local continuity, resolve exactly one working ref/worktree.
+- Precedence is: explicit Principal/task/adapter ref → already selected checkout/worktree/current-ref → explicitly declared default ref.
+- `authoritative_ref` may act as an unscoped default only when policy says so; it never overrides an explicit feature ref.
+- Implementations must not scan sibling branches to guess which branch a fresh Executor meant. Missing selection surfaces extension semantics equivalent to `AGNIR_VCS_REF_REQUIRED`.
+- This keeps one shared execution surface capable of serving multiple branch-scoped tasks without changing Project identity or globally rebinding durable Project truth.
+
+### Integration reconciliation and target publication
+
+- Merge, rebase, and cherry-pick are continuity-integration boundaries. Source continuity is input only and must not be promoted automatically to target truth.
+- **Target-ref advancement is a publication boundary.** When Agnir controls integration, it must not advance the target ref until the target continuity for the staged integrated Project has been reconciled.
+- Preferred sequence: capture target revision/continuity → stage integration without ref advancement → reconcile staged Project + target continuity + relevant source continuity/Evidence + Principal intent → construct target checkpoint → publish integrated Project + reconciled target continuity in the same ref-advancing revision/transaction → verify target ref + fresh discovery.
+- “Merge first, repair Agnir in a follow-up commit” is not the normal branch-continuity-safe path when the merge would expose source branch-local continuity as target truth.
+- Ordinary server-side merge/squash/rebase-and-merge/fast-forward is not branch-continuity-safe if it cannot preserve/reconcile target continuity before advancing the target ref. It requires an Agnir-aware hook/adapter or another staged integration mechanism.
+- If an external mechanism already advanced an unreconciled target, surface `AGNIR_VCS_RECONCILIATION_REQUIRED`; repair is recovery after an unmanaged integration, not the preferred publication sequence.
+- Cross-Project integration continues to fail the Project-identity boundary rather than adopting source continuity.
+
+### Scope boundary
+
+- A generic storage-neutral `lineage.id` remains deliberately deferred. Promotion into Core requires non-VCS evidence that parallel continuity lineage is a substrate-neutral invariant.
+- Stable Core self-hosting and experimental branch-continuity tests remain separate CI gates; extension success does not redefine stable compatibility lines.
+- For `iorLab/agnir`, `main` remains the only intended long-lived authoritative branch; temporary development branches may carry branch-local continuity while active.
+- PR `#4` itself must not be integrated by a normal server-side operation that first publishes feature-local `.agnir` truth to `main`; its final target integration must contain reconciled `main` continuity before `main` advances.
 
 ## Existing Project upgrade semantics — 2026-09-01
 
-- `upgrade` is a first-class Agnir Skill operation and is **not re-initialization**.
-- A compatible upgrade begins by activating the existing Project and preserves `project.identity`, declared memory locators, durable continuity contents, unrelated README/`AGENTS.md` instructions, and unrelated manifest extensions.
-- Core/profile compatibility lines classify the operation. When target Core/profile remain `0.1` / `repository-filesystem/0.1`, operational procedure updates may be applied compatibly. If either compatibility line changes, the operation is migration-required and must surface semantics equivalent to `AGNIR_UPGRADE_MIGRATION_REQUIRED` rather than silently rewriting the Project.
-- Projects created before operational provenance existed remain valid. Missing provenance is not a reason to re-initialize or rebuild `.agnir/`.
-- Repository/filesystem Projects may record applied operational provenance under optional `extensions.agnir/operations` with `distribution`, repository `release`, `source`, and immutable `applied_revision`. This metadata does not redefine Core/profile compatibility or Project identity.
-- `latest stable` means an actually published stable tag/release. Moving `main`, another moving branch, or an untagged revision must not be silently treated as stable. Non-stable targets require explicit Principal authorization.
-- Re-applying the same operational provenance with no material activation drift is a no-op.
-- Compatible VCS upgrades should merge Agnir-owned procedure/provenance and material continuity into one coherent revision when possible, then pass fresh activation.
-- Normal resume does not implicitly check for or install upgrades; a Project must remain resumable without network access to the Agnir distribution source.
+- `upgrade` is first-class and is not re-initialization.
+- Compatible upgrade activates the existing Project and preserves `project.identity`, memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions.
+- Core/profile line changes are migration-required and must surface `AGNIR_UPGRADE_MIGRATION_REQUIRED` rather than silently rewriting the Project.
+- `latest stable` means a published stable tag/release, never moving `main` or another untagged branch unless explicitly authorized as non-stable.
+- Re-applying identical operational provenance with no material activation drift is a no-op.
+- Normal resume does not implicitly check/install upgrades; Project resume must not require network access to the Agnir distribution source.
 
-## Evidence and repository documentation
+## Evidence and documentation
 
-- Evidence is retained only when needed for recovery, audit, conformance, or support of material claims; it is not an activity log.
-- `REPOSITORY_TREE.md` is a structural responsibility map. `.agnir/evidence/` is represented by directory responsibility rather than enumerating every Evidence filename.
-- `README.md` and `README.zh-CN.md` are parallel entry documents. Changes to architecture, activation, execution-surface handoff, durable-memory/checkpoint semantics, Project boundary, or continuity flow update both languages in the same change set.
-
-## README entry-point information architecture — 2026-09-01
-
-- Before the Architecture Diagram, both READMEs are deliberately limited to a concise Project identity/name explanation followed by: **Start Here / 从这里开始** for users; the canonical **Agnir Project Instructions** for Agents; and **What Agnir Adds to a Project / Agnir 会给 Project 增加什么** as a concrete user-facing map of the initialized repository/filesystem Project surface.
-- `Start Here` contains only minimal install, upgrade, and normal-use actions. User-facing install and upgrade intents remain one sentence each; users do not carry Agnir's internal implementation checklist.
-- `Agnir Project Instructions` remains the canonical heading resolved by `AGENTS.md` and is explicitly marked as Agent guidance for human readers.
-- `What Agnir Adds to a Project` shows the reference Skill's non-destructive Project surface: `AGENTS.md`, `AGNIR.yaml`, the README instruction section, and the declared `.agnir/` continuity layout with State, Next Actions, Decisions, and Evidence responsibilities. It must state that `AGNIR.yaml` locators are authoritative and that the file layout is profile/reference behavior rather than a universal Core requirement.
-- Execution-surface bootstrap is shown outside the Project-owned surface. If needed, it is labeled as an edit/append-only locator rather than a new canonical memory surface.
-- The Architecture Diagram mirrors the Project surface without duplicating the full file tree: `AGENTS.md` and `README.md` are non-destructive **EDIT / add-entry-only** surfaces, while `AGNIR.yaml` and the reference `.agnir/` continuity layout are Agnir **ADD** surfaces feeding discovery and Core continuity semantics.
-- The Continuity Flow describes post-install resume/runtime behavior and may begin with resolving a persistent execution-surface Project locator when the surface requires one; it must not turn surface settings into Project truth.
-- Packaging rationale, compatibility explanation, release detail, repository structure, and deeper implementation/conformance explanation belong after the architecture entry point or in dedicated documents.
-- Bilingual documentation must preserve the same audience split and operational meaning without requiring literal sentence-for-sentence translation.
-- Conformance enforces the ordering `Start Here -> Agnir Project Instructions -> installed Project surface -> Architecture`, canonical install/upgrade intents, and the required surface markers so the README front matter remains concrete without drifting back into a full implementation checklist.
+- Evidence is retained only for recovery, audit, conformance, or support of material claims; it is not an activity log.
+- `REPOSITORY_TREE.md` is the structural responsibility map; `.agnir/evidence/` is represented by directory responsibility rather than per-file registration.
+- `README.md` and `README.zh-CN.md` are parallel entry documents and must preserve equivalent operational meaning for architecture/activation/continuity changes.
+- README front matter remains ordered: Start Here → Agnir Project Instructions → What Agnir Adds to a Project → Architecture.
 
 ## Versioning, release, and branch governance
 
-- Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; published repository SemVer is now `0.1.1`.
-- The execution-surface activation handoff repair shipped in repository release `v0.1.1` as a non-breaking operational patch; it does not change Core/profile compatibility identifiers.
-- `RELEASE.md` is the publication contract. Repository release `v0.1.1` is immutably anchored to exact verified revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`; later `main` maintenance cannot redefine that release target.
-- `latest stable release` now resolves to published `v0.1.1` until a newer stable tag/release is actually published.
-- `main` is the only long-lived authoritative branch. Temporary development branches MAY exist and MAY carry branch-local continuity while active; they do not redefine stable publication authority.
-- Historical predecessor/branch recovery uses immutable commit SHAs and Git history rather than live legacy refs.
-- Real mount-boundary behavior remains explicitly unproven; ordinary directories are not accepted as substitute mount evidence.
+- Stable compatibility remains Core `0.1`, `repository-filesystem/0.1`, repository release `0.1.1`.
+- Immutable release `v0.1.1` remains anchored to `e9712357ab590e5c1e5357b3cf3219d07d789aff`.
+- `main` is the only long-lived authoritative branch. Temporary development branches may exist and carry branch-local continuity without redefining publication authority.
+- Historical predecessor/branch recovery uses immutable SHAs/Git history rather than live legacy refs.
+- Real mount-boundary behavior remains explicitly unproven.
