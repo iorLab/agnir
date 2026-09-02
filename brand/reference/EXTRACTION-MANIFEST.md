@@ -19,7 +19,7 @@ These crops are QA/trace references, **not independently approved redesigns or v
 
 | Asset role | QA-safe crop box | Size | Derived PNG SHA-256 |
 | --- | --- | --- | --- |
-| Primary mark | `(70, 140, 390, 410)` | `320×270` | `d5e98d916dc86d62218d7d8fc0b6535c19e7c47f4aff66449c3270f948a070bf` |
+| Primary mark | `(60, 145, 425, 400)` | `365×255` | `d6bee027595f2c3e26bd8afb43cf062305eabc7c1171d57ac28b1b39bf747f1e` |
 | Wordmark | `(575, 140, 860, 250)` | `285×110` | `ecc3234740fa03c697c56de8698e283bb53f21c8646ee4665c3b49895ff19607` |
 | Horizontal lockup | `(980, 140, 1410, 330)` | `430×190` | `3ad515e4b0521272ae982e524b5c0b470e717042d83f9aba0fc19cc547685744` |
 | Vertical lockup | `(610, 305, 810, 455)` | `200×150` | `3b019ecc9e2a11713a870e5cdd937b54720cd73e6a4ef0bc45e03fbbff36cb0a` |
@@ -31,12 +31,13 @@ These crops are QA/trace references, **not independently approved redesigns or v
 
 ## Review rendering rules
 
-1. Review panels must use **contain**, never crop/cover/fill-to-edge.
-2. Source and vector must be shown on separate canvases with explicit safety margin.
-3. A review image is invalid if approved artwork or rendered vector artwork touches the panel boundary.
-4. Source/vector artwork bounds should be displayed or otherwise checked before Principal review.
-5. Do not compensate for a clipped source crop by inventing geometry in the vector candidate; correct the crop first.
-6. An unclipped review can reveal real candidate mismatch that a clipped review concealed. Fix the candidate rather than the presentation.
+1. Principal-facing review output is **clean by default**: no detected-bounds rectangles, crop boxes, debug overlays or engineering annotations over the artwork.
+2. Engineering bounds belong only in a separately generated `--diagnostic` review. A diagnostic image is not the Principal approval image.
+3. Review panels must use **contain**, never crop/cover/fill-to-edge.
+4. Source and vector must be shown on separate canvases with explicit safety margin.
+5. A diagnostic review is invalid if approved artwork or rendered vector artwork touches the panel boundary.
+6. Do not compensate for a clipped source crop by inventing geometry in the vector candidate; correct the crop first.
+7. An unclipped clean review can reveal real candidate mismatch that a clipped/debug review concealed. Fix the candidate rather than the presentation.
 
 ## Production rule
 
