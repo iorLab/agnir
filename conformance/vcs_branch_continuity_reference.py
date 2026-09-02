@@ -21,6 +21,19 @@ class BranchContinuitySnapshot:
     next_actions: str
 
 
+@dataclass(frozen=True)
+class VCSIntegrationCandidate:
+    """Staged VCS integration receipt before target-ref publication."""
+
+    event: str
+    project_identity: str
+    source_ref: str
+    source_revision: str
+    target_ref: str
+    target_revision: str
+    result_revision: str
+
+
 def select_working_ref(
     *,
     requested_ref: str | None = None,
@@ -72,6 +85,35 @@ def integration_requires_reconciliation(event: str) -> bool:
     return event in INTEGRATION_EVENTS
 
 
+def stage_integration_candidate(
+    *,
+    event: str,
+    source: BranchContinuitySnapshot,
+    target: BranchContinuitySnapshot,
+    result_revision: str,
+) -> VCSIntegrationCandidate:
+    """Capture optimistic source/target receipts without advancing the target ref."""
+
+    if event not in INTEGRATION_EVENTS:
+        raise ValueError(f"unsupported integration event: {event}")
+    if source.project_identity != target.project_identity:
+        raise VCSContinuityFailure(
+            "AGNIR_DISCOVERY_PROJECT_MISMATCH",
+            "VCS integration attempted to stage continuity from different Projects",
+        )
+    if not result_revision:
+        raise ValueError("result_revision must be non-empty")
+    return VCSIntegrationCandidate(
+        event=event,
+        project_identity=target.project_identity,
+        source_ref=source.ref,
+        source_revision=source.revision,
+        target_ref=target.ref,
+        target_revision=target.revision,
+        result_revision=result_revision,
+    )
+
+
 def reconcile_integration(
     *,
     event: str,
@@ -107,6 +149,50 @@ def reconcile_integration(
         revision=result_revision,
         state=reconciled_state,
         next_actions=reconciled_next_actions,
+    )
+
+
+def publish_staged_integration(
+    *,
+    candidate: VCSIntegrationCandidate,
+    current_source: BranchContinuitySnapshot,
+    current_target: BranchContinuitySnapshot,
+    reconciled_state: str | None,
+    reconciled_next_actions: str | None,
+) -> BranchContinuitySnapshot:
+    """Validate staged receipts, then construct publishable target continuity.
+
+    This helper models the VCS adapter/profile boundary. It does not move a ref;
+    the caller may advance the target only after this returns reconciled truth.
+    """
+
+    if current_source.project_identity != candidate.project_identity or current_target.project_identity != candidate.project_identity:
+        raise VCSContinuityFailure(
+            "AGNIR_DISCOVERY_PROJECT_MISMATCH",
+            "staged VCS integration inputs no longer resolve to the staged Project",
+        )
+    if current_target.ref != candidate.target_ref or current_source.ref != candidate.source_ref:
+        raise VCSContinuityFailure(
+            "AGNIR_VCS_INTEGRATION_CONFLICT",
+            "staged integration source/target logical refs changed before publication",
+        )
+    if current_target.revision != candidate.target_revision:
+        raise VCSContinuityFailure(
+            "AGNIR_VCS_INTEGRATION_CONFLICT",
+            "target ref advanced after the integration candidate was staged",
+        )
+    if current_source.revision != candidate.source_revision:
+        raise VCSContinuityFailure(
+            "AGNIR_VCS_INTEGRATION_CONFLICT",
+            "source ref advanced after the integration candidate was staged",
+        )
+    return reconcile_integration(
+        event=candidate.event,
+        source=current_source,
+        target=current_target,
+        result_revision=candidate.result_revision,
+        reconciled_state=reconciled_state,
+        reconciled_next_actions=reconciled_next_actions,
     )
 
 
