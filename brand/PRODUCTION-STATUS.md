@@ -13,41 +13,43 @@ The Principal-approved Today 10:42 AM Agnir board is the sole Agnir-only visual 
 - concept exploration ended;
 - approved visual reference locked by exact source SHA-256;
 - rejected deterministic reconstruction removed from the active branch;
-- source-board extraction manifest corrected after QA found several earlier crop bounds were too tight;
-- corrected primary-mark / wordmark / horizontal-lockup regions now preserve the approved content without clipping;
-- `brand/masters/candidates/agnir-mark-trace-v0.2.svg` is the current particle-A review candidate, derived from the corrected approved primary-mark crop;
-- `brand/masters/candidates/agnir-wordmark-trace-v0.2.svg` is the current black standalone wordmark review candidate, derived from the corrected approved wordmark crop;
-- `brand/masters/candidates/agnir-horizontal-lockup-v0.2.svg` and `agnir-vertical-lockup-v0.2.svg` encode the current source-aligned candidate assemblies;
-- superseded v0.1 mark/wordmark traces were removed from the active branch to prevent accidental use;
-- `brand/tools/derive-raster-assets.py` provides the deterministic interim white-matte → transparent PNG / target-size raster path;
-- raster derivation continues to preserve the approved Agnir appearance without pretending raster upscales are native masters.
+- source-board extraction manifest corrected again after Principal review exposed clipping/misleading bounds in the first v0.2 review sheet;
+- QA-safe source crops now retain deliberate white margin around mark, wordmark and both lockups;
+- `brand/tools/render-vector-review.py` now enforces contain-only review rendering and explicit artwork bounds;
+- `brand/masters/candidates/agnir-mark-trace-v0.2.svg` and `agnir-wordmark-trace-v0.2.svg` remain the current committed component candidates;
+- `agnir-horizontal-lockup-v0.2.svg` and `agnir-vertical-lockup-v0.2.svg` remain candidate assemblies only;
+- `brand/tools/derive-raster-assets.py` remains the deterministic interim raster-production path.
 
 ## Current production gate
 
-**v0.2 is ready for master-review, not yet a locked master.**
+**Agnir v0.2 is not approved and is not ready for promotion.**
 
-A vector master may be promoted only after visual comparison against the corrected approved crop. No new image generation, ribbon-based A replacement, typography substitution, palette reconciliation, particle-field redesign, or aesthetic cleanup is allowed.
+The earlier master-review sheet is invalid because source/vector panels were clipped or fitted into insufficient display bounds. The Principal correctly identified missing descender/edge content and incomplete lockup rendering.
 
-### Current v0.2 review status
+After rebuilding the review with QA-safe crops, explicit margins and contain-only scaling, real candidate mismatches are easier to see:
 
-- Particle A: **best current vector candidate**. It preserves the approved discrete-particle hierarchy, pale inner A, outer field and central anchor. Automated source-vs-render SSIM during local QA is approximately `0.894`; that metric is supporting evidence only, not the approval criterion.
-- Wordmark: **best current vector candidate**. It is a corrected dense contour trace of the actual approved black wordmark, not a substituted font.
-- Horizontal lockup: **review candidate assembled and visually aligned** to the corrected approved horizontal region.
-- Vertical lockup: **review candidate assembled and visually aligned** to the approved vertical region.
-- Candidate lockups intentionally reference the candidate component SVGs at this stage; if/when promoted, they must be flattened/self-contained.
-- Light/dark/monochrome vector variants remain blocked until the v0.2 primary mark and wordmark are accepted masters.
+- particle A: the current vector construction is narrower/denser than the approved source in several rows and still needs proportion correction;
+- wordmark: no longer visually clipped in the corrected review path, but contour fidelity still requires review;
+- horizontal lockup: component scale and spacing do not yet match the approved source closely enough for master promotion;
+- vertical lockup: the current vector assembly is too narrow/compressed relative to the approved source;
+- therefore light/dark/monochrome vector variants remain blocked.
 
 The quality rule remains: **absence of a locked master is preferable to a visually drifting master.**
 
+## QA validity rule
+
+A review image is invalid if approved artwork or rendered vector artwork touches the review panel boundary. Review must use `contain`, never crop/cover. Presentation defects must be fixed before any brand judgment is requested.
+
 ## Binary reference boundary
 
-The byte-exact approved board and crop PNGs remain preserved by SHA-256 and in the locked local reference package. The current connector does not provide a practical local-file binary upload bridge for the multi-megabyte exact approved PNG, so final byte-exact repository preservation remains a pre-`main` integration gate.
+The byte-exact approved board and crop PNGs remain preserved by SHA-256 and in the locked local reference package. Final byte-exact repository preservation remains a pre-`main` integration gate.
 
 ## Next actions
 
-1. Run Principal visual review of Agnir v0.2 mark / wordmark / horizontal / vertical candidates against the locked board.
-2. If accepted, promote the mark and wordmark to production masters and flatten the two lockups into self-contained SVGs.
-3. Rebuild light-background, dark-background and monochrome variants from those locked masters while matching the approved examples.
-4. Produce repository/app/favicon/social derivatives and target-size QA.
-5. Preserve the byte-exact approved source in repository storage before final integration.
-6. Re-resolve latest `main`, reconcile approved brand continuity, and integrate coherently only after the brand asset gate is complete.
+1. Correct particle-A width, row spacing and outer-particle distribution using the QA-safe primary-mark crop.
+2. Re-run the wordmark against the QA-safe source without descender clipping.
+3. Rebuild horizontal and vertical lockups from the corrected component candidates using approved source proportions and spacing.
+4. Generate a new unclipped source-vs-vector QA sheet using `brand/tools/render-vector-review.py`.
+5. Request Principal master review only after every panel passes the no-clipping validity check.
+6. If accepted, promote/flatten masters and then build light/dark/monochrome, icon, favicon and social derivatives.
+7. Before final integration, preserve the byte-exact approved source, re-resolve latest `main`, reconcile Agnir continuity, and integrate coherently.
