@@ -24,5 +24,7 @@ jobs:
         run: python -m unittest discover -s conformance -p 'test_core_0_2_parallel_continuity.py' -v
       - name: Experimental Core 0.2 VCS mapping
         run: python -m unittest discover -s conformance -p 'test_core_0_2_vcs_mapping.py' -v
+      - name: Experimental Core 0.1 to 0.2 migration
+        run: python -m unittest discover -s conformance -p 'test_core_0_2_migration.py' -v
       - name: Full conformance suite
         run: python -m unittest discover -s conformance -p 'test_*.py' -v
