@@ -18,7 +18,19 @@ A VCS-aware Agnir implementation MUST keep these concepts distinct:
 
 This extension deliberately does not standardize a durable generic `lineage.id`. Branch/ref names are treated as VCS locators/runtime observations for this compatibility line. A future Core version MAY generalize proven branch behavior into a storage-neutral continuity-lineage concept only after non-VCS evidence exists.
 
-## 2. Branch creation and divergence
+## 2. Branch selection, creation, and divergence
+
+Before loading branch-local continuity, a VCS-aware implementation MUST resolve exactly one selected working ref/worktree from authorized context. Selection SHOULD use this precedence:
+
+1. an explicit ref supplied by the current Principal/task or execution-surface adapter;
+2. an already selected checkout/worktree/current-ref context;
+3. an explicitly declared default working ref.
+
+A declared `authoritative_ref` MAY be used as the default working ref only when Project/adapter policy explicitly makes it the unscoped default. It MUST NOT override an explicitly selected feature ref and MUST NOT be treated as proof that no other branch-local continuity exists.
+
+Implementations MUST NOT scan sibling branches and guess which feature branch a fresh Executor “probably meant.” If no working ref can be selected, they SHOULD surface extension semantics equivalent to `AGNIR_VCS_REF_REQUIRED` rather than mixing or guessing branch continuity.
+
+This makes execution-surface behavior explicit: a local Git worktree naturally supplies its selected ref; a hosted/API/ChatGPT-style surface doing branch-specific work must carry or receive the selected ref as task/adapter context. A shared execution-surface Project locator may still default unscoped work to the authoritative/default ref without making that ref the identity of the Project.
 
 When a branch/ref is created from a coherent checkpoint:
 
@@ -130,6 +142,7 @@ A push to `feature/a` therefore verifies `feature/a`; it does not need to update
 
 Implementations MAY surface failure semantics equivalent to:
 
+- `AGNIR_VCS_REF_REQUIRED` — branch-local work was requested but no working ref/worktree/default ref is authorized or selected;
 - `AGNIR_VCS_AUTHORITY_UNRESOLVED` — authoritative publication was claimed but no applicable authoritative ref can be resolved;
 - `AGNIR_VCS_AUTHORITY_MISMATCH` — authoritative publication was claimed for a destination that is not the declared authoritative ref.
 
@@ -154,12 +167,13 @@ The manifest schema for `repository-filesystem/0.1` already permits namespaced e
 
 A branch-aware conformance case SHOULD prove at least:
 
-1. two Git branches/worktrees with the same `project.identity` can resolve different branch-local Agnir Current State after divergence;
-2. checkpointing one branch does not mutate a sibling branch's continuity snapshot;
-3. merge, rebase, and cherry-pick require explicit target continuity reconciliation rather than source-state promotion;
-4. an Agnir-aware Git integration can stage a merge without advancing the target ref, reconcile target continuity, and advance the target exactly once to a merge revision containing the reconciled target truth;
-5. cross-Project integration is rejected as a Project identity mismatch;
-6. rebase/history rewriting may change revision receipts without changing Project identity or otherwise coherent continuity;
-7. feature-branch push verification targets the actual destination ref, while authoritative publication claims additionally enforce the declared authoritative ref.
+1. explicit task/current-worktree/default ref selection resolves one working ref without scanning sibling branches, and missing selection surfaces `AGNIR_VCS_REF_REQUIRED`;
+2. two Git branches/worktrees with the same `project.identity` can resolve different branch-local Agnir Current State after divergence;
+3. checkpointing one branch does not mutate a sibling branch's continuity snapshot;
+4. merge, rebase, and cherry-pick require explicit target continuity reconciliation rather than source-state promotion;
+5. an Agnir-aware Git integration can stage a merge without advancing the target ref, reconcile target continuity, and advance the target exactly once to a merge revision containing the reconciled target truth;
+6. cross-Project integration is rejected as a Project identity mismatch;
+7. rebase/history rewriting may change revision receipts without changing Project identity or otherwise coherent continuity;
+8. feature-branch push verification targets the actual destination ref, while authoritative publication claims additionally enforce the declared authoritative ref.
 
 The reference suite implements these cases in `conformance/test_vcs_branch_continuity.py`.
