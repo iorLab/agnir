@@ -1,47 +1,38 @@
 # Agnir Next Actions
 
-Agnir `v0.1.1` remains the published stable release on exact target `e9712357ab590e5c1e5357b3cf3219d07d789aff`. The Core `0.2` Parallel Continuity implementation/evidence line has passed synthetic, dual-backend, concrete migration, and first real-consumer validation and is now at the safe-main-integration boundary.
+Agnir `v0.1.1` remains the published stable release. Core `0.2` Parallel Continuity is now safely integrated into authoritative `main`; exact integrated revision `a32c9143687b72426617ddd701b90ffd237a111c` passed authoritative-main conformance run `33653087179`.
 
-## Main integration and RC sequence
+## v0.2.0-rc.1 preparation
 
-1. **Verify the reconciled main integration candidate without moving `main`.** Require stable self-hosting cold-start, experimental VCS branch continuity, Core `0.2` non-VCS/VCS mapping, repository-filesystem `0.2`, VCS lineage binding, semantic/concrete `0.1`→`0.2` migration, and full conformance on the exact candidate tree.
-2. **If the candidate is green and the target/source refs are unchanged, advance `main` directly to that exact reconciled revision.** Do not use ordinary server-side merge-first/follow-up-repair and do not publish feature-local State / Next Actions / Decisions as target truth.
-3. **Verify authoritative `main` after advancement.** Re-run/fetch the main workflow result and fresh-resolve `AGNIR.yaml` → Current State / Next Actions / Decisions / Evidence from `main`; confirm published `v0.1.1` provenance remains unchanged and Core `0.2` remains pre-RC rather than silently stable.
-4. **Close/resolve stacked PR `#4` / `#5` through the exact Agnir-aware integration ancestry.** Preserve their feature tips/evidence until GitHub recognizes the integrated ancestry; do not create a second merge path.
-5. **Prepare `v0.2.0-rc.1`.** Convert only the artifacts that should become RC contracts out of draft status, update repository release/version metadata deliberately, bind the RC to an exact verified revision, and keep repository SemVer distinct from Core/profile compatibility versions.
-6. **Exercise RC migration and fresh resume.** Validate fresh installation plus explicit published `v0.1.1` Core/profile `0.1` → Core/profile `0.2` migration on at least one real Project, then cold-start resume without predecessor-private context.
-7. **Publish final `v0.2.0` only after RC gates remain green.** Do not move an RC/stable tag after publication.
-8. Continue broader real-Project/execution-surface evidence for eventual `v1.0.0`; add new synthetic lineage cases only when real integration/RC evidence exposes a missing invariant.
+1. **Create a temporary `release/v0.2.0-rc.1` branch from the post-integration main checkpoint.** Keep `main` authoritative and do not mutate published `v0.1.1` tags/releases.
+2. **Promote only the intended Core/profile 0.2 contracts from draft to RC/normative form.** Preserve compatibility-line separation: repository SemVer, Core compatibility, profile versions, and experimental VCS extension versions remain distinct.
+3. **Update repository release metadata deliberately for `0.2.0-rc.1`.** `VERSION`, release notes/contracts, README compatibility wording, operational provenance, and repository maps must agree; `latest stable` must still resolve to published `v0.1.1`, not the RC.
+4. **Migrate the RC branch's own Agnir self-host from Core/profile `0.1` to `0.2` explicitly.** Preserve Project identity and durable truth, assign/bind an RC-branch logical lineage coherently, and verify fresh Core `0.2` discovery. Do not reinterpret the branch selector or revision receipt as lineage identity.
+5. **Run exact RC candidate conformance.** Require stable `0.1` regression coverage, Core/profile `0.2`, VCS lineage/binding, migration, full suite, and fresh self-host resume on the RC branch.
+6. **Exercise fresh install and real migration/resume.** Validate a fresh `0.2.0-rc.1` installation and at least one real Project migration from published `v0.1.1` / Core/profile `0.1` to Core/profile `0.2`, followed by cold-start resume without predecessor-private context.
+7. **Tag/publish `v0.2.0-rc.1` only from an exact verified candidate.** RC publication must be immutable. It is prerelease evidence, not `latest stable`.
+8. **After RC evidence is green, reconcile the release branch back into `main` through the same target-publication discipline and prepare final `v0.2.0`.** Final stable publication still requires explicit exact-candidate verification.
+9. Continue broader real-Project/execution-surface evidence for eventual `v1.0.0`; add synthetic lineage cases only when real RC/consumer evidence exposes a missing invariant.
 
-## Stable maintenance obligations to preserve
+## Completed pre-RC gates
 
-- Root `SKILL.md` remains the canonical Agent-facing operational package.
-- Repository activation and execution-surface activation remain separate completion dimensions.
-- Compatible `v0.1.1` upgrades preserve Project identity, memory locators/content, unrelated instructions/extensions, and stable activation routes.
-- `latest stable` resolves to an actually published stable tag/release, never moving `main` by default.
-- Transactional checkpoint no-op/coherent-publication and stale-base safety remain active.
-- Prompt-free Project activation and non-destructive `AGENTS.md` merge remain active.
-- Real mount-boundary behavior remains unproven until a genuine mount-capable environment is available.
+- Core `0.2` dual-backend/profile/migration conformance: green.
+- Svif real-consumer validation: green; final checkpoint `d42489f72cc8985d353ccbf2f9b6ae7249fe6480`, CI `33619807614`.
+- Agnir Core `0.2` source checkpoint: `68cc443d6c44929f1b71d9d534e9b0f73f9745bf`, CI `33620080730`.
+- Safe-main candidate: `a32c9143687b72426617ddd701b90ffd237a111c`, tree `759766c34e0f39f0c8d51bea1af22d7d41ad591c`.
+- Candidate-tree PR CI: `33653019074`, success.
+- Authoritative-main CI: `33653087179`, success.
+- PR `#4` and validation PR `#6` recognized merged through exact ancestry; stacked PR `#5` closed as already integrated through the same main revision.
 
-## Core 0.2 release evidence
-
-- Agnir pre-integration Core `0.2` checkpoint: `68cc443d6c44929f1b71d9d534e9b0f73f9745bf`.
-- Agnir conformance run: `33620080730` — all stable/experimental/full-suite gates success.
-- Svif final real-consumer checkpoint: `d42489f72cc8985d353ccbf2f9b6ae7249fe6480`.
-- Svif final validation run: `33619807614` — repository-integrity, portable-contracts, runtime-kernel all success.
-- Published stable release remains `v0.1.1` at `e9712357ab590e5c1e5357b3cf3219d07d789aff`.
-
-## Core 0.2 invariants to preserve
+## Invariants to preserve
 
 - Durable continuity belongs to the Project.
-- Project identity is not lineage identity.
-- Lineage identity is logical and durable within Project scope; selectors/bindings and revision receipts are not identity.
-- Selection is explicit/contextual/default and never guessed by sibling scanning.
+- Project identity is not lineage identity; lineage identity is not selector or revision receipt.
 - Agnir-aware fork publishes lineage identity + selector binding + coherent inherited/reconciled continuity together.
 - Checkpoints are lineage-local by default.
-- Source continuity is integration input, not automatic target truth.
-- Integrated Project state and reconciled target continuity publish coherently.
+- Source continuity is reconciliation input, not target truth.
 - Target-ref advancement is a publication boundary.
 - Stale source/target candidates fail rather than overwrite newer truth.
-- Core/profile `0.1`→`0.2` is explicit migration; compatible operational upgrade semantics remain separate.
-- Cross-Project identity mismatch remains a hard boundary.
+- Core/profile `0.1`→`0.2` is explicit migration; compatible operational upgrade remains separate.
+- `latest stable` means an actually published stable release; `v0.1.1` remains stable until final `v0.2.0` publication.
+- `main` remains the only intended long-lived authoritative branch; release/validation branches are temporary evidence carriers.
