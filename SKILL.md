@@ -20,7 +20,7 @@ Classify the request as one of:
 - **commit / push** — treat repository publication intent as a checkpoint boundary, then perform the requested VCS operation when authorized;
 - **repair** — the Project intends to use Agnir but activation, discovery, identity, or locators are broken.
 
-For repository/filesystem Projects, read `profiles/REPOSITORY_FILESYSTEM.md` when performing installation, upgrade, activation repair, discovery repair, or repository commit/push integration. Read `spec/AGNIR_CORE.md` and `spec/AGNIR_DISCOVERY.md` when the operation depends on Core semantics or failure classification.
+For repository/filesystem Projects, read `profiles/REPOSITORY_FILESYSTEM.md` when performing installation, upgrade, activation repair, discovery repair, or repository commit/push integration. When the Project uses parallel VCS branches/worktrees or the requested operation is merge, rebase, cherry-pick, branch-local checkpoint, or non-authoritative-ref publication, also read `profiles/VCS_BRANCH_CONTINUITY.md`. Read `spec/AGNIR_CORE.md` and `spec/AGNIR_DISCOVERY.md` when the operation depends on Core semantics or failure classification.
 
 ## Install or initialize Agnir
 
@@ -61,7 +61,7 @@ For the reference `repository-filesystem/0.1` setup:
    - load Decisions and Evidence when relevant;
    - prefer durable Agnir Project truth over chat history or private Agent memory unless superseded by newer Principal instruction or directly observed current Project fact;
    - checkpoint material state, next-action, decision, and evidence changes when saving progress or finishing work;
-   - treat an authorized request to commit Project changes as a checkpoint boundary: reconcile material continuity before the VCS commit, prefer code and Agnir changes in one revision, and treat a commit-and-push request as checkpoint + commit + push + verification when repository context applies.
+   - treat an authorized request to commit Project changes as a checkpoint boundary: reconcile material continuity before the VCS commit, prefer code and Agnir changes in one revision, and treat a commit-and-push request as checkpoint + commit + push + destination-ref verification when repository context applies; only a claim of authoritative publication additionally requires the declared authoritative ref.
 5. Create or update root `AGENTS.md` according to **Merge existing AGENTS.md safely** above so it points to the README `Agnir Project Instructions` section and does not fork a second copy of the full Agnir contract.
 6. Validate every locator and Project identity.
 7. Finish with a fresh repository activation test using only the target Project root:
@@ -189,7 +189,7 @@ Do not require every checkpoint to modify all four durable semantic categories. 
 Interpret repository commit/push requests by intent and context, not by global string matching.
 
 - In a repository/VCS context, `commit`, `提交`, `提交代码`, and equivalent wording normally mean: **checkpoint evaluation → reconcile if material → create the requested VCS commit**.
-- `commit and push`, `提交推送`, and equivalent wording normally mean: **checkpoint evaluation → commit → push → verify the intended authoritative remote/ref when declared**.
+- `commit and push`, `提交推送`, and equivalent wording normally mean: **checkpoint evaluation → commit → push → verify the actual destination remote/ref**. If the operation additionally claims authoritative publication, verify that the destination is the declared authoritative ref when one exists.
 - A bare word such as `提交` outside repository context can mean submitting a form, document, job, or other non-VCS action; do not trigger Agnir merely because the literal word matches.
 
 For an authorized commit request:
@@ -201,7 +201,22 @@ For an authorized commit request:
 5. if checkpoint evaluation is a no-op, commit only the requested Project changes;
 6. treat the resulting VCS revision identifier as a backend receipt when useful; do not try to embed a commit SHA inside the content whose commit would determine that same SHA.
 
-For an authorized push request, perform the commit-boundary procedure first. After push/publication, if the Project declares a canonical repository and authoritative ref, verify that the intended revision reached that ref before reporting completion.
+For an authorized push request, perform the commit-boundary procedure first. After push/publication, verify that the intended revision reached the actual destination ref selected by the authorized operation. If the Project declares `agnir/repository.authoritative_ref`, that ref is a publication-authority boundary, not the only permitted checkpoint/push target. A feature-branch push verifies the feature ref; it MUST NOT be reported as authoritative publication unless the destination is the declared authoritative ref.
+
+### Parallel branch continuity
+
+When the selected repository context uses parallel branches/worktrees, apply `profiles/VCS_BRANCH_CONTINUITY.md` in addition to the base repository/filesystem profile:
+
+1. preserve the same `project.identity` across ordinary branch creation, checkout, worktree creation, rebase, merge, cherry-pick, and ref rewrite unless the Principal explicitly creates a distinct Project;
+2. resolve and checkpoint continuity from the selected branch/worktree only; do not silently read or overwrite sibling-branch Agnir state merely because another ref is authoritative;
+3. treat branch-local checkpoints as isolated publication to that branch/ref;
+4. for merge, rebase, or cherry-pick, treat source-branch Current State / Next Actions / Decisions / Evidence as reconciliation inputs, not automatic target truth;
+5. before reporting target continuity complete after an integration event, reconcile the actual resulting Project state with target continuity, relevant source continuity/evidence, and Principal intent, then checkpoint the target result;
+6. if integration occurred but target continuity has not been reconciled, surface `AGNIR_VCS_RECONCILIATION_REQUIRED` rather than pretending the target is continuity-complete;
+7. reject continuity integration across different `project.identity` values instead of silently adopting the source Project;
+8. after rebase/amend/squash/force-rewrite, allow revision receipts to change without redefining Project identity; re-resolve the selected ref and checkpoint only if material Project truth changed.
+
+Do not introduce or infer a durable generic `lineage.id` for Core `0.1`. Branch/ref names are VCS locators/runtime observations in this experimental extension, not Project identity.
 
 When a commit created elsewhere is merely observed—human CLI, IDE, web UI, CI, another Agent, or automation—trigger **checkpoint evaluation**, not unconditional checkpoint mutation. If the durable Project truth remains coherent, do nothing. If material truth drift is detected, reconcile at the next authorized checkpoint boundary or according to Project policy.
 

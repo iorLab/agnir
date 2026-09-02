@@ -1,79 +1,41 @@
 # Agnir Current State
 
-Agnir `v0.1.1` is formally published as the current stable repository release. The execution-surface activation handoff repair passed repository conformance and the real ChatGPT `skills-hub` fresh-context regression before publication.
+Agnir `v0.1.1` remains the formally published stable repository release, immutably anchored to `e9712357ab590e5c1e5357b3cf3219d07d789aff`. **Durable continuity belongs to the Project**, not to an Executor, conversation, execution environment, storage implementation, repository host, VCS branch, selector, or Continuity Lineage.
 
-Durable continuity belongs to the Project, not an Executor, conversation, execution environment, repository host, or storage implementation.
+## Core 0.2 safe main integration completed — 2026-09-02
 
-## Published release
+The combined PR `#4` + PR `#5` Core `0.2` Project result has been integrated into authoritative `main` through the Agnir-aware publication path.
 
-- repository release: `0.1.1`
-- Git tag: `v0.1.1`
-- tag target: `e9712357ab590e5c1e5357b3cf3219d07d789aff`
-- GitHub Release id: `380414987`
-- Release title: `Agnir v0.1.1`
-- published at: `2026-09-01T10:47:58Z`
-- draft: false
-- prerelease: false
-- exact-candidate conformance run: `33499092957`
-- publication workflow run: `33499228486`
+Exact integrated revision: `a32c9143687b72426617ddd701b90ffd237a111c`.
 
-The tag resolves directly to exact verified candidate `e9712357ab590e5c1e5357b3cf3219d07d789aff`. Later `main` checkpoints are post-release maintenance and do not redefine the immutable `v0.1.1` release target.
+- first parent: previous authoritative `main` `1bbdb5b258645ec7c5e0109c9b17dbaac004e625`;
+- second parent: Core `0.2` source checkpoint `68cc443d6c44929f1b71d9d534e9b0f73f9745bf`;
+- exact tree: `759766c34e0f39f0c8d51bea1af22d7d41ad591c`.
 
-## Active compatibility contract
+A temporary validation PR `#6` produced test merge `270265a4d76b92553176a5a0b281f9202b7644fd`; its tree SHA was exactly the same `759766c...` as the candidate. Candidate-tree conformance run `33653019074` passed every gate while authoritative `main` remained unchanged.
 
-- Core compatibility: `0.1`
-- repository/filesystem profile: `repository-filesystem/0.1`
-- published repository release: `0.1.1`
-- Agnir Core remains storage-, platform-, VCS-, repository-, Agent-, Skill-, and execution-surface-neutral.
+Immediately before publication, fresh ref reads still observed `main` at `1bbdb5b...` and source `feature/core-0.2-lineage` at `68cc443d...`. `main` then advanced once directly to exact candidate `a32c914...`, with no feature-truth-first/follow-up-repair interval.
 
-## v0.1.1 patch result
+Authoritative-main push run `33653087179` passed stable Core `0.1` self-hosting, VCS branch continuity, Core `0.2` non-VCS/VCS mapping, repository-filesystem `0.2`, VCS lineage binding, semantic and concrete `0.1`→`0.2` migration, and the full suite.
 
-The patch closes the execution-surface completion gap discovered during real ChatGPT web Project initialization of `mattamior/skills-hub`:
+## Compatibility and release status
 
-- repository activation and execution-surface activation are separate completion dimensions;
-- surfaces that require persistent Project/workspace configuration are configured when possible or receive a copy-ready locator-only handoff;
-- pending/unverified required surface configuration blocks a claim that full fresh activation passed;
-- ChatGPT Project Instructions remain an execution-surface adapter and do not duplicate Project durable truth or the full Agnir procedure;
-- completion reporting distinguishes repository activation from execution-surface activation;
-- bilingual README architecture/continuity documentation and executable regression pressure preserve the boundary.
+- published stable repository release remains `v0.1.1`;
+- stable tag target remains `e9712357ab590e5c1e5357b3cf3219d07d789aff`;
+- the repository still self-hosts Core `0.1` + `repository-filesystem/0.1` on authoritative `main`;
+- Core `0.2` + `repository-filesystem/0.2` contracts/conformance are now integrated on `main` as the **pre-RC** line, not yet published as stable compatibility;
+- `VERSION` and operational provenance remain `0.1.1` until the RC release change is intentionally constructed.
 
-The real `skills-hub` regression passed after the persistent locator-only Project Instructions were configured: a genuinely fresh conversation, given only an ordinary Project-status request, located `mattamior/skills-hub` and began reading root `AGENTS.md`, `AGNIR.yaml`, and declared durable continuity without a repeated Agnir bootstrap prompt.
+## PR integration result
 
-Evidence:
+- PR `#4` was automatically recognized as merged through ancestry when `main` advanced to `a32c914...`;
+- temporary validation PR `#6` was likewise recognized as merged at the exact candidate revision;
+- stacked PR `#5` could not be auto-recognized because its base remained the feature branch. Its head is already the second-parent ancestry of `a32c914...`; a completion comment was recorded and the PR was closed without creating another merge path.
 
-- `.agnir/evidence/2026-09-01-execution-surface-activation-regression.md`
-- `.agnir/evidence/2026-09-01-v0.1.1-execution-surface-validation.md`
-- `.agnir/evidence/2026-09-01-v0.1.1-publication.md`
+## Core 0.2 readiness
 
-## Existing-Project upgrade validation
+Synthetic/backend/profile/migration gates, the first real Svif consumer validation, exact candidate-tree validation, coherent main publication, and authoritative-main conformance are all green.
 
-A real compatible upgrade from the pre-provenance Agnir setup in `mattamior/skills-hub` to published `v0.1.1` has passed.
+The next release boundary is `v0.2.0-rc.1`. RC work should occur on a temporary release branch, deliberately promote the intended Core/profile contracts, update repository release metadata, exercise fresh install, and validate explicit published `v0.1.1` Core/profile `0.1` → Core/profile `0.2` migration/resume before final `v0.2.0` publication.
 
-- target Project pre-upgrade revision: `f94c3894ec9412724607febbc27b25408a9a90cc`
-- upgrade revision: `f8ec9fbb429df6a8eaa0aa837906a5897ffbb210`
-- classification: compatible operational upgrade
-- preserved Core/profile: `0.1` / `repository-filesystem/0.1`
-- preserved Project identity and all declared memory locators/content
-- recorded `extensions.agnir/operations` release `0.1.1` with applied revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`
-- target repository validation workflow: `Validate skills` run `33500075237`
-- target validation conclusion: `success`
-
-The target Project's existing README Agnir contract and locator-only `AGENTS.md` already satisfied the v0.1.1 repository activation contract, so they were not rewritten. The ChatGPT Project locator established during the earlier fresh-context regression remained valid because canonical repository/ref, activation route, Project identity, and memory locators did not change.
-
-Evidence: `.agnir/evidence/2026-09-01-v0.1.1-existing-project-upgrade-validation.md`.
-
-## Stable upgrade status
-
-`latest stable release` resolves to published `v0.1.1`. Existing compatible Agnir Projects on Core `0.1` / `repository-filesystem/0.1` may upgrade to `v0.1.1` as a compatible operational upgrade. Such an upgrade preserves Project identity, declared memory locators/content, unrelated README/`AGENTS.md`, and unrelated extensions, while optionally recording `extensions.agnir/operations` provenance.
-
-Core/profile compatibility changes remain migration-required and must surface `AGNIR_UPGRADE_MIGRATION_REQUIRED` rather than being silently rewritten.
-
-## Repository and documentation invariants
-
-Root `SKILL.md` remains the canonical Agent-facing operational package. The Project-owned activation route remains `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → declared durable memory. Execution-surface configuration stays outside the Project-owned tree and remains locator-only.
-
-Transactional checkpoint semantics, stale-base `AGNIR_CHECKPOINT_CONFLICT`, contextual commit/push intent, one-revision preference, prompt-free Project activation, and safe non-destructive `AGENTS.md` merge remain active.
-
-## Branch governance
-
-`main` remains the only intended long-lived authoritative branch. Historical recovery and releases use immutable commit SHAs/tags rather than live legacy refs.
+`.agnir/next-actions.md` is the canonical resume order. Exact integration evidence is recorded in `.agnir/evidence/2026-09-02-core-0.2-main-integration-completed.md`.

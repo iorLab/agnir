@@ -4,7 +4,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 ## Project ownership and protocol boundary
 
-- Agnir is a **project-owned durable continuity protocol**. The Project persists; Executors, conversations, execution environments, storage mechanisms, repository hosts, and integrations may change.
+- Agnir is a **project-owned durable continuity protocol**. The Project persists; Executors, conversations, execution environments, storage mechanisms, repository hosts, selectors, VCS refs, and integrations may change.
 - Agnir Core is storage-, platform-, VCS-, repository-, Agent-, Skill-, and execution-surface-neutral.
 - Required durable semantics are Current State, Next Actions, Decisions, and Evidence / Checkpoints.
 - Svif is a separate Project orchestration product and may consume Agnir through a Continuity Provider integration. Agnir remains independently usable without Svif.
@@ -92,11 +92,63 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Bilingual documentation must preserve the same audience split and operational meaning without requiring literal sentence-for-sentence translation.
 - Conformance enforces the ordering `Start Here -> Agnir Project Instructions -> installed Project surface -> Architecture`, canonical install/upgrade intents, and the required surface markers so the README front matter remains concrete without drifting back into a full implementation checklist.
 
+## Core 0.2 Parallel Continuity — 2026-09-02
+
+- Core `0.2` generalizes Core `0.1`'s single implicit continuity line into multiple independently advancing **Continuity Lineages** owned by one Project.
+- Project identity and lineage identity are distinct. Creating, selecting, advancing, integrating, renaming a selector, or retiring a lineage does not implicitly create a new Project.
+- A lineage identity is a durable logical semantic within Project scope. Core does not mandate its serialization, URI form, path, database representation, or global uniqueness.
+- Backend selector/locator values and revision receipts are not lineage identity. Git refs/worktrees are selector/binding context; Git SHAs, database generations, and snapshot revisions are checkpoint receipts/conflict tokens.
+- Ordinary lineage-local work resolves exactly one lineage using explicit Principal/task/adapter selection, already-selected trusted execution/profile/backend context, or an explicitly declared default. Core does not require sibling enumeration/scanning.
+- A selected missing/unbound lineage fails explicitly rather than silently falling back.
+- Checkpoints are lineage-local by default.
+- Integration is target reconciliation, not source-continuity copying. Target truth is reconciled from the actual integration candidate, previous target continuity, relevant source continuity/Evidence, and Principal intent/policy.
+- Integrated Project result + reconciled target continuity must publish as one coherent target transition. Source or target advancement before publication invalidates a stale candidate.
+- Cross-Project integration never bypasses Project identity checks.
+- Working pre-RC Core document is `spec/AGNIR_CORE_0_2_DRAFT.md` until the release-candidate change deliberately promotes the intended contract.
+
+## VCS selector/binding and lineage fork — 2026-09-02
+
+- A selected Git ref/worktree is not itself logical lineage identity.
+- Agnir-aware branch fork preserves Project identity and inherited baseline while establishing a new logical lineage identity and selector→lineage binding.
+- When Agnir controls the fork, new lineage identity, selector binding, and coherent inherited/reconciled continuity must publish together. A sequence of independently visible ref writes that temporarily exposes copied source binding under the new selector is not the intended safe path.
+- Explicit ref rename/rebind may preserve logical lineage identity while changing selector string.
+- External branch copy/rename with stale or ambiguous binding metadata is a classification/repair condition; Agnir must not guess fork vs rename.
+- Commit/history rewrite may change receipt without changing Project identity or logical lineage identity.
+- `authoritative_ref` is repository publication authority/default only when policy says so; it is not Project identity, lineage identity, or necessarily the active selector.
+
+## Repository/filesystem 0.2 and migration — 2026-09-02
+
+- `repository-filesystem/0.2` is the pre-RC concrete profile candidate. Ordinary discovery resolves one selected logical `continuity.lineage` plus its durable memory locators; sibling-lineage enumeration is not required.
+- Stable `repository-filesystem/0.1` discovery rejects Core/profile `0.2` instead of silently reinterpreting it.
+- Core/profile compatibility-line changes are migration-required, not compatible upgrades.
+- A Core `0.1` Project's single implicit line becomes exactly one initial/default Core `0.2` lineage while preserving Project identity and existing Current State / Next Actions / Decisions / Evidence.
+- Migration is explicit, idempotent, cold-start verifiable, and conflict-safe. Concrete `AGNIR.yaml` migration rejects stale source mutation and verifies fresh `repository-filesystem/0.2` discovery after publication.
+
+## Branch-aware VCS integration publication — 2026-09-02
+
+- Feature-branch checkpoints verify their actual destination ref; `authoritative_ref` does not silently redirect ordinary feature work to `main`.
+- For Agnir-controlled lineage integration, target-ref advancement is a publication boundary: stage the candidate while target stays unchanged → reconcile target continuity → construct the final target checkpoint → publish integrated Project + reconciled target continuity together → fresh verify.
+- A known merge-first/follow-up-continuity-repair sequence is recovery-oriented, not the intended conforming normal path.
+- The same preservation rule applies to unrelated still-valid target obligations: target reconciliation must not erase stable release, activation, upgrade, or distribution truth merely because the feature line focused on another subsystem.
+
+## Real Svif Core 0.2 validation — 2026-09-02
+
+- Svif completed the first real Core `0.2` consumer validation without changing Svif authoritative `main`.
+- One Svif Project identity survived explicit `0.1`→`0.2` migration and two genuinely divergent logical lineages with different selector bindings and branch-local continuity.
+- Both lineages made distinct real Project changes and passed independent CI/fresh-discovery pressure.
+- A two-parent integration candidate existed while target/source refs remained unchanged; its tree retained target lineage/binding truth while incorporating both Project changes.
+- Final target continuity was reconciled before publication. The target ref advanced once directly to the reconciled two-parent revision; the staged candidate never became target truth.
+- Source continuity remained independently resumable after target publication.
+- Real workflow pressure also showed that continuity reconciliation must preserve still-valid unrelated Project obligations and that conformance should test stable semantics rather than transient workflow headings.
+- Exact receipts are retained in `.agnir/evidence/2026-09-02-svif-core-0.2-real-consumer-validation.md`.
+
 ## Versioning, release, and branch governance
 
-- Core compatibility is `0.1`; repository/filesystem compatibility is `repository-filesystem/0.1`; published repository SemVer is now `0.1.1`.
-- The execution-surface activation handoff repair shipped in repository release `v0.1.1` as a non-breaking operational patch; it does not change Core/profile compatibility identifiers.
-- `RELEASE.md` is the publication contract. Repository release `v0.1.1` is immutably anchored to exact verified revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`; later `main` maintenance cannot redefine that release target.
-- `latest stable release` now resolves to published `v0.1.1` until a newer stable tag/release is actually published.
-- `main` is the only long-lived authoritative branch. Historical predecessor/branch recovery uses immutable commit SHAs and Git history rather than live legacy refs.
+- Published Core compatibility remains `0.1`; published repository/filesystem compatibility remains `repository-filesystem/0.1`; published repository SemVer remains `0.1.1` until an explicit new release.
+- The execution-surface activation handoff repair remains the immutable `v0.1.1` operational patch anchored to exact verified revision `e9712357ab590e5c1e5357b3cf3219d07d789aff`.
+- Repository release SemVer, Core compatibility, and profile/extension versions are distinct version layers. The intended next feature release is repository `v0.2.0` with Core compatibility `0.2` if the pre-RC main integration and RC gates pass.
+- `v0.2.0-rc.1` should precede final `v0.2.0` and must exercise fresh installation plus explicit migration/resume from published `v0.1.1`.
+- `v1.0.0` is a stability/compatibility commitment governed by `V1_RELEASE_CRITERIA.md`, not a required count of pre-1.0 minor versions.
+- `latest stable release` remains published `v0.1.1` until a newer stable tag/release is actually published; moving `main` or an RC is not silently treated as stable.
+- `main` remains the only intended long-lived authoritative branch. Temporary feature/integration refs are evidence carriers and are not second continuity authorities.
 - Real mount-boundary behavior remains explicitly unproven; ordinary directories are not accepted as substitute mount evidence.
