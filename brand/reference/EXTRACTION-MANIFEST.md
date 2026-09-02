@@ -11,21 +11,23 @@ Status: **branch-local production-preparation record**. The visual authority rem
 
 The co-brand/family authority remains attachment `1d00fb70-189b-4742-b4ac-c79be2668559.png`, SHA-256 `4110d285243b6241ac709e750cca1815a10ca41e27c3bb15e6c94b56e57fa4fb`.
 
-## Final lossless raster extraction map
+## Corrected lossless raster extraction map
 
-Coordinates are `(left, top, right, bottom)` in approved-source pixels. These final crops were visually inspected to exclude board headings/dividers where practical. They are QA/trace references, **not independently approved redesigns or vector masters**.
+Coordinates are `(left, top, right, bottom)` in approved-source pixels. A second visual-QA pass found that earlier wordmark / lockup bounds were too tight and could clip glyph or mark edges. The coordinates below supersede those earlier crop bounds.
+
+These crops are QA/trace references, **not independently approved redesigns or vector masters**.
 
 | Asset role | Crop box | Size | Derived PNG SHA-256 |
 | --- | --- | --- | --- |
-| Primary mark | `(110, 155, 355, 390)` | `245×235` | `66edc2f6dff61507775284a273b08222bc2d946a8f933bfce79a75657e3b9df0` |
-| Wordmark | `(505, 145, 900, 245)` | `395×100` | `c93c3743284e14bcc3750472a7a31476ed8f30cdb5673117b3721140d1bd45c0` |
-| Horizontal lockup | `(970, 165, 1400, 310)` | `430×145` | `d7f3d08be5d5c0efd20995f5cefa5665a1983300b1f8e22d07ce4f4fdc22bda6` |
-| Vertical lockup | `(600, 295, 805, 455)` | `205×160` | `4320300782c57b8679e10caa85098a6ce07e4cf9fbd4ce8d58fb5b0705c6ad3f` |
-| Light-background example | `(38, 575, 450, 740)` | `412×165` | `acb895e9be89c79c25a51ca7822c0629ebfbbfc1d4e37bedfa05a2467d763ec2` |
-| Dark-background example | `(480, 575, 925, 740)` | `445×165` | `fa985aa9822864140c3f76555fe8ba7908c25ea5ac4d4b059bf530976551a30e` |
-| Monochrome example | `(955, 575, 1375, 740)` | `420×165` | `eee75df574b046690bc38886738e46ea1f131be3c5da96166513f76cef074085` |
-| App-icon example | `(40, 815, 190, 970)` | `150×155` | `14cf2ad3d7949e30e14855a57a3d04f15ca027cc53224f39bdd141a8fd1da219` |
-| Social-card example | `(645, 820, 1015, 970)` | `370×150` | `20e95c74ee3acfca3e072429facffda836d5e1586394d1226e7f572b17766cd2` |
+| Primary mark | `(90, 150, 365, 395)` | `275×245` | `de4dbafca75afa81381aaab051a22f106dac027c5a74e0fff70a56037888b8d0` |
+| Wordmark | `(555, 135, 900, 270)` | `345×135` | `b8a978363a9189a2918eda18b43c94736f4c2caa4da1dcd8e32c33a74f5e0ae8` |
+| Horizontal lockup | `(995, 145, 1430, 345)` | `435×200` | `2db8bf1d923d873346a7b30776ba260dc481cfa4dcb7f4331c7ab7d41da81f63` |
+| Vertical lockup review region | `(590, 290, 820, 450)` | `230×160` | derived from approved board; use only for lockup visual regression |
+| Light-background example | `(40, 556, 447, 740)` | `407×184` | `7483c332e4784e99c4595ef1f468e61d4f94a8ff1acdc19c65bba5fc8508be33` |
+| Dark-background example | `(482, 556, 920, 740)` | `438×184` | `de4f1eadd74ca20302911be6a06423725d10699dcf93ce7fc7e85f904ab438d7` |
+| Monochrome example | `(958, 556, 1368, 740)` | `410×184` | `9119598d3b36541da17b1cf366c52b2ed1a7c276741a1b70c94c9d30b1b818f1` |
+| App-icon example | `(42, 802, 190, 965)` | `148×163` | `376af1cf3ddd6dbe2eae194047cfb19c7c7a8e99be9c1c8a20ad7771356b6492` |
+| Social-card example | `(635, 802, 1015, 972)` | `380×170` | `816dde2340f5aea11e5cf0139cc0db40b4794ab39c7536453342451f173cba46` |
 
 ## Production rule
 
@@ -35,7 +37,8 @@ Coordinates are `(left, top, right, bottom)` in approved-source pixels. These fi
 4. Vectorization must be reviewed against the source crop before it can become a master.
 5. The board is raster evidence; a crop's displayed pixel dimensions do not imply that the board contains a true 512px/128px source asset merely because the board labels one that way.
 6. No upscaled crop may be represented as a genuine higher-resolution master.
+7. If a crop boundary is later shown to clip approved content, correct the manifest first; do not compensate by inventing geometry in the vector master.
 
 ## Binary-preservation boundary
 
-The active GitHub connector on this execution surface exposes repository UTF-8 content writes but no local-file/binary upload action. Therefore the byte-exact source PNG and crop PNGs have been preserved in the current locked reference package and identified here by hashes, but are **not falsely claimed to be committed binary repository files**. A Git-capable/binary-upload execution surface should add the byte-exact approved source to `brand/reference/` before final `main` integration. Until then, never replace the source with a generated lookalike.
+The byte-exact approved board and crop PNGs remain preserved by SHA-256 in the locked local reference package. The current connector can create repository text and Git objects, but there is no direct local-file binary upload bridge suitable for the multi-megabyte byte-exact approved PNG. Final byte-exact binary preservation remains a pre-`main` integration gate; until then, never replace the approved source with a regenerated lookalike.
