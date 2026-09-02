@@ -11,7 +11,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 ## Core 0.2 Parallel Continuity — 2026-09-02
 
-- The earlier decision to defer a generic lineage abstraction pending non-VCS evidence is superseded for active design work. Core `0.2` Continuity Lineage now has both VCS-backed and non-VCS conformance evidence.
+- The earlier decision to defer a generic lineage abstraction pending non-VCS evidence is superseded. Core `0.2` Continuity Lineage now has VCS, non-VCS, concrete profile/migration, and real-Project consumer evidence.
 - Core `0.2` generalizes Core `0.1`'s single implicit continuity line into multiple independently advancing **Continuity Lineages** owned by one Project.
 - Project identity and lineage identity are distinct. Creating, selecting, advancing, integrating, renaming a selector, or retiring a lineage does not implicitly create a new Project.
 - A lineage identity is a durable logical semantic within Project scope. Core does not mandate its serialization, URI form, path, database representation, or global uniqueness.
@@ -29,6 +29,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 - A selected Git ref/worktree is not itself the logical lineage identity.
 - Agnir-aware branch fork preserves Project identity and inherited baseline but establishes a new logical lineage identity and a new selector→lineage binding.
+- A conforming Agnir-controlled lineage fork must publish the new logical lineage identity, selector binding, and coherent inherited/reconciled continuity together. Sequential ref-visible writes that temporarily expose a copied source binding under the new selector are not the intended safe fork path.
 - Explicit branch/ref rename or rebind may preserve logical lineage identity while changing the selector string.
 - External branch copy/rename that carries stale or ambiguous binding metadata must not be guessed as either fork or rename. It is an explicit classification/repair condition.
 - Commit/revision rewrite may change checkpoint receipt without changing Project identity, lineage identity, or otherwise coherent lineage truth.
@@ -67,16 +68,22 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 - `main` remains the only intended long-lived authoritative branch for `iorLab/agnir`.
 - Draft PR `#4` (`feature/multibranch-continuity`) carries the VCS branch-continuity evidence line.
-- Draft PR `#5` (`feature/core-0.2-lineage`) is stacked on PR `#4` and carries the backend-neutral Core `0.2`, profile, binding, and migration work.
+- Draft PR `#5` (`feature/core-0.2-lineage`) is stacked on PR `#4` and carries the backend-neutral Core `0.2`, profile, binding, migration, and real-consumer evidence.
 - Temporary development branches may carry branch-local continuity without redefining Project identity or stable publication authority.
 - PR `#4` / `#5` eventual integration into `main` must construct final `main` continuity before the revision that advances `main`; ordinary server-side merge-first/follow-up-repair is not the intended safe integration path.
 
-## Real-Project validation boundary
+## Real-Project validation result — 2026-09-02
 
-- Synthetic/backend/profile/migration conformance is now sufficient to proceed to a real consumer rather than add more synthetic cases by default.
-- Svif is the preferred first real Core `0.2` consumer because it already consumes Agnir through a defined Continuity Provider boundary.
-- Real validation must occur on temporary Svif development branches unless separately authorized otherwise; Svif `main` remains authoritative and unchanged during the experiment.
-- Required evidence: explicit `0.1`→`0.2` migration, two genuinely divergent logical lineages, independent checkpoints, selector binding behavior, staged target reconciliation/publication, and fresh resume of source/target after integration.
+- The first required real Core `0.2` consumer validation is complete in Svif on temporary branches; Svif authoritative `main` remained unchanged.
+- Svif preserved one Project identity across two genuinely divergent logical lineages with distinct VCS selector bindings and branch-local continuity.
+- Both lineages advanced real Project content independently and passed their own product CI/fresh-discovery pressure.
+- A two-parent integration candidate was constructed without advancing the target ref. Fresh ref reads proved the unpublished candidate coexisted with the unchanged target/source refs.
+- The candidate retained target lineage/binding metadata while incorporating both Project changes; source lineage/selector metadata was reconciliation input, not target truth.
+- Final target continuity was reconciled before publication. The target ref advanced once from the pre-integration target directly to the reconciled two-parent revision; the staged candidate never became target truth.
+- The source ref and source-local continuity remained independently resumable after target publication.
+- Post-publication verification exposed one brittle workflow-heading assertion, not a continuity defect. The test was corrected to assert stable binding-driven semantics and the full Svif product suite passed afterward.
+- A later Svif completion checkpoint initially dropped still-valid Preview/Codex release obligations; an existing product test caught the omission. The durable Next Actions were repaired rather than weakening the test. This confirms branch-local continuity reconciliation must preserve unrelated still-valid Project obligations.
+- Exact receipts are recorded in `.agnir/evidence/2026-09-02-svif-core-0.2-real-consumer-validation.md`.
 
 ## Agent-operable activation and execution surfaces
 
@@ -89,8 +96,8 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 - Published stable compatibility remains Core `0.1`, `repository-filesystem/0.1`, repository release `0.1.1`.
 - Immutable `v0.1.1` remains anchored to `e9712357ab590e5c1e5357b3cf3219d07d789aff`.
-- If Core `0.2` semantics, concrete migration, dual-backend/profile conformance, Svif real-Project validation, and safe `main` integration pass, the intended next feature release is repository `v0.2.0` with Core compatibility `0.2`.
-- A `v0.2.0-rc.1` cycle should precede final publication once the real-consumer and integration gates are green.
+- Core `0.2` semantics, concrete migration, dual-backend/profile conformance, and the first Svif real-Project validation are now green. The remaining pre-RC protocol gate is safe integration into Agnir authoritative `main` plus authoritative-main conformance.
+- If that integration remains green, prepare repository `v0.2.0-rc.1`, then final `v0.2.0` after release-candidate migration/install/resume verification.
 - `v1.0.0` is a stability/compatibility commitment governed by `V1_RELEASE_CRITERIA.md`, not a required count of pre-1.0 minor versions.
 
 ## Evidence and documentation
@@ -98,4 +105,5 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Evidence is retained for recovery, audit, conformance, migration, or support of material claims; it is not an activity log.
 - `REPOSITORY_TREE.md` is the structural responsibility map; `.agnir/evidence/` is represented by directory responsibility rather than per-file registration.
 - `README.md` and `README.zh-CN.md` remain parallel entry documents and must preserve equivalent operational meaning when stable architecture/activation/continuity semantics change.
+- Conformance tests should prefer stable protocol/profile/Project semantics over transient workflow-stage wording. Tests that intentionally preserve still-valid Project/release obligations remain valuable and should not be weakened merely because a feature workflow completes.
 - Real mount-boundary behavior remains explicitly unproven until a genuine mount-capable environment is available.
