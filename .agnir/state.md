@@ -86,3 +86,11 @@ Transactional checkpoint semantics, stale-base `AGNIR_CHECKPOINT_CONFLICT`, cont
 ## Branch governance
 
 `main` remains the only intended long-lived authoritative branch. Historical recovery and releases use immutable commit SHAs/tags rather than live legacy refs.
+
+## RC migration validation — 2026-09-03
+
+This temporary validation lineage starts from immutable published `v0.1.1` tag target `e9712357ab590e5c1e5357b3cf3219d07d789aff` and applies the verified `0.2.0-rc.1` operational package baseline `bee78b2c9bb8c5ce5916d08691019dcde939b813`.
+
+Project identity remains `urn:agnir:project:agnir-core`. Core/profile are explicitly migrated to `0.2` / `repository-filesystem/0.2`. The selected logical lineage is `urn:agnir:lineage:validation:v0.2.0-rc.1-from-v0.1.1`, separately bound to VCS selector `refs/heads/validation/v0.2.0-rc.1-from-v0.1.1`.
+
+The preexisting `v0.1.1` durable State text above is retained as migration input/history. Existing Decisions and Evidence are preserved from the published tag; this section records the new observed truth required to resume the migrated validation lineage.

@@ -33,3 +33,9 @@ Agnir `v0.1.0` remains the published stable release. The real `mattamior/skills-
 - `RELEASE.md` is the publication contract for `0.1.1`.
 - `.agnir/evidence/` remains represented by directory responsibility rather than per-evidence filename registration.
 - `main` is the only intended long-lived authoritative branch.
+
+## RC migration validation — 2026-09-03
+
+This validation branch has completed the compatibility transition from the immutable published `v0.1.1` Project baseline to the explicitly authorized `0.2.0-rc.1` package baseline.
+
+Next action for this temporary lineage is only to run fresh activation/discovery and the full conformance suite, record the result back on the RC release lineage, then retire this validation branch. Do not merge this validation branch into `main` or use it as the RC tag target.
