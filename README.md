@@ -52,7 +52,7 @@ Project root
 2. **Load.** Load Current State and Next Actions from the declared durable memory. Load Decisions and Evidence when they materially constrain the current operation. Prefer durable Project truth over chat history or private Agent memory unless superseded by a newer Principal instruction or a directly observed current Project fact.
 3. **Work.** Perform the actual Project task outside Agnir Core. For install, upgrade, or repair operations, root `SKILL.md` is the canonical Agent-facing procedure.
 4. **Checkpoint.** At an intentional checkpoint, save-progress, finish, or repository commit boundary, reconcile only material continuity changes. Unchanged durable truth is a no-op. Material changes must form one coherent authoritative transition; reject stale-base publication with `AGNIR_CHECKPOINT_CONFLICT` rather than overwriting newer truth, then verify fresh discovery after publication.
-5. **Commit / push.** In repository/VCS context, authorized `commit`, `提交`, `提交代码`, or equivalent intent means checkpoint before commit and preferably one revision for Project + Agnir changes. `commit and push`, `提交推送`, or equivalent adds push plus authoritative-ref verification. Merely observing an external commit triggers checkpoint evaluation, not an unconditional Agnir write.
+5. **Commit / push.** In repository/VCS context, authorized `commit`, `提交`, `提交代码`, or equivalent intent means checkpoint before commit and preferably one revision for Project + Agnir changes. `commit and push`, `提交推送`, or equivalent adds push plus verification of the actual destination ref. A claim of authoritative publication additionally requires the declared authoritative ref when one exists. Merely observing an external commit triggers checkpoint evaluation, not an unconditional Agnir write.
 
 Root `AGENTS.md` is intentionally only a locator to this section; it must not become a second copy of Project state or the Agnir procedure. The canonical activation route is:
 
@@ -162,6 +162,32 @@ flowchart TD
 
 Agnir does not perform the Project work shown in the middle of the flow. It makes continuity durable, discoverable, attributable to the correct Project, and safe to resume. Discovery failures such as not-found, ambiguity, unsupported version, Project mismatch, authorization failure, cycles, stale locators, and material inconsistency must be surfaced rather than silently repaired by guessing.
 
+## Experimental parallel branch continuity
+
+For repository/VCS implementations, Agnir can now pressure-test **branch-local continuity** without making Git branches part of Core. `profiles/VCS_BRANCH_CONTINUITY.md` defines the experimental `agnir/vcs-branch-continuity/0.1` extension.
+
+The model is:
+
+```text
+same Project identity
+        │
+   ┌────┴────┐
+   ▼         ▼
+ main     feature/a
+   │         │
+Agnir M   Agnir F
+   └────┬────┘
+        │ merge / rebase / cherry-pick
+        ▼
+ target continuity reconciliation
+        ▼
+ new target checkpoint
+```
+
+Each selected branch/worktree resolves and checkpoints its own continuity after divergence. `authoritative_ref` is a publication-authority boundary, not the only branch that may use Agnir. Merge, rebase, and cherry-pick do **not** promote source Current State or Next Actions automatically; source continuity becomes reconciliation input and the target branch must checkpoint its own resulting truth. Rebase/history rewrites may change commit receipts without changing Project identity.
+
+This is deliberately an extension, not a Core `0.2` change. A generic storage-neutral `lineage.id` remains deferred until non-VCS evidence demonstrates that such a concept belongs in Core.
+
 ## Active line
 
 `main` is the active Agnir `0.1.1` maintenance line. The current published stable release is immutable `v0.1.1`. The compatibility identifiers remain Core `0.1` and `repository-filesystem/0.1`; repository SemVer is tracked separately in `VERSION`.
@@ -186,13 +212,15 @@ agnir/
 │   ├── AGNIR_CORE.md                  # Core 0.1, including transactional checkpoint semantics
 │   └── AGNIR_DISCOVERY.md             # discovery / Locator Chain / failures
 ├── profiles/
-│   └── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1 activation/init + VCS event integration
+│   ├── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1 activation/init + VCS event integration
+│   └── VCS_BRANCH_CONTINUITY.md       # experimental parallel branch continuity + integration reconciliation
 ├── schemas/
 │   └── agnir-manifest.schema.json     # AGNIR.yaml schema
 ├── conformance/
 │   ├── check_agnir_0_1.py             # self-host + release-readiness
 │   ├── activation_reference.py        # AGENTS → README activation resolver
 │   ├── checkpoint_reference.py        # atomic/no-op/conflict checkpoint reference model
+│   ├── vcs_branch_continuity_reference.py # branch/integration reference model
 │   ├── test_skill_package.py          # Skill / user-prompt boundary + commit intent tests
 │   └── test_*.py                      # other executable conformance
 ├── .agnir/                            # this Project's canonical durable continuity
@@ -234,6 +262,6 @@ python conformance/check_agnir_0_1.py
 python -m unittest discover -s conformance -p 'test_*.py' -v
 ```
 
-The `0.1.1` suite covers Agent Skill packaging, durable prompt-free Project activation, execution-surface handoff regression, repository/filesystem discovery and failures, checkpoint atomic/no-op/conflict semantics, SQLite non-repository continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start.
+The stable `0.1.1` suite covers Agent Skill packaging, durable prompt-free Project activation, execution-surface handoff regression, repository/filesystem discovery and failures, checkpoint atomic/no-op/conflict semantics, SQLite non-repository continuity, external-memory authorization, multi-project isolation, Locator Chain failures, symlink boundaries, and real Git worktree cold start. The development suite additionally pressure-tests experimental branch-local continuity, merge/rebase/cherry-pick reconciliation, history rewrite identity preservation, and destination-ref versus authoritative-ref publication verification.
 
 Real mount-boundary behavior remains explicitly unproven; an ordinary directory is not accepted as mount evidence.
