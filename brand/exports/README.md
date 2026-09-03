@@ -1,10 +1,10 @@
 # Agnir production exports
 
-These exports are generated only from the Principal-approved Agnir production masters under `brand/masters/`.
+These exports derive only from the Principal-approved Agnir production masters under `brand/masters/`.
 
 ## Materialized SVG exports
 
-The branch now includes directly usable package-level SVG exports:
+Direct package-level SVG treatments:
 
 - `agnir-horizontal-light.svg`
 - `agnir-horizontal-dark.svg`
@@ -12,23 +12,39 @@ The branch now includes directly usable package-level SVG exports:
 - `agnir-app-icon.svg`
 - `agnir-favicon.svg`
 
-To avoid geometry duplication, these SVGs reference the approved masters by relative path and apply only canvas/color treatment. Keep the `brand/exports/` and `brand/masters/` relative layout intact when using them as a package. The geometry authority remains `brand/masters/`.
+These SVGs reference approved masters by relative path so geometry is not forked into a second authority. Keep the `brand/exports/` + `brand/masters/` package relationship intact.
 
-`brand/tools/build-production-derivatives.py` remains the deterministic builder for PNG delivery derivatives and the visibility-pruned 32/16px favicon sources.
+## Materialized PNG delivery package
+
+The complete 13-item PNG delivery set is committed under `brand/exports/png/`:
+
+- `agnir-mark.png`
+- `agnir-wordmark.png`
+- `agnir-horizontal-lockup.png`
+- `agnir-vertical-lockup.png`
+- `agnir-light-usage.png`
+- `agnir-dark-usage.png`
+- `agnir-monochrome-usage.png`
+- `agnir-app-icon.png`
+- `agnir-favicon-128.png`
+- `agnir-favicon-64.png`
+- `agnir-favicon-32.png`
+- `agnir-favicon-16.png`
+- `agnir-social-card.png`
+
+GitHub Actions run `33730501685` verified the handoff archive SHA-256 and every source/destination payload SHA-256 before materialization commit `a858de5c2d12f800ef6d9057f28422320ff5a012`.
+
+## Deterministic rebuild
+
+`brand/tools/build-production-derivatives.py` remains the deterministic builder for PNG derivatives and small-size visibility pruning.
 
 ## Rules
 
+- `brand/masters/` remains authoritative vector geometry.
+- PNG exports are delivery derivatives, not replacement masters.
 - Do not regenerate or redesign the mark or wordmark.
 - Light treatment uses the approved particle A with brand-color wordmark.
 - Dark treatment uses the approved particle A with white wordmark.
-- Monochrome treatment converts the mark to grayscale and keeps the wordmark black.
-- 128px and 64px favicons use the full mark.
-- 32px and 16px favicons use deterministic visibility pruning of only the smallest particles; A geometry, major particles, pale inner A, and central anchor remain unchanged.
-- PNG exports are delivery derivatives, not replacement vector masters.
-
-The authoritative vector sources for branch-local brand production are:
-
-- `brand/masters/agnir-mark.svg`
-- `brand/masters/agnir-wordmark.svg`
-- `brand/masters/agnir-horizontal-lockup.svg`
-- `brand/masters/agnir-vertical-lockup.svg`
+- Monochrome preserves the particle hierarchy in grayscale.
+- 128px / 64px favicons use the full mark.
+- 32px / 16px may prune only sub-threshold micro-particles; A geometry, major particles, pale inner A and central anchor remain unchanged.

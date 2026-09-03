@@ -1,21 +1,25 @@
 # Agnir brand handoff
 
-Status: **approved on `brand/identity-system`; branch-local until integrated into authoritative `main`.**
+Status: **approved and production-materialized on `brand/identity-system`; branch-local until integrated into authoritative `main`.**
 
-Visual authority: the Principal-approved Today 10:42 AM Agnir asset board recorded in `APPROVED-VISUAL-REFERENCE.md`.
+Visual authority: the Principal-approved Today 10:42 AM Agnir asset board.
 
 ## Brand idea
 
-Agnir is the **Structure Layer / 结构层**.
+Agnir is the **Structure Layer / 结构层**: particles, continuity and discoverable pieces of truth. The approved identity is the sand/mineral particle-built `A` with a pale inner A and central anchor.
 
-- 微粒、连续性、可发现的真相碎片
-- Particles, continuity, discoverable pieces of truth
+## Repository-resident visual references
 
-The Agnir identity is a sand/mineral particle-built `A` with a central anchor. It is distinct from Svif while sharing the family particle-and-geometry language.
+Use these byte-exact references for source comparison:
+
+- `brand/reference/agnir-approved-reference.png`
+- `brand/reference/svif-agnir-family-approved-reference.png`
+
+Their SHA-256 locks are recorded in `brand/APPROVED-VISUAL-REFERENCE.md` and `brand/reference/EXTRACTION-MANIFEST.md`.
 
 ## Production masters
 
-Use these files as the branch-approved scalable masters:
+Use these files as the approved scalable geometry masters:
 
 ```text
 brand/masters/
@@ -25,93 +29,52 @@ brand/masters/
 └── agnir-vertical-lockup.svg
 ```
 
-- `agnir-mark.svg`: approved particle A geometry and color distribution.
-- `agnir-wordmark.svg`: approved smooth outline wordmark; no runtime font dependency.
-- horizontal / vertical lockups: self-contained compositions, not external candidate references.
-
-Files under `brand/masters/candidates/` are provenance/review history and are **not** production masters.
+Files under `brand/masters/candidates/` are provenance/review history and are not production masters.
 
 ## Approved treatments
 
-### Light background
+- Light: approved particle A with brand-color wordmark.
+- Dark: approved particle A with white wordmark.
+- Monochrome: grayscale mark preserving particle hierarchy and pale inner A, with black wordmark.
+- App icon: approved particle mark centered in the approved square treatment.
+- Social card: preserve the locked particle A, Agnir wordmark, `结构层 / Structure Layer`, bilingual continuity copy and sand-particle flow composition.
 
-Use the approved particle A with the Agnir brand-color wordmark. Current production derivative uses `#C2812E` for the wordmark, matching the approved light-background treatment.
+Do not replace the particle A with a solid generic A.
 
-### Dark background
+## Small-size rule
 
-Use the approved particle A with a white wordmark on a dark neutral/navy surface.
-
-### Monochrome
-
-Convert mark colors to grayscale while preserving particle hierarchy and the pale inner A; use a black wordmark on a light surface.
-
-Do not replace the particle A with a solid generic `A`.
-
-## Small-size assets
-
-The approved asset board defines favicon sizes down to 16px. The complete micro-particle field is not readable when naively shrunk to that size.
-
-Rules:
-
-- 128px and 64px: use the complete mark.
-- 32px: deterministic pruning may remove only particles below the configured visibility threshold.
-- 16px: a stronger deterministic visibility threshold may be used.
-- never change the main A geometry, major particles, pale inner A, or central anchor for small-size use.
-- small-size pruning is a functional derivative, not a new logo design.
+- 128px / 64px use the complete mark.
+- 32px / 16px may deterministically prune only micro-particles below the configured visibility threshold.
+- Main A geometry, major particles, pale inner A and central anchor must not change.
 
 The deterministic rule lives in `brand/tools/build-production-derivatives.py`.
 
-## App / repository / avatar usage
+## Repository-resident delivery package
 
-- App icon: approved particle mark centered in a white rounded square.
-- Repository icon / GitHub avatar: prefer the mark-only treatment with generous clear space; use the app-icon treatment where a square icon surface is required.
-- Avoid embedding the full wordmark in very small avatars.
+Direct SVG treatments live under `brand/exports/`. The complete 13-item PNG delivery package is committed under `brand/exports/png/`.
 
-## Social card
-
-The approved board shows a light social-card treatment with:
-
-- particle A on the left;
-- black Agnir wordmark;
-- `结构层 / Structure Layer`;
-- the bilingual continuity/tagline copy;
-- a sand-particle flow treatment on the right.
-
-A production social card must preserve that composition rather than invent a new campaign style.
-
-## QA
-
-Principal-facing review must be clean: no blue artwork-bound boxes or diagnostic overlays. Engineering diagnostics are explicit-only and must never be mistaken for brand artwork.
-
-All review placement uses `contain`, never crop/cover.
+PNG exports are delivery derivatives; `brand/masters/` remains the geometry authority.
 
 ## Forbidden substitutions
 
 Do not:
 
-- regenerate the logo with image generation and substitute the result;
-- infer or substitute a different font for the wordmark;
+- regenerate the logo and substitute the result;
+- infer a different font for the wordmark;
 - redraw the particle field for aesthetic cleanup;
-- collapse the mark to a generic `A`;
+- collapse the mark to a generic A;
 - reconcile Agnir colors with Svif colors;
-- treat superseded v0.1/v0.2 candidate files as masters.
+- promote superseded v0.1/v0.2 candidates.
 
-## Rebuilding derivatives
+## Byte-exact materialization receipt
 
-Run from a repository checkout:
-
-```bash
-python brand/tools/build-production-derivatives.py --repo . --out brand/exports
-```
-
-With CairoSVG installed, add `--png` to render icon PNG exports.
+The former large-binary transport blocker is closed. GitHub Actions run `33730501685` verified the uploaded handoff archive and all source/destination SHA-256 values before committing the two approved reference boards and the complete 13-item PNG package at `a858de5c2d12f800ef6d9057f28422320ff5a012`. The transport ZIP and temporary workflow removed themselves in the same publication step.
 
 ## Integration gate
 
-Before merging this brand work to canonical `main`:
+Before canonical `main` integration:
 
-1. preserve the byte-exact approved 10:42 AM source board in repository storage;
-2. run final target-size QA for the derivative package;
-3. re-resolve latest `main` and reconcile branch-local Agnir evidence/state;
-4. integrate assets and continuity coherently;
-5. verify from `main` after publication.
+1. re-resolve latest `main` and reconcile if it moved;
+2. require Draft PR `#11` Core 0.2 conformance to pass on the final head;
+3. integrate brand assets/evidence coherently without replacing newer authoritative continuity/release truth;
+4. fresh-verify authoritative `main` after publication.

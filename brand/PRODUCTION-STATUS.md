@@ -4,148 +4,105 @@ Date: 2026-09-03
 Branch: `brand/identity-system`
 Canonical Project ref remains: `main`
 
-## Locked input
+## Locked visual authority
 
-The Principal-approved Today 10:42 AM Agnir board is the sole Agnir-only visual authority. See `APPROVED-VISUAL-REFERENCE.md` and `reference/EXTRACTION-MANIFEST.md`.
+The Principal-approved Today 10:42 AM Agnir board remains the sole Agnir-only visual authority. Its byte-exact repository copy is now `brand/reference/agnir-approved-reference.png`, locked to SHA-256 `24b418a975369ea022db229aaa45e1a4993e982f8d4baec16c918a1a0a4b99ac`.
 
-## Approved production master
+The byte-exact family board is committed at `brand/reference/svif-agnir-family-approved-reference.png`, SHA-256 `4110d285243b6241ac709e750cca1815a10ca41e27c3bb15e6c94b56e57fa4fb`.
 
-The Principal reviewed the clean Agnir v0.3 source-vs-vector sheet and explicitly accepted the set as having no material visual problem.
+## Approved production masters
 
-The following files are therefore the **branch-approved production masters**:
+The Principal reviewed Agnir v0.3 and explicitly accepted the set as having no material visual problem. Branch-approved scalable masters remain:
 
-- `brand/masters/agnir-mark.svg` — particle-built A with central anchor;
-- `brand/masters/agnir-wordmark.svg` — smooth outline wordmark, no runtime font dependency;
-- `brand/masters/agnir-horizontal-lockup.svg` — self-contained horizontal composition;
-- `brand/masters/agnir-vertical-lockup.svg` — self-contained vertical composition.
+- `brand/masters/agnir-mark.svg`
+- `brand/masters/agnir-wordmark.svg`
+- `brand/masters/agnir-horizontal-lockup.svg`
+- `brand/masters/agnir-vertical-lockup.svg`
 
-The v0.3 candidate files remain provenance/review evidence only. v0.2 and earlier work are superseded and must not be used as production masters.
+Candidate files remain provenance only; v0.2 and earlier are superseded.
 
-## Materialized production exports
+## Materialized exports
 
-Directly usable package-level SVG exports exist under `brand/exports/`:
+Direct SVG treatment exports remain under `brand/exports/`:
 
-- `agnir-horizontal-light.svg`;
-- `agnir-horizontal-dark.svg`;
-- `agnir-horizontal-monochrome.svg`;
-- `agnir-app-icon.svg`;
-- `agnir-favicon.svg`.
+- `agnir-horizontal-light.svg`
+- `agnir-horizontal-dark.svg`
+- `agnir-horizontal-monochrome.svg`
+- `agnir-app-icon.svg`
+- `agnir-favicon.svg`
 
-These exports deliberately reference `../masters/` instead of duplicating the approved geometry. Their job is treatment/canvas packaging only; `brand/masters/` remains the single geometry authority. Keep the relative `brand/exports/` + `brand/masters/` package layout intact when using these files.
+The complete 13-item PNG delivery package is now committed under `brand/exports/png/`:
 
-`brand/tools/build-production-derivatives.py` remains the deterministic builder for PNG delivery exports and for the visibility-pruned 32/16px favicon sources.
+- mark;
+- wordmark;
+- horizontal and vertical lockups;
+- light / dark / monochrome usage;
+- app icon;
+- favicon 128 / 64 / 32 / 16;
+- social card.
 
-### Approved derivative rules
+`brand/masters/` remains the vector geometry authority. PNG files are delivery derivatives, not replacement masters.
 
-- light-background horizontal treatment: brand-color wordmark with the approved particle A;
-- dark-background horizontal treatment: white wordmark with the approved particle A;
-- monochrome treatment: grayscale mark plus black wordmark;
-- app-icon treatment derived from the approved mark;
-- favicon exports at 128/64/32/16px.
+`brand/tools/build-production-derivatives.py` remains the deterministic builder. The approved 32/16px favicon rule may prune only sub-threshold micro-particles; the A geometry, major particles, pale inner A and central anchor remain unchanged.
 
-### Small-size rule
+## Complete QA
 
-Directly shrinking the full particle field to 16px loses the A reading. The approved board itself defines a favicon-size family, so 32px and 16px exports use a deterministic visibility derivative of the same master: only particles below a fixed visibility threshold are pruned. The A geometry, major particles, pale inner A and central anchor are unchanged. This is a size derivative, not a new logo design.
+Final QA is symmetric with Svif and covers 13/13 items. Complete QA sheet SHA-256: `145ab94e4458cdd9165bd61ceed71e4a12302b7cb71077443414ee8683302cfa`.
 
-## Complete QA status
+The approved production masters were unchanged by the derivative/materialization work.
 
-The earlier final-QA sheet was incomplete because it covered only derivative exports. It is superseded by the complete symmetric 13-item QA recorded in `brand/qa/FINAL-QA.md`.
+## Byte-exact materialization
 
-The completed QA scope is:
+The former large-binary gate is **closed**.
 
-1. mark;
-2. wordmark;
-3. horizontal lockup;
-4. vertical lockup;
-5. light usage;
-6. dark usage;
-7. monochrome usage;
-8. app icon;
-9. favicon 128;
-10. favicon 64;
-11. favicon 32;
-12. favicon 16;
-13. social card.
+The Principal uploaded the prepared handoff archive directly to the branch. The archive was observed as the same Git blob in both repositories and was verified as:
 
-Complete QA sheet SHA-256: `145ab94e4458cdd9165bd61ceed71e4a12302b7cb71077443414ee8683302cfa`.
+- size `7,925,506` bytes;
+- SHA-256 `52e8cee3c03f0762fc47d579505122dc452e5de97dafb462a3b470ed5457f72d`;
+- Git blob `3f49c176a5c5680620de6f4de09beb6297f99bf0`.
 
-The current cross-brand production delivery ZIP SHA-256 is `171b974b62fabc9eb286104d6bc090563e381ac4fd4fb8d2157b6b3cceaad2c7`.
+GitHub Actions run `33730501685` then verified the archive SHA, verified each Agnir source payload SHA, copied all 15 Agnir targets to final repository paths, re-verified every destination SHA, committed the package, and removed both the transport ZIP and temporary workflow.
 
-The approved production masters remain unchanged through this derivative/QA pass.
+Final materialization commit: `a858de5c2d12f800ef6d9057f28422320ff5a012`.
 
-## Main reconciliation status
+## Latest main reconciliation
 
-The brand branch has now been reconciled twice as authoritative `main` advanced concurrently.
+The branch has been reconciled repeatedly because authoritative `main` continued moving during brand work.
 
-### First reconciliation
+The latest pre-materialization check found:
 
-- main observed: `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`;
-- reverse-sync PR `#8` (`main` → `brand/identity-system`);
-- branch merge commit: `b00e0d7c544e74d4b0245569450ecebb271461d5`;
-- result at that point: **behind `main` = 0**.
+- authoritative `main`: `3564a4dd1485d3be29052f9698356202685ab31d`;
+- pre-reconcile brand head after browser upload: `042de482059df030e4c462c9ee3c517137d2db0c`;
+- relation: brand behind main by 9 commits.
 
-### Second reconciliation after RC acceptance reached main
+Reverse-sync PR `#13` was used as a conflict probe and was not resolved by selecting stale branch-side canonical files. Instead a latest-main-wins two-parent reconciliation was constructed:
 
-A later stale-base check found `main` at `1af33e0cc470107aadaeb5d4d2f0f4570d81ee1d` and the brand branch behind by 15 commits. Conflict-probe PR `#10` was intentionally closed unmerged.
+- latest-main base tree: `e883044b6263dd56ae894eb5c1dee871262014c6`;
+- reconciled tree: `66ad3603c081e4dc214099758544ef21264bd78a`;
+- reconciliation commit: `e8dd3662cb2d12bc6ae49b2bd0fc1d8c8f2a0f9d`.
 
-The branch was reconciled with an explicit latest-main-wins two-parent commit:
+Only the brand tree, six brand-specific evidence files and the uploaded transport archive were overlaid onto latest main. Current Core/release/state/next-actions/decisions truth came from latest authoritative main. GitHub subsequently recognized PR `#13` as merged through ancestry at the exact reconciliation commit.
 
-- pre-reconcile brand: `6ac35732ca58301b2fa8e9759a0ed8e7d4042dcd`;
-- authoritative main: `1af33e0cc470107aadaeb5d4d2f0f4570d81ee1d`;
-- latest-main base tree: `5bedbf190a49e01689280fdbd0a812a0d1b60347`;
-- reconciled tree: `5e09b705519a36183859f8abc64870a39dc60ee7`;
-- reconciliation commit: `714da79d7338e6d2c35d691da6003aa134ed902c`.
+The materialization workflow then reapplied only the brand entries to current README/repository-map documents.
 
-Only `brand/` plus brand-specific Evidence were overlaid onto latest main. Stale copies of `AGNIR.yaml`, state, next actions, decisions, release/Core/profile contracts and repository docs were deliberately not reused.
+## Repository documentation
 
-A minimal post-reconcile documentation patch then restored only the brand entries to the current README / repository maps; corrected workflow run `33705830326` succeeded. Current comparison after this reconciliation reports **behind `main` = 0**. See `.agnir/evidence/2026-09-03-brand-main-reconciliation.md`.
+The `brand/` surface is represented in `README.md`, `README.zh-CN.md`, and `REPOSITORY_TREE.md`, based on latest-main documentation with brand-only entries added.
 
-## Repository-documentation status
+## QA and integration rules
 
-The new top-level `brand/` surface is synchronized into:
+- Principal-facing review is clean; no diagnostic bounds are brand artwork.
+- Review uses `contain`, never crop/cover.
+- No derivative may modify approved core geometry.
+- No regenerated A, substitute font, particle cleanup or palette reconciliation is authorized.
 
-- `REPOSITORY_TREE.md`;
-- `README.md` compact repository tree;
-- `README.zh-CN.md` compact repository tree.
+## Integration readiness
 
-The documents are based on current authoritative-main content with only the brand-specific map entries added.
+Visual design, production masters, 13/13 QA, documentation, reconciliation and byte-exact binary preservation are complete on the brand branch.
 
-## Integration validation
+Remaining publication gates are only:
 
-Earlier branch-local one-off validation passed before the second main reconciliation. After the second reconciliation, Draft PR `#11` (`brand/identity-system` → `main`) became the canonical non-publishing integration validation surface.
-
-The repository's actual Core 0.2 pull-request workflow runs against GitHub's synthetic merge tree and covers:
-
-- Core 0.2 repository self-host cold-start;
-- stable Core 0.1 compatibility regression;
-- VCS branch continuity and lineage binding;
-- Core 0.2 non-VCS/VCS mapping;
-- repository-filesystem 0.2 discovery;
-- Core/profile migration semantics;
-- RC fresh-install and published-v0.1.1 migration gates;
-- full conformance suite.
-
-The Draft PR is explicitly blocked from merge while the byte-exact large-binary preservation gate remains open. The **latest** PR-head run, not an older receipt embedded in this file, is the final conformance authority before merge.
-
-## QA rules
-
-- Principal-facing review is clean: no blue bounds boxes or debug overlays.
-- Engineering diagnostics may show bounds only under explicit diagnostic mode.
-- Review/render uses `contain`, never crop/cover.
-- No derivative may modify the approved core geometry.
-
-## Binary reference boundary
-
-The byte-exact approved 10:42 AM source board remains locked by SHA-256 and preserved in the external reference/delivery package. The complete 13-item PNG package exists and is hash-recorded, but large binary payloads still cannot be attached safely through the current execution bridge without truncation risk.
-
-Final byte-exact source-board and selected large-PNG repository preservation therefore remains a pre-`main` integration gate.
-
-## Remaining integration gates
-
-1. Preserve the byte-exact approved Agnir board and desired large PNG delivery files through a binary-safe repository path; verify hashes after storage.
-2. Re-check latest `main` immediately before publication and reconcile again if it moved.
-3. Require the latest Draft PR `#11` synthetic-merge conformance run to be green on the final head.
-4. Integrate the approved brand package coherently without replacing newer Core 0.2 continuity/release truth.
-5. Verify authoritative `main` after publication.
-
-Visual design, production masters, 13/13 QA, repository documentation and reconciliation mechanics are complete. **Large byte-exact binary preservation is the only non-reconciliation integration blocker still open.**
+1. re-resolve latest `main` immediately before publication and reconcile again if it moved;
+2. require Draft PR `#11` Core 0.2 synthetic-merge conformance to be green on the final branch head;
+3. integrate the brand package without replacing newer authoritative Core/release continuity truth;
+4. fresh-verify authoritative `main` after publication.
