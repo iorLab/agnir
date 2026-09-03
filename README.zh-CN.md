@@ -238,6 +238,7 @@ agnir/
 │   ├── test_skill_package.py          # Skill / user UX / handoff pressure
 │   ├── test_stable_release_gates.py   # stable package/install/migration pressure
 │   └── test_*.py                      # backend、lineage、migration、integration pressure
+├── brand/                            # 已批准品牌主稿、导出、QA、参考与交付说明
 ├── .agnir/                            # 本 Project 的 canonical durable continuity
 ├── history/                           # predecessor 历史材料
 ├── .github/                           # CI workflows
