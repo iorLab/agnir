@@ -30,7 +30,7 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/main"
   agnir/release:
-    phase: "stable-accepted-on-main"
+    phase: "stable-main-verified"
     repository_version: "0.2.0"
     core_contract: "spec/AGNIR_CORE_0_2.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_0_2.md"
@@ -42,6 +42,9 @@ extensions:
     stable_package_revision: "f59a83754346982170142a355a01c94050ddf3a5"
     stable_package_run: 33711830312
     release_checkpoint: "2eb083d2aaa2a0869b2baf9ba46d012913317102"
+    main_integration_revision: "08804f42262326db49fc573ca8fdf6b71b5e9734"
+    main_candidate_run: 33712370588
+    main_verification_run: 33712492531
     previous_main_checkpoint: "1af33e0cc470107aadaeb5d4d2f0f4570d81ee1d"
     accepted_rc_tag: "v0.2.0-rc.1"
     accepted_rc_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"
