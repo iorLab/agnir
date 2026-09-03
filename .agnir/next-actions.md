@@ -1,14 +1,18 @@
 # Agnir Next Actions
 
-Agnir `v0.2.0` is published as latest stable and safely reconciled into authoritative `main`. Main self-hosts Core `0.2` / `repository-filesystem/0.2` on logical lineage `urn:agnir:lineage:authoritative`, separately bound to `refs/heads/main`. Svif has completed a real published `v0.1.1` -> published `v0.2.0` downstream migration, and `V1_RELEASE_CRITERIA.md` now records an explicit current satisfied/open evidence map.
+Agnir `v0.2.0` is published as latest stable and safely reconciled into authoritative `main`. Main self-hosts Core `0.2` / `repository-filesystem/0.2` on logical lineage `urn:agnir:lineage:authoritative`, separately bound to `refs/heads/main`. Svif has completed a real published `v0.1.1` -> published `v0.2.0` downstream migration, and `V1_RELEASE_CRITERIA.md` records the current satisfied/open evidence map.
 
-1. **Expand the real-Project set toward the v1 minimum of 3 materially different Projects.** Svif now supplies one qualifying external real Project with both upgrade and lineage/reconciliation evidence; add at least two materially different real Projects and record only material interoperability, migration, reconciliation, recovery or usability findings.
-2. **Expand execution-surface / adapter evidence toward the `v1.0.0` gate.** Existing repository/filesystem and ChatGPT Project activation behavior provide a baseline; add another materially distinct execution surface/adapter with fresh activation/resume evidence so the minimum of 2 materially different surfaces/adapters is unambiguous.
-3. **Pressure mount-boundary behavior when a genuine mount-capable conformance environment is available.** Keep the limitation explicit until real evidence exists; do not simulate it and then claim the boundary is proven.
-4. **Obtain independent-implementation quality evidence.** Have an implementation or rigorous review reconstruct the Core/profile behavior from published specs, migration docs, conformance and repository maps without relying on private design chat history; record ambiguities as documentation/product defects rather than coaching around them.
-5. **Prepare a `1.0.0-rc` cycle only after the real-Project/surface/documentation evidence gates are credibly closed.** The RC must run every normative suite from the exact candidate and must not be used as a substitute for missing real-world evidence.
-6. **Retire temporary release/validation/integration refs when a safe delete-ref path is available.** Preserve immutable `v0.2.0`, `v0.2.0-rc.1`, commits, workflow runs and durable Evidence; do not repurpose temporary refs.
-7. **Keep stable maintenance compatible.** Future `v0.2.x` fixes should preserve Core/profile `0.2` unless a deliberate new compatibility line is justified and migrated explicitly.
+Read-only candidate reconnaissance on 2026-09-03 identified a concrete next evidence sequence. No candidate repository has been mutated by this reconnaissance; real-Project installation/migration requires explicit Principal authorization naming that Project.
+
+1. **Use `iorLab/fishup` as the next real published-to-published migration candidate after explicit authorization.** It is already an Agnir Project on Core `0.1` / `repository-filesystem/0.1`, operational release `0.1.1@e9712357...`, Project identity `urn:agnir:project:fishup`, canonical `main`, and Project-owned `.agnir/` continuity. Captured read-only main was `a57b5ec7b679874af08da094fef3e8e7bdee90e3`. Its product is materially different from Agnir/Svif: a Vite/TypeScript/three.js/Rapier game deployed through Cloudflare Workers + D1 with automatic main deployment. A migration must preserve FishUp product state, existing `AGENTS.md` locator and Project instructions, deployment configuration, durable locators and unrelated decisions; use a temporary migration lineage and target-owned main reconciliation rather than mutating main first.
+2. **Use `iorLab/VocaPort` as the preferred third materially different real Project after explicit authorization.** It currently has no `AGNIR.yaml`; its existing `AGENTS.md` contains independent Project rules that MUST be preserved. VocaPort is a Rust/WASM/native multi-surface application spanning Web, Desktop and Android, with durable application-session snapshots and GitHub Release automation. A fresh Agnir `v0.2.0` install should therefore pressure non-destructive bootstrap into a substantial pre-existing repository instead of another toy fixture. Do not overwrite/restructure its existing bilingual Agent/README documentation merely to add Agnir activation.
+3. **Treat DSH as a separate execution-surface/adapter experiment, not as a shortcut for the real-Project count.** `iorLab/dsh-web-search-custom` is a DSH WebSearchProvider plugin and `iorLab/dsh-ui-settings-yaml` is a DSH configuration UI whose README explicitly states there is no model-visible surface. Neither repository, by itself, proves that Agnir can resume across a second Agent execution surface. To close the surface gate, run an authorized real Agnir Project through DSH (or another materially distinct Agent environment) and demonstrate fresh activation/resume/checkpoint without predecessor-private context. The DSH plugin repos currently have no `AGNIR.yaml` and were not modified during reconnaissance.
+4. **Keep low-value candidates out of the v1 count.** `iorLab/imixTV` and `iorLab/novo` currently report repository size `0`; do not use empty repositories merely to inflate the real-Project metric.
+5. **Pressure mount-boundary behavior when a genuine mount-capable conformance environment is available.** Keep the limitation explicit until real evidence exists; do not simulate it and then claim the boundary is proven.
+6. **Obtain independent-implementation quality evidence.** Have an implementation or rigorous review reconstruct the Core/profile behavior from published specs, migration docs, conformance and repository maps without relying on private design chat history; record ambiguities as documentation/product defects rather than coaching around them.
+7. **Prepare a `1.0.0-rc` cycle only after the real-Project/surface/documentation evidence gates are credibly closed.** The RC must run every normative suite from the exact candidate and must not substitute for missing real-world evidence.
+8. **Retire temporary release/validation/integration refs when a safe delete-ref path is available.** Preserve immutable `v0.2.0`, `v0.2.0-rc.1`, commits, workflow runs and durable Evidence; do not repurpose temporary refs.
+9. **Keep stable maintenance compatible.** Future `v0.2.x` fixes should preserve Core/profile `0.2` unless a deliberate new compatibility line is justified and migrated explicitly.
 
 ## Current verified receipts
 
@@ -35,21 +39,20 @@ Agnir `v0.2.0` is published as latest stable and safely reconciled into authorit
 - authoritative Svif main push run: `33725240001` success;
 - Svif post-integration checkpoint: `eba1b8538c4692a08bf69452525b735d23564599`, run `33727957648` success.
 
-### Agnir downstream-evidence ingestion
+### Agnir downstream-evidence ingestion and gate mapping
 
 - ingestion commit: `b1d1a8c784839aaf0822d542fdf820341d4699b2`, run `33728196706` success;
 - post-evidence checkpoint: `8ca37712b9ddfa0207893ceb82c850e36f4b2fcd`, run `33728480626` success;
-- focused Core/profile/lineage/migration/fresh-install/stable-package gates: success;
-- full conformance suite: success;
-- stable and RC publication jobs: skipped as expected.
+- v1 evidence-gap map commit: `667a4c733eddc9471d6f93d3deb2f2ea0365ebc3`, run `33728736089` success;
+- all focused Core/profile/lineage/migration/fresh-install/stable-package gates and the full conformance suite remain green.
 
 ## v1 evidence status
 
 - real upgrade boundary crossed successfully: **satisfied** via Svif published `v0.1.1` -> published `v0.2.0`;
 - real parallel continuity/reconciliation Project: **satisfied** via Svif;
 - VCS + non-VCS lineage conformance: **satisfied**;
-- materially different real Projects: **open** — 1 qualifying external Project evidenced, target >=3;
-- materially different execution surfaces/adapters: **open** until at least 2 are clearly evidenced;
+- materially different real Projects: **open** — 1 qualifying external Project evidenced; FishUp and VocaPort are the preferred next candidates, pending explicit authorization and successful evidence;
+- materially different execution surfaces/adapters: **open** — DSH is a plausible next surface only if it actually operates/resumes an Agnir Project;
 - real mount-boundary behavior: **open / explicitly unproven**;
 - independent-implementation documentation quality: **open**;
 - explicit `1.0.0-rc` cycle: **future gate**.
@@ -62,3 +65,4 @@ Agnir `v0.2.0` is published as latest stable and safely reconciled into authorit
 - Published tags are immutable.
 - Target publication is coherent and stale candidates fail.
 - Core/profile `0.1` -> `0.2` remains explicit migration; stable `0.2.x` maintenance does not silently redefine compatibility.
+- Real evidence must come from real behavior; repository labels, empty repositories, or provider/plugin affiliation do not substitute for actual Project or execution-surface use.
