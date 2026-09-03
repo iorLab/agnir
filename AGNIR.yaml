@@ -30,16 +30,18 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/release/v0.2.0"
   agnir/release:
-    phase: "stable-candidate"
+    phase: "stable-publication-candidate"
     repository_version: "0.2.0"
     core_contract: "spec/AGNIR_CORE_0_2.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_0_2.md"
     baseline_main: "1af33e0cc470107aadaeb5d4d2f0f4570d81ee1d"
+    stable_package_revision: "f59a83754346982170142a355a01c94050ddf3a5"
+    stable_package_run: 33711830312
     accepted_rc_tag: "v0.2.0-rc.1"
     accepted_rc_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"
     accepted_rc_release_id: 381532232
   agnir/operations:
     distribution: "agnir-agent-skill"
-    release: "0.2.0-rc.1"
+    release: "0.2.0"
     source: "iorLab/agnir"
-    applied_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"
+    applied_revision: "f59a83754346982170142a355a01c94050ddf3a5"
