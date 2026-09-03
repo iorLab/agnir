@@ -237,6 +237,7 @@ agnir/
 │   ├── checkpoint_reference.py        # coherent/no-op/conflict checkpoint model
 │   ├── test_skill_package.py          # Skill / user-UX / handoff pressure
 │   └── test_*.py                      # backend, lineage, migration, integration pressure
+├── brand/                            # approved brand masters, exports, QA, references, and handoff
 ├── .agnir/                            # this Project's canonical durable continuity
 ├── history/                           # historical predecessor material
 ├── .github/                           # CI workflows

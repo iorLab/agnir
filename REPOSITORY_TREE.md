@@ -16,6 +16,20 @@ agnir/                                                    # Agnir Skill + protoc
 │   └── workflows/
 │       └── conformance.yml                               # main + release branch CI; 0.1 regression + 0.2 RC/full suite
 │
+├── brand/                                                # Agnir 品牌识别与 production asset surface
+│   ├── README.md                                         # 品牌目录职责、production authority 与 integration status
+│   ├── APPROVED-VISUAL-REFERENCE.md                      # Principal 批准的 10:42 AM 视觉基准与 source hash
+│   ├── PRODUCTION-STATUS.md                              # 当前 master / derivative / QA / integration gates
+│   ├── brand-handoff.md                                  # 下游使用规则与禁止替换项
+│   ├── brand-process-log.md                              # 品牌设计与生产过程记录
+│   ├── INTEGRATION-NOTE.md                               # 品牌分支与最新 main 的 reconcile 说明
+│   ├── reference/                                       # extraction coordinates / source-reference manifests
+│   ├── masters/                                         # 批准的 Agnir vector production masters
+│   │   └── candidates/                                  # 历史 review candidates；不作为 production truth
+│   ├── exports/                                         # light/dark/mono/app/favicon 等 materialized derivatives
+│   ├── qa/                                              # 对称 13 项 final QA 范围与 evidence metadata
+│   └── tools/                                           # deterministic derivative / raster / review tooling
+│
 ├── spec/                                                 # Core/discovery/migration contracts
 │   ├── AGNIR_CORE.md                                     # Core 0.1 compatibility contract
 │   ├── AGNIR_CORE_0_2.md                                 # Core 0.2 RC normative compatibility candidate
