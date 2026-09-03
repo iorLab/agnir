@@ -1,8 +1,8 @@
-# Agnir Repository/Filesystem Profile 0.2 — Release Candidate
+# Agnir Repository/Filesystem Profile 0.2
 
 **Profile identifier:** `repository-filesystem/0.2`  
 **Core compatibility:** Agnir Core `0.2`  
-**Status:** Normative compatibility candidate for repository `v0.2.0-rc.1`; final stable publication remains gated by RC verification.
+**Status:** Stable normative profile for repository `v0.2.0` and later repository releases that explicitly declare `repository-filesystem/0.2` compatibility.
 
 This profile extends the repository/filesystem discovery model so a selected Project root resolves one explicit logical Continuity Lineage.
 
@@ -187,7 +187,7 @@ The storage-neutral migration contract is `spec/CORE_0_1_TO_0_2_MIGRATION.md`; e
 
 ## 12. Conformance requirements
 
-Before final stable publication, the profile must prove at least:
+Stable `repository-filesystem/0.2` conformance includes at least:
 
 1. cold-start discovery returns Core `0.2`, profile `repository-filesystem/0.2`, one Project identity, and one logical lineage identity;
 2. selected missing/unresolvable memory fails explicitly;

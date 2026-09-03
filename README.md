@@ -28,7 +28,7 @@ Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir
 
 **No recurring Agnir prompt is required.** Give the Agent access to the Project and ask for the actual task.
 
-Some execution surfaces need a **one-time persistent Project locator** before a fresh context can reach the Project's own activation route. During install or upgrade, the Agnir Skill must either configure that surface when it can or give the user a **copy-ready handoff**; it must report surface activation separately from repository activation and must not claim full activation while required execution-surface configuration is pending. This is execution-surface integration, not Agnir Core or Project memory.
+Some execution surfaces need a **one-time persistent Project locator** before a fresh context can reach the Project's own activation route. During install or upgrade, the Agnir Skill must either configure that surface when it can or give the user a **copy-ready handoff**; it must report **surface activation separately from repository activation** and must not claim full activation while required execution-surface configuration is pending. This is execution-surface integration, not Agnir Core or Project memory.
 
 For install, migration, upgrade, or repair operations, the Agent should use root [`SKILL.md`](SKILL.md) as the canonical procedure. The user does not need to carry Agnir's internal checklist.
 
@@ -42,7 +42,7 @@ Project root
 → selected durable continuity
 ```
 
-`latest stable` means an actually published stable tag/release, never a moving `main` branch or prerelease. During this RC cycle, published `v0.1.1` remains latest stable until final `v0.2.0` is intentionally published. Compatible operational upgrades preserve Project identity and durable continuity; a Core/profile compatibility-line change such as `0.1` → `0.2` requires explicit migration rather than silent rewriting.
+`latest stable` always means an actually published non-prerelease tag/release, never a moving `main`, temporary release branch, RC, or untagged commit. Repository `v0.2.0` publishes Core `0.2` / `repository-filesystem/0.2` only when its immutable stable tag and Release are present; before that publication succeeds, the previously published stable release remains authoritative for stable-upgrade resolution.
 
 ## Agnir Project Instructions
 
@@ -74,14 +74,12 @@ Project/
     ├── state.md              # [ADD] current durable truth for the selected lineage
     ├── next-actions.md       # [ADD] outstanding ordered work for the selected lineage
     ├── decisions.md          # [ADD] durable decisions that constrain future work
-    └── evidence/             # [ADD] evidence/checkpoints needed for recovery, audit, reconciliation, or material claims
+    └── evidence/             # [ADD] recovery/audit/reconciliation evidence and checkpoints
 ```
 
 Execution-surface configuration is not a Project file and is not part of this Project-owned tree. If a surface needs one-time persistent settings — for example, ChatGPT Project Instructions — the Skill should **append Project locator only** (or ask the user to append it), preserving unrelated surface instructions. The **Execution-surface bootstrap** points to the Project; the Project's own `AGENTS.md → README → AGNIR.yaml` route remains canonical.
 
-The reference layout normally records at least one initialization Evidence object. `AGNIR.yaml` locators are authoritative, so `.agnir/` is the recommended colocated layout for this profile rather than a universal Agnir Core requirement.
-
-Agnir adds continuity metadata and durable Project truth; it does **not** copy the Project, require raw chat transcripts, or make Git/GitHub part of Agnir Core.
+`AGNIR.yaml` locators are authoritative. The `.agnir/` layout above is the recommended colocated layout for this profile, not a universal Agnir Core storage requirement.
 
 ## Architecture Diagram
 
@@ -125,7 +123,7 @@ flowchart TB
 
 `SKILL.md` is an Agent-facing packaging layer, and `AGENTS.md → README` is an Agent-operable repository activation convention. Execution-surface bootstrap is a separate adapter concern: when a surface does not automatically reach the Project, it stores only enough persistent locator information to enter this route. None of these are Agnir Core dependencies.
 
-Core `0.2` adds explicit **Continuity Lineages** without making Git or branch names Core concepts. A logical lineage is durable within Project scope. A VCS ref/worktree may select or bind that lineage; a commit SHA may be a checkpoint receipt. These are distinct semantics:
+Core `0.2` makes **Continuity Lineages** explicit without making Git or branch names Core concepts:
 
 ```text
 Project identity
@@ -137,7 +135,7 @@ Project identity
                └── checkpoints / receipts
 ```
 
-For a VCS-backed Project, branch/ref/worktree is a selector/binding, **not automatically lineage identity**. Forking a new Agnir-controlled lineage must publish its new logical identity, selector binding, and coherent inherited/reconciled continuity together. Rename/rebind may preserve lineage identity. External ambiguous copies must fail/require repair instead of guessing.
+For a VCS-backed Project, branch/ref/worktree is a selector/binding, **not automatically lineage identity**. A commit SHA may be a checkpoint receipt, not lineage identity. Agnir-aware lineage fork, rename/rebind, and integration must preserve these distinctions.
 
 ### Integration publication
 
@@ -159,17 +157,17 @@ Source State/Next Actions/Decisions/Evidence are inputs to reconciliation; they 
 Agnir deliberately separates user intent from Agent procedure:
 
 - **User-facing requests** stay short: install, upgrade, or continue the real task.
-- **Agent-facing procedure** lives in root `SKILL.md`, which owns install / initialize / migration / upgrade / resume / checkpoint / commit / push / repair behavior.
+- **Agent-facing procedure** lives in root `SKILL.md`, which owns install / initialize / migration / upgrade / resume / checkpoint / commit / push / integration / repair behavior.
 
-The Skill is a distribution and operational entry surface. It does not change Agnir Core semantics. After initialization, the target Project is self-describing through its own `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route; normal future work does not require reopening the Skill just to remind the Agent that Agnir exists.
+The Skill is a distribution and operational entry surface. It does not change Agnir Core semantics. After initialization, the target Project is self-describing through its own `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route.
 
-When the execution surface itself needs persistent configuration to reach the Project, the Skill treats that as a one-time surface handoff. It preserves unrelated surface instructions, keeps the handoff locator-only, and reports surface activation separately from repository activation instead of claiming a fresh context is ready before the handoff is configured.
+When the execution surface itself needs persistent configuration to reach the Project, the Skill treats that as a one-time surface handoff. It preserves unrelated surface instructions, keeps the handoff locator-only, and reports surface activation separately from repository activation.
 
-For a published stable install/upgrade request, the Skill resolves an actually published stable release. An explicitly authorized RC/prerelease target may use Core/profile `0.2` according to that candidate's migration/install procedure; it must not cause `latest stable` to resolve to the RC.
+For a stable install/upgrade request, the Skill resolves an actually published stable release. An explicitly authorized prerelease target may still be used, but it must never silently replace stable resolution.
 
 ## Continuity Flow
 
-Once installation and any required one-time execution-surface configuration are complete, normal Project continuity does not depend on the original user install prompt or installation conversation:
+Once installation and any required one-time execution-surface configuration are complete, normal Project continuity does not depend on the original installation conversation:
 
 ```mermaid
 flowchart TD
@@ -196,25 +194,26 @@ Agnir does not perform the Project work shown in the middle of the flow. It make
 
 Core/profile compatibility lines are explicit contracts:
 
-- Core `0.1` + `repository-filesystem/0.1` remains the compatibility line of published stable `v0.1.1`.
-- Core `0.2` + `repository-filesystem/0.2` is the compatibility candidate exercised by `v0.2.0-rc.1`.
+- published `v0.1.1` uses Core `0.1` + `repository-filesystem/0.1`;
+- repository `v0.2.0` uses stable Core `0.2` + `repository-filesystem/0.2`.
 
-A `0.1` Project's single implicit continuity line may migrate to exactly one initial/default `0.2` logical lineage. Migration preserves `project.identity`, durable continuity, and applicable memory locators; it does not silently reinterpret an operational upgrade. See [`spec/CORE_0_1_TO_0_2_MIGRATION.md`](spec/CORE_0_1_TO_0_2_MIGRATION.md).
+A `0.1` Project's single implicit continuity line migrates to exactly one initial/default `0.2` logical lineage. Migration preserves `project.identity`, durable continuity, and applicable memory locators; it is not silently reclassified as an operational upgrade. See [`spec/CORE_0_1_TO_0_2_MIGRATION.md`](spec/CORE_0_1_TO_0_2_MIGRATION.md).
+
+Core/profile `0.1` contracts and conformance remain in the repository as compatibility and migration surfaces.
 
 ## Active line and release status
 
-The repository is preparing `v0.2.0-rc.1`. On the release branch, Agnir self-hosts Core `0.2` / `repository-filesystem/0.2`; the candidate's logical lineage is distinct from its VCS selector binding.
+The active protocol line is Core `0.2` with `repository-filesystem/0.2`. Repository SemVer `0.2.0` is the stable product release for that line once an immutable `v0.2.0` non-prerelease Release is published.
 
-The latest published stable release remains immutable `v0.1.1` at `e9712357ab590e5c1e5357b3cf3219d07d789aff` until final `v0.2.0` is actually published. The RC is a prerelease and must never be silently substituted for `latest stable`.
+The release branch uses its own logical lineage and selector binding; authoritative `main` uses `urn:agnir:lineage:authoritative`. These lineage identities remain separate from branch names.
 
 Keep the version layers distinct:
 
-- repository candidate: `0.2.0-rc.1`;
-- Core compatibility candidate: `0.2`;
-- repository/filesystem profile candidate: `repository-filesystem/0.2`;
-- latest published stable repository release: `0.1.1`.
+- repository release: `0.2.0`;
+- Core compatibility: `0.2`;
+- repository/filesystem profile: `repository-filesystem/0.2`.
 
-[`RELEASE.md`](RELEASE.md) records the RC publication gate and the immutable stable baseline.
+[`RELEASE.md`](RELEASE.md) records the stable publication contract and release evidence. Published tags are immutable by Project policy.
 
 ## Repository structure
 
@@ -222,22 +221,23 @@ Keep the version layers distinct:
 agnir/
 ├── spec/                              # protocol contracts and migration
 │   ├── AGNIR_CORE.md                  # Core 0.1 compatibility contract
-│   ├── AGNIR_CORE_0_2.md              # Core 0.2 RC normative contract
+│   ├── AGNIR_CORE_0_2.md              # stable Core 0.2 normative contract
 │   ├── AGNIR_DISCOVERY.md             # discovery / Locator Chain / failures
 │   └── CORE_0_1_TO_0_2_MIGRATION.md   # explicit compatibility migration
 ├── profiles/
 │   ├── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1
-│   ├── REPOSITORY_FILESYSTEM_0_2.md   # repository-filesystem/0.2 RC profile
+│   ├── REPOSITORY_FILESYSTEM_0_2.md   # stable repository-filesystem/0.2
 │   └── VCS_BRANCH_CONTINUITY.md       # VCS mapping/extension pressure
 ├── schemas/                           # 0.1 + 0.2 manifest schemas
 ├── conformance/
-│   ├── check_agnir_0_1.py             # stable 0.1 self-host/regression helpers
-│   ├── check_agnir_0_2_rc.py          # RC Core/profile 0.2 self-host gate
+│   ├── check_agnir_0_1.py             # Core/profile 0.1 compatibility helpers
+│   ├── check_agnir_0_2.py             # stable Core/profile 0.2 self-host gate
+│   ├── check_agnir_0_2_rc.py          # immutable-RC-era audit/reference gate
 │   ├── activation_reference.py        # AGENTS → README activation resolver
 │   ├── checkpoint_reference.py        # coherent/no-op/conflict checkpoint model
 │   ├── test_skill_package.py          # Skill / user-UX / handoff pressure
+│   ├── test_stable_release_gates.py   # stable package/install/migration pressure
 │   └── test_*.py                      # backend, lineage, migration, integration pressure
-├── brand/                            # approved brand masters, exports, QA, references, and handoff
 ├── .agnir/                            # this Project's canonical durable continuity
 ├── history/                           # historical predecessor material
 ├── .github/                           # CI workflows
@@ -247,7 +247,7 @@ agnir/
 ├── README.md
 ├── README.zh-CN.md
 ├── REPOSITORY_TREE.md                 # exhaustive tracked-file responsibility map
-├── RELEASE.md                         # release/RC publication contract
+├── RELEASE.md                         # release publication contract/evidence
 └── VERSION                            # repository SemVer
 ```
 
@@ -259,16 +259,8 @@ Agnir requires durable recovery of Current State, Next Actions, Decisions, and E
 
 ## Relationship to Svif
 
-Svif is a separate **Project orchestration product** at `iorLab/svif`. It uses Agnir as a founding Continuity Provider but Agnir remains independently usable. Svif also supplied the first real Core `0.2` consumer validation: explicit migration, two independent lineages, staged target reconciliation/publication, and independent source resume.
+Agnir and Svif are separate products. Agnir owns durable Project continuity semantics. Svif may consume Agnir through a Continuity Provider or adapter, but Agnir does not depend on Svif.
 
-## Documentation synchronization rule
+## Scope
 
-`README.md` and `README.zh-CN.md` are parallel entry points. Changes to the layer model, Skill/install boundary, activation path, discovery path, durable-memory semantics, Project boundary, execution-surface handoff, lineage selection/integration, or continuity flow must update both languages in the same change set.
-
-Before the Architecture Diagram, README content is deliberately limited to a concise Project identity/name explanation, **Start Here** for users, the canonical **Agnir Project Instructions** for Agents, and **What Agnir Adds to a Project** as a concrete user-facing map of the installed Project surface. Installation and upgrade prompts stay one sentence each; deeper implementation/release detail belongs after the architecture entry point or in dedicated documents.
-
-`REPOSITORY_TREE.md` is the exhaustive structural map; it describes evidence-directory responsibility rather than duplicating every checkpoint Evidence filename.
-
-## Conformance
-
-The release branch runs exact-head CI for RC self-hosting, stable `0.1` regression, Core `0.2` VCS/non-VCS/profile/binding/migration pressure, and the full suite. See [`.github/workflows/conformance.yml`](.github/workflows/conformance.yml).
+Agnir Core is intentionally neutral about Git, GitHub, repositories, filesystems, ChatGPT, specific Agent products, and storage engines. Repository/filesystem behavior, VCS mapping, execution-surface handoff, and Agent Skill packaging are profiles/adapters/distribution concerns built around the Core contract.

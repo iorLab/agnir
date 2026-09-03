@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
       - name: Core 0.2 repository self-host cold-start
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.base_ref == 'main' || startsWith(github.head_ref, 'release/')
-        run: python conformance/check_agnir_0_2_rc.py
+        run: python conformance/check_agnir_0_2.py
       - name: Stable Core 0.1 compatibility regression
         run: |
           python -m unittest discover -s conformance -p 'test_checkpoint_semantics.py' -v
@@ -42,9 +42,12 @@ jobs:
         run: python -m unittest discover -s conformance -p 'test_core_0_2_migration.py' -v
       - name: repository-filesystem 0.1 to 0.2 migration
         run: python -m unittest discover -s conformance -p 'test_repository_filesystem_0_2_migration.py' -v
-      - name: RC fresh install and published v0.1.1 migration
+      - name: Fresh Core 0.2 install and published v0.1.1 migration
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.base_ref == 'main' || startsWith(github.head_ref, 'release/')
         run: python -m unittest discover -s conformance -p 'test_rc_release_gates.py' -v
+      - name: Stable v0.2.0 package gates
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release/v0.2.0' || github.base_ref == 'main' || github.head_ref == 'release/v0.2.0'
+        run: python -m unittest discover -s conformance -p 'test_stable_release_gates.py' -v
       - name: Full conformance suite
         run: python -m unittest discover -s conformance -p 'test_*.py' -v
 
@@ -60,17 +63,57 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Verify exact publication candidate
+      - name: Verify exact RC publication candidate
         run: |
           set -euo pipefail
           test "$(cat VERSION)" = "0.2.0-rc.1"
           test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
-      - name: Create immutable tag and prerelease
+      - name: Create immutable RC tag and prerelease
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           tag="v0.2.0-rc.1"
+          repo="${GITHUB_REPOSITORY}"
+          if tag_json=$(gh api "repos/${repo}/git/ref/tags/${tag}" 2>/dev/null); then
+            test "$(printf '%s' "${tag_json}" | jq -r '.object.sha')" = "${GITHUB_SHA}"
+          else
+            gh api --method POST "repos/${repo}/git/refs" -f ref="refs/tags/${tag}" -f sha="${GITHUB_SHA}" >/dev/null
+          fi
+          if release_json=$(gh api "repos/${repo}/releases/tags/${tag}" 2>/dev/null); then
+            test "$(printf '%s' "${release_json}" | jq -r '.tag_name')" = "${tag}"
+          else
+            gh api --method POST "repos/${repo}/releases" -f tag_name="${tag}" -f target_commitish="${GITHUB_SHA}" -f name="Agnir ${tag}" -f body="Agnir ${tag} prerelease." -F draft=false -F prerelease=true >/dev/null
+          fi
+          test "$(gh api "repos/${repo}/git/ref/tags/${tag}" --jq '.object.sha')" = "${GITHUB_SHA}"
+          test "$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.prerelease')" = "true"
+          test "$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.draft')" = "false"
+
+  publish-v0-2-0:
+    name: Publish v0.2.0 stable release
+    needs: repository-filesystem
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/release/v0.2.0' &&
+      github.event.head_commit.message == 'release: publish v0.2.0 stable'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact stable publication candidate
+        run: |
+          set -euo pipefail
+          test "$(cat VERSION)" = "0.2.0"
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          grep -q '# Agnir Core 0.2 — Normative Specification' spec/AGNIR_CORE_0_2.md
+          grep -q 'Stable normative profile' profiles/REPOSITORY_FILESYSTEM_0_2.md
+      - name: Create immutable stable tag and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="v0.2.0"
           repo="${GITHUB_REPOSITORY}"
 
           if tag_json=$(gh api "repos/${repo}/git/ref/tags/${tag}" 2>/dev/null); then
@@ -83,20 +126,22 @@ jobs:
           fi
 
           body=$(cat <<EOF
-          Agnir v0.2.0-rc.1 prerelease.
+          Agnir v0.2.0 stable release.
 
           Exact candidate: ${GITHUB_SHA}
           Conformance workflow: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
           Core: 0.2
           Profile: repository-filesystem/0.2
+          Accepted RC: v0.2.0-rc.1 at 50a8cd565954e7e8055b8b628e2d620ac7357bab
 
-          This is a prerelease. v0.1.1 remains the latest stable release until a later stable v0.2.0 publication.
+          Highlights: stable Continuity Lineages, selector/identity separation, lineage-local checkpoints, staged target reconciliation, non-VCS + VCS conformance, explicit v0.1.1/Core 0.1 migration, fresh install/resume evidence, and safe authoritative-main acceptance.
           EOF
           )
 
           if release_json=$(gh api "repos/${repo}/releases/tags/${tag}" 2>/dev/null); then
-            release_tag=$(printf '%s' "${release_json}" | jq -r '.tag_name')
-            test "${release_tag}" = "${tag}"
+            test "$(printf '%s' "${release_json}" | jq -r '.tag_name')" = "${tag}"
+            test "$(printf '%s' "${release_json}" | jq -r '.prerelease')" = "false"
+            test "$(printf '%s' "${release_json}" | jq -r '.draft')" = "false"
           else
             gh api --method POST "repos/${repo}/releases" \
               -f tag_name="${tag}" \
@@ -104,13 +149,15 @@ jobs:
               -f name="Agnir ${tag}" \
               -f body="${body}" \
               -F draft=false \
-              -F prerelease=true >/dev/null
+              -F prerelease=false >/dev/null
           fi
 
           tag_sha=$(gh api "repos/${repo}/git/ref/tags/${tag}" --jq '.object.sha')
           prerelease=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.prerelease')
           draft=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.draft')
+          latest=$(gh api "repos/${repo}/releases/latest" --jq '.tag_name')
           test "${tag_sha}" = "${GITHUB_SHA}"
-          test "${prerelease}" = "true"
+          test "${prerelease}" = "false"
           test "${draft}" = "false"
-          echo "PASS: ${tag} -> ${tag_sha}; prerelease=${prerelease}; draft=${draft}"
+          test "${latest}" = "${tag}"
+          echo "PASS: ${tag} -> ${tag_sha}; prerelease=${prerelease}; draft=${draft}; latest=${latest}"

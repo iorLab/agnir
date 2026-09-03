@@ -1,6 +1,6 @@
-# Agnir Core 0.2 — Release Candidate Normative Specification
+# Agnir Core 0.2 — Normative Specification
 
-**Status:** Normative compatibility candidate for repository `v0.2.0-rc.1`. This is the Core `0.2` contract under release-candidate verification; final stable publication remains gated by the RC install/migration/resume evidence.
+**Status:** Stable normative compatibility contract for repository `v0.2.0` and later repository releases that explicitly declare Core `0.2` compatibility.
 
 ## 1. Purpose
 
@@ -198,10 +198,10 @@ Profiles and adapters MAY expose more specific backend selector/binding/integrat
 
 ## 13. Backend neutrality
 
-Core `0.2` conformance requires evidence from materially different backend models. At minimum before final stable publication:
+Stable Core `0.2` acceptance requires evidence from materially different backend models. The repository `v0.2.0` release evidence includes both:
 
-- one VCS-backed model MUST demonstrate branches/workspaces selecting/binding logical lineages without making VCS concepts Core requirements;
-- one non-VCS transactional model MUST demonstrate the same lineage invariants without Git branches, commits, worktrees, refs, or repository semantics.
+- a VCS-backed model demonstrating branches/workspaces selecting/binding logical lineages without making VCS concepts Core requirements;
+- a non-VCS transactional model demonstrating the same lineage invariants without Git branches, commits, worktrees, refs, or repository semantics.
 
 Passing only a Git/VCS implementation is insufficient evidence for accepting Continuity Lineage as a Core abstraction.
 
