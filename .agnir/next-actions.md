@@ -1,13 +1,14 @@
 # Agnir Next Actions
 
-Agnir `v0.2.0` is published as latest stable and safely reconciled into authoritative `main`. Main self-hosts Core `0.2` / `repository-filesystem/0.2` on logical lineage `urn:agnir:lineage:authoritative`, separately bound to `refs/heads/main`. Svif has completed a real published `v0.1.1` -> published `v0.2.0` downstream migration, satisfying the v1 upgrade-boundary evidence sub-gate; Agnir ingestion commit `b1d1a8c784839aaf0822d542fdf820341d4699b2` passed conformance run `33728196706`.
+Agnir `v0.2.0` is published as latest stable and safely reconciled into authoritative `main`. Main self-hosts Core `0.2` / `repository-filesystem/0.2` on logical lineage `urn:agnir:lineage:authoritative`, separately bound to `refs/heads/main`. Svif has completed a real published `v0.1.1` -> published `v0.2.0` downstream migration, and `V1_RELEASE_CRITERIA.md` now records an explicit current satisfied/open evidence map.
 
 1. **Expand the real-Project set toward the v1 minimum of 3 materially different Projects.** Svif now supplies one qualifying external real Project with both upgrade and lineage/reconciliation evidence; add at least two materially different real Projects and record only material interoperability, migration, reconciliation, recovery or usability findings.
 2. **Expand execution-surface / adapter evidence toward the `v1.0.0` gate.** Existing repository/filesystem and ChatGPT Project activation behavior provide a baseline; add another materially distinct execution surface/adapter with fresh activation/resume evidence so the minimum of 2 materially different surfaces/adapters is unambiguous.
 3. **Pressure mount-boundary behavior when a genuine mount-capable conformance environment is available.** Keep the limitation explicit until real evidence exists; do not simulate it and then claim the boundary is proven.
-4. **Review `V1_RELEASE_CRITERIA.md` against current receipts and maintain an explicit satisfied/open gate map.** The real upgrade-boundary sub-gate is now satisfied; remaining gaps must be converted into concrete evidence tasks rather than version-number work.
-5. **Retire temporary release/validation/integration refs when a safe delete-ref path is available.** Preserve immutable `v0.2.0`, `v0.2.0-rc.1`, commits, workflow runs and durable Evidence; do not repurpose temporary refs.
-6. **Keep stable maintenance compatible.** Future `v0.2.x` fixes should preserve Core/profile `0.2` unless a deliberate new compatibility line is justified and migrated explicitly.
+4. **Obtain independent-implementation quality evidence.** Have an implementation or rigorous review reconstruct the Core/profile behavior from published specs, migration docs, conformance and repository maps without relying on private design chat history; record ambiguities as documentation/product defects rather than coaching around them.
+5. **Prepare a `1.0.0-rc` cycle only after the real-Project/surface/documentation evidence gates are credibly closed.** The RC must run every normative suite from the exact candidate and must not be used as a substitute for missing real-world evidence.
+6. **Retire temporary release/validation/integration refs when a safe delete-ref path is available.** Preserve immutable `v0.2.0`, `v0.2.0-rc.1`, commits, workflow runs and durable Evidence; do not repurpose temporary refs.
+7. **Keep stable maintenance compatible.** Future `v0.2.x` fixes should preserve Core/profile `0.2` unless a deliberate new compatibility line is justified and migrated explicitly.
 
 ## Current verified receipts
 
@@ -32,15 +33,12 @@ Agnir `v0.2.0` is published as latest stable and safely reconciled into authorit
 - target-reconciled candidate/publication revision: `2b5b92ab234d4c1b0d6596bbb0b8439eb6e05cfa`, tree `191db90c0b959254025cb061159044c1b0ddf3d6`;
 - candidate run: `33725164044` success;
 - authoritative Svif main push run: `33725240001` success;
-- Svif post-integration checkpoint: `eba1b8538c4692a08bf69452525b735d23564599`, run `33727957648` success;
-- authoritative Svif lineage: `urn:svif:lineage:authoritative`;
-- authoritative selector: `refs/heads/main`;
-- Project identity and durable memory locators preserved.
+- Svif post-integration checkpoint: `eba1b8538c4692a08bf69452525b735d23564599`, run `33727957648` success.
 
 ### Agnir downstream-evidence ingestion
 
-- ingestion commit: `b1d1a8c784839aaf0822d542fdf820341d4699b2`;
-- ingestion conformance run: `33728196706` success;
+- ingestion commit: `b1d1a8c784839aaf0822d542fdf820341d4699b2`, run `33728196706` success;
+- post-evidence checkpoint: `8ca37712b9ddfa0207893ceb82c850e36f4b2fcd`, run `33728480626` success;
 - focused Core/profile/lineage/migration/fresh-install/stable-package gates: success;
 - full conformance suite: success;
 - stable and RC publication jobs: skipped as expected.
@@ -49,10 +47,12 @@ Agnir `v0.2.0` is published as latest stable and safely reconciled into authorit
 
 - real upgrade boundary crossed successfully: **satisfied** via Svif published `v0.1.1` -> published `v0.2.0`;
 - real parallel continuity/reconciliation Project: **satisfied** via Svif;
-- materially different real Projects: **open** until at least 3 total qualifying Projects exist;
+- VCS + non-VCS lineage conformance: **satisfied**;
+- materially different real Projects: **open** — 1 qualifying external Project evidenced, target >=3;
 - materially different execution surfaces/adapters: **open** until at least 2 are clearly evidenced;
 - real mount-boundary behavior: **open / explicitly unproven**;
-- fresh v1 RC cycle: **future gate**.
+- independent-implementation documentation quality: **open**;
+- explicit `1.0.0-rc` cycle: **future gate**.
 
 ## Invariants
 

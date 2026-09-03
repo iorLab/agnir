@@ -144,6 +144,35 @@ Agnir must be able to identify the exact source revision corresponding to every 
 | Conformance | All normative suites green from a fresh environment |
 | Documentation | Independent-implementation quality |
 
+## Current evidence snapshot — 2026-09-03
+
+This section is a non-normative readiness snapshot. It does not weaken the gates above. A status may move backward if new evidence exposes a defect.
+
+| Gate | Current status | Evidence / remaining work |
+| --- | --- | --- |
+| 1. Core semantics | **Provisionally satisfied** | Core `0.2` covers Project identity, durable semantic categories, discovery/resume, checkpoint/failure semantics and Continuity Lineage integration. No planned breaking Core redesign is currently recorded; reopen if real downstream evidence exposes one. |
+| 2. Compatibility contract | **Satisfied for current published lines** | Core/profile `0.1` and `0.2`, migration semantics, unsupported-version behavior and operational-vs-compatibility versioning are explicit. Future compatibility lines must preserve this discipline. |
+| 3. Migration testing | **Satisfied for current published lines** | Fresh Core `0.2` install, Core/profile `0.1` -> `0.2` semantic/concrete migration, idempotence/conflict behavior, stable `0.1` regressions, and real published `v0.1.1` -> `v0.2.0` Svif migration are green. A future `0.2.x` maintenance release must add compatible-upgrade evidence for that concrete release. |
+| 4. Real Projects | **Partial** | Svif is one qualifying external real Project and has crossed the published upgrade boundary plus exercised lineage reconciliation. Need at least **2 additional materially different real Projects** and a clearly distinct second execution surface/adapter. |
+| 5. Backend/profile independence | **Partial / strong conformance evidence** | VCS and non-VCS lineage conformance are green, and Core is not defined by a VCS selector. Genuine mount-boundary behavior remains explicitly unproven and should be pressured in a real mount-capable environment. |
+| 6. Normative conformance | **Infrastructure satisfied; v1 final run future** | The release-blocking suite is visible and reproducible and passed stable `v0.2.0` plus subsequent main checkpoints. A fresh exact `1.0.0-rc` candidate must rerun every normative layer. |
+| 7. Failure behavior | **Provisionally satisfied** | Normative discovery/checkpoint/lineage/migration failures are machine-distinguishable in specs and conformance. Keep open to correction if independent consumers expose ambiguous recovery/retry semantics. |
+| 8. Publication/checkpoint integrity | **Provisionally satisfied** | Agnir stable-to-main and Svif published-to-published migration both used staged target reconciliation, exact-tree CI, stale checks, one coherent target advancement and fresh verification. Broader crash/mount evidence remains useful. |
+| 9. Independent-implementation documentation | **Open** | Specs, profiles, migration docs, activation guidance and repository map exist, but independent-implementation quality has not yet been proven by an implementation/review from someone not relying on design chat history. |
+| 10. Repeatable release operations | **Satisfied for 0.2; v1 cycle future** | `v0.2.0-rc.1` -> `v0.2.0` exercised exact candidate verification, immutable tags/releases, package provenance and safe main reconciliation. A separate `1.0.0-rc` cycle remains a v1 threshold. |
+
+### Threshold summary
+
+- **Upgrade evidence:** satisfied by real Svif published `v0.1.1` -> published `v0.2.0` migration.
+- **Parallel continuity real Project:** satisfied by Svif; VCS and non-VCS conformance are also green.
+- **Real Projects:** open at 1 qualifying external Project; target is at least 3 materially different Projects.
+- **Execution surfaces/adapters:** open until a second materially distinct surface/adapter has fresh activation/resume evidence.
+- **Mount-boundary evidence:** open and explicitly unproven.
+- **Independent implementation:** open.
+- **`1.0.0-rc` cycle:** future gate.
+
+Canonical receipt detail for the Svif published-to-published migration is `.agnir/evidence/2026-09-03-svif-published-v0.1.1-to-v0.2.0-upgrade.md`.
+
 ## Non-gates
 
 The following alone do **not** justify `v1.0.0`:

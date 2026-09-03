@@ -53,7 +53,25 @@ The migration did not expose an Agnir `v0.2.0` semantic defect. The only failure
 
 This satisfies the **v1 release criterion requiring at least one real Project to cross an Agnir upgrade boundary**. It does not satisfy the whole real-Project gate: Agnir still needs at least 3 materially different real Projects overall and at least 2 materially different execution surfaces/adapters before `v1.0.0`.
 
-Agnir ingested this downstream receipt in commit `b1d1a8c784839aaf0822d542fdf820341d4699b2`. Authoritative-main conformance run `33728196706` passed every focused Core/profile/migration/stable-package gate and the full suite; stable/RC publication jobs were correctly skipped. This confirms the v1 evidence update did not regress the released `v0.2.0` contract.
+Agnir ingested this downstream receipt in commit `b1d1a8c784839aaf0822d542fdf820341d4699b2`. Authoritative-main conformance run `33728196706` passed every focused Core/profile/migration/stable-package gate and the full suite; stable/RC publication jobs were correctly skipped. Post-evidence checkpoint `8ca37712b9ddfa0207893ceb82c850e36f4b2fcd` also passed run `33728480626` with the same full conformance result.
+
+## v1 readiness map — current snapshot
+
+`V1_RELEASE_CRITERIA.md` now includes a non-normative evidence snapshot. It does not lower any release gate; it records current evidence so future work can target actual gaps.
+
+Current high-level status:
+
+- real upgrade boundary: **satisfied** via Svif;
+- real parallel continuity/reconciliation Project: **satisfied** via Svif;
+- VCS + non-VCS lineage conformance: **satisfied**;
+- current published compatibility/migration contract: **satisfied for existing published lines**;
+- real Projects: **open** — Svif supplies one qualifying external Project; at least two more materially different Projects are required;
+- execution surfaces/adapters: **open** until a clearly distinct second surface/adapter has fresh activation/resume evidence;
+- mount-boundary evidence: **open / explicitly unproven**;
+- independent-implementation documentation quality: **open**;
+- explicit `1.0.0-rc` cycle: **future gate**.
+
+Core semantic completeness, failure behavior, and publication/checkpoint integrity are marked provisionally satisfied because current evidence is strong but must remain reopenable if downstream evidence exposes a defect.
 
 ## Active compatibility and product state
 
