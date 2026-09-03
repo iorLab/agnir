@@ -223,6 +223,7 @@ agnir/
 │   ├── vcs_branch_continuity_reference.py # branch/integration reference model
 │   ├── test_skill_package.py          # Skill / user-prompt boundary + commit intent tests
 │   └── test_*.py                      # other executable conformance
+├── brand/                            # approved brand masters, exports, QA, references, and handoff
 ├── .agnir/                            # this Project's canonical durable continuity
 ├── history/                           # historical lineage only
 ├── .github/workflows/                 # CI
