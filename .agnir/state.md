@@ -1,41 +1,41 @@
 # Agnir Current State
 
-Agnir `v0.1.1` remains the formally published stable repository release, immutably anchored to `e9712357ab590e5c1e5357b3cf3219d07d789aff`. **Durable continuity belongs to the Project**, not to an Executor, conversation, execution environment, storage implementation, repository host, VCS branch, selector, or Continuity Lineage.
+Agnir `v0.2.0-rc.1` is formally published as a **prerelease** at immutable tag target `50a8cd565954e7e8055b8b628e2d620ac7357bab`. GitHub Release id `381532232` remains `prerelease=true`, `draft=false`; `releases/latest` still resolves to stable `v0.1.1`. **Durable continuity belongs to the Project**, not to an Executor, conversation, execution environment, storage implementation, repository host, VCS branch, selector, revision receipt, or Continuity Lineage.
 
-## Core 0.2 safe main integration completed — 2026-09-02
+## Authoritative main RC acceptance completed — 2026-09-03
 
-The combined PR `#4` + PR `#5` Core `0.2` Project result has been integrated into authoritative `main` through the Agnir-aware publication path.
+Accepted RC Project/package changes have been reconciled into authoritative `main` through the Core 0.2 target-publication path.
 
-Exact integrated revision: `a32c9143687b72426617ddd701b90ffd237a111c`.
+Exact authoritative-main integration revision: `cd0427d26dddfabae768bcd76b78dc8d042151c7`.
 
-- first parent: previous authoritative `main` `1bbdb5b258645ec7c5e0109c9b17dbaac004e625`;
-- second parent: Core `0.2` source checkpoint `68cc443d6c44929f1b71d9d534e9b0f73f9745bf`;
-- exact tree: `759766c34e0f39f0c8d51bea1af22d7d41ad591c`.
+- first parent: previous authoritative main `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`;
+- second parent: accepted release-line head `866604c4532003538fd6a0b565be9c1ef1c8a034`;
+- exact integrated tree: `8c931fe53c09b019fd7bfd964c2ebc5d2b02dcd0`.
 
-A temporary validation PR `#6` produced test merge `270265a4d76b92553176a5a0b281f9202b7644fd`; its tree SHA was exactly the same `759766c...` as the candidate. Candidate-tree conformance run `33653019074` passed every gate while authoritative `main` remained unchanged.
+Validation-only Draft PR #9 produced synthetic merge `406236beb1b8de212c218d899914b5cfd89f82c0`; its tree was exactly the same `8c931fe5...` as the staged candidate. Candidate-tree conformance run `33705224034` passed Core 0.2 self-host, stable Core/profile 0.1 regression pressure, VCS/lineage/profile/migration gates, RC fresh-install/published-migration gates, and the full suite while main remained unchanged.
 
-Immediately before publication, fresh ref reads still observed `main` at `1bbdb5b...` and source `feature/core-0.2-lineage` at `68cc443d...`. `main` then advanced once directly to exact candidate `a32c914...`, with no feature-truth-first/follow-up-repair interval.
+Immediately before publication, fresh reads still observed main at `f0b2cbd...`, release source at `866604c...`, and the integration ref at `cd0427d...`. Main then advanced once directly to exact candidate `cd0427d...`; no release-line-continuity-first or follow-up-repair interval occurred.
 
-Authoritative-main push run `33653087179` passed stable Core `0.1` self-hosting, VCS branch continuity, Core `0.2` non-VCS/VCS mapping, repository-filesystem `0.2`, VCS lineage binding, semantic and concrete `0.1`→`0.2` migration, and the full suite.
+Authoritative-main push run `33705292185` passed the same complete conformance surface. The prerelease publication job was correctly skipped on main.
 
-## Compatibility and release status
+PR #9 was automatically recognized by GitHub as merged through ancestry when main advanced to the exact candidate. No GitHub PR merge action created a different publication revision.
 
-- published stable repository release remains `v0.1.1`;
-- stable tag target remains `e9712357ab590e5c1e5357b3cf3219d07d789aff`;
-- the repository still self-hosts Core `0.1` + `repository-filesystem/0.1` on authoritative `main`;
-- Core `0.2` + `repository-filesystem/0.2` contracts/conformance are now integrated on `main` as the **pre-RC** line, not yet published as stable compatibility;
-- `VERSION` and operational provenance remain `0.1.1` until the RC release change is intentionally constructed.
+## Authoritative main Core 0.2 self-host
 
-## PR integration result
+Project identity remains `urn:agnir:project:agnir-core` and declared durable memory locators remain unchanged.
 
-- PR `#4` was automatically recognized as merged through ancestry when `main` advanced to `a32c914...`;
-- temporary validation PR `#6` was likewise recognized as merged at the exact candidate revision;
-- stacked PR `#5` could not be auto-recognized because its base remained the feature branch. Its head is already the second-parent ancestry of `a32c914...`; a completion comment was recorded and the PR was closed without creating another merge path.
+Authoritative main now self-hosts Core `0.2` / `repository-filesystem/0.2` on logical Continuity Lineage `urn:agnir:lineage:authoritative`, separately bound to selector `refs/heads/main`. The logical lineage identity is not derived from the ref or commit receipt.
 
-## Core 0.2 readiness
+This is the explicit migration of main's former Core/profile `0.1` implicit line into one Core/profile `0.2` logical lineage. `extensions.agnir/operations` records the accepted immutable published RC package `0.2.0-rc.1` at revision `50a8cd565954e7e8055b8b628e2d620ac7357bab`.
 
-Synthetic/backend/profile/migration gates, the first real Svif consumer validation, exact candidate-tree validation, coherent main publication, and authoritative-main conformance are all green.
+## Release boundary
 
-The next release boundary is `v0.2.0-rc.1`. RC work should occur on a temporary release branch, deliberately promote the intended Core/profile contracts, update repository release metadata, exercise fresh install, and validate explicit published `v0.1.1` Core/profile `0.1` → Core/profile `0.2` migration/resume before final `v0.2.0` publication.
+- repository source line on main: `0.2.0-rc.1`;
+- Core compatibility: `0.2`;
+- profile: `repository-filesystem/0.2`;
+- immutable prerelease: `v0.2.0-rc.1` at `50a8cd...`;
+- latest stable remains `v0.1.1` until an actual stable `v0.2.0` publication;
+- no release-blocking defect is known from the RC publication/main-acceptance gates completed so far;
+- final stable `v0.2.0` remains a separate exact-candidate decision and publication.
 
-`.agnir/next-actions.md` is the canonical resume order. Exact integration evidence is recorded in `.agnir/evidence/2026-09-02-core-0.2-main-integration-completed.md`.
+Detailed reconciliation evidence is in `.agnir/evidence/2026-09-03-v0.2.0-rc.1-main-reconciliation.md`; completion receipts are in `.agnir/evidence/2026-09-03-v0.2.0-rc.1-main-integration-completed.md`. `.agnir/next-actions.md` is the canonical resume order.

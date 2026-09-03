@@ -97,6 +97,22 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
+    def test_skill_defines_core_0_2_migration_and_lineage_selection(self) -> None:
+        text = SKILL.read_text(encoding="utf-8")
+        for marker in (
+            "spec/AGNIR_CORE_0_2.md",
+            "profiles/REPOSITORY_FILESYSTEM_0_2.md",
+            "spec/CORE_0_1_TO_0_2_MIGRATION.md",
+            "## Migrate Core/profile compatibility",
+            "continuity.lineage",
+            "not automatically lineage identity",
+            "AGNIR_LINEAGE_REQUIRED",
+            "## Integrate Continuity Lineages",
+            "without advancing the target",
+            "source continuity is input, not automatic target truth",
+        ):
+            self.assertIn(marker, text)
+
     def test_readmes_keep_user_prompts_short_and_copyable(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
         chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
@@ -161,6 +177,16 @@ class SkillPackageTests(unittest.TestCase):
         self.assertGreaterEqual(surface_zh.count("[新增]"), 6)
         self.assertIn("保留原有 instructions", surface_zh)
         self.assertIn("保留原有内容", surface_zh)
+
+    def test_readmes_do_not_claim_core_0_2_lineage_is_deferred(self) -> None:
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+        for text in (english, chinese):
+            self.assertIn("Core `0.2`", text)
+            self.assertIn("Continuity Lineage", text)
+            self.assertNotIn("generic durable lineage is still deferred", text)
+            self.assertNotIn("AGNIR_CORE_0_2_DRAFT.md", text)
+            self.assertNotIn("REPOSITORY_FILESYSTEM_0_2_DRAFT.md", text)
 
     def test_initialized_project_instructions_persist_commit_boundary_semantics(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
