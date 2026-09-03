@@ -30,19 +30,23 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/main"
   agnir/release:
-    phase: "rc-accepted-main"
-    repository_version: "0.2.0-rc.1"
+    phase: "stable-accepted-on-main"
+    repository_version: "0.2.0"
     core_contract: "spec/AGNIR_CORE_0_2.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_0_2.md"
-    baseline_main: "f0b2cbd5329adb6ac7309076d7ea09337bb057c5"
-    source_release_ref: "release/v0.2.0-rc.1"
-    source_release_revision: "866604c4532003538fd6a0b565be9c1ef1c8a034"
-    published_tag: "v0.2.0-rc.1"
-    published_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"
-    github_release_id: 381532232
-    publication_workflow_run: 33675638723
+    tag: "v0.2.0"
+    published_revision: "fc84095ed5d500be9e1b43a4af0e93356571bbd4"
+    release_id: 381710267
+    publication_run: 33711982062
+    latest_stable: "v0.2.0"
+    stable_package_revision: "f59a83754346982170142a355a01c94050ddf3a5"
+    stable_package_run: 33711830312
+    release_checkpoint: "2eb083d2aaa2a0869b2baf9ba46d012913317102"
+    previous_main_checkpoint: "1af33e0cc470107aadaeb5d4d2f0f4570d81ee1d"
+    accepted_rc_tag: "v0.2.0-rc.1"
+    accepted_rc_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"
   agnir/operations:
     distribution: "agnir-agent-skill"
-    release: "0.2.0-rc.1"
+    release: "0.2.0"
     source: "iorLab/agnir"
-    applied_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"
+    applied_revision: "f59a83754346982170142a355a01c94050ddf3a5"

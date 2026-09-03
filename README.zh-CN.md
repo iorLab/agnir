@@ -28,7 +28,7 @@ Agnir 是一个**由 Project 自己拥有的持久连续性协议（project-owne
 
 **不需要再给 Agent 任何 Agnir bootstrap 提示词。** 给 Agent Project 访问权限，然后直接描述真正要做的任务即可。
 
-某些 execution surface 需要一个**一次性的持久 Project locator**，fresh context 才能进入 Project 自己的 activation route。安装或升级时，Agnir Skill 必须在能力和权限允许时配置它；否则给用户一个**可直接复制的 handoff**。它必须把 surface activation separately from repository activation 进行报告，不能在必需的 execution-surface configuration 仍待完成时声称 full activation 已通过。这属于 execution-surface integration，不属于 Agnir Core，也不是 Project memory。
+某些 execution surface 需要一个**一次性的持久 Project locator**，fresh context 才能进入 Project 自己的 activation route。安装或升级时，Agnir Skill 必须在能力和权限允许时配置它；否则给用户一个**可直接复制的 handoff**。它必须把 surface activation 与 repository activation 分开报告，不能在必要的 **execution-surface configuration** 仍待完成时声称 full activation 已通过。这属于 execution-surface integration，不属于 Agnir Core，也不是 Project memory。
 
 安装、迁移、升级或 repair 时，Agent 应把根目录 [`SKILL.md`](SKILL.md) 作为 canonical procedure。用户不需要携带 Agnir 的内部 checklist。
 
@@ -42,7 +42,7 @@ Project root
 → selected durable continuity
 ```
 
-`latest stable` 指实际发布的稳定 tag/release，而不是移动中的 `main` 或 prerelease。在本次 RC 周期中，正式发布的 `v0.1.1` 仍是 latest stable，直到最终 `v0.2.0` 被明确发布。compatible operational upgrade 要保留 Project identity 和 durable continuity；Core/profile compatibility line 从 `0.1` 变成 `0.2` 时必须执行显式 migration，不能静默改写。
+`latest stable` 永远指实际发布的 non-prerelease tag/release，而不是移动中的 `main`、临时 release branch、RC 或未打 tag 的 commit。repository `v0.2.0` 只有在 immutable stable tag 和 Release 实际存在后，才作为 Core `0.2` / `repository-filesystem/0.2` 的稳定 product release 进入 stable-upgrade resolution。
 
 ## Agnir Project Instructions
 
@@ -79,9 +79,7 @@ Project/
 
 execution-surface configuration 不是 Project 文件，也不属于这棵 Project-owned tree。如果某个 surface 需要一次性持久设置——例如 ChatGPT Project Instructions——Skill 应**仅追加 Project locator**（或让用户追加），并保留无关的 surface instructions。**Execution-surface bootstrap** 只指向 Project；Project 自己的 `AGENTS.md → README → AGNIR.yaml` route 仍然 canonical。
 
-reference layout 通常至少记录一条 initialization Evidence。`AGNIR.yaml` locator 是 authoritative，因此 `.agnir/` 是该 profile 推荐的 colocated layout，而不是通用 Agnir Core 强制要求。
-
-Agnir 增加的是 continuity metadata 与 durable Project truth；它**不会**复制 Project、要求保存 raw chat transcript，也不会让 Git/GitHub 成为 Agnir Core 依赖。
+`AGNIR.yaml` locator 是 authoritative；上面的 `.agnir/` 是该 profile 推荐的 colocated layout，而不是通用 Agnir Core 强制要求。
 
 ## 架构图
 
@@ -125,7 +123,7 @@ flowchart TB
 
 `SKILL.md` 是 Agent-facing packaging layer；`AGENTS.md → README` 是 Agent-operable repository activation convention。Execution-surface bootstrap 是独立 adapter concern：surface 无法自动抵达 Project 时，只保存进入这条 route 所需的最小持久 locator 信息。它们都不是 Agnir Core dependency。
 
-Core `0.2` 引入显式 **Continuity Lineage**，但不会把 Git 或 branch name 变成 Core 概念。logical lineage 在 Project scope 内持久；VCS ref/worktree 可以选择或 bind lineage；commit SHA 可以充当 checkpoint receipt。这些语义彼此分离：
+Core `0.2` 引入显式 **Continuity Lineage**，但不会把 Git 或 branch name 变成 Core 概念：
 
 ```text
 Project identity
@@ -137,7 +135,7 @@ Project identity
                └── checkpoints / receipts
 ```
 
-在 VCS-backed Project 中，branch/ref/worktree 是 selector/binding，**不会自动等于 lineage identity**。Agnir-controlled 新 lineage fork 必须把新的 logical identity、selector binding 和 coherent inherited/reconciled continuity 一起 publication。显式 rename/rebind 可以保留 lineage identity；外部 ambiguous copy 必须失败/repair，不能猜。
+在 VCS-backed Project 中，branch/ref/worktree 是 selector/binding，**不会自动等于 lineage identity**。commit SHA 可以是 checkpoint receipt，但不是 lineage identity。Agnir-aware lineage fork、rename/rebind 与 integration 都必须保留这些区别。
 
 ### Integration publication
 
@@ -152,20 +150,20 @@ capture target + source receipts
 → fresh-resolve target 与 source
 ```
 
-source State/Next Actions/Decisions/Evidence 都只是 reconciliation input，永远不会因为 Project code 被合入就自动变成 target truth。
+source State/Next Actions/Decisions/Evidence 都只是 reconciliation input，永远不会自动变成 target truth。
 
 ## Skill packaging boundary
 
 Agnir 刻意把用户意图和 Agent procedure 分开：
 
 - **用户请求**保持简短：安装、升级或继续真正的任务。
-- **Agent procedure** 位于根目录 `SKILL.md`，负责 install / initialize / migration / upgrade / resume / checkpoint / commit / push / repair。
+- **Agent procedure** 位于根目录 `SKILL.md`，负责 install / initialize / migration / upgrade / resume / checkpoint / commit / push / integration / repair。
 
-Skill 是 distribution 和 operational entry surface，不改变 Agnir Core semantics。初始化后，目标 Project 通过自己的 `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route 自描述；正常后续工作不需要反复打开 Skill 来提醒 Agent Agnir 存在。
+Skill 是 distribution 和 operational entry surface，不改变 Agnir Core semantics。初始化后，目标 Project 通过自己的 `AGENTS.md` → README → `AGNIR.yaml` activation/discovery route 自描述。
 
-当 execution surface 本身需要 persistent configuration 才能抵达 Project 时，Skill 把它当成一次性 surface handoff：保留无关 surface instructions，只写 locator，并把 surface activation 与 repository activation 分开报告，而不是在 handoff 尚未配置时假装 fresh context 已经 ready。
+当 execution surface 本身需要 persistent configuration 才能抵达 Project 时，Skill 把它当成一次性 surface handoff：保留无关 surface instructions，只写 locator，并把 surface activation 与 repository activation 分开报告。
 
-对于发布稳定版的 install/upgrade 请求，Skill 解析实际发布的 stable release。只有 Principal 明确授权 RC/prerelease target 时，才可按照 candidate 的 migration/install procedure 使用 Core/profile `0.2`；RC 不能让 `latest stable` 指向 prerelease。
+对于 stable install/upgrade 请求，Skill 解析实际发布的 stable release。Principal 仍可显式授权 prerelease target，但 prerelease 不能静默替代 stable resolution。
 
 ## 连续性流程
 
@@ -196,25 +194,26 @@ Agnir 不负责流程中间的真正 Project 工作。它让 continuity 持久�
 
 Core/profile compatibility line 是显式 contract：
 
-- Core `0.1` + `repository-filesystem/0.1` 仍是正式发布稳定版 `v0.1.1` 的 compatibility line。
-- Core `0.2` + `repository-filesystem/0.2` 是 `v0.2.0-rc.1` 正在验证的 compatibility candidate。
+- 已发布 `v0.1.1` 使用 Core `0.1` + `repository-filesystem/0.1`；
+- repository `v0.2.0` 使用 stable Core `0.2` + `repository-filesystem/0.2`。
 
-一个 `0.1` Project 原本的单一隐式 continuity line 可以迁移成恰好一个初始/default `0.2` logical lineage。Migration 要保留 `project.identity`、durable continuity 和适用的 memory locators；不能把 compatibility change 静默当成 operational upgrade。详见 [`spec/CORE_0_1_TO_0_2_MIGRATION.md`](spec/CORE_0_1_TO_0_2_MIGRATION.md)。
+一个 `0.1` Project 原本的单一隐式 continuity line 要迁移成恰好一个初始/default `0.2` logical lineage。Migration 要保留 `project.identity`、durable continuity 和适用的 memory locators；不能把 compatibility change 静默当成 operational upgrade。详见 [`spec/CORE_0_1_TO_0_2_MIGRATION.md`](spec/CORE_0_1_TO_0_2_MIGRATION.md)。
+
+Core/profile `0.1` contract 与 conformance 仍保留在仓库中，作为 compatibility 和 migration surface。
 
 ## Active line 与 release status
 
-仓库正在准备 `v0.2.0-rc.1`。release branch 上，Agnir 自身已经 self-host Core `0.2` / `repository-filesystem/0.2`；candidate 的 logical lineage 与其 VCS selector binding 是两个不同概念。
+当前 active protocol line 是 Core `0.2` + `repository-filesystem/0.2`。repository SemVer `0.2.0` 在 immutable `v0.2.0` non-prerelease Release 实际发布后，成为这条 line 的 stable product release。
 
-latest published stable 仍是 immutable `v0.1.1`，精确 revision 为 `e9712357ab590e5c1e5357b3cf3219d07d789aff`，直到 final `v0.2.0` 真正发布。RC 是 prerelease，绝不能被静默当成 `latest stable`。
+release branch 使用自己的 logical lineage 与 selector binding；authoritative `main` 使用 `urn:agnir:lineage:authoritative`。这些 lineage identity 都不等于 branch name。
 
-版本层保持分离：
+版本层必须保持区分：
 
-- repository candidate：`0.2.0-rc.1`；
-- Core compatibility candidate：`0.2`；
-- repository/filesystem profile candidate：`repository-filesystem/0.2`；
-- latest published stable repository release：`0.1.1`。
+- repository release：`0.2.0`；
+- Core compatibility：`0.2`；
+- repository/filesystem profile：`repository-filesystem/0.2`。
 
-[`RELEASE.md`](RELEASE.md) 记录 RC publication gate 与 immutable stable baseline。
+[`RELEASE.md`](RELEASE.md) 记录 stable publication contract 与 release evidence。已发布 tag 按 Project policy 必须保持 immutable。
 
 ## 仓库结构
 
@@ -222,31 +221,33 @@ latest published stable 仍是 immutable `v0.1.1`，精确 revision 为 `e971235
 agnir/
 ├── spec/                              # protocol contracts 与 migration
 │   ├── AGNIR_CORE.md                  # Core 0.1 compatibility contract
-│   ├── AGNIR_CORE_0_2.md              # Core 0.2 RC normative contract
+│   ├── AGNIR_CORE_0_2.md              # stable Core 0.2 normative contract
 │   ├── AGNIR_DISCOVERY.md             # discovery / Locator Chain / failures
 │   └── CORE_0_1_TO_0_2_MIGRATION.md   # 显式 compatibility migration
 ├── profiles/
 │   ├── REPOSITORY_FILESYSTEM.md       # repository-filesystem/0.1
-│   ├── REPOSITORY_FILESYSTEM_0_2.md   # repository-filesystem/0.2 RC profile
+│   ├── REPOSITORY_FILESYSTEM_0_2.md   # stable repository-filesystem/0.2
 │   └── VCS_BRANCH_CONTINUITY.md       # VCS mapping/extension pressure
 ├── schemas/                           # 0.1 + 0.2 manifest schemas
 ├── conformance/
-│   ├── check_agnir_0_1.py             # stable 0.1 self-host/regression helpers
-│   ├── check_agnir_0_2_rc.py          # RC Core/profile 0.2 self-host gate
+│   ├── check_agnir_0_1.py             # Core/profile 0.1 compatibility helpers
+│   ├── check_agnir_0_2.py             # stable Core/profile 0.2 self-host gate
+│   ├── check_agnir_0_2_rc.py          # 已发布 RC 的 audit/reference gate
 │   ├── activation_reference.py        # AGENTS → README activation resolver
 │   ├── checkpoint_reference.py        # coherent/no-op/conflict checkpoint model
-│   ├── test_skill_package.py          # Skill / user-UX / handoff pressure
+│   ├── test_skill_package.py          # Skill / user UX / handoff pressure
+│   ├── test_stable_release_gates.py   # stable package/install/migration pressure
 │   └── test_*.py                      # backend、lineage、migration、integration pressure
-├── .agnir/                            # 本 Project canonical durable continuity
-├── history/                           # historical predecessor material
+├── .agnir/                            # 本 Project 的 canonical durable continuity
+├── history/                           # predecessor 历史材料
 ├── .github/                           # CI workflows
 ├── SKILL.md                           # canonical Agent-facing procedure
 ├── AGENTS.md                          # 指向 README Project instructions 的 locator
 ├── AGNIR.yaml                         # selected Project/lineage discovery anchor
 ├── README.md
 ├── README.zh-CN.md
-├── REPOSITORY_TREE.md                 # exhaustive tracked-file responsibility map
-├── RELEASE.md                         # release/RC publication contract
+├── REPOSITORY_TREE.md                 # 完整 tracked-file responsibility map
+├── RELEASE.md                         # release publication contract/evidence
 └── VERSION                            # repository SemVer
 ```
 
@@ -254,20 +255,12 @@ agnir/
 
 ## Core memory semantics
 
-Agnir 要求 selected continuity 的 Current State、Next Actions、Decisions、Evidence / Checkpoints 可持久恢复。fresh compatible Executor 必须能在没有 predecessor-private conversation context 的情况下恢复继续 Project 所需的 truth。
+Agnir 要求 selected continuity 的 Current State、Next Actions、Decisions 与 Evidence / Checkpoints 可被 durable recovery。fresh compatible Executor 必须无需 predecessor-private conversational context 就能恢复继续 Project 所需 truth。
 
 ## 与 Svif 的关系
 
-Svif 是独立的 **Project orchestration product**，仓库为 `iorLab/svif`。它把 Agnir 作为 founding Continuity Provider，但 Agnir 可以独立使用。Svif 也完成了第一个真实 Core `0.2` consumer validation：显式 migration、两个独立 lineages、staged target reconciliation/publication，以及 source 独立 resume。
+Agnir 与 Svif 是两个独立产品。Agnir 负责 durable Project continuity semantics；Svif 可以通过 Continuity Provider 或 adapter 使用 Agnir，但 Agnir 不依赖 Svif。
 
-## 文档同步规则
+## Scope
 
-`README.md` 与 `README.zh-CN.md` 是并行入口。layer model、Skill/install boundary、activation path、discovery path、durable-memory semantics、Project boundary、execution-surface handoff、lineage selection/integration 或 continuity flow 变化时，两个语言版本必须在同一 change set 中更新。
-
-Architecture Diagram 之前刻意只保留简短的 Project identity/name 说明、用户的**从这里开始**、Agent 的 canonical **Agnir Project Instructions**，以及面向用户的 **Agnir 会给 Project 增加什么**。安装与升级 prompt 必须保持一句话；更深的 implementation/release 细节放在架构之后或专门文档。
-
-`REPOSITORY_TREE.md` 是 exhaustive structural map；它按 evidence directory responsibility 描述，而不是复制每一条 checkpoint Evidence 文件名。
-
-## Conformance
-
-release branch 对 RC self-host、stable `0.1` regression、Core `0.2` VCS/non-VCS/profile/binding/migration 以及 full suite 运行 exact-head CI。详见 [`.github/workflows/conformance.yml`](.github/workflows/conformance.yml)。
+Agnir Core 对 Git、GitHub、repository、filesystem、ChatGPT、具体 Agent 产品和 storage engine 保持中立。repository/filesystem 行为、VCS mapping、execution-surface handoff 与 Agent Skill packaging 都属于围绕 Core contract 的 profile / adapter / distribution 层。

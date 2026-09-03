@@ -1,6 +1,6 @@
 # Repository Tree / 目录树
 
-本页是 `iorLab/agnir` 当前仓库的**仓库结构与职责地图**。README 中的仓库树用于快速导航；这里展开 active compatibility contracts、release-candidate contracts、profiles、conformance、Project continuity 与历史参考。
+本页是 `iorLab/agnir` 当前仓库的**仓库结构与职责地图**。README 中的仓库树用于快速导航；这里展开 active compatibility contracts、stable release contracts、profiles、conformance、Project continuity 与历史参考。
 
 维护规则：这里明确列出的文件 / 目录被新增、删除、移动或职责发生实质变化时，必须在同一个 change set 中同步更新本页；README 的简略仓库树若受影响，也必须一起更新。`.agnir/evidence/` 按**目录职责**记录，不逐个枚举 checkpoint Evidence 文件。
 
@@ -14,19 +14,19 @@ agnir/                                                    # Agnir Skill + protoc
 │
 ├── .github/
 │   └── workflows/
-│       └── conformance.yml                               # main + release branch CI; 0.1 regression + 0.2 RC/full suite
+│       └── conformance.yml                               # main/release CI + gated prerelease/stable publication jobs
 │
 ├── spec/                                                 # Core/discovery/migration contracts
 │   ├── AGNIR_CORE.md                                     # Core 0.1 compatibility contract
-│   ├── AGNIR_CORE_0_2.md                                 # Core 0.2 RC normative compatibility candidate
+│   ├── AGNIR_CORE_0_2.md                                 # stable Core 0.2 normative contract
 │   ├── AGNIR_DISCOVERY.md                                # cold-start discovery / Locator Chain / failure vocabulary
 │   ├── CORE_0_1_TO_0_2_MIGRATION.md                      # explicit Core/profile migration semantics
 │   └── CORE_0_2_DESIGN.md                                # lineage / selector / integration design rationale
 │
 ├── profiles/                                             # concrete discovery/storage/integration realization
 │   ├── REPOSITORY_FILESYSTEM.md                          # repository-filesystem/0.1 compatibility profile
-│   ├── REPOSITORY_FILESYSTEM_0_2.md                      # repository-filesystem/0.2 RC normative candidate
-│   └── VCS_BRANCH_CONTINUITY.md                          # VCS branch/ref/worktree mapping + integration extension pressure
+│   ├── REPOSITORY_FILESYSTEM_0_2.md                      # stable repository-filesystem/0.2 normative profile
+│   └── VCS_BRANCH_CONTINUITY.md                          # VCS branch/ref/worktree mapping + integration extension
 │
 ├── schemas/
 │   ├── agnir-manifest.schema.json                        # repository-filesystem/0.1 AGNIR.yaml schema
@@ -35,8 +35,9 @@ agnir/                                                    # Agnir Skill + protoc
 ├── conformance/                                          # executable compatibility, migration and release pressure
 │   ├── agnir-0.1.md                                      # Core/profile 0.1 compatibility baseline
 │   ├── agnir-0.2-plan.md                                 # Core 0.2 evidence/conformance plan and historical gate map
-│   ├── check_agnir_0_1.py                                # stable 0.1 self-host/regression helpers
-│   ├── check_agnir_0_2_rc.py                             # v0.2.0-rc.1 Core/profile 0.2 self-host/release gate
+│   ├── check_agnir_0_1.py                                # Core/profile 0.1 compatibility helpers
+│   ├── check_agnir_0_2.py                                # generic/stable Core/profile 0.2 self-host/release gate
+│   ├── check_agnir_0_2_rc.py                             # immutable-RC-era audit/reference self-host gate
 │   ├── activation_reference.py                           # AGENTS.md → README activation resolver
 │   ├── agents_merge_reference.py                         # non-destructive AGENTS merge/conflict reference
 │   ├── checkpoint_reference.py                           # no-op/coherent/stale-base checkpoint model
@@ -64,7 +65,8 @@ agnir/                                                    # Agnir Skill + protoc
 │   ├── test_core_0_2_migration.py                        # explicit/idempotent semantic migration
 │   ├── test_repository_filesystem_0_2.py                 # 0.2 discovery/schema compatibility
 │   ├── test_repository_filesystem_0_2_migration.py       # concrete migration/stale/no-op/fresh-discovery
-│   ├── test_rc_release_gates.py                          # exact v0.1.1 manifest anchor + fresh RC install/migration release gates
+│   ├── test_rc_release_gates.py                          # immutable RC + exact-v0.1.1 install/migration evidence
+│   ├── test_stable_release_gates.py                      # stable 0.2 package/status/binding compatibility gates
 │   ├── test_vcs_lineage_binding.py                       # fork/rebind/external mismatch binding pressure
 │   ├── test_vcs_branch_continuity.py                     # real worktree + staged target publication pressure
 │   ├── test_repository_filesystem_failures.py            # 0.1 discovery failures
@@ -83,9 +85,9 @@ agnir/                                                    # Agnir Skill + protoc
 ├── SKILL.md                                              # canonical Agent-facing install/migrate/upgrade/use/checkpoint/integrate/repair procedure
 ├── AGENTS.md                                             # Agent locator to README canonical Agnir Project Instructions
 ├── AGNIR.yaml                                            # current selected Project/lineage discovery record
-├── RELEASE.md                                            # current repository release/RC publication contract
+├── RELEASE.md                                            # current repository stable release publication contract/evidence
 ├── RELEASE_MILESTONES.md                                 # v0.2.0 / v1.0.0 milestone meaning
-├── VERSIONING.md                                         # repository SemVer vs Core/profile compatibility policy
+├── VERSIONING.md                                         # active repository SemVer vs Core/profile compatibility policy
 ├── V1_RELEASE_CRITERIA.md                                # v1.0.0 stability/compatibility gates
 ├── README.md                                             # English user/Agent entry point + architecture/continuity
 ├── README.zh-CN.md                                       # 简体中文 parallel entry point
@@ -95,18 +97,19 @@ agnir/                                                    # Agnir Skill + protoc
 
 ## 当前版本职责
 
-- **Published stable:** `v0.1.1` remains the latest stable repository release, with Core `0.1` and `repository-filesystem/0.1`. Its immutable tag target remains `e9712357ab590e5c1e5357b3cf3219d07d789aff`.
-- **Release candidate:** `release/v0.2.0-rc.1` uses repository SemVer `0.2.0-rc.1`, Core `0.2`, and `repository-filesystem/0.2` for RC self-host/evidence. The RC is not `latest stable`.
-- **Core 0.2 normative candidate:** `spec/AGNIR_CORE_0_2.md`.
-- **Profile 0.2 normative candidate:** `profiles/REPOSITORY_FILESYSTEM_0_2.md`.
+- **Repository stable line:** `0.2.0` publishes Core `0.2` + `repository-filesystem/0.2` when the immutable stable tag/Release is successfully created. Before publication, the preceding actually published stable release remains the stable-resolution target.
+- **Accepted prerelease evidence:** immutable `v0.2.0-rc.1` remains audit/release evidence and must not be moved or silently treated as stable.
+- **Core 0.2 normative contract:** `spec/AGNIR_CORE_0_2.md`.
+- **Profile 0.2 normative contract:** `profiles/REPOSITORY_FILESYSTEM_0_2.md`.
+- **Core/profile 0.1 compatibility:** `spec/AGNIR_CORE.md`, `profiles/REPOSITORY_FILESYSTEM.md`, 0.1 schema/reference/tests remain supported compatibility and migration surfaces.
 - **Migration contract:** `spec/CORE_0_1_TO_0_2_MIGRATION.md` plus semantic/concrete executable conformance.
-- **RC release gate:** `conformance/test_rc_release_gates.py` anchors the exact published `v0.1.1` manifest shape and verifies fresh Core `0.2` install plus explicit migration/fresh resume.
+- **Stable release gate:** `conformance/test_stable_release_gates.py` checks stable package/status/binding semantics; `conformance/test_rc_release_gates.py` retains exact published-v0.1.1 shape and fresh install/migration evidence.
 - **VCS mapping:** `profiles/VCS_BRANCH_CONTINUITY.md` and VCS reference/tests. A VCS selector is not automatically logical lineage identity; a commit SHA is a receipt, not identity.
 
-The former `_DRAFT` Core/profile files were development artifacts and are removed when the RC normative candidates become the active 0.2 contracts. Historical `.agnir/evidence/` and Git history may still mention those filenames because they accurately describe earlier development checkpoints.
+Historical `.agnir/evidence/` and Git history may mention earlier `_DRAFT` or RC filenames/status because those references describe the development/release-candidate checkpoints accurately.
 
 ## 如何使用这张树
 
 用户安装/升级时仍只需要 README 开头的简短提示；Agent 找到分发包后由根目录 `SKILL.md` 承担完整 procedure。已经初始化的 Project 正常使用时通过自己的 `AGENTS.md → README → AGNIR.yaml` route activation；只有明确的 install/upgrade/migration/repair intent 才需要 distribution procedure。
 
-本页不是第二套协议。**Core `0.1` 以 `spec/AGNIR_CORE.md` 为 compatibility contract；Core `0.2` RC 以 `spec/AGNIR_CORE_0_2.md` 为 normative candidate；repository-filesystem `0.1` 以 `profiles/REPOSITORY_FILESYSTEM.md` 为准；repository-filesystem `0.2` RC 以 `profiles/REPOSITORY_FILESYSTEM_0_2.md` 为准；机器可读 manifest 约束在 `schemas/`；Agent procedure 以 `SKILL.md` 为准；`history/` 只保存 predecessor lineage。**
+本页不是第二套协议。**Core `0.1` 以 `spec/AGNIR_CORE.md` 为 compatibility contract；Core `0.2` 以 `spec/AGNIR_CORE_0_2.md` 为 stable normative contract；repository-filesystem `0.1` 以 `profiles/REPOSITORY_FILESYSTEM.md` 为准；repository-filesystem `0.2` 以 `profiles/REPOSITORY_FILESYSTEM_0_2.md` 为 stable normative profile；机器可读 manifest 约束在 `schemas/`；Agent procedure 以 `SKILL.md` 为准；`history/` 只保存 predecessor lineage。**
