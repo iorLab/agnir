@@ -1,6 +1,6 @@
-# Agnir 0.2.0-rc.1 Release Candidate
+# Agnir 0.2.0 Stable Release
 
-**Repository version:** `0.2.0-rc.1`
+**Repository version:** `0.2.0`
 
 **Core compatibility line:** `0.2`
 
@@ -8,104 +8,98 @@
 
 ## Status
 
-Agnir `v0.2.0-rc.1` is formally published as a **prerelease**. Its immutable lightweight tag resolves directly to exact verified revision `50a8cd565954e7e8055b8b628e2d620ac7357bab`.
+This source tree is the stable `v0.2.0` release line. Publication is complete only when an immutable `v0.2.0` tag resolves to the exact verified publication candidate and a non-draft, non-prerelease GitHub Release exists for that tag.
 
-GitHub Release:
+Before that publication succeeds, the latest published stable release remains `v0.1.1` at `e9712357ab590e5c1e5357b3cf3219d07d789aff`. After successful stable publication, `v0.2.0` must become GitHub `releases/latest` and the tag must remain immutable.
 
-- id: `381532232`;
-- title: `Agnir v0.2.0-rc.1`;
-- tag: `v0.2.0-rc.1`;
-- `prerelease`: true;
-- `draft`: false;
-- published at: `2026-09-02T19:50:04Z`;
-- publication/conformance workflow: `33675638723`.
+Repository SemVer promotion from `0.2.0-rc.1` to `0.2.0` does not introduce another Core/profile compatibility change. Core remains `0.2`; the profile remains `repository-filesystem/0.2`.
 
-The latest published **stable** release remains `v0.1.1`, exact tag target `e9712357ab590e5c1e5357b3cf3219d07d789aff`, GitHub Release id `380414987`. GitHub `releases/latest` remained `v0.1.1` after RC publication, so the RC does not change `latest stable` upgrade resolution.
+## What v0.2.0 stabilizes
 
-Authoritative `main` has now accepted and reconciled the published RC Project/package line at exact revision `cd0427d26dddfabae768bcd76b78dc8d042151c7`. This does **not** make the RC a stable release; stable `v0.2.0` remains a separate publication decision.
+Repository `v0.2.0` publishes Continuity Lineages as the accepted Core `0.2` abstraction:
 
-## Version model
-
-Agnir keeps distinct version layers:
-
-- repository SemVer: `0.2.0-rc.1`;
-- Core compatibility: `0.2`;
-- repository/filesystem compatibility: `repository-filesystem/0.2`;
-- VCS/adapter extension identifiers remain separately versioned where applicable.
-
-Core/profile `0.2` is a compatibility-line change from `0.1`, not a compatible operational patch. A later repository SemVer promotion from `0.2.0-rc.1` to stable `0.2.0` does not itself require another Core/profile compatibility change.
-
-## Core 0.2 contract
-
-Core `0.2` introduces **Continuity Lineages** as an explicit Core abstraction while preserving Project-owned durable continuity:
-
-- one Project may own multiple independently advancing logical lineages;
-- Project identity != logical lineage identity;
-- logical lineage identity != backend selector/locator or revision receipt;
-- ordinary lineage-local work resolves one selected lineage without sibling guessing;
+- one Project may own multiple independently advancing logical Continuity Lineages;
+- Project identity and logical lineage identity are distinct;
+- logical lineage identity is distinct from backend selector/locator and revision/checkpoint receipt;
+- ordinary lineage-local work resolves exactly one selected lineage without sibling guessing;
 - checkpoints are lineage-local by default;
-- integration reconciles target truth rather than copying source continuity;
-- an Agnir-controlled target publication publishes integrated Project state + reconciled target continuity coherently;
-- stale target or relevant source generations invalidate staged integration candidates.
+- source continuity is integration input, not automatic target truth;
+- Agnir-controlled integration stages without target advancement, reconciles target continuity, and publishes integrated Project state + reconciled target continuity coherently;
+- stale source or target generations invalidate staged candidates;
+- Core remains storage-, platform-, VCS-, Agent-, Skill-, and execution-surface-neutral.
 
-Normative RC contracts:
+Stable normative contracts:
 
 - `spec/AGNIR_CORE_0_2.md`;
 - `profiles/REPOSITORY_FILESYSTEM_0_2.md`;
 - `spec/CORE_0_1_TO_0_2_MIGRATION.md`;
 - `schemas/agnir-manifest-0.2.schema.json`.
 
-Core/profile `0.1` artifacts remain available as supported compatibility/regression surfaces.
+Core/profile `0.1` artifacts remain present as supported compatibility/regression surfaces for existing published `v0.1.1` Projects and explicit migration testing.
 
-## Compatibility and migration boundary
+## Migration from v0.1.1 / Core 0.1
 
-A Core/profile `0.1` Project must not be silently rewritten as `0.2` during an ordinary compatible upgrade. Explicit `0.1` → `0.2` migration preserves Project identity and material durable truth, establishes exactly one initial logical lineage for the existing implicit continuity line, resolves backend selector binding separately when applicable, and verifies fresh Core/profile `0.2` discovery.
+A Core/profile `0.1` Project must not be silently rewritten to `0.2` by an ordinary compatible operational upgrade. The compatibility change requires explicit migration.
 
-Repeated identical migration is a no-op; silent rebind to a different initial lineage is a conflict. Stale source state must not be overwritten.
+A conforming `0.1` → `0.2` migration:
 
-## Self-host and operational provenance
+1. activates and captures the existing Project identity, durable continuity, memory locators, and relevant backend receipt;
+2. preserves Project identity and material State / Next Actions / Decisions / Evidence;
+3. establishes exactly one initial logical Continuity Lineage for the former implicit continuity line;
+4. resolves VCS/backend selector binding separately from logical lineage identity where applicable;
+5. publishes the full Core/profile `0.2` candidate coherently;
+6. rejects stale source state rather than overwriting newer truth;
+7. fresh-resolves Core/profile `0.2`, the same Project identity, and intended lineage;
+8. is idempotent for the same resulting lineage and fails conflicting silent rebinds.
 
-The published RC release lineage uses logical lineage `urn:agnir:lineage:v0.2.0-rc.1` bound separately to `refs/heads/release/v0.2.0-rc.1`. During RC construction its applied operational-package baseline was immutable revision `bee78b2c9bb8c5ce5916d08691019dcde939b813`; this avoided impossible self-referential tag-SHA provenance.
+The concrete release gates anchor the exact published `v0.1.1` manifest blob `0d26a9ffb947f551af335963ef753e7c0758c505` and preserve durable memory bytes across migration.
 
-Authoritative main now self-hosts Core/profile `0.2` on logical lineage `urn:agnir:lineage:authoritative`, separately bound to `refs/heads/main`, and can truthfully record the already-published immutable operational package `0.2.0-rc.1` at tag target `50a8cd565954e7e8055b8b628e2d620ac7357bab`.
+## Activation and Skill boundary
 
-Project identity remains `urn:agnir:project:agnir-core`; declared State/Next/Decisions/Evidence locators remain unchanged.
+Root `SKILL.md` is the canonical Agent-facing install / initialize / migrate / upgrade / resume / checkpoint / commit / push / lineage-integration / repair procedure. User-facing install and stable-upgrade requests remain short.
 
-## Release and main-acceptance evidence
+An initialized repository Project persists activation through `AGENTS.md` → README `Agnir Project Instructions` → `AGNIR.yaml` → selected durable continuity. Execution-surface bootstrap remains locator-only adapter behavior outside Agnir Core and outside Project-owned durable memory.
 
-Major successful receipts:
+`latest stable` resolution must use an actually published stable release. A moving branch, RC, or untagged commit must not be silently substituted.
 
-- RC self-host migration `a72654060c21600e1b7a4345634e09f9222ca4fb`, run `33654332505`;
-- synchronized RC Skill/contracts `1ccede8d0f31565231dc05495a9c519ef5a45bc2`, run `33673748474`;
-- fresh install + exact published-v0.1.1 migration fixture `b6fde55e525f4a077a070e1cf181304a3dfd7a9d`, run `33673869587`;
-- operational package baseline `bee78b2c9bb8c5ce5916d08691019dcde939b813`, run `33673892651`;
-- real repository migration from immutable published `v0.1.1`, validation head `2219c5c8c37f1d62d3a839cc321e67d564b36f97`, run `33674731595`;
-- final prepublication candidate `79f8eb071d0b29bc4505d3448550c55619bd7cc9`, run `33675222129`;
-- exact published tag target `50a8cd565954e7e8055b8b628e2d620ac7357bab`, publication/conformance run `33675638723`;
-- post-publication release checkpoint `df745e2486b1d3f5ab2b07e701a9a6f91451a056`, run `33676002813`;
-- release hygiene checkpoint `866604c4532003538fd6a0b565be9c1ef1c8a034`, run `33676171048`;
-- reconciled main candidate `cd0427d26dddfabae768bcd76b78dc8d042151c7`, tree `8c931fe53c09b019fd7bfd964c2ebc5d2b02dcd0`;
-- candidate-tree PR run `33705224034`, success;
-- authoritative-main run `33705292185`, success.
+## Release evidence
 
-`conformance/test_rc_release_gates.py` anchors the exact published `v0.1.1` manifest blob `0d26a9ffb947f551af335963ef753e7c0758c505`, proves a genuinely fresh Core `0.2` installation, and proves explicit migration/fresh resume while preserving Project identity and durable memory bytes.
+The `v0.2.0` milestone requires Core `0.2` design, migration, dual-backend conformance, and real-Project validation. The accepted evidence includes:
 
-Detailed durable evidence includes:
+- Core `0.2` design and executable lineage-selection/integration semantics;
+- non-VCS transactional SQLite lineage conformance;
+- VCS selector/binding, fork/rebind and staged-integration conformance;
+- semantic and repository/filesystem concrete `0.1` → `0.2` migration;
+- genuinely fresh Core `0.2` installation and cold start;
+- exact published-v0.1.1 manifest-shape migration/fresh resume;
+- a real repository migration starting directly from immutable `v0.1.1`;
+- real consumer/Project evidence from Svif during Core `0.2` validation;
+- immutable `v0.2.0-rc.1` publication at `50a8cd565954e7e8055b8b628e2d620ac7357bab`, Release id `381532232`;
+- safe target-first reconciliation of the accepted RC into authoritative main at `cd0427d26dddfabae768bcd76b78dc8d042151c7`;
+- authoritative-main Core `0.2` verification and post-acceptance checkpoint run `33705538455`.
 
-- `.agnir/evidence/2026-09-03-v0.2.0-rc.1-release-gates.md`;
-- `.agnir/evidence/2026-09-03-v0.2.0-rc.1-publication-mechanism.md`;
-- `.agnir/evidence/2026-09-03-v0.2.0-rc.1-publication-result.md`;
-- `.agnir/evidence/2026-09-03-v0.2.0-rc.1-main-reconciliation.md`;
-- `.agnir/evidence/2026-09-03-v0.2.0-rc.1-main-integration-completed.md`.
+Detailed durable release-readiness evidence is recorded under `.agnir/evidence/`, including `2026-09-03-v0.2.0-stable-candidate.md`.
 
-## Publication and main acceptance result
+## Stable publication gate
 
-**RC publication passed.** Workflow `33675638723` ran complete conformance on exact revision `50a8cd...`; only after success did its dependent publication job create/verify tag `v0.2.0-rc.1` and Release id `381532232` as prerelease/non-draft.
+Stable publication must use an exact verified candidate and must not be triggered by an ordinary branch push.
 
-**Authoritative-main acceptance passed.** The staged target-first two-parent candidate `cd0427d...` was validated before main moved. Fresh target/source reads remained unchanged, then main advanced once directly to the exact candidate. Main push run `33705292185` passed the complete Core/profile/VCS/migration/full-suite surface; the prerelease publication job was skipped.
+Required publication checks:
 
-## Known limitations and next boundary
+1. exact release ref is `refs/heads/release/v0.2.0`;
+2. repository `VERSION` is `0.2.0`;
+3. Core/profile declarations are `0.2` / `repository-filesystem/0.2`;
+4. stable normative contract/status markers are present;
+5. fresh install and exact published-v0.1.1 migration/fresh-resume gates pass;
+6. complete conformance suite passes on the exact publication candidate;
+7. tag `v0.2.0` is created only if absent, or must already point to the same exact SHA;
+8. GitHub Release is created/verified with `prerelease=false` and `draft=false`;
+9. GitHub `releases/latest` resolves to `v0.2.0` after publication.
+
+The final publication candidate may record an already verified immutable stable operational-package baseline as `extensions.agnir/operations.applied_revision`. It must not attempt impossible self-referential provenance by embedding its own future SHA into the content that determines that SHA.
+
+## Known limitations
 
 Real mount-boundary behavior remains explicitly unproven because no genuine mount-capable conformance environment has been supplied. Execution-surface persistence/configuration remains adapter behavior outside Core.
 
-No release-blocking defect is currently known from the completed RC publication, real migration, Svif consumer, staged integration, and authoritative-main verification gates. Stable `v0.2.0` readiness must nevertheless be evaluated explicitly against the release/milestone/versioning contracts before constructing a stable candidate; the RC's existence alone does not make stable publication automatic.
+These limitations remain documented; neither is a declared `v0.2.0` milestone blocker. Broader backend/surface evidence and long-term compatibility commitments continue toward `v1.0.0` under `V1_RELEASE_CRITERIA.md`.

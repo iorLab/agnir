@@ -1,32 +1,23 @@
 # Agnir Next Actions
 
-Agnir `v0.2.0-rc.1` is published as an immutable prerelease and its accepted Project/package changes are now safely reconciled into authoritative `main` at `cd0427d26dddfabae768bcd76b78dc8d042151c7`. Main self-hosts Core `0.2` / `repository-filesystem/0.2` on logical lineage `urn:agnir:lineage:authoritative`, separately bound to `refs/heads/main`. Stable `latest` remains `v0.1.1`.
+Agnir stable candidate branch `release/v0.2.0` self-hosts Core `0.2` / `repository-filesystem/0.2` as logical lineage `urn:agnir:lineage:v0.2.0`, separately bound to `refs/heads/release/v0.2.0`. It is based on authoritative main `1af33e0cc470107aadaeb5d4d2f0f4570d81ee1d`. Published `v0.2.0-rc.1` remains immutable; `v0.1.1` remains latest stable until stable publication actually succeeds.
 
-1. **Evaluate stable `v0.2.0` readiness from current authoritative main.** Re-read `RELEASE.md`, `RELEASE_MILESTONES.md`, `VERSIONING.md`, migration contracts, RC/main acceptance Evidence, and all known limitations. Separate release-blocking defects from non-blocking evidence gaps; do not infer stable readiness solely from the existence of the RC.
-2. **If the stable gate is satisfied, construct a temporary exact `v0.2.0` stable-candidate lineage from current main.** Change repository SemVer/release metadata deliberately from `0.2.0-rc.1` to `0.2.0` without changing Core/profile compatibility lines, preserve Project identity and authoritative-main continuity semantics, and keep `main` unchanged while candidate validation runs.
-3. **Run stable candidate conformance.** Require Core/profile `0.2` self-host, Core/profile `0.1` regression coverage, VCS/lineage/profile/migration pressure, fresh stable installation, published-v0.1.1 migration/fresh resume, and full suite on the exact candidate tree. Any release-blocking defect means repair and another candidate; never move `v0.2.0-rc.1`.
-4. **Publish stable `v0.2.0` only from an exact verified candidate.** Create an immutable stable tag/release, verify `prerelease=false`, and verify GitHub `releases/latest` resolves to `v0.2.0` only after publication succeeds.
-5. **Reconcile the published stable result back into authoritative main if the stable candidate is not already the exact main tree.** Use the same staged target-publication discipline and preserve authoritative lineage identity/binding.
-6. **Retire temporary release/validation/integration refs when a safe delete-ref path is available.** Preserve immutable tags, commits, workflow runs, and durable Evidence; do not repurpose temporary refs.
-7. Continue broader real-Project/execution-surface evidence toward `v1.0.0` and `V1_RELEASE_CRITERIA.md`.
-
-## Current verified receipts
-
-- authoritative-main integration: `cd0427d26dddfabae768bcd76b78dc8d042151c7`, tree `8c931fe53c09b019fd7bfd964c2ebc5d2b02dcd0`;
-- candidate-tree PR run: `33705224034` success;
-- authoritative-main push run: `33705292185` success;
-- PR #9 auto-recognized merged through ancestry at the exact candidate;
-- immutable RC tag: `v0.2.0-rc.1` -> `50a8cd565954e7e8055b8b628e2d620ac7357bab`;
-- RC Release id: `381532232`;
-- stable latest remains `v0.1.1` Release id `380414987`.
+1. **Complete the stable package promotion.** Promote Core/profile status from RC candidate to stable normative `0.2`; update bilingual README, RELEASE, VERSIONING and repository-tree status; add generic Core `0.2` self-host and stable release gates; keep Core/profile `0.1` compatibility artifacts and regression coverage.
+2. **Pass exact-head stable-package CI.** Require Core `0.2` self-host, stable Core/profile `0.1` regression, VCS/lineage/profile/migration pressure, fresh Core `0.2` install, exact published-v0.1.1 migration/fresh resume, stable-package metadata checks, and full suite.
+3. **Establish an immutable verified stable operational-package baseline.** After the stable package is green, use that exact revision as `agnir/operations.applied_revision` for repository release `0.2.0`; do not use the final publication commit's self-referential SHA.
+4. **Construct the exact publication candidate.** Record stable package provenance and publication-armed continuity without changing Core/profile semantics; run exact-head conformance again.
+5. **Publish immutable `v0.2.0` only after the publication candidate is green.** The publication job must be gated on the exact release ref and exact commit message, fail closed if a conflicting tag already exists, create/verify a non-prerelease/non-draft Release, and verify GitHub `releases/latest` resolves to `v0.2.0`.
+6. **Record post-publication facts on the moving release branch without moving the stable tag.** Capture tag target, Release id, publication run, and latest-stable verification in State/Evidence.
+7. **Reconcile published stable results back into authoritative main.** If the stable release branch tree differs from main, use the same target-first staged reconciliation: capture main/source receipts, stage candidate without main advancement, reconcile authoritative-main continuity, validate exact tree, stale-check refs, then advance main once coherently.
+8. **Retire temporary release/validation/integration refs when a safe delete-ref path is available.** Never delete or move immutable release tags.
+9. Continue broader evidence toward `v1.0.0` separately; stable `v0.2.0` does not imply the `v1.0.0` compatibility commitment.
 
 ## Invariants
 
 - Durable continuity belongs to the Project.
 - Project identity != logical lineage identity != selector/revision receipt.
-- Source continuity is reconciliation input, not target truth.
-- Compatibility-line changes require explicit migration; repository SemVer promotion alone does not change Core/profile lines.
-- Target publication is coherent and stale candidates fail.
+- Repository SemVer promotion `0.2.0-rc.1` → `0.2.0` does not change Core/profile compatibility lines.
+- Core/profile `0.1` → `0.2` remains explicit migration, not silent upgrade.
 - Published tags are immutable.
-- RC/prerelease is not `latest stable`.
-- `main` remains the only intended long-lived authoritative branch.
+- Target publication is coherent and stale candidates fail.
+- A prerelease is not latest stable; latest stable changes only after an actual stable Release is published.
