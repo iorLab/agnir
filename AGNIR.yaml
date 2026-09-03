@@ -1,11 +1,14 @@
 agnir:
-  version: "0.1"
-  discovery_profile: "repository-filesystem/0.1"
+  version: "0.2"
+  discovery_profile: "repository-filesystem/0.2"
 
 project:
   identity: "urn:agnir:project:agnir-core"
   profiles:
     - generic
+
+continuity:
+  lineage: "urn:agnir:lineage:authoritative"
 
 memory:
   state: ".agnir/state.md"
@@ -21,14 +24,25 @@ extensions:
     canonical: "iorLab/agnir"
     authoritative_ref: "main"
   agnir/vcs:
-    branch_continuity: "branch-local"
+    branch_continuity: "lineage-bound"
     integration_reconciliation: "required"
-  agnir/experiments:
-    core_0_2_parallel_continuity: "real-consumer-validated"
-    core_0_2_spec: "spec/AGNIR_CORE_0_2_DRAFT.md"
-    core_0_2_release_phase: "pre-rc"
+    lineage_binding:
+      kind: "vcs-ref"
+      selector: "refs/heads/main"
+  agnir/release:
+    phase: "rc-accepted-main"
+    repository_version: "0.2.0-rc.1"
+    core_contract: "spec/AGNIR_CORE_0_2.md"
+    profile_contract: "profiles/REPOSITORY_FILESYSTEM_0_2.md"
+    baseline_main: "f0b2cbd5329adb6ac7309076d7ea09337bb057c5"
+    source_release_ref: "release/v0.2.0-rc.1"
+    source_release_revision: "866604c4532003538fd6a0b565be9c1ef1c8a034"
+    published_tag: "v0.2.0-rc.1"
+    published_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"
+    github_release_id: 381532232
+    publication_workflow_run: 33675638723
   agnir/operations:
     distribution: "agnir-agent-skill"
-    release: "0.1.1"
+    release: "0.2.0-rc.1"
     source: "iorLab/agnir"
-    applied_revision: "e9712357ab590e5c1e5357b3cf3219d07d789aff"
+    applied_revision: "50a8cd565954e7e8055b8b628e2d620ac7357bab"

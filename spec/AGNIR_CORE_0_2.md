@@ -1,6 +1,6 @@
-# Agnir Core 0.2 — Draft Normative Specification
+# Agnir Core 0.2 — Release Candidate Normative Specification
 
-**Status:** Experimental draft for the Core compatibility line `0.2`. This document is not yet a published compatibility commitment. Core `0.1` remains the stable normative line until the `0.2` release gates pass.
+**Status:** Normative compatibility candidate for repository `v0.2.0-rc.1`. This is the Core `0.2` contract under release-candidate verification; final stable publication remains gated by the RC install/migration/resume evidence.
 
 ## 1. Purpose
 
@@ -198,7 +198,7 @@ Profiles and adapters MAY expose more specific backend selector/binding/integrat
 
 ## 13. Backend neutrality
 
-Core `0.2` conformance requires evidence from materially different backend models. At minimum before publication:
+Core `0.2` conformance requires evidence from materially different backend models. At minimum before final stable publication:
 
 - one VCS-backed model MUST demonstrate branches/workspaces selecting/binding logical lineages without making VCS concepts Core requirements;
 - one non-VCS transactional model MUST demonstrate the same lineage invariants without Git branches, commits, worktrees, refs, or repository semantics.
@@ -228,4 +228,4 @@ Core `0.2` preserves the project-owned continuity principles, required memory se
 
 The breaking addition is that continuity is no longer assumed to have exactly one implicit Project-global line. Lineage selection, logical identity, selector/binding resolution, isolation, integration, and coherent target publication become explicit protocol semantics.
 
-A migration from Core `0.1` to `0.2` MAY represent an existing single continuity line as one initial/default lineage, but migration behavior must be specified and conformance-tested before Core `0.2` is published stable.
+Migration from Core `0.1` to `0.2` is specified in `spec/CORE_0_1_TO_0_2_MIGRATION.md` and executable conformance. An existing single continuity line becomes exactly one initial/default logical lineage while preserving Project identity and durable truth.

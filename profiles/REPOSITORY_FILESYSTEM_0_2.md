@@ -1,8 +1,8 @@
-# Agnir Repository/Filesystem Profile 0.2 — Draft
+# Agnir Repository/Filesystem Profile 0.2 — Release Candidate
 
 **Profile identifier:** `repository-filesystem/0.2`  
 **Core compatibility:** Agnir Core `0.2`  
-**Status:** Experimental; not a published compatibility commitment.
+**Status:** Normative compatibility candidate for repository `v0.2.0-rc.1`; final stable publication remains gated by RC verification.
 
 This profile extends the repository/filesystem discovery model so a selected Project root resolves one explicit logical Continuity Lineage.
 
@@ -77,7 +77,7 @@ A completed checkpoint MUST NOT silently mutate another logical lineage merely b
 
 A VCS-aware implementation MUST keep the selected VCS ref/worktree separate from `continuity.lineage`.
 
-Recommended experimental extension shape:
+Recommended extension shape:
 
 ```yaml
 extensions:
@@ -96,7 +96,7 @@ Semantics:
 - the selector MAY change through an explicit rebind/rename while the logical lineage identity remains the same;
 - a VCS revision/commit SHA is a checkpoint receipt and MUST NOT replace either field.
 
-The exact nested extension serialization remains experimental; the semantic distinction is normative for this draft profile.
+The exact nested extension serialization may continue to evolve independently; the semantic distinction between logical lineage identity and backend selector/binding is normative for this profile.
 
 ## 6. Agnir-aware branch/ref fork
 
@@ -115,6 +115,8 @@ Safe conceptual sequence:
 7. fresh-resolve the new selector and verify the new lineage identity.
 
 The adapter MUST NOT derive the new lineage identity from the commit SHA.
+
+When Agnir controls the fork, the new lineage identity, selector binding, and coherent inherited/reconciled continuity MUST become visible together; sequential ref-visible writes that temporarily expose copied source binding under the new selector are not a conforming fork publication path.
 
 ## 7. External branch creation and binding mismatch
 
@@ -181,9 +183,11 @@ A conforming migration MUST:
 - verify fresh `0.2` discovery;
 - be idempotent for the same resulting lineage identity/binding.
 
+The storage-neutral migration contract is `spec/CORE_0_1_TO_0_2_MIGRATION.md`; executable concrete migration pressure is part of repository conformance.
+
 ## 12. Conformance requirements
 
-Before publication, the profile must prove at least:
+Before final stable publication, the profile must prove at least:
 
 1. cold-start discovery returns Core `0.2`, profile `repository-filesystem/0.2`, one Project identity, and one logical lineage identity;
 2. selected missing/unresolvable memory fails explicitly;
