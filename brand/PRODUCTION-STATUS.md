@@ -77,12 +77,31 @@ The approved production masters remain unchanged through this derivative/QA pass
 
 During final QA, authoritative `main` advanced with Core 0.2 Parallel Continuity and the brand branch became stale by 88 commits. This was repaired before integration work continued.
 
-- authoritative main observed: `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`;
+- authoritative main observed during that reconciliation: `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`;
 - reverse-sync PR: `#8`, `main` → `brand/identity-system`;
 - brand merge commit: `b00e0d7c544e74d4b0245569450ecebb271461d5`;
-- post-sync comparison: **behind `main` = 0**.
+- post-sync comparison at that point: **behind `main` = 0**.
 
 The remaining branch diff is brand-local. Newer canonical `AGNIR.yaml`, Current State, Next Actions, Decisions, Core 0.2 contracts and release/repository metadata are no longer shadowed by the brand branch. See `.agnir/evidence/2026-09-03-brand-main-reconciliation.md`.
+
+## Repository-documentation status
+
+The new top-level `brand/` surface is synchronized into:
+
+- `REPOSITORY_TREE.md`;
+- `README.md` compact repository tree;
+- `README.zh-CN.md` compact repository tree.
+
+A one-off GitHub Actions patch synchronized both README trees successfully in run `33704897307`; the temporary workflow was removed afterward.
+
+## Integration validation
+
+The actual branch passed Agnir conformance in one-off validation run `33705053591`:
+
+- `python conformance/check_agnir_0_1.py` — PASS;
+- `python -m unittest discover -s conformance -p 'test_*.py' -v` — PASS.
+
+The temporary validation workflow was removed after the successful run.
 
 ## QA rules
 
@@ -95,12 +114,13 @@ The remaining branch diff is brand-local. Newer canonical `AGNIR.yaml`, Current 
 
 The byte-exact approved 10:42 AM source board remains locked by SHA-256 and preserved in the external reference/delivery package. The complete 13-item PNG package exists and is hash-recorded, but large binary payloads still cannot be attached safely through the current execution bridge without truncation risk.
 
-Final byte-exact source-board and large-PNG repository preservation therefore remains a pre-`main` integration gate.
+Final byte-exact source-board and selected large-PNG repository preservation therefore remains a pre-`main` integration gate.
 
 ## Remaining integration gates
 
 1. Preserve the byte-exact approved Agnir board and desired large PNG delivery files through a binary-safe repository path; verify hashes after storage.
-2. Synchronize top-level repository structure documentation (`REPOSITORY_TREE.md` and affected README compact trees) with the new `brand/` product surface.
-3. Re-check latest `main` immediately before publication and reconcile again if it moved.
-4. Integrate the approved brand package coherently without replacing newer Core 0.2 continuity/release truth.
-5. Verify authoritative `main` after publication.
+2. Re-check latest `main` immediately before publication and reconcile again if it moved.
+3. Integrate the approved brand package coherently without replacing newer Core 0.2 continuity/release truth.
+4. Verify authoritative `main` after publication.
+
+Visual design, production masters, 13/13 QA, repository documentation and branch validation are complete. **Large byte-exact binary preservation is the only non-reconciliation integration blocker still open.**
