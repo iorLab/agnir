@@ -45,7 +45,7 @@ These exports deliberately reference `../masters/` instead of duplicating the ap
 
 ### Small-size rule
 
-Directly shrinking the full particle field to 16px loses the A reading. The approved board itself defines a favicon-size family, so 32px and 16px exports use a deterministic visibility derivative of the same master: only particles below a fixed rendered-visibility threshold are pruned. The A geometry, major particles, pale inner A and central anchor are unchanged. This is a size derivative, not a new logo design.
+Directly shrinking the full particle field to 16px loses the A reading. The approved board itself defines a favicon-size family, so 32px and 16px exports use a deterministic visibility derivative of the same master: only particles below a fixed visibility threshold are pruned. The A geometry, major particles, pale inner A and central anchor are unchanged. This is a size derivative, not a new logo design.
 
 ## Complete QA status
 
@@ -75,14 +75,30 @@ The approved production masters remain unchanged through this derivative/QA pass
 
 ## Main reconciliation status
 
-During final QA, authoritative `main` advanced with Core 0.2 Parallel Continuity and the brand branch became stale by 88 commits. This was repaired before integration work continued.
+The brand branch has now been reconciled twice as authoritative `main` advanced concurrently.
 
-- authoritative main observed during that reconciliation: `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`;
-- reverse-sync PR: `#8`, `main` → `brand/identity-system`;
-- brand merge commit: `b00e0d7c544e74d4b0245569450ecebb271461d5`;
-- post-sync comparison at that point: **behind `main` = 0**.
+### First reconciliation
 
-The remaining branch diff is brand-local. Newer canonical `AGNIR.yaml`, Current State, Next Actions, Decisions, Core 0.2 contracts and release/repository metadata are no longer shadowed by the brand branch. See `.agnir/evidence/2026-09-03-brand-main-reconciliation.md`.
+- main observed: `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`;
+- reverse-sync PR `#8` (`main` → `brand/identity-system`);
+- branch merge commit: `b00e0d7c544e74d4b0245569450ecebb271461d5`;
+- result at that point: **behind `main` = 0**.
+
+### Second reconciliation after RC acceptance reached main
+
+A later stale-base check found `main` at `1af33e0cc470107aadaeb5d4d2f0f4570d81ee1d` and the brand branch behind by 15 commits. Conflict-probe PR `#10` was intentionally closed unmerged.
+
+The branch was reconciled with an explicit latest-main-wins two-parent commit:
+
+- pre-reconcile brand: `6ac35732ca58301b2fa8e9759a0ed8e7d4042dcd`;
+- authoritative main: `1af33e0cc470107aadaeb5d4d2f0f4570d81ee1d`;
+- latest-main base tree: `5bedbf190a49e01689280fdbd0a812a0d1b60347`;
+- reconciled tree: `5e09b705519a36183859f8abc64870a39dc60ee7`;
+- reconciliation commit: `714da79d7338e6d2c35d691da6003aa134ed902c`.
+
+Only `brand/` plus brand-specific Evidence were overlaid onto latest main. Stale copies of `AGNIR.yaml`, state, next actions, decisions, release/Core/profile contracts and repository docs were deliberately not reused.
+
+A minimal post-reconcile documentation patch then restored only the brand entries to the current README / repository maps; corrected workflow run `33705830326` succeeded. Current comparison after this reconciliation reports **behind `main` = 0**. See `.agnir/evidence/2026-09-03-brand-main-reconciliation.md`.
 
 ## Repository-documentation status
 
@@ -92,16 +108,24 @@ The new top-level `brand/` surface is synchronized into:
 - `README.md` compact repository tree;
 - `README.zh-CN.md` compact repository tree.
 
-A one-off GitHub Actions patch synchronized both README trees successfully in run `33704897307`; the temporary workflow was removed afterward.
+The documents are based on current authoritative-main content with only the brand-specific map entries added.
 
 ## Integration validation
 
-The actual branch passed Agnir conformance in one-off validation run `33705053591`:
+Earlier branch-local one-off validation passed before the second main reconciliation. After the second reconciliation, Draft PR `#11` (`brand/identity-system` → `main`) became the canonical non-publishing integration validation surface.
 
-- `python conformance/check_agnir_0_1.py` — PASS;
-- `python -m unittest discover -s conformance -p 'test_*.py' -v` — PASS.
+The repository's actual Core 0.2 pull-request workflow runs against GitHub's synthetic merge tree and covers:
 
-The temporary validation workflow was removed after the successful run.
+- Core 0.2 repository self-host cold-start;
+- stable Core 0.1 compatibility regression;
+- VCS branch continuity and lineage binding;
+- Core 0.2 non-VCS/VCS mapping;
+- repository-filesystem 0.2 discovery;
+- Core/profile migration semantics;
+- RC fresh-install and published-v0.1.1 migration gates;
+- full conformance suite.
+
+The Draft PR is explicitly blocked from merge while the byte-exact large-binary preservation gate remains open. The **latest** PR-head run, not an older receipt embedded in this file, is the final conformance authority before merge.
 
 ## QA rules
 
@@ -120,7 +144,8 @@ Final byte-exact source-board and selected large-PNG repository preservation the
 
 1. Preserve the byte-exact approved Agnir board and desired large PNG delivery files through a binary-safe repository path; verify hashes after storage.
 2. Re-check latest `main` immediately before publication and reconcile again if it moved.
-3. Integrate the approved brand package coherently without replacing newer Core 0.2 continuity/release truth.
-4. Verify authoritative `main` after publication.
+3. Require the latest Draft PR `#11` synthetic-merge conformance run to be green on the final head.
+4. Integrate the approved brand package coherently without replacing newer Core 0.2 continuity/release truth.
+5. Verify authoritative `main` after publication.
 
-Visual design, production masters, 13/13 QA, repository documentation and branch validation are complete. **Large byte-exact binary preservation is the only non-reconciliation integration blocker still open.**
+Visual design, production masters, 13/13 QA, repository documentation and reconciliation mechanics are complete. **Large byte-exact binary preservation is the only non-reconciliation integration blocker still open.**
