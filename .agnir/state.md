@@ -34,7 +34,7 @@ Authoritative-main push run `33712492531` passed Core `0.2` self-host, Core/prof
 
 ## Published-to-published downstream upgrade evidence — Svif
 
-A real downstream Project has now crossed the published Agnir compatibility boundary successfully:
+A real downstream Project has crossed the published Agnir compatibility boundary successfully:
 
 - downstream Project: `iorLab/svif`, identity `urn:svif:project:svif-core`;
 - source Agnir: published `v0.1.1` / Core-profile `0.1` at `e9712357ab590e5c1e5357b3cf3219d07d789aff`;
@@ -51,13 +51,36 @@ The downstream migration preserved Svif Project identity and durable State/Next/
 
 The migration did not expose an Agnir `v0.2.0` semantic defect. The only failures were stale Svif current-binding guards; they were repaired while preserving Core/profile `0.1` regression coverage and Svif's immutable released Preview.1 onboarding baseline.
 
-This satisfies the **v1 release criterion requiring at least one real Project to cross an Agnir upgrade boundary**. It does not satisfy the whole real-Project gate: Agnir still needs at least 3 materially different real Projects overall and at least 2 materially different execution surfaces/adapters before `v1.0.0`.
+This satisfies the **v1 release criterion requiring at least one real Project to cross an Agnir upgrade boundary**.
 
 Agnir ingested this downstream receipt in commit `b1d1a8c784839aaf0822d542fdf820341d4699b2`. Authoritative-main conformance run `33728196706` passed every focused Core/profile/migration/stable-package gate and the full suite; stable/RC publication jobs were correctly skipped. Post-evidence checkpoint `8ca37712b9ddfa0207893ceb82c850e36f4b2fcd` also passed run `33728480626` with the same full conformance result.
 
+## Second external real-Project migration evidence — FishUp
+
+`iorLab/fishup` supplied a second materially different external real Project for published Agnir `v0.2.0` migration behavior.
+
+Captured FishUp authoritative main `a57b5ec7b679874af08da094fef3e8e7bdee90e3` was a real Core/profile `0.1` Project on published Agnir `v0.1.1`, Project identity `urn:agnir:project:fishup`, with existing `.agnir/` continuity and independent `AGENTS.md` / README instructions.
+
+An explicitly authorized migration line was created without advancing main:
+
+- branch `migration/agnir-v0.2.0-stable`;
+- first migration commit `c9673cf3c20a0fa92db54c9d54413efe7fefc7ee`, tree `b2bd12f9f64e6f26abfb804b65692fa45217ca97`;
+- verified evidence checkpoint/head `bea8c4e6e52347e1a0164596a5a9132b17de9631`, tree `1bd27517a2c663e5303bd22190129f65806426e6`;
+- migration lineage `urn:fishup:lineage:agnir-v0.2.0-stable-migration`;
+- selector `refs/heads/migration/agnir-v0.2.0-stable`;
+- target published Agnir `v0.2.0` -> `fc84095...`.
+
+Run `33737783270` and exact checkpoint run `33737919224` both succeeded. The branch workflow checked out immutable published `iorLab/agnir@v0.2.0` and exercised its official repository/filesystem migration/reference resolver against a detached copy of the actual FishUp 0.1 baseline. Unauthorized migration rejection, authorized migration, Project identity preservation, byte-exact State/Next/Decisions preservation, idempotent re-apply, fresh Core/profile 0.2 discovery, `pnpm typecheck`, and `pnpm build` all passed. `AGENTS.md`, README and all product source/config/assets remained byte-exact; compare against captured main showed only `AGNIR.yaml`, migration Evidence and branch-only validation workflow changed.
+
+No Agnir Core/profile `0.2` defect was observed.
+
+FishUp authoritative `main` is intentionally **not** claimed migrated: its existing `.github/workflows/deploy.yml` runs remote D1 migration attempts and Cloudflare Workers deployment on every main push. Migration validation authority did not include that production deployment side effect. Draft FishUp PR #1 is audit-only and explicitly `DO NOT MERGE`.
+
+This moves the real-Project gate forward but does not close it under the current stricter readiness map: Svif provides authoritative downstream 0.2 adoption; FishUp provides a second external real Project with verified 0.2 migration-line behavior; at least one additional materially different Project is still desired, with `iorLab/VocaPort` the preferred fresh-install candidate.
+
 ## v1 readiness map — current snapshot
 
-`V1_RELEASE_CRITERIA.md` now includes a non-normative evidence snapshot. It does not lower any release gate; it records current evidence so future work can target actual gaps.
+`V1_RELEASE_CRITERIA.md` includes a non-normative evidence snapshot. It does not lower any release gate; it records current evidence so future work can target actual gaps.
 
 Current high-level status:
 
@@ -65,7 +88,7 @@ Current high-level status:
 - real parallel continuity/reconciliation Project: **satisfied** via Svif;
 - VCS + non-VCS lineage conformance: **satisfied**;
 - current published compatibility/migration contract: **satisfied for existing published lines**;
-- real Projects: **open** — Svif supplies one qualifying external Project; at least two more materially different Projects are required;
+- real Projects: **partial** — Svif provides authoritative external 0.2 adoption and FishUp provides a second external real Project with verified 0.2 migration-line behavior; at least one additional materially different Project remains desirable, and FishUp main publication remains intentionally pending;
 - execution surfaces/adapters: **open** until a clearly distinct second surface/adapter has fresh activation/resume evidence;
 - mount-boundary evidence: **open / explicitly unproven**;
 - independent-implementation documentation quality: **open**;

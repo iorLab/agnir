@@ -152,26 +152,29 @@ This section is a non-normative readiness snapshot. It does not weaken the gates
 | --- | --- | --- |
 | 1. Core semantics | **Provisionally satisfied** | Core `0.2` covers Project identity, durable semantic categories, discovery/resume, checkpoint/failure semantics and Continuity Lineage integration. No planned breaking Core redesign is currently recorded; reopen if real downstream evidence exposes one. |
 | 2. Compatibility contract | **Satisfied for current published lines** | Core/profile `0.1` and `0.2`, migration semantics, unsupported-version behavior and operational-vs-compatibility versioning are explicit. Future compatibility lines must preserve this discipline. |
-| 3. Migration testing | **Satisfied for current published lines** | Fresh Core `0.2` install, Core/profile `0.1` -> `0.2` semantic/concrete migration, idempotence/conflict behavior, stable `0.1` regressions, and real published `v0.1.1` -> `v0.2.0` Svif migration are green. A future `0.2.x` maintenance release must add compatible-upgrade evidence for that concrete release. |
-| 4. Real Projects | **Partial** | Svif is one qualifying external real Project and has crossed the published upgrade boundary plus exercised lineage reconciliation. Need at least **2 additional materially different real Projects** and a clearly distinct second execution surface/adapter. |
+| 3. Migration testing | **Satisfied for current published lines** | Fresh Core `0.2` install, Core/profile `0.1` -> `0.2` semantic/concrete migration, idempotence/conflict behavior, stable `0.1` regressions, authoritative Svif published `v0.1.1` -> `v0.2.0` migration, and FishUp's real 0.1 -> 0.2 migration-line validation through the immutable published reference implementation are green. FishUp additionally proved byte-exact State/Next/Decisions/AGENTS/README preservation and product build success. |
+| 4. Real Projects | **Partial** | Svif provides authoritative downstream Core/profile `0.2` adoption and upgrade/reconciliation evidence. FishUp is a second materially different external Project with verified published `v0.2.0` migration-line behavior; its authoritative main remains intentionally on `0.1` because every main push has production Cloudflare/D1 side effects outside the validation authorization. At least **1 additional materially different real Project** is still desired under this readiness map, with VocaPort the preferred fresh-install candidate. A clearly distinct second execution surface/adapter is also still required. |
 | 5. Backend/profile independence | **Partial / strong conformance evidence** | VCS and non-VCS lineage conformance are green, and Core is not defined by a VCS selector. Genuine mount-boundary behavior remains explicitly unproven and should be pressured in a real mount-capable environment. |
 | 6. Normative conformance | **Infrastructure satisfied; v1 final run future** | The release-blocking suite is visible and reproducible and passed stable `v0.2.0` plus subsequent main checkpoints. A fresh exact `1.0.0-rc` candidate must rerun every normative layer. |
-| 7. Failure behavior | **Provisionally satisfied** | Normative discovery/checkpoint/lineage/migration failures are machine-distinguishable in specs and conformance. Keep open to correction if independent consumers expose ambiguous recovery/retry semantics. |
-| 8. Publication/checkpoint integrity | **Provisionally satisfied** | Agnir stable-to-main and Svif published-to-published migration both used staged target reconciliation, exact-tree CI, stale checks, one coherent target advancement and fresh verification. Broader crash/mount evidence remains useful. |
+| 7. Failure behavior | **Provisionally satisfied** | Normative discovery/checkpoint/lineage/migration failures are machine-distinguishable in specs and conformance. FishUp independently re-exercised the required unauthorized-migration rejection using the published reference implementation. Keep open to correction if independent consumers expose ambiguous recovery/retry semantics. |
+| 8. Publication/checkpoint integrity | **Provisionally satisfied** | Agnir stable-to-main and Svif published-to-published migration used staged target reconciliation, exact-tree CI, stale checks, one coherent target advancement and fresh verification. FishUp additionally demonstrated a correctly bounded validation path that did not confuse a validated migration branch with authoritative target publication when target push would have extra production side effects. Broader crash/mount evidence remains useful. |
 | 9. Independent-implementation documentation | **Open** | Specs, profiles, migration docs, activation guidance and repository map exist, but independent-implementation quality has not yet been proven by an implementation/review from someone not relying on design chat history. |
 | 10. Repeatable release operations | **Satisfied for 0.2; v1 cycle future** | `v0.2.0-rc.1` -> `v0.2.0` exercised exact candidate verification, immutable tags/releases, package provenance and safe main reconciliation. A separate `1.0.0-rc` cycle remains a v1 threshold. |
 
 ### Threshold summary
 
-- **Upgrade evidence:** satisfied by real Svif published `v0.1.1` -> published `v0.2.0` migration.
+- **Upgrade evidence:** satisfied by real Svif authoritative published `v0.1.1` -> published `v0.2.0` migration.
 - **Parallel continuity real Project:** satisfied by Svif; VCS and non-VCS conformance are also green.
-- **Real Projects:** open at 1 qualifying external Project; target is at least 3 materially different Projects.
+- **Real Projects:** partial with two external real Projects carrying direct Core/profile `0.2` evidence — Svif authoritative adoption and FishUp validated migration line. At least one additional materially different Project is still desired; FishUp main publication remains a separate production-affecting action.
 - **Execution surfaces/adapters:** open until a second materially distinct surface/adapter has fresh activation/resume evidence.
 - **Mount-boundary evidence:** open and explicitly unproven.
 - **Independent implementation:** open.
 - **`1.0.0-rc` cycle:** future gate.
 
-Canonical receipt detail for the Svif published-to-published migration is `.agnir/evidence/2026-09-03-svif-published-v0.1.1-to-v0.2.0-upgrade.md`.
+Canonical downstream receipt detail:
+
+- Svif authoritative published migration: `.agnir/evidence/2026-09-03-svif-published-v0.1.1-to-v0.2.0-upgrade.md`;
+- FishUp real migration-line validation: `.agnir/evidence/2026-09-03-fishup-v0.2.0-migration-validation.md`.
 
 ## Non-gates
 
