@@ -53,6 +53,8 @@ The migration did not expose an Agnir `v0.2.0` semantic defect. The only failure
 
 This satisfies the **v1 release criterion requiring at least one real Project to cross an Agnir upgrade boundary**. It does not satisfy the whole real-Project gate: Agnir still needs at least 3 materially different real Projects overall and at least 2 materially different execution surfaces/adapters before `v1.0.0`.
 
+Agnir ingested this downstream receipt in commit `b1d1a8c784839aaf0822d542fdf820341d4699b2`. Authoritative-main conformance run `33728196706` passed every focused Core/profile/migration/stable-package gate and the full suite; stable/RC publication jobs were correctly skipped. This confirms the v1 evidence update did not regress the released `v0.2.0` contract.
+
 ## Active compatibility and product state
 
 Repository version is `0.2.0`. Stable Core `0.2` and stable `repository-filesystem/0.2` are active. Core/profile `0.1` artifacts remain compatibility/regression and explicit migration surfaces for existing `v0.1.1` Projects.

@@ -1,6 +1,6 @@
 # Agnir Next Actions
 
-Agnir `v0.2.0` is published as latest stable and safely reconciled into authoritative `main`. Main self-hosts Core `0.2` / `repository-filesystem/0.2` on logical lineage `urn:agnir:lineage:authoritative`, separately bound to `refs/heads/main`. Svif has now completed a real published `v0.1.1` -> published `v0.2.0` downstream migration, satisfying the v1 upgrade-boundary evidence sub-gate.
+Agnir `v0.2.0` is published as latest stable and safely reconciled into authoritative `main`. Main self-hosts Core `0.2` / `repository-filesystem/0.2` on logical lineage `urn:agnir:lineage:authoritative`, separately bound to `refs/heads/main`. Svif has completed a real published `v0.1.1` -> published `v0.2.0` downstream migration, satisfying the v1 upgrade-boundary evidence sub-gate; Agnir ingestion commit `b1d1a8c784839aaf0822d542fdf820341d4699b2` passed conformance run `33728196706`.
 
 1. **Expand the real-Project set toward the v1 minimum of 3 materially different Projects.** Svif now supplies one qualifying external real Project with both upgrade and lineage/reconciliation evidence; add at least two materially different real Projects and record only material interoperability, migration, reconciliation, recovery or usability findings.
 2. **Expand execution-surface / adapter evidence toward the `v1.0.0` gate.** Existing repository/filesystem and ChatGPT Project activation behavior provide a baseline; add another materially distinct execution surface/adapter with fresh activation/resume evidence so the minimum of 2 materially different surfaces/adapters is unambiguous.
@@ -36,6 +36,14 @@ Agnir `v0.2.0` is published as latest stable and safely reconciled into authorit
 - authoritative Svif lineage: `urn:svif:lineage:authoritative`;
 - authoritative selector: `refs/heads/main`;
 - Project identity and durable memory locators preserved.
+
+### Agnir downstream-evidence ingestion
+
+- ingestion commit: `b1d1a8c784839aaf0822d542fdf820341d4699b2`;
+- ingestion conformance run: `33728196706` success;
+- focused Core/profile/lineage/migration/fresh-install/stable-package gates: success;
+- full conformance suite: success;
+- stable and RC publication jobs: skipped as expected.
 
 ## v1 evidence status
 

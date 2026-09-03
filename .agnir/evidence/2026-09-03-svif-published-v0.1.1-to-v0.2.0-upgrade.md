@@ -77,6 +77,8 @@ Fresh reads from authoritative main confirmed:
 
 Svif then wrote post-integration checkpoint `eba1b8538c4692a08bf69452525b735d23564599`; checkpoint CI run `33727957648` passed all three jobs.
 
+GitHub subsequently auto-recognized Svif PR #6 and PR #7 as `merged=true` because their validated commits are ancestors of the directly published target commit. Completion comments on both PRs explicitly record that the ordinary PR merge operation was not used.
+
 ## Observed usability / defect result
 
 No Agnir `v0.2.0` semantic defect was exposed. The only failures during convergence were Svif tests/checks that still encoded the former current Core/profile `0.1` binding. Those were corrected without weakening retained Core/profile `0.1` regression coverage.
@@ -91,3 +93,24 @@ This evidence satisfies:
 - real Project parallel continuity/reconciliation evidence: **satisfied via Svif**.
 
 It does not satisfy the entire v1 real-world gate. Remaining evidence includes at least 3 materially different real Projects overall, at least 2 materially different execution surfaces/adapters, and genuine mount-boundary pressure when an appropriate environment exists.
+
+## Agnir ingestion verification
+
+Agnir ingested this downstream evidence on authoritative `main` in commit `b1d1a8c784839aaf0822d542fdf820341d4699b2`.
+
+Conformance run `33728196706` passed:
+
+- Core 0.2 repository self-host cold-start;
+- stable Core 0.1 compatibility regression;
+- VCS branch continuity extension;
+- Core 0.2 non-VCS parallel continuity;
+- Core 0.2 VCS mapping;
+- repository-filesystem 0.2 discovery;
+- VCS lineage binding;
+- Core 0.1 -> 0.2 migration semantics;
+- repository-filesystem 0.1 -> 0.2 migration;
+- fresh Core 0.2 install and published v0.1.1 migration;
+- stable v0.2.0 package gates;
+- full conformance suite.
+
+Stable and RC publication jobs were skipped as expected. The evidence ingestion therefore introduced no observed regression to the published stable compatibility line.
