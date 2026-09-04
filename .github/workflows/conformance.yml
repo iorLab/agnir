@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install conformance dependencies
+        run: python -m pip install --disable-pip-version-check -r conformance/requirements.txt
       - name: Core 0.2 repository self-host cold-start
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.base_ref == 'main' || startsWith(github.head_ref, 'release/')
         run: python conformance/check_agnir_0_2.py
