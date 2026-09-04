@@ -39,6 +39,27 @@ The install preserved existing VocaPort `AGENTS.md` and README content as exact 
 
 No Agnir Core/profile `0.2` semantic defect was exposed by Svif, FishUp, or VocaPort.
 
+## Cross-Agent execution-surface evidence — DSH
+
+VocaPort has now also completed an isolated two-session DSH execution-surface validation on branch `validation/dsh-execution-surface-v0.2.0` without changing authoritative VocaPort `main` or publishing validation continuity as target truth.
+
+Accepted receipts:
+
+- protocol baseline `439866051d7b9863565540fb592f408de64c1081`;
+- Session 1 initial checkpoint `b4f87d3ebd86d647adc2b7b101498ca4c80e6287`;
+- Session 1 corrected final checkpoint `29549ebf45071003ae3e885664c7c9e960d838eb`;
+- Session 2 fresh-resume checkpoint `af9b9c0b725ae40d11e462f11e3a9392afed6d8a`;
+- validation lineage `urn:vocaport:lineage:dsh-execution-surface-validation`, separately bound to `refs/heads/validation/dsh-execution-surface-v0.2.0`;
+- canonical VocaPort main remained `eb9a3cca54d6e5daa80fbacc72624a735057328b` throughout.
+
+Session 1 was a genuinely fresh DSH Agent session. It discovered Agnir from repository-owned instructions, loaded State/Next/Decisions/Evidence, performed a real low-risk Project observation task, and committed/pushed continuity. External review found one incorrect observation about clean-environment typecheck prerequisites; the same session corrected it through a reversible empirical test and preserved the original result as explicitly superseded rather than rewriting history.
+
+Session 2 was a genuinely new DSH Agent session with no Session 1 private chat/session memory. Starting from canonical remote tip `29549ebf...`, it independently recovered Project identity, Core/profile, lineage, selector, Session 1 history, and the correction that superseded the earlier result, then followed the repository-owned Next Action and pushed `af9b9c0...`.
+
+External Git review confirmed the full experiment diff from `439866051...` to `af9b9c0...` is confined to `.agnir/` continuity/evidence files, with no product/config/docs/release-workflow changes and no main advancement.
+
+This is accepted as a materially distinct second Agent execution surface relative to the existing ChatGPT/GitHub-connected Agnir operating path. GitHub Actions and VocaPort Web/Desktop/Android product runtimes are not counted as additional Agent surfaces.
+
 ## v1 readiness — current
 
 - Core semantics: **provisionally satisfied**;
@@ -47,9 +68,9 @@ No Agnir Core/profile `0.2` semantic defect was exposed by Svif, FishUp, or Voca
 - real parallel continuity/reconciliation Project: **satisfied** via Svif;
 - VCS + non-VCS lineage conformance: **satisfied**;
 - materially different real Projects: **satisfied at the current minimum threshold (3)** via Svif + FishUp + VocaPort;
-- materially different execution surfaces/adapters: **open** — product runtime diversity does not count; Agnir itself still needs a second distinct execution surface/adapter with fresh activation/resume/checkpoint evidence;
+- materially different execution surfaces/adapters: **satisfied at the current minimum threshold (2)** — the existing ChatGPT/GitHub-connected Agent path plus accepted VocaPort DSH fresh activation/checkpoint/fresh-resume evidence;
 - real mount-boundary evidence: **open / explicitly unproven**;
 - independent-implementation documentation quality: **open**;
 - explicit `1.0.0-rc` cycle: **future gate after the remaining evidence gates close**.
 
-The dated readiness snapshot in `V1_RELEASE_CRITERIA.md` remains a historical non-normative snapshot; current canonical readiness is this State plus current Evidence/Next Actions until the next formal gate-map refresh.
+The formal readiness snapshot in `V1_RELEASE_CRITERIA.md` has been refreshed through this DSH milestone. Remaining evidence work is now concentrated in genuine mount-boundary behavior and independent-implementation quality before an explicit `1.0.0-rc` cycle.
