@@ -1,16 +1,17 @@
 # Agnir Next Actions
 
-Agnir `v0.2.0` is stable. The minimum real-Project, real upgrade-boundary, real parallel-lineage/reconciliation, VCS/non-VCS lineage, materially distinct execution-surface, and genuine mount-boundary evidence gates are satisfied. Independent challenge #17 reached a fully conforming 21/21 Phase B implementation but returned `FAIL-CONFORMANCE` because the public reference resolver did not enforce the published 0.2 schema; that mismatch is now repaired and green on authoritative `main`.
+Agnir `v0.2.0` is stable. The minimum real-Project, real upgrade-boundary, real parallel-lineage/reconciliation, VCS/non-VCS lineage, materially distinct execution-surface, and genuine mount-boundary evidence gates are satisfied. Challenge #19 independently reported no behavior-material documentation ambiguity and no reference/published-contract contradiction, and its Phase B passed 30/30 recorded receipts, but one post-freeze null-version failure-dispatch defect produced `FAIL-IMPLEMENTATION`. The independent-implementation gate therefore remains open only because a clean frozen implementation PASS is still required.
 
-1. **Open a new clean independent-implementation challenge pinned to this exact post-checkpoint authoritative revision.** The next reviewer must begin in a genuinely fresh unpersonalized context and must not inspect issue #14/#15/#17 findings, prior challenge archives/reports, private Agnir design context, PR #18, or `conformance/*_reference.py` before the permitted Phase C boundary.
-2. **Require the same direct schema/profile cross-check and frozen Phase A/Phase B boundary.** The independently authored resolver/checkpoint path must accept a schema-derived positive fixture, reject a schema-derived negative fixture, pass required discovery/failure/checkpoint/preservation/isolation receipts, and remain frozen before reference comparison.
-3. **Close the independent-implementation gate only on clean `PASS`.** `FAIL-IMPLEMENTATION`, `FAIL-DOCS`, and `FAIL-CONFORMANCE` remain useful evidence but do not satisfy the gate.
-4. **If another behavior-material ambiguity or reference contradiction appears, repair the public source first and rerun from another fresh context.** Do not coach the reviewer or convert reference behavior into retroactive private specification.
-5. **After independent acceptance, define the Core/profile `1.0` promotion candidate.** Preserve proven 0.2 semantics unless a genuinely required defect fix is identified; do not rewrite published `v0.2.0` history.
-6. **Then prepare the explicit repository `1.0.0-rc` cycle.** The RC must run every normative suite from a fresh environment, including Core, repository/filesystem profile, migration/upgrade, machine-visible failure paths, cold start/fresh resume, lineage, self-hosting, conformance dependencies, and release/package gates.
-7. **Keep FishUp production publication separate.** Its migration-line validation is complete; do not advance FishUp `main` unless the Principal separately authorizes the Cloudflare/D1 production side effect caused by every main push.
-8. **Retire temporary release/validation/repair refs when a safe delete-ref path is available.** Preserve immutable commits, workflow runs, artifacts, issues, releases, and Evidence; validation/repair lines are staging/evidence inputs, not automatic authoritative continuity.
-9. **Keep stable maintenance compatible.** Future `v0.2.x` repairs may improve documentation, conformance, packaging, or implementation but must preserve Core/profile `0.2` semantics unless a deliberate new compatibility line is justified and explicitly migrated.
+1. **Create one more clean independent-implementation challenge pinned to the exact authoritative post-checkpoint revision.** The next reviewer must begin in a genuinely fresh unpersonalized context and must not inspect prior challenge findings, archives, issues/PR history, private Agnir design context, or `conformance/*_reference.py` before the permitted Phase C boundary.
+2. **Use a schema-derived negative mutation matrix before Phase B freeze.** In addition to a direct positive fixture, require independently derived negative cases covering requiredness/absence, explicit null and wrong scalar/container type, const/enum mismatch, forbidden additional properties, and applicable pattern constraints. The challenge may require the categories but must not supply private expected answers; the reviewer derives each expected failure from the public pinned schema/profile.
+3. **Preserve the Phase A → Phase B freeze → Phase C boundary.** Require auditable hashes/receipts before reference inspection and verify frozen artifacts remain unchanged afterward.
+4. **Close the independent-implementation gate only on a clean `PASS`.** `FAIL-IMPLEMENTATION`, `FAIL-DOCS`, and `FAIL-CONFORMANCE` remain useful evidence but do not satisfy the acceptance rule.
+5. **Do not modify Core/profile 0.2 merely to make the next reviewer pass.** Challenge #19 found the public contract and reference aligned. Only a newly demonstrated product-contract or conformance defect justifies another public-source repair.
+6. **After independent acceptance, define the Core/profile `1.0` promotion candidate.** Promote the proven stable 0.2 semantics to clear `1.0` compatibility identifiers rather than shipping repository `v1.0.0` with confusing pre-1.0 protocol identifiers; preserve published `v0.2.0` history.
+7. **Then prepare the explicit repository `1.0.0-rc` cycle.** The RC must run every normative suite from a fresh environment, including Core, repository/filesystem profile, schema, migration/upgrade, machine-visible failure paths, cold start/fresh resume, lineage, self-hosting, conformance dependencies, and release/package gates.
+8. **Keep FishUp production publication separate.** Its migration-line validation is complete; do not advance FishUp `main` unless the Principal separately authorizes the Cloudflare/D1 production side effect caused by every main push.
+9. **Retire temporary release/validation/repair refs when a safe delete-ref path is available.** Preserve immutable commits, workflow runs, artifacts, issues, releases, and Evidence; validation/repair lines are staging/evidence inputs, not automatic authoritative continuity.
+10. **Keep stable maintenance compatible.** Future `v0.2.x` repairs may improve documentation, conformance, packaging, or implementation but must preserve Core/profile `0.2` semantics unless a deliberate new compatibility line is justified and explicitly migrated.
 
 ## Current high-value receipts
 
@@ -23,9 +24,9 @@ Agnir `v0.2.0` is stable. The minimum real-Project, real upgrade-boundary, real 
 - genuine mount-boundary final validation head: `ce30bed039e1cd2d1d8cf27b3cd2492c6dd279fa`, accepted run/job `33860631526` / `100984005488`;
 - challenge #15 source/archive/verdict: `d4d5c5a441766ca5993366429ecf6235d7c2a7bc` / `1426e0c4a3b9030944ad2694aaf9ff7daf4690b3f7fb1ce8cab9ba3f1dcc4a61` / `FAIL-IMPLEMENTATION`;
 - challenge #17 source/archive/verdict: `5b73acf914e323ce337a0af295d5a9e96eaafdc8` / `a2408dec4c0e3badebaa9cb67043219e67f36b7c85fa5f7c160435afabe7d523` / `FAIL-CONFORMANCE`;
-- challenge #17 independent Phase B: `21/21` recorded scenarios PASS;
-- schema/reference repair PR head/run: `b753ad65548e81b30a7f0d189034284fde0f2002` / `33907695244` success;
-- schema/reference authoritative repair: `a0b322d4e7f4e62e2ed77121b0a1b4e3b2328d1a`, main run `33907748617` success.
+- schema/reference repair authoritative commit/run: `a0b322d4e7f4e62e2ed77121b0a1b4e3b2328d1a` / `33907748617` success;
+- challenge #19 source/archive/verdict: `7e844fe8bde08be8288dbf05393e5e03601ea4f0` / `7258e231a9acd22ed74b0dd42ff65ff54b32207f92ff55d08d26404e8dc85854` / `FAIL-IMPLEMENTATION`;
+- challenge #19 independent Phase B: 12/12 unit tests + 30/30 recorded receipts PASS; documentation sufficiency and reference alignment both pass that review.
 
 ## Invariants
 
@@ -35,6 +36,7 @@ Agnir `v0.2.0` is stable. The minimum real-Project, real upgrade-boundary, real 
 - Target publication is coherent and stale candidates fail.
 - Published tags are immutable.
 - Core/profile `0.1` -> `0.2` remains explicit migration; stable `0.2.x` maintenance does not silently redefine compatibility.
-- The normative published schema is part of the executable repository-filesystem/0.2 contract; reference/conformance code must not silently accept forbidden serialized fields.
+- The normative published schema is part of the executable repository-filesystem/0.2 contract; reference/conformance code must not silently accept forbidden or malformed serialized fields.
 - A fresh independent reviewer must not receive private answers, prior challenge findings, or reference knowledge before the challenge's allowed comparison boundary.
+- A negative mutation matrix strengthens implementation validation but does not replace independent contract reconstruction: expected behavior must come from public pinned sources, not challenge coaching.
 - Real evidence must come from real behavior; synthetic equivalence, repository affiliation, product-platform diversity, ordinary filesystem behavior, or private reviewer coaching cannot substitute for the specific v1 gate being claimed.
