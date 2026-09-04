@@ -6,9 +6,10 @@ from pathlib import Path
 
 from core_reference import DiscoveryFailure
 from repository_filesystem_0_2_reference import discover_repository_filesystem_0_2
+from repository_filesystem_reference import discover_repository_filesystem
 
 
-class RepositoryFilesystem02EvidenceShapeTests(unittest.TestCase):
+class RepositoryFilesystemEvidenceShapeTests(unittest.TestCase):
     def _write_project(self, root: Path) -> None:
         evidence = root / ".agnir" / "evidence"
         evidence.mkdir(parents=True)
@@ -21,25 +22,49 @@ class RepositoryFilesystem02EvidenceShapeTests(unittest.TestCase):
             encoding="utf-8",
         )
 
-    def test_non_null_local_evidence_must_resolve_to_directory(self) -> None:
+    def _point_evidence_at_file(self, root: Path) -> None:
+        evidence_file = root / ".agnir" / "single-evidence.md"
+        evidence_file.write_text("single evidence", encoding="utf-8")
+        manifest = root / "AGNIR.yaml"
+        manifest.write_text(
+            manifest.read_text(encoding="utf-8").replace(
+                'evidence: ".agnir/evidence/"',
+                'evidence: ".agnir/single-evidence.md"',
+            ),
+            encoding="utf-8",
+        )
+
+    def test_0_2_non_null_local_evidence_must_resolve_to_directory(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._write_project(root)
-            evidence_file = root / ".agnir" / "single-evidence.md"
-            evidence_file.write_text("single evidence", encoding="utf-8")
-            manifest = root / "AGNIR.yaml"
-            manifest.write_text(
-                manifest.read_text(encoding="utf-8").replace(
-                    'evidence: ".agnir/evidence/"',
-                    'evidence: ".agnir/single-evidence.md"',
-                ),
-                encoding="utf-8",
-            )
+            self._point_evidence_at_file(root)
             with self.assertRaises(DiscoveryFailure) as raised:
                 discover_repository_filesystem_0_2(root)
             self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_UNRESOLVABLE")
 
-    def test_baseline_evidence_discovery_is_flat(self) -> None:
+    def test_0_1_non_null_local_evidence_must_resolve_to_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._write_project(root)
+            manifest = root / "AGNIR.yaml"
+            text = manifest.read_text(encoding="utf-8")
+            text = text.replace('version: "0.2"', 'version: "0.1"')
+            text = text.replace(
+                'discovery_profile: "repository-filesystem/0.2"',
+                'discovery_profile: "repository-filesystem/0.1"',
+            )
+            text = text.replace(
+                'continuity:\n  lineage: "urn:agnir:lineage:evidence-shape"\n',
+                '',
+            )
+            manifest.write_text(text, encoding="utf-8")
+            self._point_evidence_at_file(root)
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_UNRESOLVABLE")
+
+    def test_0_2_baseline_evidence_discovery_is_flat(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self._write_project(root)
