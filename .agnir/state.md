@@ -12,7 +12,7 @@ Agnir `v0.2.0` is the published latest stable release and is safely reconciled i
 
 ## Real-Project v1 evidence
 
-Three materially different external Projects now carry direct published Agnir `v0.2.0` evidence:
+Three materially different external Projects carry direct published Agnir `v0.2.0` evidence.
 
 ### Svif — authoritative published upgrade
 
@@ -35,13 +35,11 @@ Three materially different external Projects now carry direct published Agnir `v
 - post-install checkpoint `eb9a3cca54d6e5daa80fbacc72624a735057328b`, tree `dde72dd4c907f2ba172a3f062385dfaa17b53611`;
 - checkpoint fresh-resume verifier `33787760565`: success.
 
-The install preserved existing VocaPort `AGENTS.md` and README content as exact prefixes, left bilingual Project instructions/docs, product code/config, and release workflows unchanged, and used the published Agnir activation and `repository-filesystem/0.2` resolver. Paired untouched/install runs `33769075075` / `33769051389` showed identical product verification behavior: WASM bootstrap, typecheck, Web build, and downloads build succeeded on both; `pnpm test` and native-shell check failed on both. Those failures are therefore VocaPort baseline limitations rather than Agnir regressions.
-
-No Agnir Core/profile `0.2` semantic defect was exposed by Svif, FishUp, or VocaPort.
+Paired untouched/install runs `33769075075` / `33769051389` produced the same VocaPort product verification shape, so the observed `pnpm test` and native-shell failures are baseline/environment limitations rather than Agnir regressions.
 
 ## Cross-Agent execution-surface evidence — DSH
 
-VocaPort has now also completed an isolated two-session DSH execution-surface validation on branch `validation/dsh-execution-surface-v0.2.0` without changing authoritative VocaPort `main` or publishing validation continuity as target truth.
+VocaPort completed an isolated two-session DSH execution-surface validation on branch `validation/dsh-execution-surface-v0.2.0` without changing authoritative VocaPort `main` or publishing validation continuity as target truth.
 
 Accepted receipts:
 
@@ -52,13 +50,31 @@ Accepted receipts:
 - validation lineage `urn:vocaport:lineage:dsh-execution-surface-validation`, separately bound to `refs/heads/validation/dsh-execution-surface-v0.2.0`;
 - canonical VocaPort main remained `eb9a3cca54d6e5daa80fbacc72624a735057328b` throughout.
 
-Session 1 was a genuinely fresh DSH Agent session. It discovered Agnir from repository-owned instructions, loaded State/Next/Decisions/Evidence, performed a real low-risk Project observation task, and committed/pushed continuity. External review found one incorrect observation about clean-environment typecheck prerequisites; the same session corrected it through a reversible empirical test and preserved the original result as explicitly superseded rather than rewriting history.
+Fresh Session 1 discovered Agnir from repository-owned instructions, loaded State/Next/Decisions/Evidence, performed real Project work and checkpointed. External review found one incorrect observation; the same session corrected it through a reversible empirical test while preserving the superseded result as audit history. Fresh Session 2, without Session 1 private context, recovered the corrected checkpoint solely from Project-owned continuity and checkpointed again.
 
-Session 2 was a genuinely new DSH Agent session with no Session 1 private chat/session memory. Starting from canonical remote tip `29549ebf...`, it independently recovered Project identity, Core/profile, lineage, selector, Session 1 history, and the correction that superseded the earlier result, then followed the repository-owned Next Action and pushed `af9b9c0...`.
+This is accepted as the materially distinct second Agent execution surface relative to the existing ChatGPT/GitHub-connected Agnir operating path. GitHub Actions and VocaPort Web/Desktop/Android runtimes are not counted as additional Agent surfaces.
 
-External Git review confirmed the full experiment diff from `439866051...` to `af9b9c0...` is confined to `.agnir/` continuity/evidence files, with no product/config/docs/release-workflow changes and no main advancement.
+## Genuine mount-boundary evidence — accepted
 
-This is accepted as a materially distinct second Agent execution surface relative to the existing ChatGPT/GitHub-connected Agnir operating path. GitHub Actions and VocaPort Web/Desktop/Android product runtimes are not counted as additional Agent surfaces.
+Agnir self-hosting has now exercised `repository-filesystem/0.2` across a real Linux Docker bind-mount boundary on temporary branch `validation/mount-boundary-v0.2.0`. The validation lineage `urn:agnir:lineage:mount-boundary-validation` remained isolated from authoritative main continuity.
+
+Final accepted receipts:
+
+- captured authoritative main: `4eb15a5c6df80983b1b799a9311ffc79a1d868d9`;
+- final validation head: `ce30bed039e1cd2d1d8cf27b3cd2492c6dd279fa`;
+- final validation tree: `962b9ceb16e8a0e15c92f940a34415915d08bb5f`;
+- accepted workflow run: `33860631526`;
+- job: `100984005488`;
+- artifact id: `9931961351`;
+- artifact digest: `sha256:2c7bb33c87e4de0e95542cfb12b3759ecdb005c6085962856bb4a2ad052b25ce`.
+
+Container A mounted the Project at `/workspace/project-a`, fresh-resolved Project identity/Core/profile/lineage and durable continuity, wrote a State + Evidence checkpoint through the mount, and was destroyed. Container B then mounted the same host Project at `/mnt/agnir-project-b`, independently fresh-resolved the same Project identity and logical lineage, recovered A's checkpoint despite the changed absolute root path, wrote a resume receipt, and was destroyed. The host independently observed the persisted checkpoint and resume.
+
+Negative paths also passed: a read-only Project mount remained discoverable but rejected checkpoint writes with `EROFS`; both a missing selected Project root and an actual wrong/empty mounted root failed explicitly with `AGNIR_DISCOVERY_NOT_FOUND` and no sibling guessing.
+
+Runs `33860211185` and `33860517098` had already passed every substantive mount-semantic step; their only failures were validation-harness cleanup defects involving generated `conformance/__pycache__/` ownership. The third run fixed only cleanup and completed fully green. The final artifact was downloaded and externally inspected, including actual `/proc/self/mountinfo` receipts and empty final Git status.
+
+This satisfies the current v1 **real mount-boundary evidence** gate for a genuine bind-mounted-volume boundary. It does not claim universal behavior across every network filesystem/FUSE/Kubernetes volume implementation, nor a new backend/profile or additional Agent surface.
 
 ## v1 readiness — current
 
@@ -68,9 +84,9 @@ This is accepted as a materially distinct second Agent execution surface relativ
 - real parallel continuity/reconciliation Project: **satisfied** via Svif;
 - VCS + non-VCS lineage conformance: **satisfied**;
 - materially different real Projects: **satisfied at the current minimum threshold (3)** via Svif + FishUp + VocaPort;
-- materially different execution surfaces/adapters: **satisfied at the current minimum threshold (2)** — the existing ChatGPT/GitHub-connected Agent path plus accepted VocaPort DSH fresh activation/checkpoint/fresh-resume evidence;
-- real mount-boundary evidence: **open / explicitly unproven**;
+- materially different execution surfaces/adapters: **satisfied at the current minimum threshold (2)** — existing ChatGPT/GitHub-connected Agent path plus accepted VocaPort DSH evidence;
+- real mount-boundary evidence: **satisfied** via accepted Agnir Docker bind-mount checkpoint/fresh-resume validation;
 - independent-implementation documentation quality: **open**;
-- explicit `1.0.0-rc` cycle: **future gate after the remaining evidence gates close**.
+- explicit `1.0.0-rc` cycle: **future gate after independent-implementation evidence closes**.
 
-The formal readiness snapshot in `V1_RELEASE_CRITERIA.md` has been refreshed through this DSH milestone. Remaining evidence work is now concentrated in genuine mount-boundary behavior and independent-implementation quality before an explicit `1.0.0-rc` cycle.
+No Agnir Core/profile `0.2` semantic defect has been exposed by the accepted real-Project, execution-surface, or mount-boundary evidence. The remaining external v1 evidence work is now concentrated in independent-implementation documentation quality; after that, the next release gate is an explicit `1.0.0-rc` cycle from an exact fresh candidate.
