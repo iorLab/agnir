@@ -1,14 +1,22 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
+import yaml
+from jsonschema import Draft202012Validator
+
 from core_reference import discovery_failure
-from repository_filesystem_reference import _parse_scalars, _resolve_local_locator
+from repository_filesystem_reference import _resolve_local_locator
 
 
 CORE_0_2_VERSION = "0.2"
 PROFILE_0_2 = "repository-filesystem/0.2"
+_SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schemas" / "agnir-manifest-0.2.schema.json"
+_SCHEMA = json.loads(_SCHEMA_PATH.read_text(encoding="utf-8"))
+Draft202012Validator.check_schema(_SCHEMA)
+_SCHEMA_VALIDATOR = Draft202012Validator(_SCHEMA)
 
 
 @dataclass(frozen=True)
@@ -22,6 +30,44 @@ class DiscoverySnapshot02:
     next_actions: str
     decisions: str | None
     evidence: dict[str, str]
+
+
+def _load_and_validate_manifest_0_2(manifest: Path) -> dict[str, object]:
+    try:
+        data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, yaml.YAMLError) as exc:
+        raise discovery_failure(
+            "AGNIR_DISCOVERY_INCONSISTENT",
+            f"repository/filesystem 0.2 manifest cannot be parsed safely: {exc}",
+        ) from exc
+
+    if not isinstance(data, dict):
+        raise discovery_failure(
+            "AGNIR_DISCOVERY_INCONSISTENT",
+            "repository/filesystem 0.2 manifest must be a mapping/object",
+        )
+
+    agnir = data.get("agnir")
+    declared_version = agnir.get("version") if isinstance(agnir, dict) else None
+    if declared_version is not None and declared_version != CORE_0_2_VERSION:
+        raise discovery_failure(
+            "AGNIR_DISCOVERY_UNSUPPORTED_VERSION",
+            f"expected Agnir Core {CORE_0_2_VERSION}, discovered {declared_version!r}",
+        )
+
+    errors = sorted(
+        _SCHEMA_VALIDATOR.iter_errors(data),
+        key=lambda error: (list(error.absolute_path), error.message),
+    )
+    if errors:
+        first = errors[0]
+        location = ".".join(str(item) for item in first.absolute_path) or "<root>"
+        raise discovery_failure(
+            "AGNIR_DISCOVERY_INCONSISTENT",
+            f"repository/filesystem 0.2 manifest violates published schema at {location}: {first.message}",
+        )
+
+    return data
 
 
 def discover_repository_filesystem_0_2(
@@ -38,32 +84,25 @@ def discover_repository_filesystem_0_2(
             "repository/filesystem 0.2 could not resolve top-level AGNIR.yaml at the selected Project root",
         )
 
-    values = _parse_scalars(manifest.read_text(encoding="utf-8"))
-    version = values.get(("agnir", "version"))
-    profile = values.get(("agnir", "discovery_profile"))
-    identity = values.get(("project", "identity"))
-    lineage = values.get(("continuity", "lineage"))
+    data = _load_and_validate_manifest_0_2(manifest)
+    agnir = data["agnir"]
+    project = data["project"]
+    continuity = data["continuity"]
+    memory = data["memory"]
+    assert isinstance(agnir, dict)
+    assert isinstance(project, dict)
+    assert isinstance(continuity, dict)
+    assert isinstance(memory, dict)
 
-    if version != CORE_0_2_VERSION:
-        raise discovery_failure(
-            "AGNIR_DISCOVERY_UNSUPPORTED_VERSION",
-            f"expected Agnir Core {CORE_0_2_VERSION}, discovered {version!r}",
-        )
-    if profile != PROFILE_0_2:
-        raise discovery_failure(
-            "AGNIR_DISCOVERY_INCONSISTENT",
-            f"expected discovery profile {PROFILE_0_2}, discovered {profile!r}",
-        )
-    if not identity:
-        raise discovery_failure(
-            "AGNIR_DISCOVERY_INCONSISTENT",
-            "project.identity is missing",
-        )
-    if not lineage:
-        raise discovery_failure(
-            "AGNIR_DISCOVERY_INCONSISTENT",
-            "continuity.lineage is missing",
-        )
+    version = agnir["version"]
+    profile = agnir["discovery_profile"]
+    identity = project["identity"]
+    lineage = continuity["lineage"]
+    assert isinstance(version, str)
+    assert isinstance(profile, str)
+    assert isinstance(identity, str)
+    assert isinstance(lineage, str)
+
     if expected_project_identity is not None and identity != expected_project_identity:
         raise discovery_failure(
             "AGNIR_DISCOVERY_PROJECT_MISMATCH",
@@ -75,27 +114,36 @@ def discover_repository_filesystem_0_2(
             f"expected lineage {expected_lineage_identity!r}, discovered selected lineage {lineage!r}",
         )
 
+    state_locator = memory["state"]
+    next_locator = memory["next_actions"]
+    decisions_locator = memory["decisions"]
+    evidence_locator = memory["evidence"]
+    assert isinstance(state_locator, str)
+    assert isinstance(next_locator, str)
+    assert decisions_locator is None or isinstance(decisions_locator, str)
+    assert evidence_locator is None or isinstance(evidence_locator, str)
+
     state_path = _resolve_local_locator(
         root,
-        values.get(("memory", "state")),
+        state_locator,
         required=True,
         kind="Current State",
     )
     next_path = _resolve_local_locator(
         root,
-        values.get(("memory", "next_actions")),
+        next_locator,
         required=True,
         kind="Next Actions",
     )
     decisions_path = _resolve_local_locator(
         root,
-        values.get(("memory", "decisions")),
+        decisions_locator,
         required=False,
         kind="Decisions",
     )
     evidence_path = _resolve_local_locator(
         root,
-        values.get(("memory", "evidence")),
+        evidence_locator,
         required=False,
         kind="Evidence",
         expect_directory=True,
