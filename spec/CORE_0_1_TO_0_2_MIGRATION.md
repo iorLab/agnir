@@ -1,6 +1,8 @@
-# Agnir Core 0.1 → 0.2 Migration — Draft
+# Agnir Core 0.1 → 0.2 Migration
 
-**Status:** Experimental migration contract for the Core `0.2` workstream. Core `0.1` remains the published stable compatibility line.
+**Status:** Stable normative migration contract from published Core `0.1` to published Core `0.2`.
+
+This contract governs the compatibility-line migration used by repository `v0.2.0` and later repository releases that explicitly support Core `0.1` → Core `0.2` migration. Core `0.1` remains a supported compatibility/regression surface for existing published `v0.1.1` Projects; Core `0.2` is the current published stable compatibility line.
 
 ## 1. Why migration is explicit
 
@@ -37,7 +39,7 @@ For a backend/profile that supports a default lineage, the migrated initial line
 
 Core `0.2` does not require the migration to rewrite every memory object or move every locator. A backend MAY preserve existing storage locations and add lineage-selection metadata around them, or materialize a new representation, provided the observable Core semantics are preserved and fresh Core `0.2` discovery resolves coherently.
 
-The repository/filesystem profile may later define a concrete serialized migration shape. This Core migration contract intentionally does not prescribe one before profile-level conformance settles it.
+This Core migration contract intentionally remains storage-neutral. `repository-filesystem/0.2` defines the concrete repository/filesystem discovery shape and executable repository conformance defines the corresponding staged publication pressure; other backends MAY realize the same migration semantics differently.
 
 ## 5. Idempotence
 
@@ -68,9 +70,9 @@ Use atomic backend publication when available. Otherwise use generation/revision
 
 If authoritative Core `0.1` continuity changes after the migration candidate was constructed but before publication, migration MUST fail/re-resolve rather than overwrite the newer truth.
 
-## 8. Conformance gates
+## 8. Conformance requirements
 
-Before Core `0.2` publication, tests MUST demonstrate:
+Conformance for this published migration line MUST demonstrate:
 
 - unauthorized Core-line change remains `AGNIR_UPGRADE_MIGRATION_REQUIRED`;
 - authorized migration preserves Project identity and all required durable memory semantics;
