@@ -419,6 +419,7 @@ jobs:
           git checkout -- .agnir/state.md || true
           rm -f .agnir/evidence/.mount-boundary-runtime-checkpoint.json
           rm -f .agnir/evidence/.mount-boundary-runtime-resume.json
+          rm -rf conformance/__pycache__
           final_status="$(git status --porcelain)"
           printf '%s\n' "$final_status" | tee "$RUNNER_TEMP/mount-boundary-receipts/final-git-status.txt"
           test -z "$final_status"
