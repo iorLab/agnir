@@ -86,8 +86,14 @@ The stable operational-package baseline actually applied before the final public
 
 The final stable tag target `fc84095...` is the publication receipt and exact released source tree. The package baseline and final tag target are deliberately distinct so provenance never requires an impossible self-referential SHA.
 
-## Known limitations and next boundary
+## Post-release readiness status
 
-Real mount-boundary behavior remains explicitly unproven because no genuine mount-capable conformance environment has been supplied. Execution-surface persistence/configuration remains adapter behavior outside Core. Neither was a declared `v0.2.0` milestone blocker.
+The immutable `v0.2.0` release remains unchanged. Subsequent authoritative `main` checkpoints have added external v1-readiness evidence without redefining the stable tag:
 
-The next engineering boundary is safe reconciliation of the published stable result back into authoritative `main`, then broader real-Project/execution-surface evidence toward `v1.0.0` under `V1_RELEASE_CRITERIA.md`.
+- authoritative stable-to-main reconciliation completed and was independently verified;
+- real-Project upgrade, parallel-lineage/reconciliation, fresh-install, and materially distinct execution-surface evidence reached the current v1 minimum thresholds;
+- genuine Linux Docker bind-mount checkpoint/fresh-resume evidence was accepted on 2026-09-04, including read-only and wrong/missing-root negative paths;
+- execution-surface persistence/configuration remains adapter behavior outside Core;
+- independent-implementation documentation quality remains the open external v1 gate until a fresh independent implementation passes from public material.
+
+The next release boundary is therefore the independent-implementation gate defined by `V1_RELEASE_CRITERIA.md`; only after that gate closes should Agnir begin the explicit `1.0.0-rc` cycle.
