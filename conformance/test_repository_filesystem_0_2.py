@@ -111,6 +111,52 @@ class RepositoryFilesystem02Tests(unittest.TestCase):
                 discover_repository_filesystem_0_2(root)
             self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_INCONSISTENT")
 
+    def test_profile_mismatch_is_inconsistent_not_unsupported_core_version(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_project(
+                root,
+                lineage="urn:agnir:lineage:primary",
+                state="state",
+                next_actions="next",
+            )
+            manifest = (root / "AGNIR.yaml").read_text(encoding="utf-8")
+            (root / "AGNIR.yaml").write_text(
+                manifest.replace(
+                    'discovery_profile: "repository-filesystem/0.2"',
+                    'discovery_profile: "repository-filesystem/9.9"',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem_0_2(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_INCONSISTENT")
+
+    def test_local_locator_escape_is_unresolvable(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            root = base / "project"
+            root.mkdir()
+            _write_project(
+                root,
+                lineage="urn:agnir:lineage:primary",
+                state="state",
+                next_actions="next",
+            )
+            outside = base / "outside-state.md"
+            outside.write_text("outside", encoding="utf-8")
+            manifest = (root / "AGNIR.yaml").read_text(encoding="utf-8")
+            (root / "AGNIR.yaml").write_text(
+                manifest.replace(
+                    'state: ".agnir/state.md"',
+                    'state: "../outside-state.md"',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem_0_2(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_UNRESOLVABLE")
+
     def test_stable_0_1_resolver_does_not_silently_accept_0_2(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -124,7 +170,7 @@ class RepositoryFilesystem02Tests(unittest.TestCase):
                 discover_repository_filesystem(root)
             self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_UNSUPPORTED_VERSION")
 
-    def test_experimental_schema_declares_core_and_profile_0_2(self) -> None:
+    def test_stable_schema_declares_core_and_profile_0_2(self) -> None:
         schema_path = Path(__file__).resolve().parents[1] / "schemas" / "agnir-manifest-0.2.schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         self.assertEqual(

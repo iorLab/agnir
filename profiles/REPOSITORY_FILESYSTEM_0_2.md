@@ -59,6 +59,20 @@ The locator rules from `repository-filesystem/0.1` remain conceptually valid:
 
 A profile implementation MAY preserve existing Core `0.1` memory paths during migration. Core `0.2` does not require moving continuity merely to add lineage identity.
 
+### Required discovery-failure mapping
+
+For interoperability, a resolver executing this selected profile MUST classify the following conditions consistently:
+
+- missing top-level `AGNIR.yaml` at the authorized selected Project root → `AGNIR_DISCOVERY_NOT_FOUND`;
+- declared `agnir.version` other than Core `0.2` → `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`;
+- after this profile has been selected, missing or mismatched `agnir.discovery_profile`, missing `project.identity`, or missing `continuity.lineage` → `AGNIR_DISCOVERY_INCONSISTENT`;
+- an explicitly expected Project identity that differs from the resolved Project identity → `AGNIR_DISCOVERY_PROJECT_MISMATCH`;
+- an explicitly selected/expected logical lineage that does not resolve to the lineage exposed by the selected root → `AGNIR_LINEAGE_NOT_FOUND` or a more specific binding failure in addition to that Core semantic class;
+- required local State/Next Actions locators that are missing, invalid, escape the selected Project root without an authorized external Locator Chain, or do not resolve to the required file/directory shape → `AGNIR_DISCOVERY_UNRESOLVABLE`;
+- a known external Locator Chain target whose required authorization is absent or denied → `AGNIR_DISCOVERY_UNAUTHORIZED` when the implementation can safely distinguish authorization failure from not-found/unresolvable state.
+
+A profile mismatch is therefore not an `AGNIR_DISCOVERY_UNSUPPORTED_VERSION` condition unless the incompatible value is specifically the declared Agnir Core version. Conversely, a local locator escaping the selected Project root is unresolvable as a local locator; it becomes an authorization question only when an explicit external Locator Chain/binding is actually being resolved.
+
 ## 4. Checkpoint publication
 
 A repository/filesystem `0.2` checkpoint is scoped to the logical lineage exposed by the selected root.
@@ -198,4 +212,6 @@ Stable `repository-filesystem/0.2` conformance includes at least:
 7. explicit ref rename/rebind can preserve logical lineage identity;
 8. a branch fork can establish a new logical lineage identity while preserving Project identity and inherited baseline continuity;
 9. target integration obeys staged reconciliation and coherent publication;
-10. Core `0.1` migration preserves durable truth and fresh-resumes as exactly one initial lineage.
+10. Core `0.1` migration preserves durable truth and fresh-resumes as exactly one initial lineage;
+11. Core-version mismatch and profile mismatch produce the distinct failure semantics specified above;
+12. local locator escape without an authorized external Locator Chain is rejected as `AGNIR_DISCOVERY_UNRESOLVABLE` rather than silently treated as an external-memory authorization path.

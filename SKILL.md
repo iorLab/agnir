@@ -24,7 +24,8 @@ For repository/filesystem targets:
 
 - Core/profile `0.1`: `spec/AGNIR_CORE.md`, `profiles/REPOSITORY_FILESYSTEM.md`, `schemas/agnir-manifest.schema.json`;
 - Core/profile `0.2`: `spec/AGNIR_CORE_0_2.md`, `profiles/REPOSITORY_FILESYSTEM_0_2.md`, `spec/CORE_0_1_TO_0_2_MIGRATION.md`, `schemas/agnir-manifest-0.2.schema.json`;
-- VCS branch/worktree/integration work: also apply `profiles/VCS_BRANCH_CONTINUITY.md` as adapter/extension mapping.
+- Core/profile `0.1` VCS branch/worktree/integration behavior: also apply `profiles/VCS_BRANCH_CONTINUITY.md` as the experimental 0.1 VCS extension;
+- Core/profile `0.2` VCS selector/binding/fork/rebind/integration behavior: use the normative VCS semantics in `spec/AGNIR_CORE_0_2.md` and `profiles/REPOSITORY_FILESYSTEM_0_2.md`. Do **not** treat the Core/profile 0.1-only `profiles/VCS_BRANCH_CONTINUITY.md` as the normative 0.2 contract.
 
 ## Install or initialize Agnir
 

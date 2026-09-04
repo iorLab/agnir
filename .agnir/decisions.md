@@ -39,6 +39,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 - `latest stable` means an actually published stable tag/release. Moving `main`, prerelease branches, or untagged revisions are not silently substituted.
 - Optional `extensions.agnir/operations` records which operational package was actually applied; it does not define Core/profile compatibility, Project identity, or lineage identity.
 - A Core/profile compatibility-line change is migration-required and must surface `AGNIR_UPGRADE_MIGRATION_REQUIRED`-class behavior instead of a silent compatible rewrite.
+- Core/profile `0.1` → `0.2` is a published stable migration contract. Existing `0.1` Projects remain supported compatibility/regression surfaces; the current published stable line is Core/profile `0.2`.
 
 ## Core 0.2 Continuity Lineages
 
@@ -53,6 +54,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 ## VCS lineage binding and fork behavior
 
 - A selected Git ref/worktree is not itself logical lineage identity.
+- Core/profile `0.2` VCS selector/binding/fork/rebind/integration semantics are governed by `spec/AGNIR_CORE_0_2.md` plus `profiles/REPOSITORY_FILESYSTEM_0_2.md`; the experimental `profiles/VCS_BRANCH_CONTINUITY.md` remains a Core/profile `0.1` compatibility/design surface and is not the normative `0.2` contract.
 - An Agnir-aware lineage fork preserves Project identity and inherited baseline while establishing a new logical lineage identity and a new selector→lineage binding.
 - When Agnir controls the fork, new lineage identity, selector binding, and coherent inherited/reconciled continuity must become visible together; sequential visible writes that temporarily expose copied source binding under the new selector are not the conforming publication path.
 - Explicit ref rename/rebind may preserve logical lineage identity while changing selector string.
@@ -69,33 +71,30 @@ This file records active durable decisions required to operate and evolve Agnir 
 - A merge-first/follow-up-continuity-repair sequence is recovery-oriented, not the intended conforming normal path when Agnir knowingly controls publication.
 - Cross-Project integration does not bypass Project identity validation.
 
-## Repository/filesystem 0.2 and migration
+## Repository/filesystem 0.2 and failure mapping
 
 - `repository-filesystem/0.2` resolves one selected logical `continuity.lineage` plus its durable memory locators. Sibling enumeration is not required for ordinary cold-start resume.
 - Stable `repository-filesystem/0.1` resolvers reject Core/profile `0.2` rather than silently interpreting it.
+- Core-version mismatch is `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`; after the `repository-filesystem/0.2` profile has been selected, a profile identifier mismatch is `AGNIR_DISCOVERY_INCONSISTENT`.
+- A local locator that escapes the selected Project root without an authorized external Locator Chain is `AGNIR_DISCOVERY_UNRESOLVABLE`; `AGNIR_DISCOVERY_UNAUTHORIZED` applies when a known external locator requires authorization that is absent or denied.
 - A Core `0.1` Project's one implicit continuity line becomes exactly one initial/default Core `0.2` logical lineage while preserving Project identity and material State / Next Actions / Decisions / Evidence.
 - Migration is explicit, idempotent, cold-start verifiable, and conflict-safe. Repeating the same migration is a no-op; conflicting silent initial-lineage rebinding is a migration conflict.
 - Concrete repository/filesystem migration stages against authoritative source state, rejects stale source mutation, publishes coherently, and verifies fresh Core/profile `0.2` discovery.
 
-## RC contract promotion — 2026-09-03
+## Independent-implementation evidence policy
 
-- `spec/AGNIR_CORE_0_2.md` is the normative Core `0.2` compatibility candidate for repository `v0.2.0-rc.1`.
-- `profiles/REPOSITORY_FILESYSTEM_0_2.md` is the normative `repository-filesystem/0.2` compatibility candidate for the RC.
-- `spec/CORE_0_1_TO_0_2_MIGRATION.md` remains the migration contract; `schemas/agnir-manifest-0.2.schema.json` remains the machine-readable 0.2 manifest contract.
-- The former `_DRAFT` Core/profile files are development artifacts and are removed when the RC candidates become active. Historical Evidence/Git history may continue to cite their old names.
-- Release branch `release/v0.2.0-rc.1` self-hosts the same Project identity `urn:agnir:project:agnir-core` on logical lineage `urn:agnir:lineage:v0.2.0-rc.1`, separately bound to selector `refs/heads/release/v0.2.0-rc.1`.
-- The RC branch's explicit Core/profile `0.1`→`0.2` self-host migration preserves inherited durable truth and memory locators from verified main baseline `f0b2cbd5329adb6ac7309076d7ea09337bb057c5`.
-- Repository SemVer on the RC branch is `0.2.0-rc.1`. This prerelease is not `latest stable`.
-- Published stable remains immutable `v0.1.1` at `e9712357ab590e5c1e5357b3cf3219d07d789aff` until final `v0.2.0` is actually published.
-- `extensions.agnir/operations` must report the operational package actually applied. During early RC synchronization it may truthfully remain at published `v0.1.1`; it must not invent a self-referential RC `applied_revision` before an exact candidate exists.
+- v1 documentation quality must be demonstrated by a fresh implementer/reviewer who does not rely on private Agnir design-chat history or previous challenge clarification.
+- A reviewer must reconstruct the public contract before inspecting `conformance/*_reference.py`, then independently implement or precisely specify the resolver/checkpoint path and preserve auditable receipts.
+- A failed implementation is preserved as evidence but does not close the gate. Once Phase C exposes reference code, that session is no longer eligible as the fresh implementer for the next acceptance attempt.
+- Public ambiguities or contradictions found by a challenge are repaired in public material; the gate is rerun from a new exact source revision and a genuinely fresh context.
+- Core/profile `1.0` promotion and repository `1.0.0-rc` remain downstream of a successful independent-implementation gate.
 
 ## Real evidence and release direction
 
-- Core `0.2` has both non-VCS SQLite and VCS mapping/binding evidence, concrete profile/migration evidence, and real Svif consumer evidence.
+- Core `0.2` has non-VCS SQLite and VCS mapping/binding evidence, concrete profile/migration evidence, and real consumer evidence.
 - Svif proved explicit migration, two independently advancing lineages, staged integration without target advancement, target reconciliation before publication, coherent target advancement, and independent source resume.
-- Agnir itself safely integrated the Core `0.2` source into authoritative `main` using an exact reconciled two-parent candidate, candidate-tree CI, stale-ref check, one target advancement, and authoritative-main CI.
-- `v0.2.0-rc.1` publication requires synchronized README/Skill/repository maps, exact RC conformance, fresh install, and at least one explicitly authorized real published-`v0.1.1` → Core/profile `0.2` migration/resume.
-- RC tag/release must be immutable and marked prerelease; it must not become `latest stable`.
+- FishUp and VocaPort add materially different migration/fresh-install evidence; VocaPort DSH provides the second accepted Agent execution surface.
+- Genuine Linux Docker bind-mount checkpoint/fresh-resume evidence was accepted on 2026-09-04, including read-only checkpoint rejection and explicit missing/wrong-root discovery failures. The current v1 mount-boundary gate is satisfied; broader network filesystem/FUSE/Kubernetes-volume robustness remains optional future evidence.
 - `v1.0.0` remains a stability/compatibility commitment governed by `V1_RELEASE_CRITERIA.md`, not a feature-count threshold.
 
 ## Documentation and repository governance
@@ -103,5 +102,5 @@ This file records active durable decisions required to operate and evolve Agnir 
 - `README.md` and `README.zh-CN.md` are parallel entry documents and preserve equivalent architecture, activation, migration, handoff, lineage, and continuity meaning.
 - Before the architecture diagram they remain intentionally concise: Start Here / 从这里开始 → canonical Agnir Project Instructions → installed Project surface → Architecture.
 - `REPOSITORY_TREE.md` is the exhaustive responsibility map; `.agnir/evidence/` is represented by directory responsibility rather than every Evidence filename.
-- `main` is the only intended long-lived authoritative branch. Release/validation branches are temporary evidence carriers and require explicit reconciliation before authoritative-main advancement.
-- Real mount-boundary behavior remains explicitly unproven until a genuine mount-capable environment is available.
+- `main` is the only intended long-lived authoritative branch. Release/validation/repair branches are temporary evidence/staging carriers and require explicit reconciliation before authoritative-main advancement.
+- Published tags are immutable. Stable `0.2.x` maintenance may repair documentation, conformance, packaging, or implementation without silently redefining Core/profile `0.2` semantics.
