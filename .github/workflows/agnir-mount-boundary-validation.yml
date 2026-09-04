@@ -1,0 +1,433 @@
+name: Agnir mount-boundary validation
+
+on:
+  push:
+    branches:
+      - validation/mount-boundary-v0.2.0
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mount-boundary:
+    runs-on: ubuntu-latest
+    env:
+      VALIDATION_BASE: 4eb15a5c6df80983b1b799a9311ffc79a1d868d9
+      EXPECTED_PROJECT_ID: urn:agnir:project:agnir-core
+      EXPECTED_LINEAGE: urn:agnir:lineage:mount-boundary-validation
+      EXPECTED_BRANCH: refs/heads/validation/mount-boundary-v0.2.0
+      PYTHON_IMAGE: python:3.12-slim
+
+    steps:
+      - name: Checkout validation lineage
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enforce validation-only staged diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "$EXPECTED_BRANCH"
+          git diff --name-only "$VALIDATION_BASE"...HEAD | tee /tmp/mount-validation-files.txt
+          while IFS= read -r path; do
+            case "$path" in
+              AGNIR.yaml|.agnir/state.md|.agnir/next-actions.md|.agnir/evidence/2026-09-04-mount-boundary-validation-protocol.md|.github/workflows/agnir-mount-boundary-validation.yml)
+                ;;
+              "")
+                ;;
+              *)
+                echo "Unexpected mount-validation change: $path" >&2
+                exit 1
+                ;;
+            esac
+          done < /tmp/mount-validation-files.txt
+          test -z "$(git status --porcelain)"
+
+      - name: Prepare runtime receipt area
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/mount-boundary-receipts"
+          nonce="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${GITHUB_SHA}"
+          echo "MOUNT_NONCE=$nonce" >> "$GITHUB_ENV"
+          docker version
+          docker pull "$PYTHON_IMAGE"
+
+      - name: Container A — activate and checkpoint through bind mount
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --name agnir-mount-a -i \
+            -e EXPECTED_PROJECT_ID \
+            -e EXPECTED_LINEAGE \
+            -e MOUNT_NONCE \
+            -e GITHUB_SHA \
+            -v "$GITHUB_WORKSPACE:/workspace/project-a:rw" \
+            -v "$RUNNER_TEMP/mount-boundary-receipts:/receipts:rw" \
+            "$PYTHON_IMAGE" python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          root = Path('/workspace/project-a')
+          mountinfo = Path('/proc/self/mountinfo').read_text(encoding='utf-8').splitlines()
+          mount_lines = [line for line in mountinfo if ' /workspace/project-a ' in line]
+          assert mount_lines, 'Project root is not visible as a real container mount point'
+
+          sys.path.insert(0, str(root / 'conformance'))
+          from repository_filesystem_0_2_reference import discover_repository_filesystem_0_2
+
+          snapshot = discover_repository_filesystem_0_2(
+              root,
+              expected_project_identity=os.environ['EXPECTED_PROJECT_ID'],
+              expected_lineage_identity=os.environ['EXPECTED_LINEAGE'],
+          )
+          assert snapshot.version == '0.2'
+          assert snapshot.profile == 'repository-filesystem/0.2'
+          assert snapshot.state.strip()
+          assert snapshot.next_actions.strip()
+          assert snapshot.decisions and snapshot.decisions.strip()
+          assert snapshot.evidence
+
+          nonce = os.environ['MOUNT_NONCE']
+          marker = f'<!-- agnir-mount-boundary:{nonce}:container-a -->'
+          state_path = root / '.agnir/state.md'
+          before = state_path.read_text(encoding='utf-8')
+          assert marker not in before
+          state_path.write_text(before.rstrip() + '\n\n' + marker + '\n', encoding='utf-8')
+
+          evidence_name = '.mount-boundary-runtime-checkpoint.json'
+          payload = {
+              'nonce': nonce,
+              'writer': 'container-a',
+              'container_project_root': str(snapshot.project_root),
+              'project_identity': snapshot.project_identity,
+              'lineage_identity': snapshot.lineage_identity,
+              'version': snapshot.version,
+              'profile': snapshot.profile,
+              'workflow_head': os.environ['GITHUB_SHA'],
+              'state_before_sha256': hashlib.sha256(before.encode()).hexdigest(),
+              'state_marker': marker,
+          }
+          (root / '.agnir/evidence' / evidence_name).write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+
+          fresh = discover_repository_filesystem_0_2(
+              root,
+              expected_project_identity=os.environ['EXPECTED_PROJECT_ID'],
+              expected_lineage_identity=os.environ['EXPECTED_LINEAGE'],
+          )
+          assert marker in fresh.state
+          assert evidence_name in fresh.evidence
+          assert json.loads(fresh.evidence[evidence_name])['nonce'] == nonce
+
+          receipt = {
+              'phase': 'container-a-checkpoint',
+              'nonce': nonce,
+              'project_root': str(fresh.project_root),
+              'project_identity': fresh.project_identity,
+              'lineage_identity': fresh.lineage_identity,
+              'version': fresh.version,
+              'profile': fresh.profile,
+              'mountinfo': mount_lines,
+              'checkpoint_evidence': evidence_name,
+              'state_marker': marker,
+          }
+          Path('/receipts/container-a.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          PY
+          docker rm agnir-mount-a
+          if docker inspect agnir-mount-a >/dev/null 2>&1; then
+            echo "Container A still exists after destruction" >&2
+            exit 1
+          fi
+
+      - name: Container B — fresh resume at a different mount path
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --name agnir-mount-b -i \
+            -e EXPECTED_PROJECT_ID \
+            -e EXPECTED_LINEAGE \
+            -e MOUNT_NONCE \
+            -e GITHUB_SHA \
+            -v "$GITHUB_WORKSPACE:/mnt/agnir-project-b:rw" \
+            -v "$RUNNER_TEMP/mount-boundary-receipts:/receipts:rw" \
+            "$PYTHON_IMAGE" python - <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          root = Path('/mnt/agnir-project-b')
+          mountinfo = Path('/proc/self/mountinfo').read_text(encoding='utf-8').splitlines()
+          mount_lines = [line for line in mountinfo if ' /mnt/agnir-project-b ' in line]
+          assert mount_lines, 'Project root is not visible as a real container mount point'
+
+          sys.path.insert(0, str(root / 'conformance'))
+          from repository_filesystem_0_2_reference import discover_repository_filesystem_0_2
+
+          snapshot = discover_repository_filesystem_0_2(
+              root,
+              expected_project_identity=os.environ['EXPECTED_PROJECT_ID'],
+              expected_lineage_identity=os.environ['EXPECTED_LINEAGE'],
+          )
+          nonce = os.environ['MOUNT_NONCE']
+          a_marker = f'<!-- agnir-mount-boundary:{nonce}:container-a -->'
+          checkpoint_name = '.mount-boundary-runtime-checkpoint.json'
+          assert a_marker in snapshot.state, 'fresh Container B did not recover Container A State checkpoint'
+          assert checkpoint_name in snapshot.evidence, 'fresh Container B did not recover Container A Evidence checkpoint'
+          checkpoint = json.loads(snapshot.evidence[checkpoint_name])
+          assert checkpoint['nonce'] == nonce
+          assert checkpoint['writer'] == 'container-a'
+          assert checkpoint['container_project_root'] == '/workspace/project-a'
+          assert str(snapshot.project_root) == '/mnt/agnir-project-b'
+          assert snapshot.project_identity == os.environ['EXPECTED_PROJECT_ID']
+          assert snapshot.lineage_identity == os.environ['EXPECTED_LINEAGE']
+
+          b_marker = f'<!-- agnir-mount-boundary:{nonce}:container-b-resumed -->'
+          state_path = root / '.agnir/state.md'
+          current = state_path.read_text(encoding='utf-8')
+          assert b_marker not in current
+          state_path.write_text(current.rstrip() + '\n\n' + b_marker + '\n', encoding='utf-8')
+
+          resume_name = '.mount-boundary-runtime-resume.json'
+          resume = {
+              'nonce': nonce,
+              'writer': 'container-b',
+              'container_project_root': str(snapshot.project_root),
+              'project_identity': snapshot.project_identity,
+              'lineage_identity': snapshot.lineage_identity,
+              'recovered_checkpoint_writer': checkpoint['writer'],
+              'recovered_checkpoint_root': checkpoint['container_project_root'],
+              'state_marker_from_a': a_marker,
+              'state_marker_from_b': b_marker,
+          }
+          (root / '.agnir/evidence' / resume_name).write_text(
+              json.dumps(resume, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+
+          fresh = discover_repository_filesystem_0_2(
+              root,
+              expected_project_identity=os.environ['EXPECTED_PROJECT_ID'],
+              expected_lineage_identity=os.environ['EXPECTED_LINEAGE'],
+          )
+          assert a_marker in fresh.state and b_marker in fresh.state
+          assert checkpoint_name in fresh.evidence and resume_name in fresh.evidence
+
+          receipt = {
+              'phase': 'container-b-fresh-resume',
+              'nonce': nonce,
+              'project_root': str(fresh.project_root),
+              'project_identity': fresh.project_identity,
+              'lineage_identity': fresh.lineage_identity,
+              'version': fresh.version,
+              'profile': fresh.profile,
+              'mountinfo': mount_lines,
+              'recovered_checkpoint_root': checkpoint['container_project_root'],
+              'resume_evidence': resume_name,
+          }
+          Path('/receipts/container-b.json').write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          PY
+          docker rm agnir-mount-b
+          if docker inspect agnir-mount-b >/dev/null 2>&1; then
+            echo "Container B still exists after destruction" >&2
+            exit 1
+          fi
+
+      - name: Negative path — read-only mount rejects checkpoint write
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --name agnir-mount-ro -i \
+            -e EXPECTED_PROJECT_ID \
+            -e EXPECTED_LINEAGE \
+            -v "$GITHUB_WORKSPACE:/readonly/project:ro" \
+            -v "$RUNNER_TEMP/mount-boundary-receipts:/receipts:rw" \
+            "$PYTHON_IMAGE" python - <<'PY'
+          import errno
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          root = Path('/readonly/project')
+          mountinfo = Path('/proc/self/mountinfo').read_text(encoding='utf-8').splitlines()
+          mount_lines = [line for line in mountinfo if ' /readonly/project ' in line]
+          assert mount_lines
+          sys.path.insert(0, str(root / 'conformance'))
+          from repository_filesystem_0_2_reference import discover_repository_filesystem_0_2
+
+          snapshot = discover_repository_filesystem_0_2(
+              root,
+              expected_project_identity=os.environ['EXPECTED_PROJECT_ID'],
+              expected_lineage_identity=os.environ['EXPECTED_LINEAGE'],
+          )
+          try:
+              with (root / '.agnir/state.md').open('a', encoding='utf-8') as handle:
+                  handle.write('\nshould-not-write\n')
+          except OSError as exc:
+              assert exc.errno in (errno.EROFS, errno.EACCES, errno.EPERM), exc
+              Path('/receipts/read-only.json').write_text(
+                  json.dumps({
+                      'phase': 'read-only-checkpoint-rejection',
+                      'project_identity': snapshot.project_identity,
+                      'lineage_identity': snapshot.lineage_identity,
+                      'errno': exc.errno,
+                      'error': str(exc),
+                      'mountinfo': mount_lines,
+                  }, indent=2, sort_keys=True) + '\n',
+                  encoding='utf-8',
+              )
+          else:
+              raise AssertionError('checkpoint write unexpectedly succeeded through read-only Project mount')
+          PY
+          docker rm agnir-mount-ro
+
+      - name: Negative paths — missing and wrong Project mounts fail explicitly
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/empty-project"
+
+          docker run --name agnir-mount-missing -i \
+            -v "$GITHUB_WORKSPACE:/reference:ro" \
+            -v "$RUNNER_TEMP/mount-boundary-receipts:/receipts:rw" \
+            "$PYTHON_IMAGE" python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          sys.path.insert(0, '/reference/conformance')
+          from repository_filesystem_0_2_reference import discover_repository_filesystem_0_2
+          from core_reference import DiscoveryFailure
+
+          try:
+              discover_repository_filesystem_0_2('/selected/project-not-mounted')
+          except DiscoveryFailure as exc:
+              assert exc.code == 'AGNIR_DISCOVERY_NOT_FOUND', exc.code
+              Path('/receipts/missing-mount.json').write_text(
+                  json.dumps({'phase': 'missing-mount', 'code': exc.code, 'error': str(exc)}, indent=2, sort_keys=True) + '\n',
+                  encoding='utf-8',
+              )
+          else:
+              raise AssertionError('missing selected Project mount unexpectedly discovered continuity')
+          PY
+          docker rm agnir-mount-missing
+
+          docker run --name agnir-mount-wrong -i \
+            -v "$GITHUB_WORKSPACE:/reference:ro" \
+            -v "$RUNNER_TEMP/empty-project:/wrong/project:rw" \
+            -v "$RUNNER_TEMP/mount-boundary-receipts:/receipts:rw" \
+            "$PYTHON_IMAGE" python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          sys.path.insert(0, '/reference/conformance')
+          from repository_filesystem_0_2_reference import discover_repository_filesystem_0_2
+          from core_reference import DiscoveryFailure
+
+          mountinfo = Path('/proc/self/mountinfo').read_text(encoding='utf-8').splitlines()
+          mount_lines = [line for line in mountinfo if ' /wrong/project ' in line]
+          assert mount_lines, 'wrong Project root itself was not actually mounted'
+          try:
+              discover_repository_filesystem_0_2('/wrong/project')
+          except DiscoveryFailure as exc:
+              assert exc.code == 'AGNIR_DISCOVERY_NOT_FOUND', exc.code
+              Path('/receipts/wrong-mount.json').write_text(
+                  json.dumps({
+                      'phase': 'wrong-empty-mount',
+                      'code': exc.code,
+                      'error': str(exc),
+                      'mountinfo': mount_lines,
+                  }, indent=2, sort_keys=True) + '\n',
+                  encoding='utf-8',
+              )
+          else:
+              raise AssertionError('wrong/empty selected Project mount unexpectedly discovered sibling continuity')
+          PY
+          docker rm agnir-mount-wrong
+
+      - name: Host verifies mounted checkpoint persistence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['GITHUB_WORKSPACE'])
+          receipts = Path(os.environ['RUNNER_TEMP']) / 'mount-boundary-receipts'
+          nonce = os.environ['MOUNT_NONCE']
+          checkpoint_path = root / '.agnir/evidence/.mount-boundary-runtime-checkpoint.json'
+          resume_path = root / '.agnir/evidence/.mount-boundary-runtime-resume.json'
+          state = (root / '.agnir/state.md').read_text(encoding='utf-8')
+          a_marker = f'<!-- agnir-mount-boundary:{nonce}:container-a -->'
+          b_marker = f'<!-- agnir-mount-boundary:{nonce}:container-b-resumed -->'
+          assert checkpoint_path.is_file() and resume_path.is_file()
+          assert a_marker in state and b_marker in state
+          checkpoint = json.loads(checkpoint_path.read_text(encoding='utf-8'))
+          resume = json.loads(resume_path.read_text(encoding='utf-8'))
+          assert checkpoint['container_project_root'] == '/workspace/project-a'
+          assert resume['container_project_root'] == '/mnt/agnir-project-b'
+          assert resume['recovered_checkpoint_root'] == '/workspace/project-a'
+          assert checkpoint['project_identity'] == resume['project_identity'] == os.environ['EXPECTED_PROJECT_ID']
+          assert checkpoint['lineage_identity'] == resume['lineage_identity'] == os.environ['EXPECTED_LINEAGE']
+
+          required = [
+              'container-a.json', 'container-b.json', 'read-only.json',
+              'missing-mount.json', 'wrong-mount.json',
+          ]
+          for name in required:
+              assert (receipts / name).is_file(), name
+
+          (receipts / 'runtime-checkpoint.json').write_text(checkpoint_path.read_text(encoding='utf-8'), encoding='utf-8')
+          (receipts / 'runtime-resume.json').write_text(resume_path.read_text(encoding='utf-8'), encoding='utf-8')
+          host = {
+              'phase': 'host-verification',
+              'nonce': nonce,
+              'workflow_head': os.environ['GITHUB_SHA'],
+              'host_project_root': str(root.resolve()),
+              'project_identity': checkpoint['project_identity'],
+              'lineage_identity': checkpoint['lineage_identity'],
+              'container_a_root': checkpoint['container_project_root'],
+              'container_b_root': resume['container_project_root'],
+              'container_a_destroyed_before_b': True,
+              'checkpoint_visible_on_host': True,
+              'resume_visible_on_host': True,
+          }
+          (receipts / 'host.json').write_text(json.dumps(host, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+          git status --porcelain | tee "$RUNNER_TEMP/mount-boundary-receipts/runtime-git-status.txt"
+
+      - name: Restore validation worktree after runtime checkpoint test
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker rm -f agnir-mount-a agnir-mount-b agnir-mount-ro agnir-mount-missing agnir-mount-wrong >/dev/null 2>&1 || true
+          git checkout -- .agnir/state.md || true
+          rm -f .agnir/evidence/.mount-boundary-runtime-checkpoint.json
+          rm -f .agnir/evidence/.mount-boundary-runtime-resume.json
+          final_status="$(git status --porcelain)"
+          printf '%s\n' "$final_status" | tee "$RUNNER_TEMP/mount-boundary-receipts/final-git-status.txt"
+          test -z "$final_status"
+
+      - name: Upload exact mount-boundary receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agnir-mount-boundary-${{ github.run_id }}
+          path: ${{ runner.temp }}/mount-boundary-receipts
+          if-no-files-found: error
+          retention-days: 30

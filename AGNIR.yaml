@@ -8,7 +8,7 @@ project:
     - generic
 
 continuity:
-  lineage: "urn:agnir:lineage:authoritative"
+  lineage: "urn:agnir:lineage:mount-boundary-validation"
 
 memory:
   state: ".agnir/state.md"
@@ -28,7 +28,7 @@ extensions:
     integration_reconciliation: "required"
     lineage_binding:
       kind: "vcs-ref"
-      selector: "refs/heads/main"
+      selector: "refs/heads/validation/mount-boundary-v0.2.0"
   agnir/release:
     phase: "stable-main-verified"
     repository_version: "0.2.0"
