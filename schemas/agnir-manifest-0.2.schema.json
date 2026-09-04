@@ -41,10 +41,24 @@
       "additionalProperties": false,
       "required": ["state", "next_actions", "decisions", "evidence"],
       "properties": {
-        "state": {"type": "string", "minLength": 1},
-        "next_actions": {"type": "string", "minLength": 1},
-        "decisions": {"type": ["string", "null"]},
-        "evidence": {"type": ["string", "null"]}
+        "state": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Serialized locator. Under repository-filesystem/0.2 a local target must resolve to one regular file."
+        },
+        "next_actions": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Serialized locator. Under repository-filesystem/0.2 a local target must resolve to one regular file."
+        },
+        "decisions": {
+          "type": ["string", "null"],
+          "description": "Serialized locator or null. When non-null under repository-filesystem/0.2, a local target must resolve to one regular file."
+        },
+        "evidence": {
+          "type": ["string", "null"],
+          "description": "Serialized locator or null. When non-null under repository-filesystem/0.2, a local target must resolve to the Evidence collection directory; filesystem target-shape semantics are defined by the profile."
+        }
       }
     },
     "policy": {
