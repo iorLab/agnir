@@ -56,6 +56,45 @@ class RepositoryFilesystem02Tests(unittest.TestCase):
             self.assertEqual(snapshot.decisions, "durable decision")
             self.assertIn("checkpoint.md", snapshot.evidence)
 
+    def test_schema_valid_optional_project_profiles_is_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_project(
+                root,
+                lineage="urn:agnir:lineage:primary",
+                state="state",
+                next_actions="next",
+            )
+            manifest = (root / "AGNIR.yaml").read_text(encoding="utf-8")
+            (root / "AGNIR.yaml").write_text(
+                manifest.replace(
+                    f'  identity: "{PROJECT_ID}"\n',
+                    f'  identity: "{PROJECT_ID}"\n  profiles: []\n',
+                ),
+                encoding="utf-8",
+            )
+            snapshot = discover_repository_filesystem_0_2(root)
+            self.assertEqual(snapshot.project_identity, PROJECT_ID)
+
+    def test_forbidden_extra_top_level_field_is_rejected_by_reference(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_project(
+                root,
+                lineage="urn:agnir:lineage:primary",
+                state="state",
+                next_actions="next",
+            )
+            manifest_path = root / "AGNIR.yaml"
+            manifest_path.write_text(
+                manifest_path.read_text(encoding="utf-8")
+                + '\nlineage: "forbidden-shorthand"\n',
+                encoding="utf-8",
+            )
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem_0_2(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_INCONSISTENT")
+
     def test_two_selected_roots_can_share_project_identity_but_not_lineage(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp)
@@ -110,6 +149,45 @@ class RepositoryFilesystem02Tests(unittest.TestCase):
             with self.assertRaises(DiscoveryFailure) as raised:
                 discover_repository_filesystem_0_2(root)
             self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_INCONSISTENT")
+
+    def test_missing_core_version_is_inconsistent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_project(
+                root,
+                lineage="urn:agnir:lineage:primary",
+                state="state",
+                next_actions="next",
+            )
+            manifest_path = root / "AGNIR.yaml"
+            manifest_path.write_text(
+                manifest_path.read_text(encoding="utf-8").replace('  version: "0.2"\n', ""),
+                encoding="utf-8",
+            )
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem_0_2(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_INCONSISTENT")
+
+    def test_declared_core_version_mismatch_is_unsupported(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_project(
+                root,
+                lineage="urn:agnir:lineage:primary",
+                state="state",
+                next_actions="next",
+            )
+            manifest_path = root / "AGNIR.yaml"
+            manifest_path.write_text(
+                manifest_path.read_text(encoding="utf-8").replace(
+                    'version: "0.2"',
+                    'version: "9.9"',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem_0_2(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_UNSUPPORTED_VERSION")
 
     def test_profile_mismatch_is_inconsistent_not_unsupported_core_version(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -183,6 +261,7 @@ class RepositoryFilesystem02Tests(unittest.TestCase):
         )
         self.assertIn("continuity", schema["required"])
         self.assertIn("lineage", schema["properties"]["continuity"]["required"])
+        self.assertFalse(schema["additionalProperties"])
 
 
 if __name__ == "__main__":
