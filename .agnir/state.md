@@ -37,40 +37,66 @@ Container A checkpointed through `/workspace/project-a`, was destroyed, and a fr
 
 ## Independent-implementation documentation gate — open
 
-A clean independent challenge was run from public issue `iorLab/agnir#15` against exact source `d4d5c5a441766ca5993366429ecf6235d7c2a7bc`.
+The gate has now produced two preserved clean external attempts plus one earlier lost-session attempt. None closes the gate, but each materially improved the public contract and conformance pressure.
 
-The preserved complete challenge archive was supplied by the Principal and independently rechecked:
+### Preserved challenge #15 — `FAIL-IMPLEMENTATION`
 
-- archive SHA-256: `1426e0c4a3b9030944ad2694aaf9ff7daf4690b3f7fb1ce8cab9ba3f1dcc4a61`;
-- ZIP integrity passed;
-- 19 files cover source classification, frozen Phase A reconstruction, ambiguity log, independent Phase B implementation/tests/receipts, Phase C comparison/probe, and final verdict.
+Issue `iorLab/agnir#15` ran against exact source `d4d5c5a441766ca5993366429ecf6235d7c2a7bc`.
 
-The reviewer verdict was **`FAIL-IMPLEMENTATION`**: Phase A correctly reconstructed the published `0.2` manifest fields, but the frozen Phase B code later used incompatible shorthand fields and the wrong `policy.checkpoint` enum, so it rejected a valid published manifest. That session has now inspected reference code in Phase C and cannot be reused as the next fresh independent implementer.
+- preserved archive SHA-256: `1426e0c4a3b9030944ad2694aaf9ff7daf4690b3f7fb1ce8cab9ba3f1dcc4a61`;
+- reviewer Phase A reconstructed the published 0.2 manifest correctly;
+- frozen Phase B later used incompatible shorthand serialization, so the direct verdict was `FAIL-IMPLEMENTATION`;
+- the same review exposed public-contract drift, which was repaired before the next clean attempt.
 
-The same challenge nevertheless recorded real public-contract drift, and a separate repository review confirmed additional ambiguity risk. This checkpoint repairs the public `0.2` material without changing Core/profile semantics:
+That repair landed on authoritative main as `5b73acf914e323ce337a0af295d5a9e96eaafdc8`, with main conformance run `33896653132` success.
 
-- `spec/CORE_0_1_TO_0_2_MIGRATION.md` is brought into the stable normative status already asserted by `v0.2.0` release material;
-- `SKILL.md` now distinguishes the experimental Core/profile `0.1` VCS extension from the normative Core/profile `0.2` VCS selector/binding/integration sources;
-- `repository-filesystem/0.2` now explicitly maps Core-version mismatch, profile mismatch, Project/lineage mismatch, local locator escape, and real external authorization failure to machine-distinguishable semantics;
-- conformance pressure now covers profile mismatch and local-locator escape and removes stale `experimental` naming;
-- stale post-release/mount wording is refreshed.
+### Independent challenge #17 — `FAIL-CONFORMANCE`
 
-Evidence detail: `.agnir/evidence/2026-09-05-independent-implementation-challenge-attempt-2.md`.
+Issue `iorLab/agnir#17` then ran from a genuinely fresh reviewer against exact source `5b73acf914e323ce337a0af295d5a9e96eaafdc8`.
 
-The independent-implementation gate remains **open**. Acceptance requires a new exact authoritative source revision and another genuinely fresh reviewer/session that has not seen prior challenge reports or reference implementation code.
+Preserved archive receipt:
+
+- archive SHA-256: `a2408dec4c0e3badebaa9cb67043219e67f36b7c85fa5f7c160435afabe7d523`;
+- archive contains 80 entries and passed local ZIP integrity inspection;
+- Phase A and Phase B freeze verification passed before reference inspection;
+- independent Phase B resolver/checkpoint implementation passed **21/21** recorded scenarios;
+- the direct schema-conforming positive fixture was accepted and the direct schema-derived forbidden-extra-field fixture was rejected.
+
+Final verdict: **`FAIL-CONFORMANCE`**. Phase C demonstrated that the pinned `conformance/repository_filesystem_0_2_reference.py` did not enforce the normative `schemas/agnir-manifest-0.2.schema.json`: its scalar parser ignored forbidden additional/shorthand fields even though the schema has `additionalProperties: false`. The review also exposed a narrower machine-visible omission around absent `agnir.version` versus a present incompatible version.
+
+### Reference/schema repair — accepted into main
+
+PR `#18` repaired executable reference pressure without redesigning Core/profile semantics:
+
+- repository-filesystem/0.2 reference now parses YAML and validates the exact published JSON Schema;
+- forbidden additional/shorthand fields are rejected as `AGNIR_DISCOVERY_INCONSISTENT` rather than silently ignored;
+- the profile now explicitly distinguishes missing required `agnir.version` (`AGNIR_DISCOVERY_INCONSISTENT`) from a present incompatible Core version (`AGNIR_DISCOVERY_UNSUPPORTED_VERSION`);
+- positive schema-valid optional-field and negative forbidden-extra-field conformance cases are locked in;
+- conformance dependencies are pinned in `conformance/requirements.txt` and installed by CI.
+
+Accepted receipts:
+
+- repair PR head: `b753ad65548e81b30a7f0d189034284fde0f2002`;
+- PR conformance run `33907695244`: success;
+- merged authoritative main repair: `a0b322d4e7f4e62e2ed77121b0a1b4e3b2328d1a`;
+- authoritative main conformance run `33907748617`: success.
+
+Evidence detail: `.agnir/evidence/2026-09-05-independent-implementation-challenge-attempt-3.md`.
+
+The independent-implementation gate remains **open**. The next evidence must come from another genuinely fresh reviewer against the exact post-checkpoint public source, with no access to prior challenge reports/issues or reference code before its allowed Phase C boundary.
 
 ## v1 readiness — current
 
 - Core semantics: **provisionally satisfied**; reopen if fresh independent evidence exposes a semantic defect;
-- compatibility/migration contract: **satisfied for current published lines after public-status consistency repair**;
+- compatibility/migration contract: **satisfied for current published lines**;
 - real upgrade boundary: **satisfied** via Svif;
 - real parallel continuity/reconciliation Project: **satisfied** via Svif;
 - VCS + non-VCS lineage conformance: **satisfied**;
 - materially different real Projects: **satisfied at current minimum threshold (3)** via Svif + FishUp + VocaPort;
 - materially different execution surfaces/adapters: **satisfied at current minimum threshold (2)**;
 - real mount-boundary evidence: **satisfied**;
-- independent-implementation documentation quality: **open — fresh rerun required**;
+- independent-implementation documentation quality: **open — another fresh rerun required after reference/schema repair**;
 - Core/profile `1.0` promotion: **future, only after independent-implementation acceptance**;
-- explicit repository `1.0.0-rc` cycle: **future final release gate after independent-implementation acceptance and any deliberate 1.0 contract promotion**.
+- explicit repository `1.0.0-rc` cycle: **future final release gate after independent-implementation acceptance and deliberate 1.0 contract promotion**.
 
-No accepted real-Project, execution-surface, or mount evidence has exposed a breaking Core/profile `0.2` semantic defect. The immediate external work is now a fresh independent implementation against the repaired exact public source.
+No accepted real-Project, execution-surface, mount, or independent Phase B evidence has exposed a breaking Core/profile `0.2` semantic defect. The immediate external work is one more clean independent implementation against the repaired exact authoritative source.
