@@ -12,6 +12,8 @@ Therefore Core `0.1` → `0.2` is a compatibility-line migration, not a compatib
 
 An upgrade path that encounters Core `0.1` while targeting Core `0.2` MUST surface semantics equivalent to `AGNIR_UPGRADE_MIGRATION_REQUIRED` until migration is explicitly authorized.
 
+This authorization gate has precedence over validation of migration-only target choices. In particular, when the authoritative source is still Core `0.1`, an unauthorized request MUST surface `AGNIR_UPGRADE_MIGRATION_REQUIRED` even if the requested initial-lineage input is absent, empty, or otherwise unusable. Lineage-selection validation becomes authoritative only after the compatibility-line migration has been explicitly authorized. This precedence does not apply to an already-migrated Core `0.2` Project being checked for idempotence or conflict.
+
 ## 2. Required preservation
 
 A conforming migration MUST preserve:
@@ -31,6 +33,21 @@ The existing Core `0.1` continuity line becomes exactly one initial Core `0.2` C
 
 The migration mechanism MUST obtain a durable logical identity for that initial lineage from explicit Principal input or deterministic profile/backend policy. Core does not mandate the literal identity `main`, `default`, or any VCS-derived value.
 
+For a **string-valued** initial-lineage input, this migration contract defines one normalization rule so independently written implementations cannot publish different identities from the same input: before testing for emptiness, persistence, idempotence, or conflict, implementations MUST remove all leading and trailing Unicode code points whose Unicode `White_Space` property is `Yes`. For this compatibility line that set is:
+
+- U+0009–U+000D;
+- U+0020;
+- U+0085;
+- U+00A0;
+- U+1680;
+- U+2000–U+200A;
+- U+2028–U+2029;
+- U+202F;
+- U+205F;
+- U+3000.
+
+The resulting normalized string is the durable logical lineage identity used by the migration. A string that becomes empty after this normalization does not select an initial lineage and MUST fail with semantics equivalent to `AGNIR_LINEAGE_REQUIRED` after migration authorization has been established. A non-string identity representation used by another profile/backend MAY define an equivalent deterministic canonicalization policy appropriate to that representation, but it MUST still yield exactly one durable logical identity.
+
 If no initial lineage identity can be selected deterministically, migration MUST fail rather than guess among backend siblings.
 
 For a backend/profile that supports a default lineage, the migrated initial lineage SHOULD become the default unless explicit Project policy chooses another already-valid lineage.
@@ -46,6 +63,8 @@ This Core migration contract intentionally remains storage-neutral. `repository-
 Repeating the same authorized migration after successful completion MUST be a no-op or otherwise return the already-migrated coherent result without duplicating lineages, changing Project identity, or rewriting continuity merely to record the repeat request.
 
 If a repeated request attempts to reinterpret the already-migrated Core `0.1` continuity as a different initial lineage identity, the implementation MUST fail with migration-conflict semantics rather than silently rename/rebind the authoritative lineage.
+
+For string-valued lineage input, idempotence/conflict comparison uses the normalized identity defined in §3. Inputs that differ only by the leading/trailing Unicode `White_Space` characters removed by that rule therefore identify the same migration target.
 
 Recommended semantic class: `AGNIR_MIGRATION_CONFLICT`.
 
@@ -74,9 +93,10 @@ If authoritative Core `0.1` continuity changes after the migration candidate was
 
 Conformance for this published migration line MUST demonstrate:
 
-- unauthorized Core-line change remains `AGNIR_UPGRADE_MIGRATION_REQUIRED`;
+- unauthorized Core-line change remains `AGNIR_UPGRADE_MIGRATION_REQUIRED`, including when migration-only initial-lineage input is empty or unusable;
 - authorized migration preserves Project identity and all required durable memory semantics;
 - exactly one initial lineage is produced from the single Core `0.1` line;
+- string-valued initial-lineage normalization follows §3, including whitespace-only rejection after authorization and deterministic equality for inputs that normalize to the same identity;
 - fresh Core `0.2` resume succeeds via the initial/default lineage;
 - repeated identical migration is a no-op;
 - conflicting repeated lineage identity is rejected;
