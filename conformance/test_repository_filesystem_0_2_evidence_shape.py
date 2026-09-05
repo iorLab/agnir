@@ -76,6 +76,33 @@ class RepositoryFilesystemEvidenceShapeTests(unittest.TestCase):
             self.assertEqual(snapshot.evidence, {"checkpoint.md": "evidence"})
             self.assertNotIn("nested.md", snapshot.evidence)
 
+    def test_0_2_evidence_child_symlink_may_target_in_root_regular_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._write_project(root)
+            source = root / ".agnir" / "evidence-source.md"
+            source.write_text("linked evidence", encoding="utf-8")
+            link = root / ".agnir" / "evidence" / "linked.md"
+            link.symlink_to(source)
+
+            snapshot = discover_repository_filesystem_0_2(root)
+            self.assertEqual(snapshot.evidence["linked.md"], "linked evidence")
+
+    def test_0_2_evidence_child_symlink_escape_is_unresolvable(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            root = base / "project"
+            root.mkdir()
+            self._write_project(root)
+            outside = base / "outside-evidence.md"
+            outside.write_text("outside evidence", encoding="utf-8")
+            link = root / ".agnir" / "evidence" / "outside.md"
+            link.symlink_to(outside)
+
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem_0_2(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_UNRESOLVABLE")
+
 
 if __name__ == "__main__":
     unittest.main()
