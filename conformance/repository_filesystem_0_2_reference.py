@@ -49,7 +49,7 @@ def _load_and_validate_manifest_0_2(manifest: Path) -> dict[str, object]:
 
     agnir = data.get("agnir")
     declared_version = agnir.get("version") if isinstance(agnir, dict) else None
-    if declared_version is not None and declared_version != CORE_0_2_VERSION:
+    if isinstance(declared_version, str) and declared_version != CORE_0_2_VERSION:
         raise discovery_failure(
             "AGNIR_DISCOVERY_UNSUPPORTED_VERSION",
             f"expected Agnir Core {CORE_0_2_VERSION}, discovered {declared_version!r}",
@@ -68,6 +68,21 @@ def _load_and_validate_manifest_0_2(manifest: Path) -> dict[str, object]:
         )
 
     return data
+
+
+def _load_flat_local_evidence(root: Path, evidence_path: Path) -> dict[str, str]:
+    evidence: dict[str, str] = {}
+    for item in sorted(evidence_path.iterdir()):
+        if not item.is_file():
+            continue
+        resolved = item.resolve()
+        if not resolved.is_relative_to(root):
+            raise discovery_failure(
+                "AGNIR_DISCOVERY_UNRESOLVABLE",
+                f"Evidence child {item.name!r} escapes the selected Project root",
+            )
+        evidence[item.name] = resolved.read_text(encoding="utf-8")
+    return evidence
 
 
 def discover_repository_filesystem_0_2(
@@ -151,11 +166,7 @@ def discover_repository_filesystem_0_2(
 
     evidence: dict[str, str] = {}
     if evidence_path is not None:
-        evidence = {
-            item.name: item.read_text(encoding="utf-8")
-            for item in sorted(evidence_path.iterdir())
-            if item.is_file()
-        }
+        evidence = _load_flat_local_evidence(root, evidence_path)
 
     return DiscoverySnapshot02(
         project_root=root,

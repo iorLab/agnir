@@ -168,6 +168,48 @@ class RepositoryFilesystem02Tests(unittest.TestCase):
                 discover_repository_filesystem_0_2(root)
             self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_INCONSISTENT")
 
+    def test_explicit_null_core_version_is_inconsistent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_project(
+                root,
+                lineage="urn:agnir:lineage:primary",
+                state="state",
+                next_actions="next",
+            )
+            manifest_path = root / "AGNIR.yaml"
+            manifest_path.write_text(
+                manifest_path.read_text(encoding="utf-8").replace(
+                    'version: "0.2"',
+                    'version: null',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem_0_2(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_INCONSISTENT")
+
+    def test_wrong_container_core_version_is_inconsistent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            _write_project(
+                root,
+                lineage="urn:agnir:lineage:primary",
+                state="state",
+                next_actions="next",
+            )
+            manifest_path = root / "AGNIR.yaml"
+            manifest_path.write_text(
+                manifest_path.read_text(encoding="utf-8").replace(
+                    '  version: "0.2"',
+                    '  version:\n    - "0.2"',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaises(DiscoveryFailure) as raised:
+                discover_repository_filesystem_0_2(root)
+            self.assertEqual(raised.exception.code, "AGNIR_DISCOVERY_INCONSISTENT")
+
     def test_declared_core_version_mismatch_is_unsupported(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

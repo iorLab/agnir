@@ -70,6 +70,8 @@ A schema-valid locator string therefore does not by itself prove that the refere
 
 Baseline local Evidence discovery is intentionally flat for this compatibility line: the Evidence objects exposed by ordinary profile discovery are the regular-file children immediately contained by the declared Evidence directory, identified by their child filenames. Nested directories MAY exist for adapter- or Project-specific organization, but this profile does not require recursive traversal of them for baseline `repository-filesystem/0.2` discovery. An extension MAY define richer recursive/indexed Evidence behavior without changing the baseline target-shape rule above.
 
+Filesystem indirection does not waive selected-root authority for the Evidence collection. An immediate Evidence entry reached through a symlink or equivalent filesystem indirection MAY be exposed as a local Evidence object only when its canonical resolved target is a regular file within the authorized selected Project root. If such an immediate entry resolves outside the selected Project root without an authorized external Locator Chain, ordinary local discovery MUST fail with `AGNIR_DISCOVERY_UNRESOLVABLE` rather than read the external target as local Evidence.
+
 A profile implementation MAY preserve existing Core `0.1` memory paths during migration. Core `0.2` does not require moving continuity merely to add lineage identity.
 
 ### Required discovery-failure mapping
@@ -78,15 +80,15 @@ For interoperability, a resolver executing this selected profile MUST classify t
 
 - missing top-level `AGNIR.yaml` at the authorized selected Project root → `AGNIR_DISCOVERY_NOT_FOUND`;
 - missing required `agnir.version` in an otherwise selected 0.2-profile manifest → `AGNIR_DISCOVERY_INCONSISTENT`;
-- a present/declared `agnir.version` other than Core `0.2` → `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`;
-- after this profile has been selected, missing or mismatched `agnir.discovery_profile`, missing `project.identity`, missing `continuity.lineage`, or another published-schema violation without a more specific rule → `AGNIR_DISCOVERY_INCONSISTENT`;
+- a present string-valued `agnir.version` that declares a Core version other than `0.2` → `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`;
+- after this profile has been selected, missing or mismatched `agnir.discovery_profile`, missing `project.identity`, missing `continuity.lineage`, a non-string/wrong-container `agnir.version`, or another published-schema violation without a more specific rule → `AGNIR_DISCOVERY_INCONSISTENT`;
 - an explicitly expected Project identity that differs from the resolved Project identity → `AGNIR_DISCOVERY_PROJECT_MISMATCH`;
 - an explicitly selected/expected logical lineage that does not resolve to the lineage exposed by the selected root → `AGNIR_LINEAGE_NOT_FOUND` or a more specific binding failure in addition to that Core semantic class;
 - required local State/Next Actions locators that are missing, invalid, escape the selected Project root without an authorized external Locator Chain, or do not resolve to regular files → `AGNIR_DISCOVERY_UNRESOLVABLE`;
 - a non-null local Decisions locator that does not resolve to a regular file, or a non-null local Evidence locator that does not resolve to a directory, → `AGNIR_DISCOVERY_UNRESOLVABLE`;
 - a known external Locator Chain target whose required authorization is absent or denied → `AGNIR_DISCOVERY_UNAUTHORIZED` when the implementation can safely distinguish authorization failure from not-found/unresolvable state.
 
-`AGNIR_DISCOVERY_UNSUPPORTED_VERSION` therefore requires an actually declared incompatible Core version. Absence of the required version field is malformed selected-profile serialization and is `AGNIR_DISCOVERY_INCONSISTENT`. A profile mismatch is likewise not an unsupported-Core condition. Conversely, a local locator escaping the selected Project root is unresolvable as a local locator; it becomes an authorization question only when an explicit external Locator Chain/binding is actually being resolved.
+`AGNIR_DISCOVERY_UNSUPPORTED_VERSION` therefore requires an actually declared incompatible Core version serialized as a string-valued version declaration. Absence of the required version field, explicit null, or a wrong scalar/container type is malformed selected-profile serialization and is `AGNIR_DISCOVERY_INCONSISTENT`. A profile mismatch is likewise not an unsupported-Core condition. Conversely, a local locator escaping the selected Project root is unresolvable as a local locator; it becomes an authorization question only when an explicit external Locator Chain/binding is actually being resolved.
 
 ## 4. Checkpoint publication
 
@@ -228,7 +230,8 @@ Stable `repository-filesystem/0.2` conformance includes at least:
 8. a branch fork can establish a new logical lineage identity while preserving Project identity and inherited baseline continuity;
 9. target integration obeys staged reconciliation and coherent publication;
 10. Core `0.1` migration preserves durable truth and fresh-resumes as exactly one initial lineage;
-11. Core-version mismatch, missing Core-version serialization, and profile mismatch produce the distinct failure semantics specified above;
+11. string-valued Core-version mismatch, missing Core-version serialization, wrong-type Core-version serialization, and profile mismatch produce the distinct failure semantics specified above;
 12. local locator escape without an authorized external Locator Chain is rejected as `AGNIR_DISCOVERY_UNRESOLVABLE` rather than silently treated as an external-memory authorization path;
 13. the reference/conformance resolver rejects published-schema-invalid manifests, including forbidden additional properties, instead of ignoring unknown shorthand fields;
-14. non-null local State/Next Actions/Decisions locators resolve to regular files, non-null local Evidence resolves to a directory, and baseline Evidence discovery does not recursively treat nested files as immediate Evidence objects.
+14. non-null local State/Next Actions/Decisions locators resolve to regular files, non-null local Evidence resolves to a directory, and baseline Evidence discovery does not recursively treat nested files as immediate Evidence objects;
+15. local Evidence filesystem indirection never reads a canonical target outside the selected Project root without an authorized external Locator Chain.
