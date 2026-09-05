@@ -52,15 +52,23 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 ## Independent-implementation evidence policy
 
-- v1 documentation quality must be demonstrated by a genuinely fresh reviewer who does not rely on private Agnir design history or previous challenge clarification.
-- Public contract reconstruction is frozen before independent implementation; reference implementation code is blocked until Phase C.
-- A failed attempt is preserved as evidence but does not close the gate. Once Phase C exposes reference code, that session is not eligible as the next fresh acceptance reviewer.
-- Any behavior-material public ambiguity or reference contradiction is repaired publicly and requires a new exact-source run in a fresh context.
-- Core/profile `1.0` promotion and repository `1.0.0-rc` remain downstream of one clean independent-implementation `PASS`.
+- The v1 independent-implementation gate is **satisfied** by issue #26 against exact source `eabc599d589f2c3dfe6b3d9508a093d120f33c95`.
+- The accepted run preserved Phase A reconstruction/freeze → independent Phase B implementation/freeze → Phase C reference inspection; its final verdict was `PASS`, with no concurrent documentation, conformance, or implementation failure class.
+- The accepted artifact SHA-256 is `a466c98e6a1dcda5e0174c6769f0ecc4ee73e51932ed02ce67d59580622ed847`; Phase A freeze is `1b422ad2ce17ed046baf488a180fe288f0a6d6599e642a5f3403d74d8d46eb56`; Phase B freeze is `6d75402a99795eddd1781a8e075584834995868becb9ae8fb7a74a5b20b86cde`.
+- No additional fresh independent challenge is required merely for repetition. The gate reopens only if later work materially changes the public contract or new evidence exposes a real interoperability defect.
+
+## Core/profile 1.0 promotion policy
+
+- The next active release stage is deliberate promotion of the proven Core/profile `0.2` semantics to stable Core/profile `1.0`, followed by an explicit repository `1.0.0-rc` cycle.
+- Promotion is a **stability/compatibility commitment**, not an opportunity to add unrelated features or redesign the Core model.
+- Historical `v0.2.0`, Core `0.2`, profile `repository-filesystem/0.2`, and their evidence remain immutable history; they are not renamed or rewritten in place.
+- The exact `0.2` → `1.0` serialized compatibility/promotion mechanics must be specified publicly before implementation. Existing `0.2` manifests must not be silently reinterpreted as `1.0` merely to simplify release mechanics.
+- The promotion candidate must define preservation, idempotence/conflict behavior, fresh 1.0 discovery/resume, and supported historical compatibility lines, then lock them with conformance before an RC is created.
+- If promotion work discovers a need for a material semantic redesign, that is not a promotion-only change and must reopen the relevant compatibility/readiness decision instead of being bundled into 1.0 by implication.
 
 ## Release and repository governance
 
 - `v1.0.0` is a stability/compatibility commitment governed by `V1_RELEASE_CRITERIA.md`, not a feature-count threshold.
-- The intended v1 promotion is Core/profile `0.2` semantics → stable Core/profile `1.0`, followed by an explicit repository `1.0.0-rc` cycle; do not rewrite `v0.2.0` history or smuggle redesign into the promotion.
+- Repository `1.0.0`, Core `1.0`, and profile `repository-filesystem/1.0` are intended to align at the first stable 1.0 release, while remaining distinct version axes in the architecture.
 - `main` is the only intended long-lived authoritative branch. Release/validation/repair branches are temporary staging/evidence carriers and require explicit reconciliation before authoritative-main advancement.
 - Published tags are immutable. Stable `0.2.x` maintenance may repair documentation, conformance, packaging, or implementation without silently redefining Core/profile `0.2` semantics.
