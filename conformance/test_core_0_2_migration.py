@@ -32,6 +32,16 @@ class Core02MigrationTests(unittest.TestCase):
             )
         self.assertEqual(raised.exception.code, "AGNIR_UPGRADE_MIGRATION_REQUIRED")
 
+    def test_unauthorized_migration_precedes_invalid_lineage_input(self) -> None:
+        with self.assertRaises(UpgradeMigrationRequired) as raised:
+            migrate_core_0_1_to_0_2(
+                self.source,
+                initial_lineage_identity="   ",
+                authorized=False,
+                expected_source_generation=7,
+            )
+        self.assertEqual(raised.exception.code, "AGNIR_UPGRADE_MIGRATION_REQUIRED")
+
     def test_authorized_migration_preserves_project_and_continuity(self) -> None:
         migrated, changed = migrate_core_0_1_to_0_2(
             self.source,
@@ -50,6 +60,16 @@ class Core02MigrationTests(unittest.TestCase):
         self.assertEqual(resumed.next_actions, self.source.next_actions)
         self.assertEqual(resumed.decisions, self.source.decisions)
         self.assertEqual(resumed.evidence, self.source.evidence)
+
+    def test_string_lineage_input_uses_published_unicode_whitespace_normalization(self) -> None:
+        migrated, changed = migrate_core_0_1_to_0_2(
+            self.source,
+            initial_lineage_identity="\u00a0  primary\u3000",
+            authorized=True,
+        )
+        self.assertTrue(changed)
+        self.assertEqual(migrated.default_lineage_identity, "primary")
+        self.assertEqual(set(migrated.lineages), {"primary"})
 
     def test_migration_does_not_alias_mutable_source_evidence(self) -> None:
         migrated, _ = migrate_core_0_1_to_0_2(
@@ -76,6 +96,20 @@ class Core02MigrationTests(unittest.TestCase):
         self.assertEqual(repeated, migrated)
         self.assertEqual(set(repeated.lineages), {"primary"})
 
+    def test_repeating_normalization_equivalent_migration_is_no_op(self) -> None:
+        migrated, _ = migrate_core_0_1_to_0_2(
+            self.source,
+            initial_lineage_identity="primary",
+            authorized=True,
+        )
+        repeated, changed = migrate_core_0_1_to_0_2(
+            migrated,
+            initial_lineage_identity="\u2009primary\u202f",
+            authorized=True,
+        )
+        self.assertFalse(changed)
+        self.assertEqual(repeated, migrated)
+
     def test_repeated_migration_cannot_silently_rebind_initial_lineage(self) -> None:
         migrated, _ = migrate_core_0_1_to_0_2(
             self.source,
@@ -90,7 +124,7 @@ class Core02MigrationTests(unittest.TestCase):
             )
         self.assertEqual(raised.exception.code, "AGNIR_MIGRATION_CONFLICT")
 
-    def test_missing_initial_lineage_identity_is_rejected(self) -> None:
+    def test_missing_initial_lineage_identity_is_rejected_after_authorization(self) -> None:
         with self.assertRaises(LineageFailure) as raised:
             migrate_core_0_1_to_0_2(
                 self.source,
