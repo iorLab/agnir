@@ -11,6 +11,35 @@ class MigrationConflict(RuntimeError):
     code = "AGNIR_MIGRATION_CONFLICT"
 
 
+_UNICODE_WHITE_SPACE = frozenset(
+    {
+        *range(0x0009, 0x000E),
+        0x0020,
+        0x0085,
+        0x00A0,
+        0x1680,
+        *range(0x2000, 0x200B),
+        0x2028,
+        0x2029,
+        0x202F,
+        0x205F,
+        0x3000,
+    }
+)
+
+
+def normalize_initial_lineage_identity(value: str) -> str:
+    """Apply the published Core 0.1 -> 0.2 string normalization rule."""
+
+    start = 0
+    end = len(value)
+    while start < end and ord(value[start]) in _UNICODE_WHITE_SPACE:
+        start += 1
+    while end > start and ord(value[end - 1]) in _UNICODE_WHITE_SPACE:
+        end -= 1
+    return value[start:end]
+
+
 @dataclass(frozen=True)
 class Core01Continuity:
     project_identity: str
@@ -70,14 +99,13 @@ def migrate_core_0_1_to_0_2(
     idempotence without choosing a repository/filesystem serialization.
     """
 
-    selected = initial_lineage_identity.strip()
-    if not selected:
-        raise LineageFailure(
-            "AGNIR_LINEAGE_REQUIRED",
-            "Core 0.1 to 0.2 migration requires a durable initial lineage identity",
-        )
-
     if isinstance(source, Core02MigratedProject):
+        selected = normalize_initial_lineage_identity(initial_lineage_identity)
+        if not selected:
+            raise LineageFailure(
+                "AGNIR_LINEAGE_REQUIRED",
+                "Core 0.1 to 0.2 migration requires a durable initial lineage identity",
+            )
         if source.default_lineage_identity != selected or selected not in source.lineages:
             raise MigrationConflict(
                 f"{MigrationConflict.code}: Project is already migrated with initial lineage "
@@ -88,6 +116,13 @@ def migrate_core_0_1_to_0_2(
     if not authorized:
         raise UpgradeMigrationRequired(
             f"{UpgradeMigrationRequired.code}: Core 0.1 -> 0.2 changes the compatibility line"
+        )
+
+    selected = normalize_initial_lineage_identity(initial_lineage_identity)
+    if not selected:
+        raise LineageFailure(
+            "AGNIR_LINEAGE_REQUIRED",
+            "Core 0.1 to 0.2 migration requires a durable initial lineage identity",
         )
 
     if expected_source_generation is not None and source.generation != expected_source_generation:
