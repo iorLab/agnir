@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agnir.dev/schema/repository-filesystem/1.0/agnir-manifest.schema.json",
+  "title": "Agnir Repository/Filesystem Discovery Manifest 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["agnir", "project", "continuity", "memory"],
+  "properties": {
+    "agnir": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "discovery_profile"],
+      "properties": {
+        "version": {"const": "1.0"},
+        "discovery_profile": {"const": "repository-filesystem/1.0"}
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity"],
+      "properties": {
+        "identity": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "profiles": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      }
+    },
+    "continuity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lineage"],
+      "properties": {
+        "lineage": {"type": "string", "minLength": 1, "maxLength": 1024}
+      }
+    },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "next_actions", "decisions", "evidence"],
+      "properties": {
+        "state": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Serialized locator. Under repository-filesystem/1.0 a local target must resolve to one regular file."
+        },
+        "next_actions": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Serialized locator. Under repository-filesystem/1.0 a local target must resolve to one regular file."
+        },
+        "decisions": {
+          "type": ["string", "null"],
+          "description": "Serialized locator or null. When non-null under repository-filesystem/1.0, a local target must resolve to one regular file."
+        },
+        "evidence": {
+          "type": ["string", "null"],
+          "description": "Serialized locator or null. When non-null under repository-filesystem/1.0, a local target must resolve to the Evidence collection directory; filesystem target-shape semantics are defined by the profile."
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint": {
+          "type": "string",
+          "enum": ["event-driven", "manual", "implementation-defined"]
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9._-]*/[a-z0-9][a-z0-9._-]*$"
+      },
+      "additionalProperties": true
+    }
+  }
+}

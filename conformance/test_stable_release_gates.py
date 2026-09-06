@@ -50,7 +50,8 @@ class StableReleaseGateTests(unittest.TestCase):
         ):
             self.assertIn(marker, release)
 
-        self.assertIn("Status: active pre-1.0 versioning policy", versioning)
+        self.assertIn("Status: active versioning policy", versioning)
+        self.assertIn("`v0.2.0` remains the latest stable release", versioning)
         self.assertIn("`0.2.0-rc.1` → `0.2.0`", versioning)
         self.assertIn("latest stable", versioning)
         self.assertNotIn("Status: design draft", versioning)
