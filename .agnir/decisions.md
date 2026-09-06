@@ -60,6 +60,16 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Stable publication must create/verify immutable tag `v1.0.0` at that exact authoritative arm revision, create/verify a non-draft non-prerelease GitHub Release, verify `releases/latest == v1.0.0`, and verify accepted RC immutability.
 - Stable publication does not authorize unrelated feature work or semantic redesign.
 
+## Stable v1.0.0 publication acceptance
+
+- Stable `v1.0.0` is accepted as published at exact authoritative arm/tag revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`.
+- GitHub Release id `383612171` is the accepted non-draft, non-prerelease stable Release; `releases/latest` resolves to `v1.0.0`.
+- Publication workflow `34039014354` succeeded on attempt 1 and on a fresh immutable-source attempt 2.
+- Attempt 1 repository/publication jobs were `101502237380` / `101502271312`; fresh attempt 2 jobs were `101502430280` / `101502473422`.
+- Accepted RC `v1.0.0-rc.1` remains exactly `092945289f1a0a9803e4fe0583104aa380ceaadc` and is immutable release evidence.
+- Issue #29 is closed completed. The v1.0.0 release gate is closed; ordinary stable maintenance now applies.
+- Post-release metadata checkpoints on `main` may advance beyond the immutable `v1.0.0` tag without changing what source was released. Release identity is the tag revision, not the later continuity receipt.
+
 ## Release and repository governance
 
 - `v1.0.0` is a stability/compatibility commitment governed by `V1_RELEASE_CRITERIA.md`, not a feature-count threshold.

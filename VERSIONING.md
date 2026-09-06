@@ -1,6 +1,6 @@
 # Agnir Versioning
 
-Status: active versioning policy. Repository `1.0.0` is the stable package line aligned with Core `1.0` + `repository-filesystem/1.0`; stable-upgrade resolution selects `v1.0.0` only after the corresponding non-prerelease release is actually published.
+Status: active versioning policy. Repository `1.0.0` is the stable package line aligned with Core `1.0` + `repository-filesystem/1.0`; published non-prerelease tag `v1.0.0` is now the current latest stable release.
 
 Agnir distinguishes **repository release version** from **Core compatibility version** and profile/extension compatibility versions.
 
@@ -72,7 +72,7 @@ A Core/profile `0.1` Project reaches `1.0` through the existing explicit `0.1` â
 
 A prerelease target requires explicit Principal authorization. The accepted `v1.0.0-rc.1` is release evidence and remains immutable prerelease history; it never substitutes for stable resolution.
 
-The repository `1.0.0` source tree is the stable package. Stable resolution advances to `v1.0.0` only when publication has created the non-prerelease `v1.0.0` tag/Release at the exact authoritative revision. Published release tags are immutable by Project policy.
+The repository `1.0.0` source tree is the stable package. Publication created the non-prerelease `v1.0.0` tag/Release at exact stable source revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`; stable resolution therefore selects `v1.0.0`. Published release tags are immutable by Project policy.
 
 ## Meaning of v1.0.0
 
@@ -88,4 +88,4 @@ Agnir repository v1.0.0
 
 Historical Core/profile `0.1` and `0.2` contracts remain immutable compatibility surfaces rather than being rewritten as 1.0 history.
 
-The release gate is defined in `V1_RELEASE_CRITERIA.md`. The exact immutable `v1.0.0-rc.1` cycle completed successfully before stable-package preparation; stable publication remains a distinct exact-authoritative-revision operation.
+The release gate is defined in `V1_RELEASE_CRITERIA.md`. The exact immutable `v1.0.0-rc.1` cycle completed successfully before stable-package preparation; stable `v1.0.0` publication then completed at exact authoritative revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3` with a fresh immutable-source rerun.

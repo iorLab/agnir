@@ -8,17 +8,19 @@
 
 ## Status
 
-This source tree is the Agnir `1.0.0` stable release package. Core `1.0` and `repository-filesystem/1.0` are stable normative contracts; the explicit Core/profile `0.2` → `1.0` Project promotion contract is also stable normative material.
+Agnir `v1.0.0` is **published stable**. The immutable tag points to exact authoritative revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`; GitHub Release id `383612171` is non-draft and non-prerelease; `releases/latest` resolves to `v1.0.0`.
 
-`latest stable` is still a publication property, not a moving-branch property. Stable-upgrade resolution advances to `v1.0.0` only after the non-prerelease `v1.0.0` tag/GitHub Release has been published successfully at the exact authoritative revision. Until that publication succeeds, the previously published stable release remains the resolver target.
+This source line is the Agnir `1.0.0` stable release package. Core `1.0` and `repository-filesystem/1.0` are stable normative contracts; the explicit Core/profile `0.2` → `1.0` Project promotion contract is also stable normative material.
 
-Stable publication is deliberately dormant. It is armed only on authoritative `main` by the exact commit message:
+`latest stable` remains a publication property, not a moving-branch property. Stable-upgrade resolution now selects the published non-prerelease `v1.0.0` release. Later metadata/maintenance commits on `main` do not change the immutable source revision identified by the `v1.0.0` tag.
+
+Stable publication was main-only and armed only by the exact commit message:
 
 ```text
 release: publish v1.0.0 stable
 ```
 
-The publication workflow must verify the exact source, accepted RC, Core/profile declarations, authoritative lineage binding, conformance, tag target, non-prerelease Release state, and `releases/latest == v1.0.0` before success is claimed.
+Publication workflow `34039014354` passed both its initial cycle and a fresh immutable-source attempt. Attempt 1 repository/publication jobs were `101502237380` / `101502271312`; attempt 2 jobs were `101502430280` / `101502473422`.
 
 ## Accepted release candidate
 
@@ -32,9 +34,9 @@ Stable `v1.0.0` is based on the accepted immutable RC evidence cycle:
 - fresh repository job: `101467699247` success;
 - idempotent publication-verification job: `101467723379` success;
 - RC acceptance checkpoint: `afc07d062b957e8dbfe3f859834c787e64aa52be`;
-- RC tag remains immutable and must not be moved or rewritten during stable publication.
+- RC tag remains immutable and must not be moved or rewritten after stable publication.
 
-The stable release does not introduce a new continuity model after the RC. Stable preparation is limited to status/package/publication reconciliation and release-gate repairs that do not materially change the accepted Core/profile behavior.
+The stable release did not introduce a new continuity model after the RC. Stable preparation was limited to status/package/publication reconciliation and release-gate repairs that did not materially change the accepted Core/profile behavior.
 
 ## What v1.0.0 stabilizes
 
@@ -88,23 +90,20 @@ These receipts established that the 1.0 promotion is a stability commitment over
 
 ## Stable publication invariant
 
-The stable tag must point to the exact authoritative `main` publication-arm revision. A temporary release/staging lineage is reconciliation input only and cannot become authoritative merely because it passed CI.
+The stable tag points to the exact authoritative `main` publication-arm revision. A temporary release/staging lineage is reconciliation input only and cannot become authoritative merely because it passed CI.
 
-Before publication is armed:
+The completed publication sequence required:
 
-1. the `release/v1.0.0` staging lineage must pass the full conformance suite as repository `1.0.0` / Core `1.0` / `repository-filesystem/1.0`;
-2. the accepted staging result must be reconciled into the authoritative lineage rather than copied wholesale;
-3. authoritative `main` must pass exact-source conformance with its own lineage identity/binding;
-4. only then may the exact main commit message `release: publish v1.0.0 stable` arm publication.
+1. the `release/v1.0.0` staging lineage to pass the full conformance suite as repository `1.0.0` / Core `1.0` / `repository-filesystem/1.0`;
+2. the accepted staging result to be reconciled into the authoritative lineage rather than copied wholesale;
+3. authoritative `main` to pass exact-source conformance with its own lineage identity/binding;
+4. the exact main commit message `release: publish v1.0.0 stable` to arm publication;
+5. `refs/tags/v1.0.0` to point to that exact authoritative arm revision;
+6. GitHub Release `v1.0.0` to be `draft=false` and `prerelease=false`;
+7. `releases/latest` to resolve to `v1.0.0`;
+8. `v1.0.0-rc.1` to remain at `092945289f1a0a9803e4fe0583104aa380ceaadc`.
 
-After publication, verification must establish:
-
-- `refs/tags/v1.0.0` points to the exact authoritative arm revision;
-- GitHub Release `v1.0.0` is `draft=false` and `prerelease=false`;
-- `releases/latest` resolves to `v1.0.0`;
-- `v1.0.0-rc.1` still points to `092945289f1a0a9803e4fe0583104aa380ceaadc`.
-
-Published tags are immutable by Project policy.
+All eight conditions were verified. Published tags are immutable by Project policy.
 
 ## Activation and Skill boundary
 

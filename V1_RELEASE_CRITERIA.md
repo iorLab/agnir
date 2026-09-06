@@ -1,6 +1,6 @@
 # Agnir v1.0.0 Release Criteria
 
-Status: active release gate
+Status: **satisfied — v1.0.0 published stable**
 
 Agnir `v1.0.0` means downstream Projects can adopt the Agnir public compatibility contract as durable infrastructure without expecting routine breaking redesign. It is a stability commitment, not a feature-count milestone.
 
@@ -67,35 +67,47 @@ The project must have a documented, tested release procedure covering release-ca
 | Conformance | All normative suites green from a fresh environment |
 | Documentation | Independent-implementation quality |
 
-## Current evidence snapshot — 2026-09-06
+## Final v1.0.0 evidence snapshot — 2026-09-06
 
-This snapshot is non-normative and may move backward if new evidence exposes a defect.
-
-| Gate | Current status | Evidence / remaining work |
+| Gate | Final status | Evidence |
 | --- | --- | --- |
-| 1. Core semantics | **Provisionally satisfied** | Core `0.2` covers the intended durable continuity model; no planned breaking redesign is recorded. |
-| 2. Compatibility contract | **Satisfied for current published lines** | Core/profile `0.1` and `0.2`, migration, failure mapping, and versioning discipline are public and conformance-tested. |
-| 3. Migration testing | **Satisfied for current published lines** | Fresh 0.2 install, 0.1→0.2 migration, idempotence/conflict/stale handling, and real Svif/FishUp/VocaPort evidence exist. |
-| 4. Real Projects and execution surfaces | **Satisfied** | Svif + FishUp + VocaPort satisfy the 3-Project threshold; ChatGPT/GitHub-connected plus VocaPort DSH satisfy the 2-surface threshold. |
-| 5. Backend/profile independence | **Satisfied for current v1 minimum** | VCS and non-VCS lineage conformance plus genuine Docker bind-mount evidence are accepted. |
-| 6. Normative conformance | **Infrastructure satisfied; 1.0 RC run future** | Existing suites are visible/reproducible and green; an exact 1.0 RC must rerun every normative layer. |
-| 7. Failure behavior | **Provisionally satisfied** | Required discovery/checkpoint/lineage/migration failures are machine-distinguishable in published contract/conformance. |
-| 8. Publication/checkpoint integrity | **Provisionally satisfied** | Staged reconciliation, stale checks, coherent publication, fresh verification, and mount/fresh-resume evidence are accepted. |
-| 9. Independent-implementation documentation | **Satisfied** | Issue #26 clean independent `PASS`; exact source `eabc599d589f2c3dfe6b3d9508a093d120f33c95`; artifact SHA-256 `a466c98e6a1dcda5e0174c6769f0ecc4ee73e51932ed02ce67d59580622ed847`; Phase A freeze `1b422ad2ce17ed046baf488a180fe288f0a6d6599e642a5f3403d74d8d46eb56`; Phase B freeze `6d75402a99795eddd1781a8e075584834995868becb9ae8fb7a74a5b20b86cde`; matrix/test/semantic/edge receipts 81/81, 10/10, 19/19, 10/10. |
-| 10. Repeatable release operations | **Satisfied for 0.2; 1.0 cycle future** | `v0.2.0-rc.1` → `v0.2.0` proved the process. A separate exact `1.0.0-rc` cycle remains required. |
+| 1. Core semantics | **Satisfied** | Core `1.0` stabilizes the accepted Core `0.2` durable continuity semantics without behavioral redesign. |
+| 2. Compatibility contract | **Satisfied** | Core/profile `0.1`, `0.2`, and `1.0`, migration/promotion contracts, failure mapping, and versioning discipline are public and conformance-tested. |
+| 3. Migration testing | **Satisfied** | Fresh install, `0.1`→`0.2`, `0.2`→`1.0`, composed migration/promotion, idempotence/conflict/stale handling, and real Project evidence are accepted. |
+| 4. Real Projects and execution surfaces | **Satisfied** | Svif + FishUp + VocaPort satisfy the 3-Project threshold; materially different execution surfaces satisfy the 2-surface threshold. |
+| 5. Backend/profile independence | **Satisfied** | VCS and non-VCS lineage conformance plus genuine Docker bind-mount evidence are accepted. |
+| 6. Normative conformance | **Satisfied** | Core/profile 1.0, historical regressions, promotion, migration, self-host, stable package gates, and full suite passed the accepted RC and stable publication cycles. |
+| 7. Failure behavior | **Satisfied** | Required discovery/checkpoint/lineage/migration failures are machine-distinguishable in published contract/conformance. |
+| 8. Publication/checkpoint integrity | **Satisfied** | Staged reconciliation, stale checks, coherent target publication, exact-main validation, immutable tag verification, and fresh idempotent publication verification all passed. |
+| 9. Independent-implementation documentation | **Satisfied** | Issue #26 clean independent `PASS`; exact source `eabc599d589f2c3dfe6b3d9508a093d120f33c95`; artifact SHA-256 `a466c98e6a1dcda5e0174c6769f0ecc4ee73e51932ed02ce67d59580622ed847`; matrix/test/semantic/edge receipts 81/81, 10/10, 19/19, 10/10. |
+| 10. Repeatable release operations | **Satisfied** | `v1.0.0-rc.1` and `v1.0.0` both completed exact-source publication cycles with fresh immutable-source reruns and idempotent verification. |
+
+### Final release receipts
+
+- Core/profile 1.0 promotion: issue #27 / PR #28 accepted;
+- accepted RC: `v1.0.0-rc.1` -> `092945289f1a0a9803e4fe0583104aa380ceaadc`;
+- RC Release id `383536840`;
+- RC workflow `34026167762`, attempts 1 and 2: success;
+- stable tag: `v1.0.0` -> `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
+- stable Release id `383612171`;
+- stable workflow `34039014354`, attempt 1 and fresh immutable-source attempt 2: success;
+- `releases/latest == v1.0.0`;
+- issue #29 closed completed.
 
 ### Threshold summary
 
 - **Real Projects:** satisfied.
 - **Execution surfaces/adapters:** satisfied.
-- **Upgrade evidence:** satisfied by Svif.
+- **Upgrade evidence:** satisfied by Svif and migration/promotion conformance.
 - **Parallel continuity real Project:** satisfied by Svif; VCS and non-VCS conformance are green.
 - **Mount-boundary evidence:** satisfied by accepted Docker bind-mount validation.
-- **Independent implementation:** **satisfied by issue #26 clean PASS**.
-- **Core/profile 1.0 promotion:** next active stage; promote proven 0.2 semantics without rewriting history or smuggling redesign.
-- **`1.0.0-rc` cycle:** final remaining release threshold after promotion candidate is defined and verified.
+- **Independent implementation:** satisfied by issue #26 clean `PASS`.
+- **Core/profile 1.0 promotion:** satisfied.
+- **`1.0.0-rc` cycle:** satisfied by immutable `v1.0.0-rc.1` plus fresh rerun.
+- **Stable publication:** satisfied by immutable `v1.0.0` plus fresh rerun.
 
 Canonical receipt detail for independent acceptance: `.agnir/evidence/2026-09-06-independent-implementation-challenge-acceptance.md`.
+Canonical receipt detail for stable publication: `.agnir/evidence/v1.0.0-stable-publication-acceptance.md`.
 
 ## Non-gates
 

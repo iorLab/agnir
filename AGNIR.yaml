@@ -30,12 +30,13 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/main"
   agnir/release:
-    phase: "v1.0.0-publication-armed"
+    phase: "stable-v1.0.0-published"
     repository_version: "1.0.0"
     core_contract: "spec/AGNIR_CORE_1_0.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_1_0.md"
     promotion_contract: "spec/CORE_0_2_TO_1_0_PROMOTION.md"
     stable_issue: 29
+    stable_issue_status: "closed-completed"
     target_base_revision: "11148c3063e63dd1ea7450b9d538ac1eccec5639"
     accepted_rc_tag: "v1.0.0-rc.1"
     accepted_rc_revision: "092945289f1a0a9803e4fe0583104aa380ceaadc"
@@ -55,12 +56,22 @@ extensions:
     prepublication_checkpoint: "b99ea0d37cca852df023ef9071d4102c0376f0fe"
     prepublication_verification_run: 34038863673
     prepublication_verification_job: 101501837860
-    previous_latest_stable: "v0.2.0"
-    publication_status: "armed"
-    target_ref: "refs/heads/main"
     stable_tag: "v1.0.0"
+    stable_revision: "6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3"
+    stable_release_id: 383612171
+    stable_published_at: "2026-09-06T14:23:58Z"
+    publication_run: 34039014354
+    publication_repository_job: 101502237380
+    publication_job: 101502271312
+    fresh_verification_attempt: 2
+    fresh_repository_job: 101502430280
+    fresh_publication_job: 101502473422
+    previous_latest_stable: "v0.2.0"
+    latest_stable: "v1.0.0"
+    publication_status: "published-verified"
+    target_ref: "refs/heads/main"
   agnir/operations:
     distribution: "agnir-agent-skill"
     release: "1.0.0"
     source: "iorLab/agnir"
-    applied_revision: "ab5dcc3341d39631e843499632739864a90bba14"
+    applied_revision: "6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3"
