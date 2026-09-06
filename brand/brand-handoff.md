@@ -78,3 +78,16 @@ Before canonical `main` integration:
 2. require Draft PR `#11` Core 0.2 conformance to pass on the final head;
 3. integrate brand assets/evidence coherently without replacing newer authoritative continuity/release truth;
 4. fresh-verify authoritative `main` after publication.
+
+## Agnir v1.0.x integration reconciliation — 2026-09-06
+
+The brand package is now reconciled onto the published Agnir v1 stable-maintenance line. The reconciliation deliberately starts from authoritative `main` and overlays only the approved `brand/` surface plus brand-specific Evidence.
+
+- authoritative main at reconciliation: `8b1dbe7cc1025bc500f1058b193f9bfff54bfb1b`;
+- authoritative main tree: `14c36a245c5de87babeb9c057273fd1b26242514`;
+- latest-main-wins two-parent reconciliation commit: `03098462d90000e387635399b73c442e589ac4ee`;
+- Core/profile inherited from target: **Core 1.0 + repository-filesystem/1.0**;
+- stable distribution remains **v1.0.0**; published tags are untouched;
+- byte-exact reference and PNG preservation gate remains **closed**.
+
+No brand asset changes the stable Core/profile contract, compatibility behavior, release identity, or published `v1.0.0` tag. Final integration requires current PR synthetic-merge conformance on the final head and a last `behind main = 0` check.

@@ -12,6 +12,19 @@ agnir/
 │   ├── decisions.md                                      # active durable decisions
 │   └── evidence/                                         # recovery / audit / migration / release Evidence
 │
+├── brand/                                                # approved Agnir identity system and production assets
+│   ├── APPROVED-VISUAL-REFERENCE.md                      # locked visual authority and precedence
+│   ├── INTEGRATION-NOTE.md                               # integration boundary / current target
+│   ├── PRODUCTION-STATUS.md                              # production + QA + integration status
+│   ├── README.md                                         # brand surface entry
+│   ├── brand-handoff.md                                  # downstream production/use handoff
+│   ├── brand-process-log.md                              # brand derivation/review provenance
+│   ├── masters/                                          # approved vector masters + superseded candidates
+│   ├── exports/                                          # SVG exports + byte-exact PNG delivery derivatives
+│   ├── reference/                                        # byte-exact Principal-approved reference boards
+│   ├── qa/                                               # symmetric final QA contract
+│   └── tools/                                            # deterministic build/render/review tooling
+│
 ├── .github/
 │   └── workflows/
 │       └── conformance.yml                               # main/release CI + exact gated publication jobs
