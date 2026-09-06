@@ -1,6 +1,8 @@
 # Agnir Current State
 
-Agnir `v0.2.0` is the published latest stable release and is safely reconciled into authoritative `main`. Durable continuity belongs to the Project; Project identity, logical Continuity Lineage, backend selector/binding, and revision receipts remain distinct concepts.
+Agnir `v0.2.0` remains the published latest stable release and authoritative `main` remains a valid Core/profile `0.2` self-host. The deliberate Core/profile `1.0` stability-promotion machinery is now accepted on `main`; this does not itself relabel the authoritative Project or publish `v1.0.0`.
+
+Durable continuity belongs to the Project; Project identity, logical Continuity Lineage, backend selector/binding, and revision receipts remain distinct concepts.
 
 ## Stable release and v1 evidence baseline
 
@@ -25,19 +27,35 @@ Accepted receipts:
 - focused independent pytest **10/10 pass**;
 - required semantic receipts **19/19 pass**;
 - Phase C independent edge probes **10/10 pass**;
-- post-Phase-C freeze revalidation reproduced both frozen aggregates exactly;
-- final verdict `PASS`; `FAIL-DOCS`, `FAIL-CONFORMANCE`, and `FAIL-IMPLEMENTATION` all absent.
-
-The reviewer reconstructed the public contract without private Agnir design history, independently implemented the required Core/profile surface before reference inspection, and found no unresolved behavior-material public or reference contradiction. Gate 9 of `V1_RELEASE_CRITERIA.md` is therefore satisfied. No further independent challenge rerun is required unless later changes reopen the contract or expose a material defect.
+- final verdict `PASS` with no concurrent documentation, conformance, or implementation failure class.
 
 Evidence detail: `.agnir/evidence/2026-09-06-independent-implementation-challenge-acceptance.md`.
 
-Earlier failed attempts remain preserved as useful evidence: #15 `FAIL-IMPLEMENTATION`; #17 `FAIL-CONFORMANCE`; #19 `FAIL-IMPLEMENTATION`; #20 `FAIL-DOCS`; #22 `FAIL-CONFORMANCE`; #24 `FAIL-DOCS` with concurrent `FAIL-CONFORMANCE`.
+## Core/profile 1.0 promotion — accepted on main
+
+Issue #27 / PR #28 completed the semantics-preserving promotion candidate.
+
+Accepted receipts:
+
+- final promotion-branch candidate: `dfc1af9203673cfc2aa41633143c4c90e274c976`;
+- exact-head PR conformance run: `34020641603` success;
+- squash merge to authoritative `main`: `0337be5c0ef5ccd74d207135646b30947c275776`;
+- authoritative-main verification run: `34025528147` success;
+- public 1.0 Core contract: `spec/AGNIR_CORE_1_0.md`;
+- public 1.0 repository/filesystem profile: `profiles/REPOSITORY_FILESYSTEM_1_0.md`;
+- exact 1.0 manifest schema: `schemas/agnir-manifest-1.0.schema.json`;
+- explicit promotion boundary: `spec/CORE_0_2_TO_1_0_PROMOTION.md`;
+- executable coverage includes Core 1.0 stability semantics, strict 1.0 discovery, explicit authorized/staged/stale-safe/idempotent 0.2→1.0 promotion, and composed 0.1→0.2→1.0 behavior;
+- historical 0.1/0.2 normative contracts were not rewritten by the promotion PR.
+
+The accepted model keeps a `1.0` distribution multi-version capable: unchanged supported `0.2` Projects remain `0.2`; a Project compatibility declaration changes to `1.0` only through explicit authorized promotion. The authoritative `main` self-host therefore remains Core/profile `0.2` until a distinct RC lineage intentionally performs that Project-owned promotion.
+
+Evidence detail: `.agnir/evidence/2026-09-06-core-profile-1.0-promotion-acceptance.md`.
 
 ## v1 readiness — current
 
-- Core semantics: **provisionally satisfied**;
-- compatibility/migration contract: **satisfied for current published lines**;
+- Core semantics: **satisfied for promotion candidate**;
+- compatibility/migration/promotion contracts: **satisfied for 0.1→0.2 and 0.2→1.0**;
 - real upgrade boundary: **satisfied** via Svif;
 - real parallel continuity/reconciliation: **satisfied** via Svif;
 - VCS + non-VCS lineage evidence: **satisfied**;
@@ -45,8 +63,9 @@ Earlier failed attempts remain preserved as useful evidence: #15 `FAIL-IMPLEMENT
 - materially different execution surfaces/adapters: **satisfied (2)**;
 - genuine mount-boundary evidence: **satisfied**;
 - independent-implementation documentation/implementation quality: **satisfied by issue #26 clean PASS**;
-- repeatable release operations: **satisfied for 0.2; explicit 1.0 RC cycle still required**;
-- Core/profile `1.0` promotion: **next active release stage**;
-- repository `1.0.0-rc` cycle: **final release stage after deliberate 1.0 promotion**.
+- Core/profile `1.0` promotion candidate: **satisfied and reconciled to main**;
+- repeatable release operations: **satisfied for 0.2; explicit 1.0 RC publication still required**;
+- repository `v1.0.0-rc.1` cycle: **next active release stage**;
+- stable `v1.0.0`: **blocked on a clean exact-source RC cycle**.
 
-No accepted evidence has exposed a breaking Core/profile `0.2` semantic defect. The immediate task is no longer external review. It is to define a deliberate Core/profile `0.2` → `1.0` stability-promotion candidate that preserves the proven semantics, keeps historical `0.2` contracts immutable, specifies the exact promotion/migration compatibility mechanics, and then enters an explicit `1.0.0-rc` verification cycle.
+No accepted evidence has exposed a breaking Core/profile `0.2` semantic defect or a behavior-material divergence in the 1.0 promotion candidate. The immediate task is now to fork the explicit `release/v1.0.0-rc.1` lineage from the verified authoritative checkpoint, promote that release lineage's self-host declaration to Core/profile `1.0`, arm repository version/release metadata, run exact RC conformance, and only then publish the immutable prerelease.

@@ -17,18 +17,18 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Stale-base writers surface `AGNIR_CHECKPOINT_CONFLICT`, re-resolve, and reconcile instead of overwriting newer truth.
 - A revision/checkpoint receipt is not Project identity or logical lineage identity.
 
-## Compatible operational upgrade vs compatibility migration
+## Compatible operational upgrade vs compatibility migration/promotion
 
 - Upgrade is not re-initialization. Compatible operational upgrades preserve Project identity, durable truth, unrelated Project instructions/content, and still-valid locators.
-- A Core/profile compatibility-line change is migration-required and must not be silently rewritten as a compatible upgrade.
+- A Core/profile compatibility-line change is migration/promotion-required and must not be silently rewritten as a compatible operational upgrade.
 - Core/profile `0.1` → `0.2` is a published stable migration contract; existing `0.1` Projects remain supported compatibility/regression surfaces.
-- For an authoritative source still on Core `0.1`, explicit migration authorization has precedence over validation of migration-only target choices. An unauthorized 0.1→0.2 request therefore surfaces `AGNIR_UPGRADE_MIGRATION_REQUIRED` even when proposed initial-lineage input is empty or otherwise unusable.
-- For the published 0.1→0.2 migration, a **string-valued** initial-lineage input is normalized before emptiness, persistence, idempotence, or conflict comparison by removing leading/trailing Unicode code points whose `White_Space` property is `Yes`, using the exact set frozen in `spec/CORE_0_1_TO_0_2_MIGRATION.md`. This normalization rule is migration-specific and does not redefine the general Core 0.2 identity representation contract.
-- Inputs that normalize to the same initial lineage are the same migration target; a normalized-empty input fails with `AGNIR_LINEAGE_REQUIRED` after migration authorization is established.
+- Core/profile `0.2` → `1.0` is a semantics-preserving but explicit Project-owned compatibility promotion governed by `spec/CORE_0_2_TO_1_0_PROMOTION.md`.
+- Existing valid `0.2` Projects remain supported by a 1.0 distribution; installing or merging 1.0 contract machinery is not permission to rewrite them as `1.0`.
+- A higher-level 0.1→1.0 operation may compose the published 0.1→0.2 migration and 0.2→1.0 promotion, but must preserve the observable authorization, normalization, lineage, stale-source, idempotence, and fresh-resume semantics of both boundaries.
 
-## Core 0.2 Continuity Lineages
+## Core 0.2 / 1.0 Continuity Lineages
 
-- Core `0.2` generalizes Core `0.1`'s single implicit continuity line into multiple independently advancing Continuity Lineages owned by one Project.
+- Core `0.2` generalized Core `0.1`'s single implicit continuity line into multiple independently advancing Continuity Lineages owned by one Project; Core `1.0` stabilizes those accepted semantics without behavioral redesign.
 - Project identity and logical lineage identity are distinct; selector/binding and checkpoint receipt are separate again.
 - Logical lineage identity is durable within Project scope and is not defined by a backend selector/locator or revision/checkpoint receipt.
 - Ordinary lineage-local work resolves exactly one lineage from explicit input, trusted selected context, or explicit default; missing deterministic selection fails rather than scanning siblings.
@@ -37,15 +37,17 @@ This file records active durable decisions required to operate and evolve Agnir 
 ## VCS lineage binding and integration
 
 - A selected Git ref/worktree is not itself logical lineage identity.
-- Core/profile `0.2` VCS selector/binding/fork/rebind/integration semantics are governed by `spec/AGNIR_CORE_0_2.md` plus `profiles/REPOSITORY_FILESYSTEM_0_2.md`; the older `profiles/VCS_BRANCH_CONTINUITY.md` remains Core/profile `0.1` compatibility/design material.
+- Core/profile `0.2` VCS semantics are governed by `spec/AGNIR_CORE_0_2.md` plus `profiles/REPOSITORY_FILESYSTEM_0_2.md`; Core/profile `1.0` preserves those semantics through `spec/AGNIR_CORE_1_0.md` and `profiles/REPOSITORY_FILESYSTEM_1_0.md`.
+- The older `profiles/VCS_BRANCH_CONTINUITY.md` remains Core/profile `0.1` compatibility/design material.
 - Agnir-aware forks preserve Project identity while establishing a new logical lineage identity and selector binding; selector rename/rebind may preserve lineage identity.
 - Integration is target reconciliation, not source-continuity copying. Source continuity is input, never automatic target truth.
 - When Agnir controls publication, stage without target advancement, reconcile, publish integrated Project + reconciled target continuity coherently, then fresh-verify. Relevant source/target advancement invalidates stale integration candidates.
 
-## Repository/filesystem 0.2 and failure mapping
+## Repository/filesystem compatibility and failure mapping
 
-- `repository-filesystem/0.2` resolves one selected logical lineage plus its durable memory locators; sibling enumeration is not required for ordinary cold start.
-- A string-valued incompatible `agnir.version` declaration is `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`; missing, null, or wrong scalar/container Core-version serialization is `AGNIR_DISCOVERY_INCONSISTENT`. Profile mismatch after 0.2 profile selection is also inconsistent serialization/profile state rather than unsupported Core.
+- `repository-filesystem/0.2` and `repository-filesystem/1.0` each resolve one selected logical lineage plus durable memory locators; sibling enumeration is not required for ordinary cold start.
+- A multi-version distribution dispatches according to the compatibility line actually declared. A 1.0 resolver does not silently accept 0.2 as 1.0, and a 0.2 resolver does not silently accept 1.0 as 0.2.
+- A string-valued incompatible `agnir.version` declaration is `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`; missing, null, or wrong scalar/container Core-version serialization is `AGNIR_DISCOVERY_INCONSISTENT`. Profile mismatch after a profile is selected is inconsistent serialization/profile state rather than unsupported Core.
 - A local locator escaping the selected Project root without authorized external Locator Chain is `AGNIR_DISCOVERY_UNRESOLVABLE`; distinguishable denied external authorization is `AGNIR_DISCOVERY_UNAUTHORIZED`.
 - State/Next Actions/non-null Decisions resolve to regular files; non-null Evidence resolves to a directory; baseline Evidence discovery exposes immediate regular-file children only.
 - Filesystem indirection does not waive selected-root authority: local Evidence indirection may resolve to an in-root regular file but must not read an out-of-root canonical target without authorized external binding.
@@ -59,16 +61,26 @@ This file records active durable decisions required to operate and evolve Agnir 
 
 ## Core/profile 1.0 promotion policy
 
-- The next active release stage is deliberate promotion of the proven Core/profile `0.2` semantics to stable Core/profile `1.0`, followed by an explicit repository `1.0.0-rc` cycle.
+- The deliberate Core/profile `0.2` → `1.0` stability-promotion candidate is **accepted on authoritative main** through issue #27 / PR #28.
+- Final candidate `dfc1af9203673cfc2aa41633143c4c90e274c976` passed exact-head run `34020641603`; squash-merged main revision `0337be5c0ef5ccd74d207135646b30947c275776` passed authoritative verification run `34025528147`.
 - Promotion is a **stability/compatibility commitment**, not an opportunity to add unrelated features or redesign the Core model.
 - Historical `v0.2.0`, Core `0.2`, profile `repository-filesystem/0.2`, and their evidence remain immutable history; they are not renamed or rewritten in place.
-- The exact `0.2` → `1.0` serialized compatibility/promotion mechanics must be specified publicly before implementation. Existing `0.2` manifests must not be silently reinterpreted as `1.0` merely to simplify release mechanics.
-- The promotion candidate must define preservation, idempotence/conflict behavior, fresh 1.0 discovery/resume, and supported historical compatibility lines, then lock them with conformance before an RC is created.
-- If promotion work discovers a need for a material semantic redesign, that is not a promotion-only change and must reopen the relevant compatibility/readiness decision instead of being bundled into 1.0 by implication.
+- The public 1.0 contract surfaces are `spec/AGNIR_CORE_1_0.md`, `profiles/REPOSITORY_FILESYSTEM_1_0.md`, `schemas/agnir-manifest-1.0.schema.json`, and `spec/CORE_0_2_TO_1_0_PROMOTION.md`.
+- Merging those 1.0 surfaces into `main` does **not** itself change the authoritative Project's `AGNIR.yaml` compatibility declaration. Authoritative `main` remains a Core/profile 0.2 self-host until an explicitly authorized Project-owned promotion occurs in the appropriate lineage.
+- If later evidence discovers a need for a material semantic redesign, that is not a promotion-only change and must reopen the relevant compatibility/readiness decision.
+
+## v1 RC policy
+
+- The next active release stage is an explicit temporary `release/v1.0.0-rc.1` lineage forked from a verified authoritative-main checkpoint.
+- The RC lineage must use logical identity `urn:agnir:lineage:v1.0.0-rc.1` separately bound to selector `refs/heads/release/v1.0.0-rc.1`.
+- That release lineage intentionally promotes its own self-host compatibility declaration from Core/profile `0.2` to `1.0`; this does not silently mutate or relabel the authoritative lineage.
+- RC publication must remain dormant until exact candidate conformance is green. Publication is armed only by the exact release branch plus exact commit message `rc: arm v1.0.0-rc.1 publication`.
+- The immutable RC tag/release must point to the exact armed revision, be prerelease/non-draft, and must not replace `v0.2.0` as `releases/latest`.
+- Stable `v1.0.0` publication remains blocked until a fresh evidence cycle against the immutable RC source is clean.
 
 ## Release and repository governance
 
 - `v1.0.0` is a stability/compatibility commitment governed by `V1_RELEASE_CRITERIA.md`, not a feature-count threshold.
-- Repository `1.0.0`, Core `1.0`, and profile `repository-filesystem/1.0` are intended to align at the first stable 1.0 release, while remaining distinct version axes in the architecture.
+- Repository `1.0.0`, Core `1.0`, and profile `repository-filesystem/1.0` align at the first stable 1.0 release while remaining distinct version axes in the architecture.
 - `main` is the only intended long-lived authoritative branch. Release/validation/repair branches are temporary staging/evidence carriers and require explicit reconciliation before authoritative-main advancement.
 - Published tags are immutable. Stable `0.2.x` maintenance may repair documentation, conformance, packaging, or implementation without silently redefining Core/profile `0.2` semantics.

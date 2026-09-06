@@ -30,7 +30,7 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/main"
   agnir/release:
-    phase: "stable-main-verified"
+    phase: "v1-promotion-accepted"
     repository_version: "0.2.0"
     core_contract: "spec/AGNIR_CORE_0_2.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_0_2.md"
@@ -57,7 +57,18 @@ extensions:
       phase_a_freeze: "1b422ad2ce17ed046baf488a180fe288f0a6d6599e642a5f3403d74d8d46eb56"
       phase_b_freeze: "6d75402a99795eddd1781a8e075584834995868becb9ae8fb7a74a5b20b86cde"
       verdict: "PASS"
-    next_stage: "core-profile-1.0-promotion"
+    v1_promotion:
+      status: "accepted-on-main"
+      issue: 27
+      pull_request: 28
+      candidate_revision: "dfc1af9203673cfc2aa41633143c4c90e274c976"
+      candidate_run: 34020641603
+      main_revision: "0337be5c0ef5ccd74d207135646b30947c275776"
+      main_verification_run: 34025528147
+      core_contract: "spec/AGNIR_CORE_1_0.md"
+      profile_contract: "profiles/REPOSITORY_FILESYSTEM_1_0.md"
+      promotion_contract: "spec/CORE_0_2_TO_1_0_PROMOTION.md"
+    next_stage: "v1.0.0-rc.1"
   agnir/operations:
     distribution: "agnir-agent-skill"
     release: "0.2.0"
