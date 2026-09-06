@@ -113,6 +113,46 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
+    def test_skill_defines_core_1_0_promotion_and_multi_version_dispatch(self) -> None:
+        text = SKILL.read_text(encoding="utf-8")
+        for marker in (
+            "spec/AGNIR_CORE_1_0.md",
+            "profiles/REPOSITORY_FILESYSTEM_1_0.md",
+            "schemas/agnir-manifest-1.0.schema.json",
+            "spec/CORE_0_2_TO_1_0_PROMOTION.md",
+            'agnir.version: "1.0"',
+            "repository-filesystem/1.0",
+            "0.2` → `1.0` stability promotion",
+            "Existing supported `0.2` Projects may remain on `0.2`",
+            "AGNIR_UPGRADE_MIGRATION_REQUIRED",
+            "AGNIR_MIGRATION_CONFLICT",
+            "preserve `project.identity` and `continuity.lineage` **exactly**",
+            "does not authorize silently interpreting or rewriting a valid `0.2` Project as `1.0`",
+            "explicit `0.1` → `0.2` migration first",
+        ):
+            self.assertIn(marker, text)
+
+    def test_versioning_defines_1_0_promotion_without_claiming_publication(self) -> None:
+        versioning = (ROOT / "VERSIONING.md").read_text(encoding="utf-8")
+        milestones = (ROOT / "RELEASE_MILESTONES.md").read_text(encoding="utf-8")
+        for marker in (
+            "Core `1.0`",
+            "repository-filesystem/1.0",
+            "CORE_0_2_TO_1_0_PROMOTION.md",
+            "existing valid Core/profile `0.1` and `0.2` Projects remain supported",
+            "does not rewrite a Project's compatibility declaration",
+            "v0.2.0` remains the latest stable release",
+            "1.0.0-rc",
+        ):
+            self.assertIn(marker, versioning)
+        for marker in (
+            "Core `1.0` + `repository-filesystem/1.0`",
+            "Existing `0.2` Projects remain supported",
+            "v0.2.0` remains the latest published stable release",
+            "1.0.0-rc",
+        ):
+            self.assertIn(marker, milestones)
+
     def test_readmes_keep_user_prompts_short_and_copyable(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
         chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
