@@ -70,6 +70,15 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Issue #29 is closed completed. The v1.0.0 release gate is closed; ordinary stable maintenance now applies.
 - Post-release metadata checkpoints on `main` may advance beyond the immutable `v1.0.0` tag without changing what source was released. Release identity is the tag revision, not the later continuity receipt.
 
+## Post-release branch-ref retirement policy
+
+- `main` is the sole intended long-lived authoritative branch; temporary refs should be retired after their work is completed and their material result is durably represented.
+- A branch used by an open PR is not housekeeping garbage and must not be deleted merely to reduce branch count.
+- A diverged evidence-only ref is retained by default when deleting it would remove the clearest durable reachability anchor for an accepted external or release checkpoint. It may be retired only after an equally durable replacement exists.
+- Branch retirement must never move or delete a published release tag.
+- Safe retirement may rely on merged PR history, authoritative ancestry, immutable release tags, and canonical `.agnir/evidence/` receipts to establish that the branch ref itself is no longer required.
+- The first post-v1 cleanup retired 17 completed temporary refs while deliberately retaining `brand/identity-system`, `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0` for active/evidence reasons.
+
 ## Release and repository governance
 
 - `v1.0.0` is a stability/compatibility commitment governed by `V1_RELEASE_CRITERIA.md`, not a feature-count threshold.

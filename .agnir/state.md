@@ -40,4 +40,27 @@ Issue #29 (`v1.0.0 stable release: reconcile accepted RC and publish`) is closed
 - stable arm/tag revision: `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - stable publication workflow: `34039014354`, attempts 1 and 2 success.
 
-Agnir has crossed the v1.0.0 release boundary. Ongoing work is ordinary stable maintenance and downstream adoption evidence, not completion of the v1 release gate.
+## Post-v1 repository housekeeping
+
+The first safe temporary-ref retirement pass is complete.
+
+- cleanup arm revision: `a1007845d5d28947f5409fc7dc7643dac54d72d6`;
+- cleanup workflow `34040930337`, job `101507430125`: success;
+- cleanup-arm conformance `34040930367`, repository job `101507430301`: success;
+- one-shot cleanup workflow removed at `a4b7d9d0642e81974ba35f4f8ccf943099281de1`;
+- workflow-removal conformance `34041050353`, repository job `101507754342`: success;
+- 17 completed temporary feature/integration/promotion/release/repair/validation branch refs were retired;
+- obsolete independent-challenge issue #14 was closed as superseded/completed;
+- no open issue remains after that housekeeping closure.
+
+Five branch refs remain intentionally at this checkpoint boundary:
+
+- `main` — authoritative;
+- `brand/identity-system` — retained because open draft PR #11 still depends on it and its byte-exact brand-binary gate remains unresolved;
+- `release/v1.0.0-rc.1` — retained as RC acceptance evidence anchor;
+- `release/v1.0.0` — retained as stable staging acceptance evidence anchor;
+- `validation/mount-boundary-v0.2.0` — retained as genuine mount-boundary evidence anchor.
+
+The three evidence-only retained refs are non-authoritative and may be retired later only after their exact evidence reachability has an equally durable replacement. Published release tags remain immutable.
+
+Agnir has crossed the v1.0.0 release boundary and completed the safe post-release ref cleanup pass. Ongoing work is ordinary stable maintenance, post-1.0 adoption evidence, and separately scoped unfinished work such as PR #11.
