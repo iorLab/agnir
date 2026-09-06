@@ -42,6 +42,7 @@ agnir/                                                    # Agnir Skill + protoc
 │   ├── check_agnir_0_1.py                                # Core/profile 0.1 compatibility helpers
 │   ├── check_agnir_0_2.py                                # published Core/profile 0.2 self-host/release gate
 │   ├── check_agnir_0_2_rc.py                             # immutable-RC-era audit/reference self-host gate
+│   ├── check_agnir_1_0.py                                # exact future Core/profile 1.0 RC/stable self-host gate
 │   ├── activation_reference.py                           # AGENTS.md → README activation resolver
 │   ├── agents_merge_reference.py                         # non-destructive AGENTS merge/conflict reference
 │   ├── checkpoint_reference.py                           # no-op/coherent/stale-base checkpoint model
@@ -63,6 +64,7 @@ agnir/                                                    # Agnir Skill + protoc
 │   ├── external_memory_reference.py                      # external memory authorization model
 │   ├── locator_chain_reference.py                        # Locator Chain cycle/stale/inconsistent model
 │   ├── workspace_registry_reference.py                   # locator-only multi-Project isolation model
+│   ├── test_1_0_package_surface.py                       # 1.0 public package/candidate/RC-preparation surface pressure
 │   ├── test_agent_activation.py                          # prompt-free activation pressure
 │   ├── test_agents_merge.py                              # AGENTS preservation/idempotence/conflict pressure
 │   ├── test_checkpoint_semantics.py                      # checkpoint no-op/coherent/conflict pressure
@@ -117,7 +119,7 @@ agnir/                                                    # Agnir Skill + protoc
 - **Profile 0.2 normative contract:** `profiles/REPOSITORY_FILESYSTEM_0_2.md`.
 - **Core/profile 0.1 compatibility:** `spec/AGNIR_CORE.md`, `profiles/REPOSITORY_FILESYSTEM.md`, 0.1 schema/reference/tests remain supported compatibility and migration surfaces.
 - **Migration contracts:** `spec/CORE_0_1_TO_0_2_MIGRATION.md` plus 0.1→0.2 executable conformance; then optional explicit `spec/CORE_0_2_TO_1_0_PROMOTION.md` for a Project that chooses 1.0.
-- **Release gates:** `conformance/test_stable_release_gates.py` continues to protect the currently published 0.2 package while 1.0 candidate tests run in parallel. Stable `v1.0.0` still requires a separate exact `1.0.0-rc` cycle and corresponding publication/package gates.
+- **Release gates:** `conformance/test_stable_release_gates.py` continues to protect the currently published 0.2 package while 1.0 candidate tests run in parallel. The workflow contains a dormant, exact-source `v1.0.0-rc.1` publication path that activates only on `release/v1.0.0-rc.1` plus its explicit arm commit; stable `v1.0.0` still requires that RC cycle to pass before any stable publication path is authorized.
 - **VCS mapping:** Core/profile 0.2 and 1.0 use their normative Core/profile VCS semantics; `profiles/VCS_BRANCH_CONTINUITY.md` remains older Core/profile 0.1 extension/design material. A VCS selector is not automatically logical lineage identity; a commit SHA is a receipt, not identity.
 
 Historical `.agnir/evidence/` and Git history may mention earlier `_DRAFT` or RC filenames/status because those references describe the development/release-candidate checkpoints accurately.
