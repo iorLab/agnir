@@ -1,0 +1,93 @@
+name: Brand v1 reconciliation docs
+
+on:
+  push:
+    branches:
+      - brand/identity-system
+    paths:
+      - .github/workflows/brand-v1-reconcile-docs.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: brand/identity-system
+          fetch-depth: 0
+      - name: Apply minimal v1 brand integration documentation
+        env:
+          RECONCILE_COMMIT: 03098462d90000e387635399b73c442e589ac4ee
+          MAIN_REVISION: 8b1dbe7cc1025bc500f1058b193f9bfff54bfb1b
+          MAIN_TREE: 14c36a245c5de87babeb9c057273fd1b26242514
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if new in text:
+                  return
+              if old not in text:
+                  raise SystemExit(f'marker not found in {path}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          replace_once(
+              'README.md',
+              '├── .agnir/                                # this Project\'s canonical durable continuity\n├── history/',
+              '├── .agnir/                                # this Project\'s canonical durable continuity\n├── brand/                                 # approved identity system, masters, exports, references, QA\n├── history/'
+          )
+          replace_once(
+              'README.zh-CN.md',
+              '├── .agnir/                                # 本 Project 的 canonical durable continuity\n├── history/',
+              '├── .agnir/                                # 本 Project 的 canonical durable continuity\n├── brand/                                 # 已批准品牌系统、masters、exports、references、QA\n├── history/'
+          )
+
+          repo_tree = Path('REPOSITORY_TREE.md')
+          text = repo_tree.read_text(encoding='utf-8')
+          if '├── brand/                                                # approved Agnir identity system' not in text:
+              marker = '│\n├── .github/'
+              block = '''│
+├── brand/                                                # approved Agnir identity system and production assets
+│   ├── APPROVED-VISUAL-REFERENCE.md                      # locked visual authority and precedence
+│   ├── INTEGRATION-NOTE.md                               # integration boundary / current target
+│   ├── PRODUCTION-STATUS.md                              # production + QA + integration status
+│   ├── README.md                                         # brand surface entry
+│   ├── brand-handoff.md                                  # downstream production/use handoff
+│   ├── brand-process-log.md                              # brand derivation/review provenance
+│   ├── masters/                                          # approved vector masters + superseded candidates
+│   ├── exports/                                          # SVG exports + byte-exact PNG delivery derivatives
+│   ├── reference/                                        # byte-exact Principal-approved reference boards
+│   ├── qa/                                               # symmetric final QA contract
+│   └── tools/                                            # deterministic build/render/review tooling
+│
+├── .github/'''
+              if marker not in text:
+                  raise SystemExit('REPOSITORY_TREE marker not found')
+              repo_tree.write_text(text.replace(marker, block, 1), encoding='utf-8')
+
+          status_append = f'''\n\n## Agnir v1.0.x integration reconciliation — 2026-09-06\n\nThe brand package is now reconciled onto the published Agnir v1 stable-maintenance line. The reconciliation deliberately starts from authoritative `main` and overlays only the approved `brand/` surface plus brand-specific Evidence.\n\n- authoritative main at reconciliation: `{os.environ['MAIN_REVISION']}`;\n- authoritative main tree: `{os.environ['MAIN_TREE']}`;\n- latest-main-wins two-parent reconciliation commit: `{os.environ['RECONCILE_COMMIT']}`;\n- Core/profile inherited from target: **Core 1.0 + repository-filesystem/1.0**;\n- stable distribution remains **v1.0.0**; published tags are untouched;\n- byte-exact reference and PNG preservation gate remains **closed**.\n\nNo brand asset changes the stable Core/profile contract, compatibility behavior, release identity, or published `v1.0.0` tag. Final integration requires current PR synthetic-merge conformance on the final head and a last `behind main = 0` check.\n'''
+
+          for path in ['brand/PRODUCTION-STATUS.md', 'brand/brand-handoff.md', 'brand/INTEGRATION-NOTE.md']:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if '## Agnir v1.0.x integration reconciliation — 2026-09-06' not in text:
+                  p.write_text(text.rstrip() + status_append, encoding='utf-8')
+
+          evidence = Path('.agnir/evidence/2026-09-06-brand-v1-main-reconciliation.md')
+          evidence.write_text(f'''# Brand identity reconciliation onto Agnir v1 main — 2026-09-06\n\nStatus: **branch-local integration evidence; candidate until integrated into authoritative `main`.**\n\nAgnir `v1.0.0` was already published and verified before this brand integration resumed. The old brand branch had diverged from current authoritative `main` by 40 commits and therefore was not eligible for direct merge.\n\n## Reconciliation rule\n\nThe target authoritative Project truth wins. A Git-native two-parent reconciliation was constructed from exact current `main` and the prior brand head.\n\n- prior brand head: `57bc3ffdfb2d96406ecf768bae1fce39e180ae83`;\n- authoritative main: `{os.environ['MAIN_REVISION']}`;\n- authoritative main tree: `{os.environ['MAIN_TREE']}`;\n- resulting reconciliation commit: `{os.environ['RECONCILE_COMMIT']}`.\n\nThe resulting tree starts from exact latest `main` and overlays only:\n\n- the approved `brand/` tree;\n- seven brand-specific Evidence records under `.agnir/evidence/`.\n\nIt deliberately does **not** reuse stale branch copies of `AGNIR.yaml`, Current State, Next Actions, Decisions, Core/profile contracts, release metadata, Skill/package surfaces, or repository documentation. Those are inherited from Agnir v1 authoritative `main`.\n\n## v1 compatibility boundary\n\nBrand integration is a non-semantic stable-maintenance change. It does not alter Core 1.0, `repository-filesystem/1.0`, historical 0.1/0.2 compatibility, the explicit 0.2 -> 1.0 promotion contract, or any immutable published release tag.\n\nThe byte-exact approved reference boards and complete 13-item PNG delivery package were already materialized and SHA-verified on the brand branch; that gate remains closed.\n\n## Final gate\n\nBefore authoritative integration, require:\n\n1. PR #11 synthetic-merge conformance green on the final brand head;\n2. final comparison reports `behind main = 0`;\n3. PR is mergeable against current `main`;\n4. post-merge authoritative-main verification.\n\nDocumentation patch workflow run: `{os.environ.get('GITHUB_RUN_ID','unknown')}`.\n''', encoding='utf-8')
+          PY
+      - name: Commit patch and remove one-shot workflow
+        run: |
+          rm .github/workflows/brand-v1-reconcile-docs.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md README.zh-CN.md REPOSITORY_TREE.md brand/ .agnir/evidence/2026-09-06-brand-v1-main-reconciliation.md .github/workflows/brand-v1-reconcile-docs.yml
+          git diff --cached --check
+          git commit -m 'brand: finalize v1 integration reconciliation'
+          git push origin HEAD:brand/identity-system
