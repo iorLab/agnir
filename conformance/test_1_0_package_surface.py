@@ -17,6 +17,7 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
             "conformance/core_1_0_reference.py",
             "conformance/repository_filesystem_1_0_reference.py",
             "conformance/repository_filesystem_1_0_promotion_reference.py",
+            "conformance/check_agnir_1_0.py",
             "conformance/test_core_1_0_stability.py",
             "conformance/test_repository_filesystem_1_0.py",
             "conformance/test_repository_filesystem_1_0_promotion.py",
@@ -78,8 +79,10 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
             "REPOSITORY_FILESYSTEM_1_0.md",
             "agnir-manifest-1.0.schema.json",
             "CORE_0_2_TO_1_0_PROMOTION.md",
+            "check_agnir_1_0.py",
             "repository_filesystem_1_0_reference.py",
             "repository_filesystem_1_0_promotion_reference.py",
+            "test_1_0_package_surface.py",
             "test_repository_filesystem_1_0_promotion.py",
             "当前已发布 stable distribution",
         ):
@@ -91,6 +94,34 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
         self.assertIn('version: "0.2"', manifest)
         self.assertIn('discovery_profile: "repository-filesystem/0.2"', manifest)
         self.assertIn('repository_version: "0.2.0"', manifest)
+        self.assertNotIn('repository_version: "1.0.0-rc.1"', manifest)
+
+    def test_v1_rc_publication_is_exact_source_and_dormant_on_current_candidate(self) -> None:
+        workflow = (ROOT / ".github" / "workflows" / "conformance.yml").read_text(encoding="utf-8")
+        for marker in (
+            "publish-v1-0-0-rc-1:",
+            "Publish v1.0.0-rc.1 prerelease",
+            "refs/heads/release/v1.0.0-rc.1",
+            "rc: arm v1.0.0-rc.1 publication",
+            'test "$(cat VERSION)" = "1.0.0-rc.1"',
+            "python conformance/check_agnir_1_0.py",
+            'tag="v1.0.0-rc.1"',
+            "prerelease=true",
+            'test "${latest}" = "v0.2.0"',
+        ):
+            self.assertIn(marker, workflow)
+        self.assertEqual((ROOT / "VERSION").read_text(encoding="utf-8").strip(), "0.2.0")
+
+    def test_self_host_ci_dispatches_by_repository_version(self) -> None:
+        workflow = (ROOT / ".github" / "workflows" / "conformance.yml").read_text(encoding="utf-8")
+        for marker in (
+            "Repository self-host cold-start",
+            "0.2.0|0.2.0-rc.1",
+            "python conformance/check_agnir_0_2.py",
+            "1.0.0|1.0.0-rc.1",
+            "python conformance/check_agnir_1_0.py",
+        ):
+            self.assertIn(marker, workflow)
 
 
 if __name__ == "__main__":
