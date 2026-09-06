@@ -1,5 +1,7 @@
 # Agnir Current State
 
+Durable continuity belongs to the Project.
+
 An authoritative-target candidate for Agnir `v1.0.0` has been constructed from exact authoritative base `11148c3063e63dd1ea7450b9d538ac1eccec5639` plus the accepted stable staging checkpoint `5f88a9c8bcc67753012f8bcae533241482dc1a7d`.
 
 The target candidate preserves authoritative Project identity `urn:agnir:project:agnir-core`, logical Continuity Lineage identity `urn:agnir:lineage:authoritative`, and selector `refs/heads/main`. Release-lineage continuity was not copied wholesale; accepted staging state/evidence were reconciled into target-specific truth.
