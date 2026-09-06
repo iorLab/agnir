@@ -30,7 +30,7 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/main"
   agnir/release:
-    phase: "v1.0.0-authoritative-verified"
+    phase: "v1.0.0-publication-armed"
     repository_version: "1.0.0"
     core_contract: "spec/AGNIR_CORE_1_0.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_1_0.md"
@@ -52,8 +52,11 @@ extensions:
     authoritative_revision: "ab5dcc3341d39631e843499632739864a90bba14"
     authoritative_verification_run: 34030974021
     authoritative_verification_job: 101480276759
+    prepublication_checkpoint: "b99ea0d37cca852df023ef9071d4102c0376f0fe"
+    prepublication_verification_run: 34038863673
+    prepublication_verification_job: 101501837860
     previous_latest_stable: "v0.2.0"
-    publication_status: "not-armed"
+    publication_status: "armed"
     target_ref: "refs/heads/main"
     stable_tag: "v1.0.0"
   agnir/operations:

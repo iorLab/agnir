@@ -2,11 +2,9 @@
 
 Durable continuity belongs to the Project.
 
-Authoritative `main` now carries the Agnir `1.0.0` stable source package at exact revision `ab5dcc3341d39631e843499632739864a90bba14`, preserving Project identity `urn:agnir:project:agnir-core`, logical lineage `urn:agnir:lineage:authoritative`, and selector `refs/heads/main`.
+Authoritative `main` carries the Agnir `1.0.0` stable source package and has passed the publication-precondition checkpoint. The exact prepublication checkpoint is `b99ea0d37cca852df023ef9071d4102c0376f0fe`; workflow `34038863673`, repository job `101501837860`, passed self-host cold start, historical Core/profile 0.1/0.2 regressions, Core/profile 1.0, 0.2→1.0 promotion, VCS/non-VCS lineage behavior, stable package gates, and the complete `test_*.py` suite. The stable publication job was correctly skipped at that checkpoint.
 
-That exact authoritative revision passed workflow `34030974021`, repository job `101480276759`, including self-host cold start, historical Core/profile 0.1/0.2 regressions, Core/profile 1.0, 0.2→1.0 promotion, VCS/non-VCS lineage behavior, stable package gates, and the complete `test_*.py` suite. Stable publication was correctly skipped because the exact arm message has not yet been used.
-
-Stable `v1.0.0` is therefore **authoritative and verified, but not yet published**. `publication_status` remains `not-armed`; the previously published non-prerelease stable release remains the resolver target until publication succeeds.
+Stable `v1.0.0` publication is now **armed** by the sole exact-message transition `release: publish v1.0.0 stable`. No protocol, schema, resolver, package, README, or compatibility semantic change is part of this transition.
 
 ## Accepted release evidence
 
@@ -17,8 +15,9 @@ Stable `v1.0.0` is therefore **authoritative and verified, but not yet published
 - accepted stable staging source `65b5484b62bbd413d0984d5c952bc0a653da1964`, run `34030660332`;
 - accepted staging checkpoint `5f88a9c8bcc67753012f8bcae533241482dc1a7d`, run `34030753962`;
 - target validation revision `ab5dcc3341d39631e843499632739864a90bba14`, run `34030934536`;
-- authoritative-main verification of the same revision: run `34030974021`.
+- authoritative-main verification of that target: run `34030974021`, repository job `101480276759`;
+- publication-precondition checkpoint `b99ea0d37cca852df023ef9071d4102c0376f0fe`, run `34038863673`, repository job `101501837860`.
 
-## Remaining boundary
+## Current boundary
 
-The next checkpoint records these authoritative verification receipts. After that checkpoint itself passes exact-main CI, stable publication may be armed by a separate main commit with the **exact** message `release: publish v1.0.0 stable`. No unrelated semantic change belongs in that arm transition.
+Wait for both jobs on this exact arm revision: `repository-filesystem` and `Publish v1.0.0 stable release`. If either fails, stable publication is not accepted. If both succeed, independently verify the immutable `v1.0.0` tag/Release/latest-state and accepted RC immutability before final canonical checkpointing.
