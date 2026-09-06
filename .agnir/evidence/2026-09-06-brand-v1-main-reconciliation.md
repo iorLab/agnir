@@ -26,6 +26,14 @@ Brand integration is a non-semantic stable-maintenance change. It does not alter
 
 The byte-exact approved reference boards and complete 13-item PNG delivery package were already materialized and SHA-verified on the brand branch; that gate remains closed.
 
+## Documentation reconciliation receipt
+
+The one-shot documentation workflow `34041880077` succeeded and produced final branch commit `7ef578642e6adaf6f0a59133df2752c4446105c0`. It reapplied only the `brand/` repository-map entries to the current v1 README / README.zh-CN / REPOSITORY_TREE surfaces, updated brand integration status, created this evidence record, and removed the temporary workflow.
+
+A comparison immediately after that commit reported `brand/identity-system` ahead of current `main` with **behind = 0** and merge base exactly `8b1dbe7cc1025bc500f1058b193f9bfff54bfb1b`.
+
+The PR workflow attached to the bot-authored documentation commit was marked `action_required` with no jobs; this is not a conformance result. This repository-written receipt commit intentionally retriggers PR conformance from a normal write path. The latest actual conformance run on the final head is authoritative.
+
 ## Final gate
 
 Before authoritative integration, require:
@@ -34,5 +42,3 @@ Before authoritative integration, require:
 2. final comparison reports `behind main = 0`;
 3. PR is mergeable against current `main`;
 4. post-merge authoritative-main verification.
-
-Documentation patch workflow run: `34041880077`.
