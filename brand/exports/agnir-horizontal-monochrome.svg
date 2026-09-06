@@ -1,0 +1,10 @@
+<!-- Production export derived from Principal-approved Agnir masters. Geometry remains authoritative in ../masters/. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 190" role="img" aria-label="Agnir horizontal monochrome lockup">
+  <defs>
+    <filter id="gray" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/>
+    </filter>
+  </defs>
+  <image href="../masters/agnir-mark.svg" x="23" y="29" width="174" height="153" preserveAspectRatio="none" filter="url(#gray)"/>
+  <image href="../masters/agnir-wordmark.svg" x="203" y="74" width="205" height="81" preserveAspectRatio="none"/>
+</svg>

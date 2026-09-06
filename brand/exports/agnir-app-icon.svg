@@ -1,0 +1,5 @@
+<!-- Production app-icon export derived from Principal-approved Agnir mark. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Agnir app icon">
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="#FFFFFF"/>
+  <image href="../masters/agnir-mark.svg" x="76" y="110" width="360" height="259" preserveAspectRatio="none"/>
+</svg>

@@ -1,0 +1,5 @@
+<!-- Source-proportion vertical lockup candidate v0.3. External component refs are intentional until promotion/flattening. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" role="img" aria-label="Agnir vertical lockup candidate v0.3">
+  <image href="agnir-mark-trace-v0.3.svg" x="59" y="4" width="97" height="87" preserveAspectRatio="none"/>
+  <image href="agnir-wordmark-outline-v0.3.svg" x="40" y="96" width="138" height="53" preserveAspectRatio="none"/>
+</svg>

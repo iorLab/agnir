@@ -173,6 +173,7 @@ agnir/
 │   ├── test_skill_package.py
 │   └── test_*.py
 ├── .agnir/                                # 本 Project 的 canonical durable continuity
+├── brand/                                 # 已批准品牌系统、masters、exports、references、QA
 ├── history/                               # predecessor/history material
 ├── SKILL.md                               # canonical Agent-facing procedure
 ├── AGENTS.md                              # Project instructions locator
