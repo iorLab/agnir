@@ -1,6 +1,6 @@
 # Agnir Core/Profile 0.2 → 1.0 Stability Promotion
 
-**Status:** Candidate normative promotion contract for the Agnir `1.0.0` release line.
+**Status:** Stable normative promotion contract for Core/profile `0.2` → `1.0`.
 
 ## 1. Purpose
 

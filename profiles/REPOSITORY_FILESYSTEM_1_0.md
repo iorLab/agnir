@@ -2,7 +2,7 @@
 
 **Profile identifier:** `repository-filesystem/1.0`  
 **Core compatibility:** Agnir Core `1.0`  
-**Status:** Candidate stable normative profile for the Agnir `1.0.0` release line.
+**Status:** Stable normative profile for the Agnir `1.x` release line.
 
 ## 1. Stability-promotion rule
 

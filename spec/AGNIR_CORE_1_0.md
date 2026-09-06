@@ -1,6 +1,6 @@
 # Agnir Core 1.0 — Normative Specification
 
-**Status:** Candidate stable compatibility contract for the Agnir `1.0.0` release line.
+**Status:** Stable normative compatibility contract for the Agnir `1.x` release line.
 
 ## 1. Purpose
 
@@ -30,6 +30,8 @@ Therefore the following Core `0.2` semantics are normative Core `1.0` semantics:
 - machine-distinguishable discovery/checkpoint/lineage failure classes;
 - backend neutrality;
 - VCS selector/binding/revision separation from logical lineage identity.
+
+For terminology clarity, **coherent target publication** is the target-side publication invariant expressed by the incorporated target-reconciliation and coherent-integration-publication rules; this sentence introduces no behavioral difference from Core `0.2`.
 
 A Core `1.0` implementation MUST NOT introduce a behavioral difference from the incorporated `0.2` rules unless a later published `1.x` contract explicitly defines that compatible extension.
 

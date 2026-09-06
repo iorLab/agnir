@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "SKILL.md"
+VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 
 class SkillPackageTests(unittest.TestCase):
@@ -132,7 +133,7 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
-    def test_versioning_defines_1_0_promotion_without_claiming_publication(self) -> None:
+    def test_versioning_defines_1_0_promotion_and_current_release_status(self) -> None:
         versioning = (ROOT / "VERSIONING.md").read_text(encoding="utf-8")
         milestones = (ROOT / "RELEASE_MILESTONES.md").read_text(encoding="utf-8")
         for marker in (
@@ -141,17 +142,23 @@ class SkillPackageTests(unittest.TestCase):
             "CORE_0_2_TO_1_0_PROMOTION.md",
             "existing valid Core/profile `0.1` and `0.2` Projects remain supported",
             "does not rewrite a Project's compatibility declaration",
-            "v0.2.0` remains the latest stable release",
-            "1.0.0-rc",
+            "1.0.0-rc.1",
         ):
             self.assertIn(marker, versioning)
+
         for marker in (
             "Core `1.0` + `repository-filesystem/1.0`",
             "Existing `0.2` Projects remain supported",
-            "v0.2.0` remains the latest published stable release",
-            "1.0.0-rc",
+            "1.0.0-rc.1",
         ):
             self.assertIn(marker, milestones)
+
+        if VERSION == "1.0.0":
+            self.assertIn("Repository `1.0.0` is the stable package line", versioning)
+            self.assertIn("Repository `1.0.0` is the stable source package", milestones)
+        else:
+            self.assertIn("v0.2.0", versioning)
+            self.assertIn("v0.2.0", milestones)
 
     def test_readmes_keep_user_prompts_short_and_copyable(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
