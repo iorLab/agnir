@@ -77,7 +77,7 @@ def require_1_0_contracts() -> None:
         "AGNIR_UPGRADE_MIGRATION_REQUIRED",
         "AGNIR_MIGRATION_CONFLICT",
         "Project identity",
-        "logical Continuity Lineage identity",
+        "logical lineage identity",
         "fresh",
         "no-op",
     ):
