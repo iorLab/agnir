@@ -18,9 +18,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Core 0.2 repository self-host cold-start
-        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.base_ref == 'main' || startsWith(github.head_ref, 'release/')
-        run: python conformance/check_agnir_0_2.py
+      - name: Install conformance dependencies
+        run: python -m pip install --disable-pip-version-check -r conformance/requirements.txt
+      - name: Repository self-host cold-start
+        run: |
+          set -euo pipefail
+          case "$(cat VERSION)" in
+            0.2.0|0.2.0-rc.1)
+              python conformance/check_agnir_0_2.py
+              ;;
+            1.0.0|1.0.0-rc.1)
+              python conformance/check_agnir_1_0.py
+              ;;
+            *)
+              echo "Unsupported repository version for self-host gate: $(cat VERSION)" >&2
+              exit 1
+              ;;
+          esac
       - name: Stable Core 0.1 compatibility regression
         run: |
           python -m unittest discover -s conformance -p 'test_checkpoint_semantics.py' -v
@@ -36,6 +50,12 @@ jobs:
         run: python -m unittest discover -s conformance -p 'test_core_0_2_vcs_mapping.py' -v
       - name: repository-filesystem 0.2 discovery
         run: python -m unittest discover -s conformance -p 'test_repository_filesystem_0_2.py' -v
+      - name: Core 1.0 stability semantics
+        run: python -m unittest discover -s conformance -p 'test_core_1_0_stability.py' -v
+      - name: repository-filesystem 1.0 discovery
+        run: python -m unittest discover -s conformance -p 'test_repository_filesystem_1_0.py' -v
+      - name: repository-filesystem 0.2 to 1.0 promotion
+        run: python -m unittest discover -s conformance -p 'test_repository_filesystem_1_0_promotion.py' -v
       - name: VCS lineage binding
         run: python -m unittest discover -s conformance -p 'test_vcs_lineage_binding.py' -v
       - name: Core 0.1 to 0.2 migration semantics
@@ -43,13 +63,191 @@ jobs:
       - name: repository-filesystem 0.1 to 0.2 migration
         run: python -m unittest discover -s conformance -p 'test_repository_filesystem_0_2_migration.py' -v
       - name: Fresh Core 0.2 install and published v0.1.1 migration
-        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.base_ref == 'main' || startsWith(github.head_ref, 'release/')
         run: python -m unittest discover -s conformance -p 'test_rc_release_gates.py' -v
-      - name: Stable v0.2.0 package gates
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release/v0.2.0' || github.base_ref == 'main' || github.head_ref == 'release/v0.2.0'
+      - name: Stable package gates
+        if: >-
+          github.ref == 'refs/heads/main' ||
+          github.ref == 'refs/heads/release/v0.2.0' ||
+          github.ref == 'refs/heads/release/v1.0.0' ||
+          github.base_ref == 'main' ||
+          github.head_ref == 'release/v0.2.0' ||
+          github.head_ref == 'release/v1.0.0'
         run: python -m unittest discover -s conformance -p 'test_stable_release_gates.py' -v
       - name: Full conformance suite
         run: python -m unittest discover -s conformance -p 'test_*.py' -v
+
+  publish-v1-0-0:
+    name: Publish v1.0.0 stable release
+    needs: repository-filesystem
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.event.head_commit.message == 'release: publish v1.0.0 stable'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install conformance dependencies
+        run: python -m pip install --disable-pip-version-check -r conformance/requirements.txt
+      - name: Verify exact v1 stable publication candidate
+        run: |
+          set -euo pipefail
+          test "$(cat VERSION)" = "1.0.0"
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          grep -q 'version: "1.0"' AGNIR.yaml
+          grep -q 'discovery_profile: "repository-filesystem/1.0"' AGNIR.yaml
+          grep -q 'repository_version: "1.0.0"' AGNIR.yaml
+          grep -q 'lineage: "urn:agnir:lineage:authoritative"' AGNIR.yaml
+          grep -q 'selector: "refs/heads/main"' AGNIR.yaml
+          grep -q 'Stable normative compatibility contract' spec/AGNIR_CORE_1_0.md
+          grep -q 'Stable normative profile' profiles/REPOSITORY_FILESYSTEM_1_0.md
+          grep -q 'Stable normative promotion contract' spec/CORE_0_2_TO_1_0_PROMOTION.md
+          python conformance/check_agnir_1_0.py
+      - name: Create immutable v1 stable tag and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="v1.0.0"
+          accepted_rc="v1.0.0-rc.1"
+          accepted_rc_sha="092945289f1a0a9803e4fe0583104aa380ceaadc"
+          repo="${GITHUB_REPOSITORY}"
+
+          rc_sha=$(gh api "repos/${repo}/git/ref/tags/${accepted_rc}" --jq '.object.sha')
+          rc_prerelease=$(gh api "repos/${repo}/releases/tags/${accepted_rc}" --jq '.prerelease')
+          rc_draft=$(gh api "repos/${repo}/releases/tags/${accepted_rc}" --jq '.draft')
+          test "${rc_sha}" = "${accepted_rc_sha}"
+          test "${rc_prerelease}" = "true"
+          test "${rc_draft}" = "false"
+
+          if tag_json=$(gh api "repos/${repo}/git/ref/tags/${tag}" 2>/dev/null); then
+            test "$(printf '%s' "${tag_json}" | jq -r '.object.sha')" = "${GITHUB_SHA}"
+          else
+            gh api --method POST "repos/${repo}/git/refs" \
+              -f ref="refs/tags/${tag}" \
+              -f sha="${GITHUB_SHA}" >/dev/null
+          fi
+
+          body=$(cat <<EOF
+          Agnir v1.0.0 stable release.
+
+          Exact authoritative candidate: ${GITHUB_SHA}
+          Conformance workflow: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          Core: 1.0
+          Profile: repository-filesystem/1.0
+          Accepted RC: ${accepted_rc} at ${accepted_rc_sha}
+
+          This is the first long-term stable Agnir compatibility release. Historical Core/profile 0.1 and 0.2 remain supported compatibility/migration surfaces. Existing 0.2 Projects are not silently relabeled as 1.0.
+          EOF
+          )
+
+          if release_json=$(gh api "repos/${repo}/releases/tags/${tag}" 2>/dev/null); then
+            test "$(printf '%s' "${release_json}" | jq -r '.tag_name')" = "${tag}"
+            test "$(printf '%s' "${release_json}" | jq -r '.prerelease')" = "false"
+            test "$(printf '%s' "${release_json}" | jq -r '.draft')" = "false"
+          else
+            gh api --method POST "repos/${repo}/releases" \
+              -f tag_name="${tag}" \
+              -f target_commitish="${GITHUB_SHA}" \
+              -f name="Agnir ${tag}" \
+              -f body="${body}" \
+              -F draft=false \
+              -F prerelease=false >/dev/null
+          fi
+
+          tag_sha=$(gh api "repos/${repo}/git/ref/tags/${tag}" --jq '.object.sha')
+          prerelease=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.prerelease')
+          draft=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.draft')
+          latest=$(gh api "repos/${repo}/releases/latest" --jq '.tag_name')
+          rc_sha_after=$(gh api "repos/${repo}/git/ref/tags/${accepted_rc}" --jq '.object.sha')
+          test "${tag_sha}" = "${GITHUB_SHA}"
+          test "${prerelease}" = "false"
+          test "${draft}" = "false"
+          test "${latest}" = "${tag}"
+          test "${rc_sha_after}" = "${accepted_rc_sha}"
+          echo "PASS: ${tag} -> ${tag_sha}; prerelease=${prerelease}; draft=${draft}; latest=${latest}; accepted-rc=${rc_sha_after}"
+
+  publish-v1-0-0-rc-1:
+    name: Publish v1.0.0-rc.1 prerelease
+    needs: repository-filesystem
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/release/v1.0.0-rc.1' &&
+      github.event.head_commit.message == 'rc: arm v1.0.0-rc.1 publication'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install conformance dependencies
+        run: python -m pip install --disable-pip-version-check -r conformance/requirements.txt
+      - name: Verify exact v1 RC publication candidate
+        run: |
+          set -euo pipefail
+          test "$(cat VERSION)" = "1.0.0-rc.1"
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          grep -q 'version: "1.0"' AGNIR.yaml
+          grep -q 'discovery_profile: "repository-filesystem/1.0"' AGNIR.yaml
+          grep -q 'repository_version: "1.0.0-rc.1"' AGNIR.yaml
+          grep -q 'lineage: "urn:agnir:lineage:v1.0.0-rc.1"' AGNIR.yaml
+          grep -q 'selector: "refs/heads/release/v1.0.0-rc.1"' AGNIR.yaml
+          python conformance/check_agnir_1_0.py
+      - name: Create immutable v1 RC tag and prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="v1.0.0-rc.1"
+          repo="${GITHUB_REPOSITORY}"
+
+          if tag_json=$(gh api "repos/${repo}/git/ref/tags/${tag}" 2>/dev/null); then
+            test "$(printf '%s' "${tag_json}" | jq -r '.object.sha')" = "${GITHUB_SHA}"
+          else
+            gh api --method POST "repos/${repo}/git/refs" \
+              -f ref="refs/tags/${tag}" \
+              -f sha="${GITHUB_SHA}" >/dev/null
+          fi
+
+          body=$(cat <<EOF
+          Agnir v1.0.0-rc.1 release candidate.
+
+          Exact candidate: ${GITHUB_SHA}
+          Conformance workflow: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          Core: 1.0
+          Profile: repository-filesystem/1.0
+          Promotion source semantics: independently accepted Core/profile 0.2
+
+          This prerelease exercises the stability promotion and does not replace the latest stable release until a later stable v1.0.0 publication succeeds.
+          EOF
+          )
+
+          if release_json=$(gh api "repos/${repo}/releases/tags/${tag}" 2>/dev/null); then
+            test "$(printf '%s' "${release_json}" | jq -r '.tag_name')" = "${tag}"
+            test "$(printf '%s' "${release_json}" | jq -r '.prerelease')" = "true"
+            test "$(printf '%s' "${release_json}" | jq -r '.draft')" = "false"
+          else
+            gh api --method POST "repos/${repo}/releases" \
+              -f tag_name="${tag}" \
+              -f target_commitish="${GITHUB_SHA}" \
+              -f name="Agnir ${tag}" \
+              -f body="${body}" \
+              -F draft=false \
+              -F prerelease=true >/dev/null
+          fi
+
+          tag_sha=$(gh api "repos/${repo}/git/ref/tags/${tag}" --jq '.object.sha')
+          prerelease=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.prerelease')
+          draft=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.draft')
+          test "${tag_sha}" = "${GITHUB_SHA}"
+          test "${prerelease}" = "true"
+          test "${draft}" = "false"
 
   publish-v0-2-0-rc-1:
     name: Publish v0.2.0-rc.1 prerelease
@@ -133,8 +331,6 @@ jobs:
           Core: 0.2
           Profile: repository-filesystem/0.2
           Accepted RC: v0.2.0-rc.1 at 50a8cd565954e7e8055b8b628e2d620ac7357bab
-
-          Highlights: stable Continuity Lineages, selector/identity separation, lineage-local checkpoints, staged target reconciliation, non-VCS + VCS conformance, explicit v0.1.1/Core 0.1 migration, fresh install/resume evidence, and safe authoritative-main acceptance.
           EOF
           )
 

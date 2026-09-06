@@ -1,6 +1,8 @@
 # Agnir Discovery 0.1
 
-**Status:** Normative supporting contract for Agnir Core `0.1`.
+**Status:** Normative supporting discovery/failure contract for Agnir Core `0.1`, and the inherited discovery-failure vocabulary for later Core lines that explicitly retain these semantics, including Core `0.2`.
+
+Later profiles MAY define stricter mappings for profile-specific validation conditions. When they do, those profile-specific mappings govern that profile without redefining the general failure classes below.
 
 ## 1. Discovery algorithm
 
@@ -36,16 +38,16 @@ No Discovery Record can be resolved under the active convention.
 Multiple candidate records or roots exist and authority cannot be determined.
 
 ### `AGNIR_DISCOVERY_UNSUPPORTED_VERSION`
-The declared Agnir version cannot be safely interpreted.
+The declared Agnir **Core version** cannot be safely interpreted by the active implementation. Profile-specific contracts may use another class for a profile identifier that contradicts the already-selected profile.
 
 ### `AGNIR_DISCOVERY_PROJECT_MISMATCH`
 Resolved memory identifies a different Project.
 
 ### `AGNIR_DISCOVERY_UNRESOLVABLE`
-A required locator exists but cannot resolve to durable state.
+A required locator exists but cannot resolve to durable state under the active locator convention.
 
 ### `AGNIR_DISCOVERY_UNAUTHORIZED`
-The locator is known but required authorization is absent or denied.
+The locator is known but required authorization is absent or denied. A local locator that is invalid under the selected local profile is not automatically an authorization attempt; profile-specific contracts may classify it as unresolvable unless an explicit external Locator Chain is being resolved.
 
 ### `AGNIR_DISCOVERY_CYCLE`
 The Locator Chain cycles instead of terminating in required durable state.
@@ -54,7 +56,7 @@ The Locator Chain cycles instead of terminating in required durable state.
 A locator resolves only to state known to be superseded or non-authoritative.
 
 ### `AGNIR_DISCOVERY_INCONSISTENT`
-Resolved memory materially contradicts the Discovery Record or itself such that safe continuation is not established.
+Resolved memory or discovery metadata materially contradicts the selected Discovery Record/profile or itself such that safe continuation is not established.
 
 ## 4. Repair rule
 

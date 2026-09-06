@@ -51,6 +51,17 @@ class RepositoryFilesystem02MigrationTests(unittest.TestCase):
         self.assertEqual(raised.exception.code, "AGNIR_UPGRADE_MIGRATION_REQUIRED")
         self.assertEqual((self.root / "AGNIR.yaml").read_bytes(), before)
 
+    def test_unauthorized_migration_precedes_invalid_lineage_input(self) -> None:
+        before = (self.root / "AGNIR.yaml").read_bytes()
+        with self.assertRaises(UpgradeMigrationRequired) as raised:
+            stage_repository_filesystem_0_1_to_0_2(
+                self.root,
+                lineage_identity="   ",
+                authorized=False,
+            )
+        self.assertEqual(raised.exception.code, "AGNIR_UPGRADE_MIGRATION_REQUIRED")
+        self.assertEqual((self.root / "AGNIR.yaml").read_bytes(), before)
+
     def test_staging_does_not_publish_core_0_2(self) -> None:
         before = discover_repository_filesystem(self.root)
         candidate = stage_repository_filesystem_0_1_to_0_2(
@@ -63,6 +74,15 @@ class RepositoryFilesystem02MigrationTests(unittest.TestCase):
         during = discover_repository_filesystem(self.root)
         self.assertEqual(during, before)
         self.assertNotIn("continuity:", (self.root / "AGNIR.yaml").read_text(encoding="utf-8"))
+
+    def test_string_lineage_input_uses_published_unicode_whitespace_normalization(self) -> None:
+        candidate = stage_repository_filesystem_0_1_to_0_2(
+            self.root,
+            lineage_identity=f"\u00a0  {LINEAGE_ID}\u3000",
+            authorized=True,
+        )
+        self.assertEqual(candidate.lineage_identity, LINEAGE_ID)
+        self.assertIn(f'lineage: "{LINEAGE_ID}"', candidate.candidate_manifest_text)
 
     def test_publish_preserves_durable_memory_and_unrelated_manifest_content(self) -> None:
         memory_paths = [
@@ -131,6 +151,23 @@ class RepositoryFilesystem02MigrationTests(unittest.TestCase):
         self.assertEqual(second_snapshot, first_snapshot)
         self.assertEqual((self.root / "AGNIR.yaml").read_bytes(), manifest_after_first)
 
+    def test_repeating_normalization_equivalent_migration_is_no_op(self) -> None:
+        first = stage_repository_filesystem_0_1_to_0_2(
+            self.root,
+            lineage_identity=LINEAGE_ID,
+            authorized=True,
+        )
+        publish_repository_filesystem_0_2_migration(first)
+
+        second = stage_repository_filesystem_0_1_to_0_2(
+            self.root,
+            lineage_identity=f"\u2009{LINEAGE_ID}\u202f",
+            authorized=True,
+        )
+        snapshot, changed = publish_repository_filesystem_0_2_migration(second)
+        self.assertFalse(changed)
+        self.assertEqual(snapshot.lineage_identity, LINEAGE_ID)
+
     def test_repeated_migration_cannot_rebind_lineage(self) -> None:
         first = stage_repository_filesystem_0_1_to_0_2(
             self.root,
@@ -145,6 +182,15 @@ class RepositoryFilesystem02MigrationTests(unittest.TestCase):
                 authorized=True,
             )
         self.assertEqual(raised.exception.code, "AGNIR_MIGRATION_CONFLICT")
+
+    def test_authorized_whitespace_only_lineage_is_rejected(self) -> None:
+        with self.assertRaises(DiscoveryFailure) as raised:
+            stage_repository_filesystem_0_1_to_0_2(
+                self.root,
+                lineage_identity="\u00a0\u3000",
+                authorized=True,
+            )
+        self.assertEqual(raised.exception.code, "AGNIR_LINEAGE_REQUIRED")
 
     def test_manifest_change_after_staging_invalidates_candidate(self) -> None:
         candidate = stage_repository_filesystem_0_1_to_0_2(

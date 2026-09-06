@@ -7,7 +7,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from core_reference import discovery_failure
-from core_0_2_migration_reference import MigrationConflict
+from core_0_2_migration_reference import (
+    MigrationConflict,
+    normalize_initial_lineage_identity,
+)
 from repository_filesystem_0_2_reference import (
     DiscoverySnapshot02,
     discover_repository_filesystem_0_2,
@@ -98,13 +101,6 @@ def stage_repository_filesystem_0_1_to_0_2(
             "migration could not resolve top-level AGNIR.yaml",
         )
 
-    logical = lineage_identity.strip()
-    if not logical:
-        raise discovery_failure(
-            "AGNIR_LINEAGE_REQUIRED",
-            "repository/filesystem 0.1 to 0.2 migration requires an initial logical lineage identity",
-        )
-
     text = manifest_path.read_text(encoding="utf-8")
     values = _parse_scalars(text)
     version = values.get(("agnir", "version"))
@@ -123,6 +119,12 @@ def stage_repository_filesystem_0_1_to_0_2(
         )
 
     if version == CORE_0_2 and profile == PROFILE_0_2:
+        logical = normalize_initial_lineage_identity(lineage_identity)
+        if not logical:
+            raise discovery_failure(
+                "AGNIR_LINEAGE_REQUIRED",
+                "repository/filesystem 0.1 to 0.2 migration requires an initial logical lineage identity",
+            )
         existing_lineage = values.get(("continuity", "lineage"))
         if existing_lineage != logical:
             raise MigrationConflict(
@@ -147,6 +149,13 @@ def stage_repository_filesystem_0_1_to_0_2(
     if not authorized:
         raise UpgradeMigrationRequired(
             f"{UpgradeMigrationRequired.code}: Core/profile 0.1 -> 0.2 changes a compatibility line"
+        )
+
+    logical = normalize_initial_lineage_identity(lineage_identity)
+    if not logical:
+        raise discovery_failure(
+            "AGNIR_LINEAGE_REQUIRED",
+            "repository/filesystem 0.1 to 0.2 migration requires an initial logical lineage identity",
         )
 
     candidate_text = _replace_agnir_compatibility(text)

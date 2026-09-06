@@ -11,20 +11,25 @@ Do not require the user to carry Agnir's implementation checklist. A short inten
 
 ## Determine the operation and target
 
-Classify the request as install/initialize, migration, upgrade, resume/use, checkpoint, commit/push, lineage integration, or repair.
+Classify the request as install/initialize, migration or compatibility promotion, upgrade, resume/use, checkpoint, commit/push, lineage integration, or repair.
 
 Resolve the target Agnir package before mutating the Project:
 
 1. `latest stable release` means an actually published stable tag/release. Do not silently treat `main`, another moving branch, an RC, or an untagged revision as stable.
-2. A prerelease such as `v0.2.0-rc.1` requires explicit Principal authorization.
-3. Read the target `RELEASE.md`, Core/profile contract, and migration contract.
+2. A prerelease such as `v1.0.0-rc.1` requires explicit Principal authorization.
+3. Read the target `RELEASE.md`, Core/profile contract, and applicable migration/promotion contract.
 4. Record immutable target provenance.
 
 For repository/filesystem targets:
 
 - Core/profile `0.1`: `spec/AGNIR_CORE.md`, `profiles/REPOSITORY_FILESYSTEM.md`, `schemas/agnir-manifest.schema.json`;
 - Core/profile `0.2`: `spec/AGNIR_CORE_0_2.md`, `profiles/REPOSITORY_FILESYSTEM_0_2.md`, `spec/CORE_0_1_TO_0_2_MIGRATION.md`, `schemas/agnir-manifest-0.2.schema.json`;
-- VCS branch/worktree/integration work: also apply `profiles/VCS_BRANCH_CONTINUITY.md` as adapter/extension mapping.
+- Core/profile `1.0`: `spec/AGNIR_CORE_1_0.md`, `profiles/REPOSITORY_FILESYSTEM_1_0.md`, `schemas/agnir-manifest-1.0.schema.json`; for an existing `0.2` Project that explicitly adopts this line, also apply `spec/CORE_0_2_TO_1_0_PROMOTION.md`;
+- Core/profile `0.1` VCS branch/worktree/integration behavior: also apply `profiles/VCS_BRANCH_CONTINUITY.md` as the experimental 0.1 VCS extension;
+- Core/profile `0.2` VCS selector/binding/fork/rebind/integration behavior: use the normative VCS semantics in `spec/AGNIR_CORE_0_2.md` and `profiles/REPOSITORY_FILESYSTEM_0_2.md`. Do **not** treat the Core/profile 0.1-only `profiles/VCS_BRANCH_CONTINUITY.md` as the normative 0.2 contract;
+- Core/profile `1.0` VCS selector/binding/fork/rebind/integration behavior is the stability-promoted form of the accepted 0.2 semantics; use `spec/AGNIR_CORE_1_0.md` and `profiles/REPOSITORY_FILESYSTEM_1_0.md`.
+
+A distribution that supports several compatibility lines must dispatch a Project according to the compatibility identifiers it actually declares. The existence of Core/profile `1.0` does not authorize silently interpreting or rewriting a valid `0.2` Project as `1.0`.
 
 ## Install or initialize Agnir
 
@@ -45,7 +50,9 @@ For Core/profile `0.1`, `AGNIR.yaml` declares `agnir.version: "0.1"`, `repositor
 
 For Core/profile `0.2`, it declares `agnir.version: "0.2"`, `repository-filesystem/0.2`, the same durable `project.identity` concept, a non-empty logical `continuity.lineage`, and memory locators.
 
-For VCS-aware Core `0.2`, keep logical lineage identity separate from selector/binding metadata. A branch/ref/worktree can select/bind a lineage; it is not automatically lineage identity. A commit SHA is a receipt, not lineage identity.
+For a fresh Project intentionally targeting Core/profile `1.0`, declare `agnir.version: "1.0"`, `repository-filesystem/1.0`, a non-empty durable `project.identity`, a non-empty logical `continuity.lineage`, and the same accepted memory semantics. Do not create a nominal `1.0` manifest and then rely on a `0.2` resolver; the selected 1.0 manifest must satisfy the published 1.0 schema/profile.
+
+For VCS-aware Core `0.2` or `1.0`, keep logical lineage identity separate from selector/binding metadata. A branch/ref/worktree can select/bind a lineage; it is not automatically lineage identity. A commit SHA is a receipt, not lineage identity.
 
 Unless an intentionally compatible layout already exists, use:
 
@@ -114,7 +121,9 @@ Upgrade is **not re-initialization**. Activate the existing Project first. Prese
 
 - **no-op** — same operational package and no material drift;
 - **compatible operational upgrade** — Core/profile compatibility lines unchanged;
-- **migration required** — Core/profile changes. Surface `AGNIR_UPGRADE_MIGRATION_REQUIRED`-class semantics and do not silently rewrite compatibility.
+- **migration or promotion required** — Core/profile compatibility identifiers change. Surface `AGNIR_UPGRADE_MIGRATION_REQUIRED`-class semantics and do not silently rewrite compatibility.
+
+A newer Agnir distribution may continue to operate a supported older compatibility line. In particular, a `1.0.x` distribution may resolve a valid `0.2` Project through its `0.2` compatibility path; merely installing the newer distribution is not authorization to rewrite the Project to Core/profile `1.0`.
 
 A Project without older operational provenance remains valid; missing provenance does not justify re-initialization.
 
@@ -142,7 +151,7 @@ If nothing material changes, upgrade evaluation is a no-op.
 
 ## Migrate Core/profile compatibility
 
-Migration is separately authorized compatibility work, not a compatible operational upgrade.
+Migration and compatibility promotion are separately authorized work, not a compatible operational upgrade.
 
 For `0.1` → `0.2`:
 
@@ -158,6 +167,22 @@ For `0.1` → `0.2`:
 
 Follow `spec/CORE_0_1_TO_0_2_MIGRATION.md`. Do not relocate memory merely because `0.2` adds lineage identity.
 
+For `0.2` → `1.0` stability promotion:
+
+1. activate and validate the authoritative Project through the exact Core/profile `0.2` resolver;
+2. require explicit Principal/policy authorization before rewriting the compatibility declarations; without it, return `AGNIR_UPGRADE_MIGRATION_REQUIRED` semantics and leave authoritative truth unchanged;
+3. preserve `project.identity` and `continuity.lineage` **exactly**; do not trim, regenerate, rename, or reinterpret either identity;
+4. preserve State, Next Actions, Decisions, Evidence, all valid memory locators, policy, unrelated extensions, VCS binding semantics, and unrelated Project files/instructions;
+5. construct and validate the complete Core/profile `1.0` candidate while the authoritative `0.2` Project remains unchanged;
+6. capture sufficient source receipt/digest to detect both Discovery Record and durable-continuity advancement after staging;
+7. stale source publication fails with `AGNIR_MIGRATION_CONFLICT` semantics rather than overwriting newer truth;
+8. publish the compatibility-declaration change coherently, then fresh-resolve exact Core/profile `1.0` with the same Project and lineage identities and equivalent durable continuity;
+9. repeating the same completed promotion is a no-op; do not rewrite continuity merely to create activity.
+
+Follow `spec/CORE_0_2_TO_1_0_PROMOTION.md`. Existing supported `0.2` Projects may remain on `0.2`; promotion is not mandatory merely because a 1.0 distribution exists.
+
+For a supported `0.1` Project that is intentionally brought to `1.0`, preserve both boundaries: explicit `0.1` → `0.2` migration first, then explicit semantics-preserving `0.2` → `1.0` promotion. A higher-level operation may compose the two but must not bypass the established initial-lineage migration semantics.
+
 ## Resume or use an existing Agnir Project
 
 Do not ask for another bootstrap prompt.
@@ -165,13 +190,13 @@ Do not ask for another bootstrap prompt.
 1. read root `AGENTS.md`;
 2. follow README `Agnir Project Instructions`;
 3. read `AGNIR.yaml`;
-4. validate Core/profile and Project identity;
-5. for Core `0.2`, resolve exactly one selected logical lineage from explicit/context/default selection and validate any selector binding separately;
+4. validate and dispatch according to the actually declared Core/profile, then validate Project identity;
+5. for Core `0.2` or `1.0`, resolve exactly one selected logical lineage from explicit/context/default selection and validate any selector binding separately;
 6. load Current State + Next Actions for that lineage;
 7. load Decisions/Evidence when relevant;
 8. perform the actual Project task.
 
-Missing required selection surfaces `AGNIR_LINEAGE_REQUIRED`; unresolved selected identity/binding fails instead of scanning siblings. Normal resume does not automatically upgrade/migrate.
+Missing required selection surfaces `AGNIR_LINEAGE_REQUIRED`; unresolved selected identity/binding fails instead of scanning siblings. Normal resume does not automatically upgrade, migrate, or promote compatibility.
 
 ## Checkpoint
 
@@ -206,6 +231,8 @@ If Project and continuity both changed, prefer one VCS revision. If checkpoint e
 - stale/ambiguous external copies must not be guessed as fork vs rename;
 - lineage-local checkpoints do not silently mutate siblings.
 
+These accepted lineage invariants apply to Core `0.2` and their stability-promoted Core `1.0` equivalents.
+
 ## Integrate Continuity Lineages
 
 For merge/rebase/cherry-pick or another lineage integration:
@@ -227,11 +254,11 @@ Repair the earliest broken layer; never invent truth.
 
 1. confirm authorized Project Entry Point;
 2. validate `AGENTS.md` → README `Agnir Project Instructions` activation;
-3. validate `AGNIR.yaml`, Core/profile, Project identity;
-4. for `0.2`, validate selected logical lineage and selector/binding separately;
+3. validate `AGNIR.yaml`, declared Core/profile, and Project identity;
+4. for `0.2` or `1.0`, validate selected logical lineage and selector/binding separately;
 5. validate memory locators/authorization boundaries;
 6. reconcile durable truth only after discovery is trustworthy;
 7. if an external mechanism advanced an unreconciled target, treat it as recovery-required and construct a coherent target checkpoint;
 8. re-run fresh repository activation and required surface activation verification.
 
-Never repair by guessing a sibling Project/branch/lineage, copying source continuity wholesale into target, rewriting unrelated Project instructions, or treating private chat history as canonical Project truth.
+Never repair by guessing a sibling Project/branch/lineage, copying source continuity wholesale into target, rewriting unrelated Project instructions, silently relabeling one compatibility line as another, or treating private chat history as canonical Project truth.

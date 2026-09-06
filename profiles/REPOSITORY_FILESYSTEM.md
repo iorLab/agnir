@@ -114,6 +114,8 @@ memory:
 
 Relative locators resolve from the Project root. Absolute filesystem paths SHOULD be avoided unless the Project intentionally accepts that portability constraint.
 
+For local repository/filesystem locators in this compatibility line, `memory.state` and `memory.next_actions` MUST resolve to regular files, non-null `memory.decisions` MUST resolve to a regular file, and non-null `memory.evidence` MUST resolve to a directory that serves as the local Evidence collection root. A non-null Evidence locator resolving to a regular file is `AGNIR_DISCOVERY_UNRESOLVABLE`, not an alternate conforming representation. Baseline Evidence discovery is flat: ordinary profile discovery exposes regular-file children immediately contained by the declared Evidence directory; recursive traversal of nested directories is not required unless an extension defines richer behavior.
+
 A relative locator that traverses filesystem indirection outside the selected Project root MUST NOT be treated as an implicitly authorized external Locator Chain merely because the target is readable. External memory requires an explicit durable authorized binding/Locator Chain.
 
 ## 4. Profile and extension versioning
@@ -204,6 +206,6 @@ An Agent-operable initialization conformance case additionally MUST prove fresh 
 
 Compatible-upgrade conformance SHOULD prove that an old Project with valid Core/profile compatibility but missing operational provenance can be upgraded without changing Project identity or memory locators; that the same applied provenance yields a no-op; that non-stable targets require explicit opt-in; and that Core/profile changes are classified as migration rather than silently applied.
 
-The active reference suite additionally pressure-tests non-destructive `AGENTS.md` merge, all named discovery failures, multi-project isolation, transactional checkpoint semantics, external authorization, symlink boundaries, real Git worktree cold start, and experimental branch-local VCS continuity/reconciliation behavior.
+The active reference suite additionally pressure-tests non-destructive `AGENTS.md` merge, all named discovery failures, multi-project isolation, transactional checkpoint semantics, external authorization, symlink boundaries, real Git worktree cold start, local locator target-shape enforcement including a directory-valued Evidence collection, and experimental branch-local VCS continuity/reconciliation behavior.
 
 Real mount-boundary behavior remains an environment-dependent pressure case. It MUST NOT be claimed proven by simulating a mount with an ordinary directory.

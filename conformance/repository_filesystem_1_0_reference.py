@@ -11,16 +11,16 @@ from core_reference import discovery_failure
 from repository_filesystem_reference import _resolve_local_locator
 
 
-CORE_0_2_VERSION = "0.2"
-PROFILE_0_2 = "repository-filesystem/0.2"
-_SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schemas" / "agnir-manifest-0.2.schema.json"
+CORE_1_0_VERSION = "1.0"
+PROFILE_1_0 = "repository-filesystem/1.0"
+_SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schemas" / "agnir-manifest-1.0.schema.json"
 _SCHEMA = json.loads(_SCHEMA_PATH.read_text(encoding="utf-8"))
 Draft202012Validator.check_schema(_SCHEMA)
 _SCHEMA_VALIDATOR = Draft202012Validator(_SCHEMA)
 
 
 @dataclass(frozen=True)
-class DiscoverySnapshot02:
+class DiscoverySnapshot10:
     project_root: Path
     project_identity: str
     lineage_identity: str
@@ -32,27 +32,27 @@ class DiscoverySnapshot02:
     evidence: dict[str, str]
 
 
-def _load_and_validate_manifest_0_2(manifest: Path) -> dict[str, object]:
+def _load_and_validate_manifest_1_0(manifest: Path) -> dict[str, object]:
     try:
         data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, yaml.YAMLError) as exc:
         raise discovery_failure(
             "AGNIR_DISCOVERY_INCONSISTENT",
-            f"repository/filesystem 0.2 manifest cannot be parsed safely: {exc}",
+            f"repository/filesystem 1.0 manifest cannot be parsed safely: {exc}",
         ) from exc
 
     if not isinstance(data, dict):
         raise discovery_failure(
             "AGNIR_DISCOVERY_INCONSISTENT",
-            "repository/filesystem 0.2 manifest must be a mapping/object",
+            "repository/filesystem 1.0 manifest must be a mapping/object",
         )
 
     agnir = data.get("agnir")
     declared_version = agnir.get("version") if isinstance(agnir, dict) else None
-    if isinstance(declared_version, str) and declared_version != CORE_0_2_VERSION:
+    if isinstance(declared_version, str) and declared_version != CORE_1_0_VERSION:
         raise discovery_failure(
             "AGNIR_DISCOVERY_UNSUPPORTED_VERSION",
-            f"expected Agnir Core {CORE_0_2_VERSION}, discovered {declared_version!r}",
+            f"expected Agnir Core {CORE_1_0_VERSION}, discovered {declared_version!r}",
         )
 
     errors = sorted(
@@ -64,7 +64,7 @@ def _load_and_validate_manifest_0_2(manifest: Path) -> dict[str, object]:
         location = ".".join(str(item) for item in first.absolute_path) or "<root>"
         raise discovery_failure(
             "AGNIR_DISCOVERY_INCONSISTENT",
-            f"repository/filesystem 0.2 manifest violates published schema at {location}: {first.message}",
+            f"repository/filesystem 1.0 manifest violates published schema at {location}: {first.message}",
         )
 
     return data
@@ -85,21 +85,21 @@ def _load_flat_local_evidence(root: Path, evidence_path: Path) -> dict[str, str]
     return evidence
 
 
-def discover_repository_filesystem_0_2(
+def discover_repository_filesystem_1_0(
     project_root: str | Path,
     *,
     expected_project_identity: str | None = None,
     expected_lineage_identity: str | None = None,
-) -> DiscoverySnapshot02:
+) -> DiscoverySnapshot10:
     root = Path(project_root).resolve()
     manifest = root / "AGNIR.yaml"
     if not manifest.is_file():
         raise discovery_failure(
             "AGNIR_DISCOVERY_NOT_FOUND",
-            "repository/filesystem 0.2 could not resolve top-level AGNIR.yaml at the selected Project root",
+            "repository/filesystem 1.0 could not resolve top-level AGNIR.yaml at the selected Project root",
         )
 
-    data = _load_and_validate_manifest_0_2(manifest)
+    data = _load_and_validate_manifest_1_0(manifest)
     agnir = data["agnir"]
     project = data["project"]
     continuity = data["continuity"]
@@ -168,7 +168,7 @@ def discover_repository_filesystem_0_2(
     if evidence_path is not None:
         evidence = _load_flat_local_evidence(root, evidence_path)
 
-    return DiscoverySnapshot02(
+    return DiscoverySnapshot10(
         project_root=root,
         project_identity=identity,
         lineage_identity=lineage,
