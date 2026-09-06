@@ -5,6 +5,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 
 class OneZeroPackageSurfaceTests(unittest.TestCase):
@@ -88,15 +89,26 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
         ):
             self.assertIn(marker, tree)
 
-    def test_promotion_candidate_does_not_pretend_repository_release_is_1_0(self) -> None:
-        self.assertEqual((ROOT / "VERSION").read_text(encoding="utf-8").strip(), "0.2.0")
+    def test_source_tree_version_matches_its_self_host_compatibility(self) -> None:
         manifest = (ROOT / "AGNIR.yaml").read_text(encoding="utf-8")
-        self.assertIn('version: "0.2"', manifest)
-        self.assertIn('discovery_profile: "repository-filesystem/0.2"', manifest)
-        self.assertIn('repository_version: "0.2.0"', manifest)
-        self.assertNotIn('repository_version: "1.0.0-rc.1"', manifest)
+        self.assertIn(VERSION, {"0.2.0", "1.0.0-rc.1", "1.0.0"})
+        if VERSION == "0.2.0":
+            self.assertIn('version: "0.2"', manifest)
+            self.assertIn('discovery_profile: "repository-filesystem/0.2"', manifest)
+            self.assertIn('repository_version: "0.2.0"', manifest)
+            self.assertNotIn('repository_version: "1.0.0-rc.1"', manifest)
+        elif VERSION == "1.0.0-rc.1":
+            self.assertIn('version: "1.0"', manifest)
+            self.assertIn('discovery_profile: "repository-filesystem/1.0"', manifest)
+            self.assertIn('repository_version: "1.0.0-rc.1"', manifest)
+            self.assertIn('lineage: "urn:agnir:lineage:v1.0.0-rc.1"', manifest)
+            self.assertIn('selector: "refs/heads/release/v1.0.0-rc.1"', manifest)
+        else:
+            self.assertIn('version: "1.0"', manifest)
+            self.assertIn('discovery_profile: "repository-filesystem/1.0"', manifest)
+            self.assertIn('repository_version: "1.0.0"', manifest)
 
-    def test_v1_rc_publication_is_exact_source_and_dormant_on_current_candidate(self) -> None:
+    def test_v1_rc_publication_is_exact_source_and_dormant_until_arm_commit(self) -> None:
         workflow = (ROOT / ".github" / "workflows" / "conformance.yml").read_text(encoding="utf-8")
         for marker in (
             "publish-v1-0-0-rc-1:",
@@ -110,7 +122,12 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
             'test "${latest}" = "v0.2.0"',
         ):
             self.assertIn(marker, workflow)
-        self.assertEqual((ROOT / "VERSION").read_text(encoding="utf-8").strip(), "0.2.0")
+
+        manifest = (ROOT / "AGNIR.yaml").read_text(encoding="utf-8")
+        if VERSION == "0.2.0":
+            self.assertNotIn('repository_version: "1.0.0-rc.1"', manifest)
+        elif VERSION == "1.0.0-rc.1":
+            self.assertIn('repository_version: "1.0.0-rc.1"', manifest)
 
     def test_self_host_ci_dispatches_by_repository_version(self) -> None:
         workflow = (ROOT / ".github" / "workflows" / "conformance.yml").read_text(encoding="utf-8")

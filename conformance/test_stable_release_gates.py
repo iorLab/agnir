@@ -5,11 +5,13 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 
+@unittest.skipUnless(VERSION == "0.2.0", "v0.2.0 stable package gate applies only to the v0.2.0 source tree")
 class StableReleaseGateTests(unittest.TestCase):
     def test_repository_package_is_stable_0_2_0(self) -> None:
-        self.assertEqual((ROOT / "VERSION").read_text(encoding="utf-8").strip(), "0.2.0")
+        self.assertEqual(VERSION, "0.2.0")
 
         manifest = (ROOT / "AGNIR.yaml").read_text(encoding="utf-8")
         for marker in (
