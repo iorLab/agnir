@@ -30,7 +30,7 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/release/v1.0.0-rc.1"
   agnir/release:
-    phase: "v1.0.0-rc.1-candidate-verified"
+    phase: "v1.0.0-rc.1-publication-armed"
     repository_version: "1.0.0-rc.1"
     core_contract: "spec/AGNIR_CORE_1_0.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_1_0.md"
@@ -57,13 +57,15 @@ extensions:
       checkpoint_revision: "11148c3063e63dd1ea7450b9d538ac1eccec5639"
       checkpoint_run: 34025693977
     rc:
-      status: "candidate-verified"
+      status: "publication-armed"
       source_checkpoint: "11148c3063e63dd1ea7450b9d538ac1eccec5639"
       lineage: "urn:agnir:lineage:v1.0.0-rc.1"
       selector: "refs/heads/release/v1.0.0-rc.1"
       candidate_revision: "e4d5ad8f7e4013314401ecf3d987edb66f509ce5"
       candidate_run: 34026056687
-    next_stage: "rc-candidate-checkpoint-verification"
+      candidate_checkpoint: "c05199291b8eda9ccceca8b918545773e330ad75"
+      candidate_checkpoint_run: 34026116079
+    next_stage: "rc-publication-verification"
   agnir/operations:
     distribution: "agnir-agent-skill"
     release: "1.0.0-rc.1"
