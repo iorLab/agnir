@@ -91,6 +91,9 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Scoped automatic publication is accepted. `.github/workflows/pages.yml` may automatically deploy authoritative `main` pushes only when actual public-site inputs change: `website/**`, the approved mark/wordmark masters used by the builder, the deterministic builder itself, the social-card export, or the Pages workflow. Unrelated Core, conformance, release, or continuity-only commits must not trigger website publication.
 - `workflow_dispatch` remains available as a manual recovery/republication path after automatic deployment is enabled.
 - A custom domain is not implied or authorized by the existence of website source; custom-domain selection is a separate repository-host/brand decision.
+- The root public website may use the browser's first preferred UI language only as a **default** when no explicit visitor preference is stored: `zh-*` selects `zh-CN.html`; other languages remain on English.
+- Manual `English` / `中文` selection is an explicit visitor preference and may be persisted in same-origin `localStorage`; it takes precedence over later automatic root-page language detection. A direct `zh-CN.html` URL must be respected and not auto-redirected away.
+- Browser-language routing and `hreflang` publication are presentation/SEO behavior only; they do not redefine Project Continuity, Core/profile semantics, or durable Project truth.
 
 ## Repository-host Wave 0 policy
 
@@ -109,7 +112,8 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Branch retirement must never move or delete a published release tag.
 - Safe retirement may rely on merged PR history, authoritative ancestry, immutable release tags, and canonical `.agnir/evidence/` receipts to establish that the branch ref itself is no longer required.
 - The completed `brand/identity-system` branch was retired after PR #11, canonical brand acceptance, README publication, exact tag verification, and a dedicated successful retirement workflow.
-- The three retained evidence-only refs are currently `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0`.
+- As of 2026-09-07, completed non-authoritative release/validation/checkpoint/public branches were retired and repository branch readback contains only `main`. Immutable release tags plus accepted `.agnir/evidence/` receipts remain the durable release/evidence anchors.
+- GitHub `delete_branch_on_merge=true` is enabled so ordinary merged head branches are retired automatically. A future branch may still be retained only when an explicit unresolved evidence need justifies it.
 
 ## Post-1.0 adoption evidence policy
 
