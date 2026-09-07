@@ -60,9 +60,11 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Canonical production geometry remains under `brand/masters/`; public delivery assets remain under `brand/exports/`; approved visual authority remains documented under `brand/APPROVED-VISUAL-REFERENCE.md` and `brand/brand-handoff.md`.
 - Brand identity is a product/public surface and **does not redefine Agnir Core/profile semantics**.
 - GitHub repository About description/topics are repository-host metadata, not canonical Project truth. Failure to mutate host metadata because an integration lacks metadata-write permission must be surfaced explicitly and must not be treated as a product/brand integration failure.
-- GitHub-hosted README and website surfaces must use an approved **render-self-contained** delivery asset. An SVG that depends on nested relative `<image>` references is not accepted for those host surfaces even if its visual treatment is approved, because GitHub sanitization or artifact flattening may suppress the referenced geometry.
-- The accepted render-safe public lockup is `brand/exports/png/agnir-dark-usage.png`. Using that approved delivery derivative for README and website presentation does not authorize any logo redesign or change visual authority.
-- Localized public README prose should stay in the language of that README. Language-switch navigation and exact technical identifiers, filenames, commands, protocol names, or version labels are allowed exceptions; accidental bilingual display labels are not.
+- GitHub-hosted README and website surfaces must use an approved **render-self-contained** visual artifact at the actual rendered/deployed path. An SVG that depends on nested relative `<image>` references is not accepted for those host surfaces unless the final rendered artifact has first been materialized without those dependencies.
+- README currently uses the approved self-contained `brand/exports/png/agnir-dark-usage.png` delivery derivative because GitHub README rendering previously suppressed nested SVG dependencies.
+- Website header branding uses a different accepted presentation: `.github/workflows/pages.yml` runs the approved deterministic `brand/tools/build-production-derivatives.py` against `brand/masters/agnir-mark.svg` and `brand/masters/agnir-wordmark.svg`, producing a self-contained dark horizontal SVG with the approved particle A, white wordmark, and **transparent background**. This deterministic materialization is not a redesign and does not create a second geometry authority.
+- The background-bearing `agnir-dark-usage.png` is a usage presentation and is not the accepted inline website-header asset on a differently colored page background.
+- Localized public README and website prose should stay in the language of that surface. Language-switch navigation and exact technical identifiers, filenames, commands, protocol names, or version labels are allowed exceptions; accidental bilingual display labels are not.
 
 ## Launch and adoption positioning
 
@@ -75,19 +77,27 @@ This file records active durable decisions required to operate and evolve Agnir 
 - The adoption north star is successful external cold-start resumes in Projects outside direct maintainer control. Stars, forks and impressions are secondary signals.
 - Early numeric adoption targets are product-learning targets, not conformance requirements or release gates.
 - `brand/` remains the canonical visual identity authority; `adoption/` owns positioning, launch, demo, community and case-study strategy. Neither adoption copy nor host metadata may silently redefine Core/profile semantics.
+- GitHub Issues is the accepted first external feedback surface. Structured bug, product-idea, and adoption-report forms may collect public reports. An adoption-report submission is an evidence candidate and requires review before it becomes accepted Agnir evidence.
 
 ## Public website boundary
 
 - `website/` is the canonical source for the minimal Agnir public website. It is a product/adoption surface, not a Core/profile contract and not Project continuity storage.
 - The website must materialize approved `adoption/` positioning rather than invent a competing product category or protocol story.
-- The website must consume approved `brand/` exports and must not duplicate, redraw, regenerate, or become a second visual authority. The deployment workflow copies canonical exports into the Pages artifact.
-- Website brand assets copied into a flattened deployment artifact must be self-contained at the copied path; nested relative source dependencies must not be assumed to survive artifact construction.
+- The website must consume canonical brand truth without duplicating, redrawing, or becoming a second visual authority. Deterministic derivatives generated from approved masters by the approved production builder are allowed website artifacts when the output preserves geometry and only applies an already-approved presentation treatment.
+- Website brand assets in the final Pages artifact must be self-contained at the rendered path; nested relative source dependencies must not be assumed to survive artifact construction.
 - The default first host is GitHub Pages at `https://iorlab.github.io/agnir/`; this is a repository-host surface, not canonical Project truth.
-- Website source readiness, Pages enablement, deployment success, and public presentation verification are distinct observations.
+- Website source readiness, Pages enablement, deployment success, artifact verification, and human visual presentation review are distinct observations.
 - The first manual Pages deployment succeeded in workflow run `34083599723`, with both build and deploy successful and repository host readback reporting `has_pages=true`.
-- After that live baseline, `.github/workflows/pages.yml` may automatically deploy authoritative `main` pushes **only when public-site inputs change**: `website/**`, the exact canonical brand exports consumed by the deployment artifact, or the Pages workflow itself. Unrelated Core, conformance, release, or continuity-only commits must not trigger website publication.
+- Scoped automatic publication is accepted. `.github/workflows/pages.yml` may automatically deploy authoritative `main` pushes only when actual public-site inputs change: `website/**`, the approved mark/wordmark masters used by the builder, the deterministic builder itself, the social-card export, or the Pages workflow. Unrelated Core, conformance, release, or continuity-only commits must not trigger website publication.
 - `workflow_dispatch` remains available as a manual recovery/republication path after automatic deployment is enabled.
 - A custom domain is not implied or authorized by the existence of website source; custom-domain selection is a separate repository-host/brand decision.
+
+## Repository-host Wave 0 policy
+
+- Repository description, homepage URL, topics, Pages settings, and Discussions availability are repository-host metadata, not canonical Project truth.
+- The current accepted public homepage is `https://iorlab.github.io/agnir/`; host readback may omit the trailing slash while referring to the same site.
+- GitHub Issues is sufficient as the first external feedback path; Discussions is optional and may remain disabled unless a later community need justifies it.
+- Repository license selection is a Principal/legal-policy decision. An Executor must not infer a license from predecessor repositories, conventions, or neighboring projects. No license file or contribution-licensing statement may be added without explicit Principal authorization.
 
 ## Post-release branch-ref retirement policy
 
