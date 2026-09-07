@@ -1,0 +1,80 @@
+name: Temporary header tagline
+
+on:
+  push:
+    branches:
+      - public/header-ai-native-project-memory
+    paths:
+      - ".github/workflows/tmp-header-tagline.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: public/header-ai-native-project-memory
+
+      - name: Add header tagline
+        shell: python
+        run: |
+          from pathlib import Path
+
+          en_path = Path('website/index.html')
+          zh_path = Path('website/zh-CN.html')
+          css_path = Path('website/styles.css')
+
+          en = en_path.read_text(encoding='utf-8')
+          zh = zh_path.read_text(encoding='utf-8')
+          css = css_path.read_text(encoding='utf-8')
+
+          en_anchor = '''    </a>\n    <nav aria-label="Primary navigation">'''
+          zh_anchor = '''    </a>\n    <nav aria-label="主导航">'''
+
+          if 'AI-native project memory' not in en:
+              en = en.replace(
+                  en_anchor,
+                  '''    </a>\n    <span class="brand-tagline">AI-native project memory</span>\n    <nav aria-label="Primary navigation">''',
+                  1,
+              )
+
+          if 'AI Native 的项目记忆' not in zh:
+              zh = zh.replace(
+                  zh_anchor,
+                  '''    </a>\n    <span class="brand-tagline">AI Native 的项目记忆</span>\n    <nav aria-label="主导航">''',
+                  1,
+              )
+
+          css_anchor = '.brand img { display: block; width: 168px; height: auto; }\n'
+          css_block = '''.brand-tagline {\n  margin-right: auto;\n  color: var(--cream);\n  font-size: 0.82rem;\n  font-weight: 650;\n  letter-spacing: 0.025em;\n  white-space: nowrap;\n  opacity: 0.82;\n}\n'''
+          if '.brand-tagline {' not in css:
+              css = css.replace(css_anchor, css_anchor + css_block, 1)
+
+          media_anchor = '@media (max-width: 1050px) {\n'
+          hide_rule = '@media (max-width: 900px) {\n  .brand-tagline { display: none; }\n}\n\n'
+          if hide_rule not in css:
+              css = css.replace(media_anchor, hide_rule + media_anchor, 1)
+
+          assert 'AI-native project memory' in en
+          assert 'AI Native 的项目记忆' in zh
+          assert '.brand-tagline {' in css
+          assert '@media (max-width: 900px)' in css
+
+          en_path.write_text(en, encoding='utf-8')
+          zh_path.write_text(zh, encoding='utf-8')
+          css_path.write_text(css, encoding='utf-8')
+
+      - name: Remove temporary workflow and commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/tmp-header-tagline.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/index.html website/zh-CN.html website/styles.css .github/workflows/tmp-header-tagline.yml
+          git commit -m "website: add AI-native project-memory header tagline"
+          git push origin HEAD:public/header-ai-native-project-memory
