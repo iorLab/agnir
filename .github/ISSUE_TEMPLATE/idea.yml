@@ -1,0 +1,28 @@
+name: Product idea
+description: Propose an improvement to Agnir, its profiles, tooling, documentation, or adoption surfaces.
+title: "[Idea] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the user or interoperability problem before proposing a mechanism.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What should become easier, safer, or more portable?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Optional. Distinguish Core semantics from profile, adapter, tooling, or website changes when possible.
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility considerations
+      description: Note any effect on Core/profile 1.0 or historical 0.1/0.2 compatibility if relevant.
