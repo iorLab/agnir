@@ -37,18 +37,15 @@ jobs:
           if en_detection not in en:
               en = en.replace(en_theme, en_theme + en_detection, 1)
 
-          en_stylesheet = '  <link rel="stylesheet" href="styles.css">\n'
-          en_hreflang = '''  <link rel="alternate" hreflang="en" href="https://iorlab.github.io/agnir/">\n  <link rel="alternate" hreflang="zh-CN" href="https://iorlab.github.io/agnir/zh-CN.html">\n  <link rel="alternate" hreflang="x-default" href="https://iorlab.github.io/agnir/">\n'''
-          if en_hreflang not in en:
-              en = en.replace(en_stylesheet, en_stylesheet + en_hreflang, 1)
+          stylesheet = '  <link rel="stylesheet" href="styles.css">\n'
+          hreflang = '''  <link rel="alternate" hreflang="en" href="https://iorlab.github.io/agnir/">\n  <link rel="alternate" hreflang="zh-CN" href="https://iorlab.github.io/agnir/zh-CN.html">\n  <link rel="alternate" hreflang="x-default" href="https://iorlab.github.io/agnir/">\n'''
+          if hreflang not in en:
+              en = en.replace(stylesheet, stylesheet + hreflang, 1)
+          if hreflang not in zh:
+              zh = zh.replace(stylesheet, stylesheet + hreflang, 1)
 
-          zh_stylesheet = '  <link rel="stylesheet" href="styles.css">\n'
-          zh_hreflang = '''  <link rel="alternate" hreflang="en" href="https://iorlab.github.io/agnir/">\n  <link rel="alternate" hreflang="zh-CN" href="https://iorlab.github.io/agnir/zh-CN.html">\n  <link rel="alternate" hreflang="x-default" href="https://iorlab.github.io/agnir/">\n'''
-          if zh_hreflang not in zh:
-              zh = zh.replace(zh_stylesheet, zh_stylesheet + zh_hreflang, 1)
-
-          en = en.replace('<a class="lang" href="zh-CN.html" lang="zh-CN">中文</a>', '<a class="lang" href="zh-CN.html" lang="zh-CN" data-language-choice="zh-CN">中文</a>')
-          zh = zh.replace('<a class="lang" href="index.html" lang="en">English</a>', '<a class="lang" href="index.html" lang="en" data-language-choice="en">English</a>')
+          en = en.replace('href="zh-CN.html" lang="zh-CN"', 'href="zh-CN.html" lang="zh-CN" data-language-choice="zh-CN"')
+          zh = zh.replace('href="index.html" lang="en"', 'href="index.html" lang="en" data-language-choice="en"')
 
           language_choice_script = '''    document.querySelectorAll('[data-language-choice]').forEach((link) => {\n      link.addEventListener('click', () => {\n        try {\n          window.localStorage.setItem('agnir-language', link.dataset.languageChoice);\n        } catch {}\n      });\n    });\n\n'''
           marker = "    const intentDialog = document.getElementById('checkpoint-intents');\n"
