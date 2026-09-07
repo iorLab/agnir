@@ -50,6 +50,17 @@ For Simplified Chinese developer-facing copy:
 
 The Chinese public surface may therefore differ structurally from the English sentence while remaining semantically aligned with the approved positioning in `adoption/README.md`.
 
+### Default language behavior
+
+The public root page uses the browser's first preferred UI language only as a **default** when the visitor has not made an explicit language choice:
+
+- a first preferred language beginning with `zh` routes the root landing page to `zh-CN.html`;
+- all other first preferred languages stay on the English root page;
+- manually choosing `English` or `中文` stores that explicit choice in same-origin `localStorage` and takes precedence on later root visits;
+- opening `zh-CN.html` directly is treated as an explicit URL choice and is not auto-redirected away.
+
+This behavior is presentation-only and does not affect Agnir protocol semantics or Project continuity. Both pages publish `hreflang` alternates for `en`, `zh-CN`, and `x-default`.
+
 ## Brand assets
 
 Do not duplicate or manually redraw Agnir production geometry under `website/`.
