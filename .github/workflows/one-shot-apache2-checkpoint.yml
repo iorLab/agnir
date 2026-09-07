@@ -1,0 +1,107 @@
+name: One-shot Apache-2.0 acceptance checkpoint
+
+on:
+  push:
+    branches:
+      - maintenance/apache2-transparent-checkpoint
+    paths:
+      - ".github/workflows/one-shot-apache2-checkpoint.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  checkpoint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/apache2-transparent-checkpoint
+          fetch-depth: 0
+
+      - name: Reconcile Agnir continuity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding="utf-8")
+              if old not in text:
+                  raise SystemExit(f"expected text not found in {path}: {old[:100]!r}")
+              p.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          replace(
+              ".agnir/state.md",
+              "- English README uses approved self-contained `brand/exports/png/agnir-dark-usage.png` and keeps visible product prose English apart from language navigation and exact technical identifiers;\n- Simplified Chinese README uses the same README-safe lockup and localized visible prose;",
+              "- English README uses a theme-aware `<picture>` selecting the approved self-contained transparent `brand/exports/agnir-horizontal-dark.svg` or `brand/exports/agnir-horizontal-light.svg`, and keeps visible product prose English apart from language navigation and exact technical identifiers;\n- Simplified Chinese README uses the same theme-aware transparent lockup system and localized visible prose;"
+          )
+          replace(
+              ".agnir/state.md",
+              "- topics: still empty;\n- recognized repository license: absent;\n- Discussions: disabled; this is not currently a feedback blocker because GitHub Issues is the accepted first external feedback surface.\n\nThe only material unfinished Wave 0 repository-host decisions are topic metadata and license/contribution presentation. License selection is a Principal/legal policy choice and must not be inferred by an Executor.",
+              "- topics: still empty;\n- recognized repository license: **Apache License 2.0** (`Apache-2.0`);\n- contribution guidance: live in `CONTRIBUTING.md` and `CONTRIBUTING.zh-CN.md`;\n- Discussions: disabled; this is not currently a feedback blocker because GitHub Issues is the accepted first external feedback surface.\n\nThe only material unfinished Wave 0 repository-host item is topic metadata. Repository licensing and contribution presentation are closed under the Principal-approved Apache-2.0 decision."
+          )
+          replace(
+              ".agnir/state.md",
+              "Agnir remains in stable maintenance + downstream adoption mode. Pages, automatic deployment, transparent website branding, and external feedback intake are closed. Immediate public-adoption work is the remaining topic/license Wave 0 decisions, followed by the canonical fresh-session demo and external design-user evidence.",
+              "Agnir remains in stable maintenance + downstream adoption mode. Pages, automatic deployment, transparent website/README branding, Apache-2.0 licensing, contribution guidance, and external feedback intake are closed. Immediate public-adoption work is the remaining topic metadata, followed by the canonical fresh-session demo and external design-user evidence."
+          )
+          state = Path(".agnir/state.md")
+          text = state.read_text(encoding="utf-8")
+          marker = "Transparent-logo repair receipts:\n"
+          addition = "Apache-2.0 + README transparent-lockup acceptance receipts:\n\n- Principal authorization: `同意，按 Apache-2.0 + 透明 README logo 推进`;\n- deterministic one-shot materialization: run `34091381247`, job `101645375363` — success;\n- PR #37 synthetic-merge conformance: run `34091609897`, repository job `101646061660` — success;\n- authoritative squash merge: `66784f9ca962d919761a1e2bb4fd3676434b37ef`;\n- authoritative post-merge conformance: run `34091660524`, repository job `101646233499` — success;\n- GitHub host readback recognizes license key/SPDX `apache-2.0` / `Apache-2.0`;\n- authoritative README readback shows the theme-aware transparent self-contained light/dark SVG `<picture>` surface.\n\n"
+          if addition not in text:
+              text = text.replace(marker, addition + marker, 1)
+              state.write_text(text, encoding="utf-8")
+
+          replace(
+              ".agnir/decisions.md",
+              "- README currently uses the approved self-contained `brand/exports/png/agnir-dark-usage.png` delivery derivative because GitHub README rendering previously suppressed nested SVG dependencies.\n- Website header branding uses a different accepted presentation: `.github/workflows/pages.yml` runs the approved deterministic `brand/tools/build-production-derivatives.py` against `brand/masters/agnir-mark.svg` and `brand/masters/agnir-wordmark.svg`, producing a self-contained dark horizontal SVG with the approved particle A, white wordmark, and **transparent background**. This deterministic materialization is not a redesign and does not create a second geometry authority.",
+              "- README variants use a theme-aware `<picture>` selecting the approved self-contained transparent `brand/exports/agnir-horizontal-dark.svg` or `brand/exports/agnir-horizontal-light.svg`. These exports are deterministically materialized from the approved production masters; no background rectangle or external nested `<image>` dependency is accepted on the rendered README surface.\n- Website header branding uses the same accepted presentation principle: `.github/workflows/pages.yml` runs the approved deterministic `brand/tools/build-production-derivatives.py` against `brand/masters/agnir-mark.svg` and `brand/masters/agnir-wordmark.svg`, producing a self-contained dark horizontal SVG with the approved particle A, white wordmark, and **transparent background**. Deterministic materialization is not a redesign and does not create a second geometry authority."
+          )
+          replace(
+              ".agnir/decisions.md",
+              "- Repository license selection is a Principal/legal-policy decision. An Executor must not infer a license from predecessor repositories, conventions, or neighboring projects. No license file or contribution-licensing statement may be added without explicit Principal authorization.",
+              "- The Principal explicitly selected **Apache License 2.0** for Agnir on 2026-09-07. Root `LICENSE` is the canonical repository license surface, and GitHub host recognition must resolve to SPDX `Apache-2.0`.\n- Contributions intentionally submitted for inclusion are handled under the repository's Apache-2.0 terms unless explicitly stated otherwise; bilingual contribution guidance lives in `CONTRIBUTING.md` and `CONTRIBUTING.zh-CN.md`.\n- Apache-2.0 licensing does not authorize redesign or misuse of Agnir branding; `brand/` remains the visual/trademark-usage authority."
+          )
+
+          replace(
+              ".agnir/next-actions.md",
+              "Agnir `v1.0.0` stable is published and verified. Canonical brand integration, the Principal-approved launch/adoption strategy, the bilingual website source, render-safe/localized public surfaces, GitHub Pages enablement, scoped automatic deployment, transparent website branding, and external GitHub Issues feedback intake are accepted on authoritative `main`.",
+              "Agnir `v1.0.0` stable is published and verified. Canonical brand integration, the Principal-approved launch/adoption strategy, the bilingual website source, render-safe/localized public surfaces, GitHub Pages enablement, scoped automatic deployment, transparent website/README branding, Apache-2.0 licensing, bilingual contribution guidance, and external GitHub Issues feedback intake are accepted on authoritative `main`."
+          )
+          replace(
+              ".agnir/next-actions.md",
+              "2. **Close the last Wave 0 host/legal decisions.** GitHub description, Pages, homepage, and feedback intake are in place. Add the intended repository topics when host metadata authority is available. Make an explicit Principal decision on repository license before adding a license file or contribution-licensing language; do not infer a license from predecessor projects or general open-source convention.",
+              "2. **Close the last Wave 0 host metadata item.** GitHub description, Pages, homepage, feedback intake, Apache-2.0 license, and contribution guidance are in place. Add the intended repository topics when host metadata authority is available."
+          )
+          replace(
+              ".agnir/next-actions.md",
+              "License — **Principal decision required**:\n\n- no repository license is currently recognized;\n- do not add or infer a license without explicit Principal authorization.",
+              "License — **accepted**:\n\n- Principal-selected repository license: **Apache License 2.0**;\n- root `LICENSE` is present and GitHub recognizes SPDX `Apache-2.0`;\n- bilingual contribution guidance is present in `CONTRIBUTING.md` and `CONTRIBUTING.zh-CN.md`."
+          )
+          nextp = Path(".agnir/next-actions.md")
+          text = nextp.read_text(encoding="utf-8")
+          marker = "## Recent public-surface receipts\n\n"
+          receipt = "- Apache-2.0 + transparent README PR #37 synthetic conformance: run `34091609897`, job `101646061660` — success;\n- authoritative Apache-2.0 + transparent README merge: `66784f9ca962d919761a1e2bb4fd3676434b37ef`;\n- post-merge conformance: run `34091660524`, job `101646233499` — success;\n- one-shot deterministic README/export materialization: run `34091381247`, job `101645375363` — success;\n- GitHub host license readback: Apache License 2.0 / SPDX `Apache-2.0`;\n"
+          if receipt not in text:
+              text = text.replace(marker, marker + receipt, 1)
+          nextp.write_text(text, encoding="utf-8")
+
+          evidence = Path(".agnir/evidence/2026-09-07-apache2-readme-transparent-accepted.md")
+          evidence.write_text("""# Apache-2.0 + transparent README lockup acceptance\n\nPrincipal authorization: **`同意，按 Apache-2.0 + 透明 README logo 推进`**.\n\n## Accepted repository licensing\n\n- Root `LICENSE` contains the Apache License, Version 2.0.\n- GitHub repository host readback recognizes `license.key = apache-2.0`, `license.name = Apache License 2.0`, and SPDX `Apache-2.0`.\n- `CONTRIBUTING.md` and `CONTRIBUTING.zh-CN.md` provide the public contribution entry points and align intentional contributions with repository Apache-2.0 terms unless explicitly stated otherwise.\n- Licensing does not alter Core/profile semantics, Project/lineage identity, stable release identity, or published tags.\n\n## Accepted README branding\n\n- Both README language variants use a theme-aware `<picture>` surface.\n- Dark mode selects `brand/exports/agnir-horizontal-dark.svg`; light mode selects `brand/exports/agnir-horizontal-light.svg`.\n- The two horizontal SVG exports were deterministically regenerated from approved `brand/masters/` geometry using `brand/tools/build-production-derivatives.py`.\n- The accepted exports are self-contained and transparent-background; no background `<rect>` or external nested `<image>` dependency is part of the rendered README asset.\n- Approved brand geometry is unchanged.\n\n## Receipts\n\n- deterministic one-shot materialization: workflow run `34091381247`, job `101645375363` — success;\n- PR #37 synthetic-merge conformance: run `34091609897`, repository job `101646061660` — success;\n- authoritative squash merge: `66784f9ca962d919761a1e2bb4fd3676434b37ef`;\n- authoritative post-merge conformance: run `34091660524`, repository job `101646233499` — success;\n- authoritative README readback confirms the theme-aware transparent `<picture>` block;\n- GitHub repository metadata readback confirms Apache License 2.0 / SPDX `Apache-2.0`.\n\n## Wave 0 consequence\n\nRepository license/contribution presentation is closed. The remaining Wave 0 host metadata item is GitHub topics.\n""", encoding="utf-8")
+
+          Path(".github/workflows/one-shot-apache2-checkpoint.yml").unlink()
+          PY
+
+      - name: Commit reconciled checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .agnir .github/workflows/one-shot-apache2-checkpoint.yml
+          git commit -m "checkpoint: accept Apache-2.0 and transparent README lockup"
+          git push origin HEAD:maintenance/apache2-transparent-checkpoint
