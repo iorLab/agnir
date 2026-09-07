@@ -27,17 +27,24 @@ The Principal-approved Agnir identity system is authoritative on `main` and is s
 - README identity: Agnir = sand/warm-mineral **Structure Layer / 结构层**, particle-built A with a central anchor;
 - canonical production masters remain under `brand/masters/`; delivery PNG/app-icon/favicon surfaces remain under `brand/exports/png/`.
 
-A later README dark-theme defect was identified from the public GitHub surface: the fixed `agnir-horizontal-lockup.png` uses a dark wordmark, so GitHub dark mode visually suppresses the wordmark and makes the remaining particle mark appear horizontally misaligned. The staged repair uses GitHub-supported theme-aware `<picture>` markup with the approved `brand/exports/agnir-horizontal-dark.svg` and `agnir-horizontal-light.svg`; no logo geometry is redrawn or reinterpreted.
+The later GitHub dark-theme README defect is now repaired on authoritative `main`. The defect was presentation-only: the former fixed `agnir-horizontal-lockup.png` used a dark wordmark that became visually suppressed on GitHub dark mode, leaving the particle mark to appear horizontally displaced. Both README variants now use GitHub theme-aware `<picture>` markup selecting the approved `brand/exports/agnir-horizontal-dark.svg` / `agnir-horizontal-light.svg` pair. No master geometry, wordmark path, particle field, palette, or approved visual authority changed.
 
-The completed `brand/identity-system` integration branch was retired by exact arm revision `77eaada2b200b2fb3dd73309eddd259623540666`; branch-retirement workflow `34077763678` / job `101607125525` succeeded, and the same revision passed Agnir conformance run `34077763682` / job `101607125572`. The one-shot workflow was then removed at `222d60c0467c0368b1aefe68b55cc01ef43cda56`, whose conformance run `34077835425` / job `101607318275` succeeded.
+Public-surface integration receipts:
 
-Current ordinary branch inventory is intentionally small: `main` plus three retained evidence anchors (`release/v1.0.0-rc.1`, `release/v1.0.0`, `validation/mount-boundary-v0.2.0`). The temporary `maintenance/readme-website-public-surface` branch is active staging for this public-surface change and is not intended as a long-lived product line.
+- PR: `#30`;
+- final staging head: `aa9be855a4d8eca55ffc927d6fe22de2cf70b6f7`;
+- PR synthetic-merge conformance: run `34079325656` — success;
+- authoritative squash merge: `4b29fb8becc0b155a2598c09b8199342e40a9e65`;
+- authoritative post-merge conformance: run `34079406444` / repository job `101611700144` — success;
+- release publication jobs on this ordinary maintenance change: skipped as required.
 
-GitHub repository **About metadata is not yet updated**. An exact-arm attempt tried to set the repository description/topics before branch retirement, but GitHub Actions exposed `Metadata: read` only and rejected `PATCH /repos/iorLab/agnir` with HTTP 403 (`Resource not accessible by integration`). The failure occurred before any branch deletion. Repository readback still reports `description=null` and `topics=[]`. This host-metadata limitation does not affect canonical Project truth or the README brand surface.
+The material result of `maintenance/readme-website-public-surface` is canonical on `main`; the temporary branch now carries no unique product truth and is retireable under ordinary housekeeping policy.
+
+GitHub repository About metadata is **partially complete** by current host readback. The description is now set to the intended Agnir description. Topics remain empty, homepage remains empty, GitHub reports `has_pages=false`, and no recognized repository license is present. These are repository-host/public-adoption surfaces, not Core or release state.
 
 ## Public website source
 
-A minimal bilingual public website source is now staged under `website/`.
+A minimal bilingual public website source is now canonical on `main` under `website/`.
 
 - English landing page: `website/index.html`;
 - Simplified Chinese landing page: `website/zh-CN.html`;
@@ -47,11 +54,11 @@ A minimal bilingual public website source is now staged under `website/`.
 
 The website materializes the approved adoption strategy: it leads with **Project Continuity**, fresh-session recovery, Project-owned truth, one-line installation, and then protocol credibility. It consumes canonical approved brand exports at deploy time instead of duplicating/redrawing brand masters.
 
-The intended default host is `https://iorlab.github.io/agnir/`, but **live publication is not yet verified**. GitHub requires a one-time repository Pages configuration selecting GitHub Actions as the publishing source. The repository connection available in this work session does not expose a supported Pages-settings mutation. Therefore the workflow is intentionally manual-dispatch until Pages is enabled. Site source readiness and live host publication remain separate states.
+The intended default host is `https://iorlab.github.io/agnir/`, but **the website is not live yet**. Current GitHub host readback reports `has_pages=false`. The repository must first enable Pages with **GitHub Actions** as the publishing source; then the manual `Deploy Agnir website` workflow must succeed and the public URL/assets must be verified. Source readiness and live host publication remain separate states.
 
 ## Post-1.0 adoption evidence
 
-Svif (`iorLab/svif`) is now the first recorded real-project downstream adoption case for Agnir 1.0.
+Svif (`iorLab/svif`) is the first recorded real-project downstream adoption case for Agnir 1.0.
 
 Svif completed an explicit, Principal-authorized Core/profile `0.2` -> `1.0` promotion while preserving Project identity, logical lineage, selector, durable memory locators, historical 0.1/0.2 adapter support, product version, brand assets, and the immutable Preview.1 distribution boundary. Agnir records this at `.agnir/evidence/2026-09-07-svif-agnir-1.0-adoption.md`.
 
@@ -89,4 +96,4 @@ The Principal-approved post-v1 launch/adoption strategy is canonical at `adoptio
 - stable arm/tag revision: `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - stable publication workflow: `34039014354`, attempts 1 and 2 success.
 
-Agnir is now in stable maintenance + downstream adoption mode. Brand integration is complete; README theme repair and website source are non-semantic public-surface maintenance. GitHub Pages enablement/live verification and About metadata remain repository-host administrative follow-up, not protocol/release gates.
+Agnir is now in stable maintenance + downstream adoption mode. README theme repair and bilingual website source are accepted non-semantic public-surface maintenance. The immediate host-side follow-up is Pages enablement/live verification plus remaining Wave 0 repository metadata/feedback/license work; these are not protocol/release gates.

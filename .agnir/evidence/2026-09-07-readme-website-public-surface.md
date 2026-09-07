@@ -23,11 +23,11 @@ The repair replaces the fixed PNG with GitHub theme-aware `<picture>` markup sel
 - light viewer theme → `brand/exports/agnir-horizontal-light.svg`;
 - fallback → `brand/exports/agnir-horizontal-light.svg`.
 
-The same repair is staged in `README.md` and `README.zh-CN.md`. No master geometry, wordmark path, particle field, palette, or approved brand authority was modified.
+The same repair is authoritative in `README.md` and `README.zh-CN.md`. No master geometry, wordmark path, particle field, palette, or approved brand authority was modified.
 
 ## Website source
 
-A minimal bilingual static website source was added:
+A minimal bilingual static website source is authoritative on `main`:
 
 - `website/index.html` — English landing page;
 - `website/zh-CN.html` — Simplified Chinese landing page;
@@ -46,26 +46,51 @@ The website implements the Principal-approved `adoption/README.md` positioning:
 
 The Pages build copies canonical brand exports into the deploy artifact rather than storing duplicate visual masters under `website/`.
 
+## Integration acceptance
+
+Staging branch:
+
+`maintenance/readme-website-public-surface`
+
+Captured authoritative base:
+
+`1b74b5361104b15297c389eec0721af00c436179`
+
+Final staging head:
+
+`aa9be855a4d8eca55ffc927d6fe22de2cf70b6f7`
+
+PR:
+
+`#30` — `Public surface: fix README lockup and add Agnir website`
+
+Validation and integration receipts:
+
+- final branch was 12 commits ahead / 0 behind captured `main` before integration;
+- PR synthetic-merge conformance: run `34079325656` — **success**;
+- authoritative squash merge: `4b29fb8becc0b155a2598c09b8199342e40a9e65`;
+- authoritative post-merge conformance: run `34079406444` — **success**;
+- repository-filesystem job: `101611700144` — **success**;
+- stable/prerelease publication jobs skipped on the ordinary maintenance change as required.
+
+The accepted change is non-semantic stable maintenance: Core/profile 1.0, historical compatibility contracts, Project identity, continuity lineage identity, stable tags, and release identity were not changed.
+
+The staging branch now carries no unique material product truth and may be retired under normal temporary-ref housekeeping.
+
 ## Publication boundary
 
 Intended default Pages URL:
 
 `https://iorlab.github.io/agnir/`
 
-Live publication is **not yet accepted**. GitHub requires the repository Pages publishing source to be configured for GitHub Actions before the official deployment workflow can publish. The available repository connector in this work session exposes repository content/PR/ref operations but no supported Pages-settings mutation, so the workflow is deliberately manual-dispatch until that host configuration is completed.
+Live publication is **not yet accepted**. Current repository-host readback after integration reports:
+
+- intended repository description: set;
+- topics: empty;
+- homepage: empty;
+- `has_pages=false`;
+- recognized repository license: absent.
+
+GitHub Pages must first be configured to use **GitHub Actions** as its publishing source. After that, the manual `Deploy Agnir website` workflow must succeed and the public English/Chinese pages plus favicon/social-card assets must be read back successfully before the site is called live.
 
 Source readiness and live host publication are separate completion states.
-
-## Staging lineage
-
-Staging branch:
-
-`maintenance/readme-website-public-surface`
-
-Base authoritative revision:
-
-`1b74b5361104b15297c389eec0721af00c436179`
-
-The staged change is non-semantic stable maintenance: it does not modify Core/profile 1.0, historical compatibility contracts, Project identity, continuity lineage identity, stable tags, or release identity.
-
-Final acceptance requires synthetic-merge conformance, authoritative squash integration, and post-merge conformance. The temporary staging branch should be retired after the material result is canonical.
