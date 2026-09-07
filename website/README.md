@@ -36,14 +36,16 @@ If a public website needs a new visual derivative, produce and approve it throug
 
 ## Publication
 
-Intended default GitHub Pages URL:
+Default GitHub Pages URL:
 
 `https://iorlab.github.io/agnir/`
 
 Workflow: `.github/workflows/pages.yml`.
 
-The workflow is intentionally **manual-dispatch only until repository Pages is enabled**. GitHub requires a one-time repository setting selecting GitHub Actions as the Pages publishing source. Site source readiness and live host publication must be reported separately.
+The first manual GitHub Pages publication succeeded on authoritative `main` in workflow run `34083599723`; both `build` and `deploy` completed successfully and repository host readback reports `has_pages=true`.
 
-After Pages is enabled, dispatch `Deploy Agnir website`. A later maintenance change may add automatic `main` push deployment once the live surface is verified.
+After that verified baseline, Pages publication is automatic for authoritative `main` pushes that modify the website source, the exact canonical brand exports consumed by the site, or the Pages workflow itself. `workflow_dispatch` remains available as a manual recovery/republication path.
+
+The path filter intentionally avoids redeploying the public website for unrelated Core, conformance, release, or Agnir continuity-only commits.
 
 A custom domain is not currently declared. Adding one is a separate repository-host/brand decision and must not be inferred from website source alone.
