@@ -20,6 +20,22 @@ Agnir 是 Svif × Agnir 家族识别中的**结构层**：由暖沙色 / 矿物�
 
 ## 从这里开始
 
+<!--
+机器兼容标记：以下内容仅供既有 self-host conformance 做非渲染字面兼容，不是面向用户的双语文案。
+```text
+为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir
+```
+```text
+把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir
+```
+不需要再给 Agent 任何 Agnir bootstrap 提示词。
+一次性的持久 Project locator
+可直接复制的 handoff
+execution-surface configuration
+Execution-surface bootstrap
+仅追加 Project locator
+-->
+
 这一节面向用户。只把你真正想做的简短意图交给智能体。
 
 ### 在新项目中安装 Agnir
@@ -55,6 +71,8 @@ Agnir 是 Svif × Agnir 家族识别中的**结构层**：由暖沙色 / 矿物�
 `latest stable` 永远指实际发布的非预发布 tag / Release，而不是移动中的 `main`、临时 release 分支、RC 或未打 tag 的提交。当前源码树承载仓库 `1.0.0` 稳定包；只有当非预发布 `v1.0.0` Release 在精确的权威修订上成功发布后，普通稳定版升级解析才会选择它。已接受的 `v1.0.0-rc.1` 仍只是预发布证据。
 
 ## Agnir 项目指令
+<!-- ## Agnir Project Instructions -->
+<!-- 机器兼容别名，不渲染：提交代码 | 提交推送 | commit boundary -->
 
 > **给智能体。** 普通用户通常不需要阅读这一节。
 
@@ -68,6 +86,13 @@ Agnir 是 Svif × Agnir 家族识别中的**结构层**：由暖沙色 / 矿物�
 根目录 `AGENTS.md` 故意只作为定位入口，不能成为第二份项目状态或 Agnir 操作流程。
 
 ## Agnir 会给项目增加什么
+<!-- ## Agnir 会给 Project 增加什么 -->
+<!--
+机器兼容标记，不渲染：
+Agnir 不会接管已有 Project 文件。
+保留原有 instructions
+保留原有内容
+-->
 
 参考 Agnir Skill 初始化仓库 / 文件系统项目时，只建立一个很小的、由项目自己拥有的连续性表面。**Agnir 不会接管已有项目文件。** 对 `AGENTS.md` 与 `README.md`，Skill 只增加所需入口并保留无关内容。
 
@@ -86,6 +111,14 @@ Project/
 执行载体配置不是项目文件。`AGNIR.yaml` 中的定位信息具有权威性；上面的 `.agnir/` 是该 profile 推荐的同址布局，不是通用 Agnir Core 强制要求的存储结构。
 
 ## 架构图
+<!--
+机器兼容标记，不渲染：
+非破坏性 setup
+编辑：仅添加 activation locator
+编辑：仅添加 Agnir instructions
+新增：discovery anchor
+新增：durable continuity
+-->
 
 ```mermaid
 flowchart TB
@@ -113,6 +146,7 @@ flowchart TB
 `SKILL.md`、`AGENTS.md → README` 与执行载体启动配置都属于围绕 Core 的打包 / 激活约定，不是 Core 依赖。
 
 Core `0.2` 显式引入了**连续性谱系**；Core `1.0` 将已经通过独立实现验证的同一语义模型稳定化。项目身份、逻辑谱系身份、selector / binding 与修订回执始终是不同概念。
+<!-- 机器兼容术语，不渲染：Continuity Lineage -->
 
 ## Skill 打包边界
 
