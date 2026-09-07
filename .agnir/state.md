@@ -17,7 +17,7 @@ The immutable stable tag `v1.0.0` points to exact released revision `6d16dcfd17b
 
 ## Brand identity and public repository surface
 
-The Principal-approved Agnir identity system is authoritative on `main` and is now surfaced directly in both public README variants.
+The Principal-approved Agnir identity system is authoritative on `main` and is surfaced directly in both public README variants.
 
 - brand integration PR: `#11`, merged completed;
 - authoritative squash merge: `37e08498448797de56dc7ab03823bdc2d430a38f`;
@@ -27,11 +27,27 @@ The Principal-approved Agnir identity system is authoritative on `main` and is n
 - README identity: Agnir = sand/warm-mineral **Structure Layer / 结构层**, particle-built A with a central anchor;
 - canonical production masters remain under `brand/masters/`; delivery PNG/app-icon/favicon surfaces remain under `brand/exports/png/`.
 
+A later README dark-theme defect was identified from the public GitHub surface: the fixed `agnir-horizontal-lockup.png` uses a dark wordmark, so GitHub dark mode visually suppresses the wordmark and makes the remaining particle mark appear horizontally misaligned. The staged repair uses GitHub-supported theme-aware `<picture>` markup with the approved `brand/exports/agnir-horizontal-dark.svg` and `agnir-horizontal-light.svg`; no logo geometry is redrawn or reinterpreted.
+
 The completed `brand/identity-system` integration branch was retired by exact arm revision `77eaada2b200b2fb3dd73309eddd259623540666`; branch-retirement workflow `34077763678` / job `101607125525` succeeded, and the same revision passed Agnir conformance run `34077763682` / job `101607125572`. The one-shot workflow was then removed at `222d60c0467c0368b1aefe68b55cc01ef43cda56`, whose conformance run `34077835425` / job `101607318275` succeeded.
 
-Current ordinary branch inventory is intentionally small: `main` plus three retained evidence anchors (`release/v1.0.0-rc.1`, `release/v1.0.0`, `validation/mount-boundary-v0.2.0`).
+Current ordinary branch inventory is intentionally small: `main` plus three retained evidence anchors (`release/v1.0.0-rc.1`, `release/v1.0.0`, `validation/mount-boundary-v0.2.0`). The temporary `maintenance/readme-website-public-surface` branch is active staging for this public-surface change and is not intended as a long-lived product line.
 
 GitHub repository **About metadata is not yet updated**. An exact-arm attempt tried to set the repository description/topics before branch retirement, but GitHub Actions exposed `Metadata: read` only and rejected `PATCH /repos/iorLab/agnir` with HTTP 403 (`Resource not accessible by integration`). The failure occurred before any branch deletion. Repository readback still reports `description=null` and `topics=[]`. This host-metadata limitation does not affect canonical Project truth or the README brand surface.
+
+## Public website source
+
+A minimal bilingual public website source is now staged under `website/`.
+
+- English landing page: `website/index.html`;
+- Simplified Chinese landing page: `website/zh-CN.html`;
+- responsive presentation: `website/styles.css`;
+- responsibility/publication boundary: `website/README.md`;
+- deployment workflow: `.github/workflows/pages.yml`.
+
+The website materializes the approved adoption strategy: it leads with **Project Continuity**, fresh-session recovery, Project-owned truth, one-line installation, and then protocol credibility. It consumes canonical approved brand exports at deploy time instead of duplicating/redrawing brand masters.
+
+The intended default host is `https://iorlab.github.io/agnir/`, but **live publication is not yet verified**. GitHub requires a one-time repository Pages configuration selecting GitHub Actions as the publishing source. The repository connection available in this work session does not expose a supported Pages-settings mutation. Therefore the workflow is intentionally manual-dispatch until Pages is enabled. Site source readiness and live host publication remain separate states.
 
 ## Post-1.0 adoption evidence
 
@@ -63,7 +79,7 @@ The Principal-approved post-v1 launch/adoption strategy is canonical at `adoptio
 - north-star evidence: successful external cold-start resumes in Projects outside direct maintainer control;
 - early adoption targets are product-learning targets, not conformance/release gates.
 
-`brand/` remains the visual identity authority; `adoption/` owns launch, positioning, demos, community and case-study strategy. Adoption material does not redefine Core/profile semantics.
+`brand/` remains the visual identity authority; `adoption/` owns launch, positioning, demos, community and case-study strategy; `website/` materializes approved public messaging. None of these surfaces redefines Core/profile semantics.
 
 ## Release evidence chain
 
@@ -73,4 +89,4 @@ The Principal-approved post-v1 launch/adoption strategy is canonical at `adoptio
 - stable arm/tag revision: `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - stable publication workflow: `34039014354`, attempts 1 and 2 success.
 
-Agnir is now in stable maintenance + downstream adoption mode. Brand integration and its temporary branch are complete; GitHub About metadata and launch-readiness work are post-v1 adoption follow-up, not protocol/release gates.
+Agnir is now in stable maintenance + downstream adoption mode. Brand integration is complete; README theme repair and website source are non-semantic public-surface maintenance. GitHub Pages enablement/live verification and About metadata remain repository-host administrative follow-up, not protocol/release gates.
