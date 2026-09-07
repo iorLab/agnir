@@ -1,0 +1,85 @@
+name: Temporary browser language default
+
+on:
+  push:
+    branches:
+      - public/browser-language-default
+    paths:
+      - ".github/workflows/tmp-browser-language-default.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: public/browser-language-default
+
+      - name: Apply browser-language default behavior
+        shell: python
+        run: |
+          from pathlib import Path
+
+          en_path = Path('website/index.html')
+          zh_path = Path('website/zh-CN.html')
+          readme_path = Path('website/README.md')
+
+          en = en_path.read_text(encoding='utf-8')
+          zh = zh_path.read_text(encoding='utf-8')
+          readme = readme_path.read_text(encoding='utf-8')
+
+          en_theme = '  <meta name="theme-color" content="#15110d">\n'
+          en_detection = '''  <script>\n    (() => {\n      const preferenceKey = 'agnir-language';\n      let savedLanguage = null;\n      try {\n        savedLanguage = window.localStorage.getItem(preferenceKey);\n      } catch {}\n\n      if (savedLanguage === 'zh-CN') {\n        window.location.replace('zh-CN.html');\n        return;\n      }\n      if (savedLanguage === 'en') return;\n\n      const preferredLanguage = (navigator.languages && navigator.languages[0]) || navigator.language || '';\n      if (preferredLanguage.toLowerCase().startsWith('zh')) {\n        window.location.replace('zh-CN.html');\n      }\n    })();\n  </script>\n'''
+          if en_detection not in en:
+              en = en.replace(en_theme, en_theme + en_detection, 1)
+
+          en_stylesheet = '  <link rel="stylesheet" href="styles.css">\n'
+          en_hreflang = '''  <link rel="alternate" hreflang="en" href="https://iorlab.github.io/agnir/">\n  <link rel="alternate" hreflang="zh-CN" href="https://iorlab.github.io/agnir/zh-CN.html">\n  <link rel="alternate" hreflang="x-default" href="https://iorlab.github.io/agnir/">\n'''
+          if en_hreflang not in en:
+              en = en.replace(en_stylesheet, en_stylesheet + en_hreflang, 1)
+
+          zh_stylesheet = '  <link rel="stylesheet" href="styles.css">\n'
+          zh_hreflang = '''  <link rel="alternate" hreflang="en" href="https://iorlab.github.io/agnir/">\n  <link rel="alternate" hreflang="zh-CN" href="https://iorlab.github.io/agnir/zh-CN.html">\n  <link rel="alternate" hreflang="x-default" href="https://iorlab.github.io/agnir/">\n'''
+          if zh_hreflang not in zh:
+              zh = zh.replace(zh_stylesheet, zh_stylesheet + zh_hreflang, 1)
+
+          en = en.replace('<a class="lang" href="zh-CN.html" lang="zh-CN">中文</a>', '<a class="lang" href="zh-CN.html" lang="zh-CN" data-language-choice="zh-CN">中文</a>')
+          zh = zh.replace('<a class="lang" href="index.html" lang="en">English</a>', '<a class="lang" href="index.html" lang="en" data-language-choice="en">English</a>')
+
+          language_choice_script = '''    document.querySelectorAll('[data-language-choice]').forEach((link) => {\n      link.addEventListener('click', () => {\n        try {\n          window.localStorage.setItem('agnir-language', link.dataset.languageChoice);\n        } catch {}\n      });\n    });\n\n'''
+          marker = "    const intentDialog = document.getElementById('checkpoint-intents');\n"
+          if language_choice_script not in en:
+              en = en.replace(marker, language_choice_script + marker, 1)
+          if language_choice_script not in zh:
+              zh = zh.replace(marker, language_choice_script + marker, 1)
+
+          localization_anchor = 'The Chinese public surface may therefore differ structurally from the English sentence while remaining semantically aligned with the approved positioning in `adoption/README.md`.\n'
+          language_behavior = '''\n### Default language behavior\n\nThe public root page uses the browser's first preferred UI language only as a **default** when the visitor has not made an explicit language choice:\n\n- a first preferred language beginning with `zh` routes the root landing page to `zh-CN.html`;\n- all other first preferred languages stay on the English root page;\n- manually choosing `English` or `中文` stores that explicit choice in same-origin `localStorage` and takes precedence on later root visits;\n- opening `zh-CN.html` directly is treated as an explicit URL choice and is not auto-redirected away.\n\nThis behavior is presentation-only and does not affect Agnir protocol semantics or Project continuity. Both pages publish `hreflang` alternates for `en`, `zh-CN`, and `x-default`.\n'''
+          if language_behavior.strip() not in readme:
+              readme = readme.replace(localization_anchor, localization_anchor + language_behavior, 1)
+
+          assert "preferredLanguage.toLowerCase().startsWith('zh')" in en
+          assert en.count('data-language-choice="zh-CN"') == 2
+          assert zh.count('data-language-choice="en"') == 2
+          assert en.count('hreflang="zh-CN"') == 1
+          assert zh.count('hreflang="zh-CN"') == 1
+          assert 'Default language behavior' in readme
+
+          en_path.write_text(en, encoding='utf-8')
+          zh_path.write_text(zh, encoding='utf-8')
+          readme_path.write_text(readme, encoding='utf-8')
+
+      - name: Remove temporary workflow and commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/tmp-browser-language-default.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/index.html website/zh-CN.html website/README.md .github/workflows/tmp-browser-language-default.yml
+          git commit -m "website: choose default language from browser preference"
+          git push origin HEAD:public/browser-language-default
