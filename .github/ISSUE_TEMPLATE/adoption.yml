@@ -1,0 +1,60 @@
+name: Adoption report
+description: Share a real Agnir installation, fresh-session resume, cross-executor continuation, or integration result.
+title: "[Adoption] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Real-world adoption reports help validate whether Agnir delivers Project Continuity outside maintainer-controlled examples. Share only information you are comfortable making public.
+  - type: dropdown
+    id: case_type
+    attributes:
+      label: Case type
+      options:
+        - New Project initialization
+        - Fresh-session resume
+        - Cross-executor continuation
+        - Upgrade or compatibility promotion
+        - New execution surface or adapter
+        - Independent integration or implementation
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Agnir version / revision
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: surfaces
+    attributes:
+      label: Execution surfaces involved
+      description: For example, Codex, Claude Code, Cursor, ChatGPT, local agent, CI, or a custom integration.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: What happened?
+      description: Describe the handoff/resume and whether the fresh executor recovered current state, next actions, decisions, and relevant evidence correctly.
+    validations:
+      required: true
+  - type: textarea
+    id: friction
+    attributes:
+      label: Friction or failure points
+      description: What was confusing, manual, brittle, or unexpected?
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Public evidence
+      description: Optional links to a public repository, issue, demo, screenshots, or other receipts. Do not disclose secrets or private Project data.
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Evidence use
+      options:
+        - label: I understand this issue is public and may be referenced as Agnir adoption evidence with attribution to this issue.
+          required: true

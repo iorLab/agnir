@@ -6,7 +6,7 @@ This directory contains the minimal public Agnir website surface.
 
 The website is a **public adoption surface**, not a Core/profile contract and not a second copy of Project continuity.
 
-Canonical positioning remains in `adoption/README.md`. Canonical visual identity remains in `brand/`. The website consumes approved brand exports; it does not own or redesign them.
+Canonical positioning remains in `adoption/README.md`. Canonical visual identity remains in `brand/`. The website consumes the approved brand masters through the deterministic production-derivative builder; it does not own or redesign them.
 
 ## Current pages
 
@@ -22,17 +22,27 @@ and demonstrates fresh-session recovery before introducing protocol vocabulary.
 
 ## Brand assets
 
-Do not duplicate or manually redraw Agnir production assets under `website/`.
+Do not duplicate or manually redraw Agnir production geometry under `website/`.
 
-The Pages workflow copies these canonical exports into the deployment artifact:
+At Pages build time, `.github/workflows/pages.yml` runs `brand/tools/build-production-derivatives.py` against the Principal-approved `brand/masters/agnir-mark.svg` and `brand/masters/agnir-wordmark.svg`. This materializes a self-contained `assets/agnir-horizontal-dark.svg` with:
 
-- `brand/exports/png/agnir-dark-usage.png` — render-safe dark lockup used by the site header;
-- `brand/exports/agnir-favicon.svg`;
-- `brand/exports/png/agnir-social-card.png`.
+- the approved particle-A geometry and palette;
+- the approved dark-treatment white wordmark;
+- a **transparent background**;
+- no nested external SVG dependency.
 
-The site deliberately uses the raster dark-usage lockup rather than `brand/exports/agnir-horizontal-dark.svg` because that SVG contains nested relative `<image>` references to master SVGs. Those references are not portable across GitHub README sanitization or the flattened Pages artifact. The PNG is an approved delivery derivative and renders without external dependencies.
+This is intentionally different from the older committed `brand/exports/png/agnir-dark-usage.png`, which is a dark-background usage presentation and therefore carries its own dark rectangular backdrop. It is not appropriate as an inline website-header logo on a differently colored page background.
 
-If a public website needs a new visual derivative, produce and approve it through the `brand/` system first.
+The Pages artifact also includes:
+
+- generated `assets/agnir-favicon.svg` from the same approved masters;
+- `brand/exports/png/agnir-social-card.png` as `assets/agnir-social-card.png`.
+
+If the approved master geometry or the deterministic derivative builder changes, the Pages workflow is in the automatic-deployment path filter so the public site is rebuilt from the new canonical source.
+
+## Feedback surface
+
+The website links directly to GitHub's issue chooser. Repository issue forms provide separate paths for defects, product ideas, and real-world adoption reports. Adoption reports are evidence candidates, not automatic protocol-conformance claims.
 
 ## Publication
 
@@ -44,7 +54,7 @@ Workflow: `.github/workflows/pages.yml`.
 
 The first manual GitHub Pages publication succeeded on authoritative `main` in workflow run `34083599723`; both `build` and `deploy` completed successfully and repository host readback reports `has_pages=true`.
 
-After that verified baseline, Pages publication is automatic for authoritative `main` pushes that modify the website source, the exact canonical brand exports consumed by the site, or the Pages workflow itself. `workflow_dispatch` remains available as a manual recovery/republication path.
+After that verified baseline, Pages publication is automatic for authoritative `main` pushes that modify website source, the canonical brand inputs actually consumed by the site, or the Pages workflow itself. `workflow_dispatch` remains available as a manual recovery/republication path.
 
 The path filter intentionally avoids redeploying the public website for unrelated Core, conformance, release, or Agnir continuity-only commits.
 
