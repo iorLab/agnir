@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#15110d">
   <title>Agnir — 让项目拥有自己的连续性</title>
-  <meta name="description" content="Agnir 把当前状态、下一步、决策和证据留在项目里，让新的 Agent 或执行环境无需依赖上一段私有聊天记录，也能安全接着做。">
+  <meta name="description" content="装一次 Agnir，在阶段结束时 Checkpoint；下一次新会话里说“继续”，Agent 就能从项目里恢复状态、下一步、决策和证据并接着做。">
   <meta property="og:title" content="Agnir — 项目连续性">
   <meta property="og:description" content="Agent 会忘。项目不该忘。">
   <meta property="og:type" content="website">
@@ -22,9 +22,9 @@
       <img src="assets/agnir-horizontal-dark.svg" alt="Agnir">
     </a>
     <nav aria-label="主导航">
-      <a href="#why">为什么</a>
-      <a href="#how">怎么工作</a>
       <a href="#install">安装</a>
+      <a href="#use">怎么用</a>
+      <a href="#why">为什么用</a>
       <a href="https://github.com/iorLab/agnir">GitHub</a>
       <a href="https://github.com/iorLab/agnir/issues/new/choose">反馈</a>
       <a class="lang" href="index.html" lang="en">English</a>
@@ -36,37 +36,25 @@
       <div class="hero-copy">
         <p class="eyebrow">项目连续性</p>
         <h1>Agent 会忘。<br>项目不该忘。</h1>
-        <p class="lede">Agnir 把真正需要延续的项目事实留在项目里：当前状态、下一步、决策和证据。换一个新的 Agent 或执行环境，也能发现这些信息并继续。</p>
+        <p class="lede">给 Agent 一句话装上 Agnir。下一次新会话里，只要说“继续”，它就能从项目里读到当前状态、下一步、决策和证据，然后接着做。</p>
         <div class="actions">
-          <a class="button primary" href="#install">安装 Agnir</a>
-          <a class="button secondary" href="https://github.com/iorLab/agnir">在 GitHub 查看</a>
+          <a class="button primary" href="#install">立即安装 Agnir</a>
+          <a class="button secondary" href="#use">30 秒看用法</a>
         </div>
-        <p class="principle">项目会一直在；Agent 可以换。</p>
+        <div class="trust-line" aria-label="Agnir 去疑虑信息">
+          <span>不绑某个 Agent</span>
+          <span>不靠私有聊天记录</span>
+          <span>不接管你的开发流程</span>
+        </div>
       </div>
 
-      <div class="continuity-card" aria-label="Agnir 项目连续性模型">
-        <div class="card-topline"><span>Agnir 项目连续性</span><span>v1.0.0 稳定版</span></div>
-        <div class="truth-row"><span class="truth-key">状态</span><span>API 实现完成</span></div>
-        <div class="truth-row"><span class="truth-key">下一步</span><span>补充失败路径集成测试</span></div>
-        <div class="truth-row"><span class="truth-key">决策</span><span>保持公开 API 兼容</span></div>
-        <div class="truth-row"><span class="truth-key">证据</span><span>已验证的版本与测试回执</span></div>
-        <div class="anchor-dot" aria-hidden="true"></div>
-      </div>
-    </section>
-
-    <section id="why" class="section shell">
-      <div class="section-heading">
-        <p class="eyebrow">30 秒看懂价值</p>
-        <h2>新会话，继续同一个项目。</h2>
-        <p>没有持久的项目事实，新会话只能重新猜上下文；有了 Agnir，真正需要延续的信息会跟着项目走。</p>
-      </div>
-      <div class="demo-grid">
-        <article class="terminal muted">
+      <div class="hero-demo" aria-label="新会话对比">
+        <article class="terminal hero-terminal muted">
           <div class="terminal-label">新会话 · 没有 Agnir</div>
           <p><span class="prompt">你 ›</span> 继续。</p>
           <p><span class="agent">Agent ›</span> 我们之前做到哪了？</p>
         </article>
-        <article class="terminal live">
+        <article class="terminal hero-terminal live">
           <div class="terminal-label">新会话 · 使用 Agnir</div>
           <p><span class="prompt">你 ›</span> 继续。</p>
           <p><span class="agent">Agent ›</span> 已加载 Agnir。下一步是补集成测试，我继续。</p>
@@ -74,54 +62,87 @@
       </div>
     </section>
 
-    <section class="section shell">
+    <section id="install" class="section shell install first-section">
+      <div class="section-heading">
+        <p class="eyebrow">先安装</p>
+        <h2>一句话，就能开始。</h2>
+        <p>不用先学协议，也不用把实现清单塞进 prompt。直接把这句话交给 Agent：</p>
+      </div>
+      <pre><code>为这个项目安装并初始化 Agnir：https://github.com/iorLab/agnir</code></pre>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/iorLab/agnir/blob/main/README.zh-CN.md#从这里开始">安装指南</a>
+        <a class="button secondary" href="https://github.com/iorLab/agnir">在 GitHub 查看</a>
+      </div>
+      <p class="microcopy">先装上。等你下一次真正开一个新会话，再说一句“继续”，区别会立刻出现。</p>
+    </section>
+
+    <section id="use" class="section shell">
+      <div class="section-heading">
+        <p class="eyebrow">怎么用</p>
+        <h2>四步，就够了。</h2>
+        <p>Agnir 不应该增加你的日常负担。唯一多出来的习惯，是在一个阶段结束时留下可恢复的 Checkpoint。</p>
+      </div>
+      <div class="use-grid">
+        <article>
+          <span class="step-number">01</span>
+          <h3>安装</h3>
+          <p>把上面那句安装指令交给 Agent。</p>
+        </article>
+        <article>
+          <span class="step-number">02</span>
+          <h3>正常工作</h3>
+          <p>照常开发、调试、审查、提交代码。Agnir 不替代你的开发流程。</p>
+        </article>
+        <article class="checkpoint-step">
+          <span class="step-number">03</span>
+          <h3>Checkpoint</h3>
+          <p>做到一个阶段时，说 <code>checkpoint</code>。也可以说“收尾”“先到这里”“保存进度”或 <code>save progress</code>。重点是表达“现在把项目状态保存下来”的意图，不是死记口令。</p>
+        </article>
+        <article>
+          <span class="step-number">04</span>
+          <h3>新会话继续</h3>
+          <p>打开一个新的会话，说“继续”。Agent 从项目里重新加载 Agnir，然后从上次 Checkpoint 接着做。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="why" class="section shell">
       <div class="section-heading narrow">
-        <p class="eyebrow">项目自己保存的事实</p>
-        <h2>不是又一个记忆黑箱。</h2>
-        <p>Agnir 只保存少量、可发现、需要长期延续的项目事实。它们属于项目，不属于某次聊天、某个模型、某个 IDE 或某种存储方案。</p>
+        <p class="eyebrow">先把疑虑说清楚</p>
+        <h2>你不用为了 Agnir 放弃原来的工作方式。</h2>
+      </div>
+      <div class="question-grid">
+        <article><h3>会绑死在某个 Agent 上吗？</h3><p>不会。Agnir 的连续性属于项目，不属于某个 Agent、模型、聊天或执行环境。</p></article>
+        <article><h3>要保存所有聊天记录吗？</h3><p>不用。Agnir 只留下真正需要跨会话延续的少量项目事实，不把聊天历史当成项目真相。</p></article>
+        <article><h3>会接管 Git、IDE 或开发流程吗？</h3><p>不会。你的工具继续做原来的事；Agnir 只负责让项目状态可发现、可加载、可 Checkpoint。</p></article>
+        <article><h3>这是另一个记忆黑箱吗？</h3><p>不是。当前状态、下一步、决策和证据都留在项目里，可以读、可以审查，也可以迁移。</p></article>
+      </div>
+    </section>
+
+    <section id="concept" class="section shell concept">
+      <div class="section-heading">
+        <p class="eyebrow">最后再讲概念</p>
+        <h2>Agnir 到底是什么？</h2>
+        <p>Agnir 是一个 <strong>Project Continuity（项目连续性）</strong>协议：把新的 Agent 真正需要的少量项目事实，作为项目自己的持久信息留下来。</p>
       </div>
       <div class="feature-grid">
         <article><span>01</span><h3>当前状态</h3><p>现在已经确定了什么。</p></article>
         <article><span>02</span><h3>下一步</h3><p>接下来做什么，按什么顺序。</p></article>
         <article><span>03</span><h3>决策</h3><p>以后继续开发时不能丢掉的约束和选择。</p></article>
-        <article><span>04</span><h3>证据</h3><p>支持恢复、审查、迁移和对齐的可验证记录。</p></article>
+        <article><span>04</span><h3>证据</h3><p>让恢复、审查、迁移和对齐都能被验证的记录。</p></article>
       </div>
-    </section>
-
-    <section id="how" class="section shell split">
-      <div class="section-heading">
-        <p class="eyebrow">怎么工作</p>
-        <h2>发现 → 加载 → 工作 → Checkpoint</h2>
-      </div>
-      <ol class="steps">
-        <li><strong>发现</strong><span>新的 Agent 从当前项目出发，找到 Agnir 的发现入口。</span></li>
-        <li><strong>加载</strong><span>读取当前连续性，以及这次任务真正需要的状态、下一步、决策和证据。</span></li>
-        <li><strong>工作</strong><span>Agent 正常完成项目工作；Agnir 不接管你的开发流程。</span></li>
-        <li><strong>Checkpoint</strong><span>有实质变化时，把新的项目事实整理并写回成一致、可恢复的 Checkpoint。</span></li>
-      </ol>
     </section>
 
     <section class="section shell proof">
       <div class="proof-copy">
         <p class="eyebrow">为跨工具而设计</p>
         <h2>换 Agent，不换项目。</h2>
-        <p>Agnir Core 不绑定 Git、GitHub、文件系统、ChatGPT、某个具体 Agent、Skill 或存储引擎。它们属于围绕项目连续性构建的 profile、适配器或分发层。</p>
+        <p>Agnir Core 不绑定 Git、GitHub、文件系统、ChatGPT、某个具体 Agent、Skill 或存储引擎。它们都围绕项目连续性工作，而不是反过来把项目绑在某个工具上。</p>
       </div>
       <div class="proof-stats" aria-label="Agnir 发布证明">
         <div><strong>v1.0.0</strong><span>最新稳定版</span></div>
         <div><strong>PASS</strong><span>独立实现验证通过</span></div>
         <div><strong>Svif</strong><span>首个已记录的下游采用案例</span></div>
-      </div>
-    </section>
-
-    <section id="install" class="section shell install">
-      <p class="eyebrow">开始使用</p>
-      <h2>给 Agent 一句话就够了。</h2>
-      <p>不用把 Agnir 的实现步骤塞进 prompt。</p>
-      <pre><code>为这个项目安装并初始化 Agnir：https://github.com/iorLab/agnir</code></pre>
-      <div class="actions">
-        <a class="button primary" href="https://github.com/iorLab/agnir/blob/main/README.zh-CN.md#从这里开始">安装指南</a>
-        <a class="button secondary" href="https://github.com/iorLab/agnir/blob/main/adoption/README.md">发布与采用策略</a>
       </div>
     </section>
   </main>
@@ -132,6 +153,7 @@
       <span>让连续性留在项目里。</span>
     </div>
     <div class="footer-links">
+      <a href="#install">安装</a>
       <a href="https://github.com/iorLab/agnir">GitHub</a>
       <a href="https://github.com/iorLab/agnir/issues/new/choose">反馈</a>
       <a href="https://github.com/iorLab/agnir/blob/main/spec/AGNIR_CORE_1_0.md">Core 1.0</a>
