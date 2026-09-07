@@ -1,0 +1,60 @@
+name: Agnir post-brand housekeeping
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  finalize-brand-surface:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update About and retire integrated brand ref when exactly armed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -euo pipefail
+          arm_message="housekeeping: publish repository about and retire brand branch"
+          if [ "${HEAD_MESSAGE}" != "${arm_message}" ]; then
+            echo "SKIP: post-brand housekeeping not armed for this commit"
+            exit 0
+          fi
+
+          repo="${GITHUB_REPOSITORY}"
+          description="Agnir — project-owned durable continuity, assembled from discoverable Project truth: state, next actions, decisions, and evidence."
+
+          # Immutable release anchors must stay exact.
+          test "$(gh api "repos/${repo}/git/ref/tags/v1.0.0" --jq '.object.sha')" = "6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3"
+          test "$(gh api "repos/${repo}/git/ref/tags/v1.0.0-rc.1" --jq '.object.sha')" = "092945289f1a0a9803e4fe0583104aa380ceaadc"
+
+          # PR #11 must be merged before its integration branch can be retired.
+          test "$(gh api "repos/${repo}/pulls/11" --jq '.merged_at != null')" = "true"
+
+          # Update GitHub About surface first; branch retirement happens only after this verifies.
+          gh api --method PATCH "repos/${repo}" -f description="${description}" >/dev/null
+          gh api --method PUT "repos/${repo}/topics" \
+            -f 'names[]=durable-continuity' \
+            -f 'names[]=project-continuity' \
+            -f 'names[]=state-management' \
+            -f 'names[]=protocol' \
+            -f 'names[]=developer-tools' >/dev/null
+
+          test "$(gh api "repos/${repo}" --jq '.description')" = "${description}"
+          topics="$(gh api "repos/${repo}/topics" --jq '.names | sort | join(",")')"
+          test "${topics}" = "developer-tools,durable-continuity,project-continuity,protocol,state-management"
+
+          if gh api "repos/${repo}/git/ref/heads/brand/identity-system" >/dev/null 2>&1; then
+            gh api --method DELETE "repos/${repo}/git/refs/heads/brand/identity-system"
+          fi
+          if gh api "repos/${repo}/git/ref/heads/brand/identity-system" >/dev/null 2>&1; then
+            echo "FAIL: brand/identity-system still exists" >&2
+            exit 1
+          fi
+
+          test "$(gh api "repos/${repo}/git/ref/tags/v1.0.0" --jq '.object.sha')" = "6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3"
+          test "$(gh api "repos/${repo}/git/ref/tags/v1.0.0-rc.1" --jq '.object.sha')" = "092945289f1a0a9803e4fe0583104aa380ceaadc"
+          echo "PASS: About surface updated and integrated brand branch retired"
