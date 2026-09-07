@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#15110d">
   <title>Agnir — Project-owned durable continuity</title>
-  <meta name="description" content="Install Agnir once, checkpoint Project truth, and let a fresh Agent continue from the Project instead of reconstructing private chat context.">
+  <meta name="description" content="Install Agnir once, leave recoverable Checkpoints, and let a fresh Agent continue from the Project instead of reconstructing private chat context.">
   <meta property="og:title" content="Agnir — Project Continuity">
   <meta property="og:description" content="Your agent forgets. Your project shouldn't.">
   <meta property="og:type" content="website">
@@ -39,7 +39,7 @@
         <p class="lede">Install Agnir once. In a fresh session, say “continue” and a compatible Agent can read the Project's current state, next actions, decisions, and evidence — then keep going.</p>
         <div class="actions">
           <a class="button primary" href="#install">Install Agnir</a>
-          <a class="button secondary" href="#use">See the 30-second flow</a>
+          <a class="button secondary" href="#use">Get started in 30 seconds</a>
         </div>
         <div class="trust-line" aria-label="Agnir reassurance">
           <span>No Agent lock-in</span>
@@ -66,21 +66,24 @@
       <div class="section-heading">
         <p class="eyebrow">Install first</p>
         <h2>One sentence to get started.</h2>
-        <p>You do not need to learn the protocol first or copy an implementation checklist into your prompt. Give your Agent one intent:</p>
       </div>
-      <pre><code>Install and initialize Agnir for this Project: https://github.com/iorLab/agnir</code></pre>
-      <div class="actions">
-        <a class="button primary" href="https://github.com/iorLab/agnir#start-here">Installation guide</a>
+      <div class="copy-block">
+        <pre id="install-command-en"><code>Install and initialize Agnir for this Project: https://github.com/iorLab/agnir</code></pre>
+        <button class="copy-button" type="button" data-copy-target="install-command-en" data-copy-label="Copy install command" data-copied-label="Copied" aria-label="Copy install command" title="Copy install command">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8z"></path><path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v1"></path></svg>
+        </button>
+      </div>
+      <div class="actions install-actions">
         <a class="button secondary" href="https://github.com/iorLab/agnir">View on GitHub</a>
       </div>
-      <p class="microcopy">Install it now. The value becomes obvious the first time you open a genuinely fresh session and say “continue”.</p>
+      <p class="microcopy">Install it now. Next time you open a fresh session, say “continue” — the difference is immediate.</p>
     </section>
 
     <section id="use" class="section shell">
       <div class="section-heading">
         <p class="eyebrow">How to use it</p>
         <h2>Four steps. That's it.</h2>
-        <p>Agnir should disappear into normal Project work. The only new habit is creating a durable Checkpoint when you reach a meaningful boundary.</p>
+        <p>Agnir doesn't add daily overhead. Express a “<button class="intent-link" type="button" data-intent-dialog>save state</button>” intent and it will leave a recoverable Checkpoint.</p>
       </div>
       <div class="use-grid">
         <article>
@@ -96,12 +99,12 @@
         <article class="checkpoint-step">
           <span class="step-number">03</span>
           <h3>Checkpoint</h3>
-          <p>At a meaningful stopping point, say <code>checkpoint</code>. <code>save progress</code> or “stop here” are also clear intent examples. The point is to signal a save/finish boundary, not memorize a magic keyword.</p>
+          <p>At a meaningful stopping point, express a “<button class="intent-link" type="button" data-intent-dialog>save state</button>” intent. Agnir will save the current Project state for recovery.</p>
         </article>
         <article>
           <span class="step-number">04</span>
           <h3>Continue in a fresh session</h3>
-          <p>Open a new context and say “continue”. The Agent reloads the Project-owned continuity and resumes from there.</p>
+          <p>Open a fresh session and say “continue”. The Agent reloads Agnir from the Project and resumes from the last Checkpoint.</p>
         </article>
       </div>
     </section>
@@ -115,7 +118,7 @@
         <article><h3>Will this lock me to one Agent?</h3><p>No. Agnir is designed so Project continuity does not belong to one Agent, model, chat, or execution surface.</p></article>
         <article><h3>Do I need to preserve every chat?</h3><p>No. Agnir keeps the small set of Project facts that actually need to survive, instead of treating chat history as the source of truth.</p></article>
         <article><h3>Will it take over Git, my IDE, or my workflow?</h3><p>No. Your tools keep doing their jobs. Agnir only defines how durable Project continuity is discovered, loaded, and checkpointed.</p></article>
-        <article><h3>Is this another opaque memory database?</h3><p>No. State, next actions, decisions, and evidence are Project-owned, inspectable surfaces rather than a hidden memory blob.</p></article>
+        <article><h3>Is this another opaque memory database?</h3><p>No. Next actions, decisions, and evidence stay in the Project as readable Markdown files.</p></article>
       </div>
     </section>
 
@@ -147,6 +150,22 @@
     </section>
   </main>
 
+  <dialog class="intent-dialog" id="checkpoint-intents" aria-labelledby="checkpoint-intents-title">
+    <div class="dialog-card">
+      <button class="dialog-close" type="button" data-dialog-close aria-label="Close">×</button>
+      <p class="eyebrow">Common phrases</p>
+      <h2 id="checkpoint-intents-title">Express a “save state” intent</h2>
+      <div class="trigger-list" aria-label="Common Checkpoint trigger phrases">
+        <code>checkpoint</code>
+        <code>save progress</code>
+        <code>stop here</code>
+        <code>wrap up</code>
+        <code>save the current state</code>
+      </div>
+      <p class="dialog-note">These are examples, not fixed magic keywords.</p>
+    </div>
+  </dialog>
+
   <footer class="site-footer shell">
     <div>
       <strong>Agnir</strong>
@@ -160,5 +179,48 @@
       <a href="zh-CN.html" lang="zh-CN">简体中文</a>
     </div>
   </footer>
+
+  <script>
+    const copyIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8z"></path><path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v1"></path></svg>';
+    const checkIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>';
+
+    document.querySelectorAll('[data-copy-target]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        const text = target.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          textarea.remove();
+        }
+        button.innerHTML = checkIcon;
+        button.classList.add('copied');
+        button.setAttribute('aria-label', button.dataset.copiedLabel);
+        button.title = button.dataset.copiedLabel;
+        setTimeout(() => {
+          button.innerHTML = copyIcon;
+          button.classList.remove('copied');
+          button.setAttribute('aria-label', button.dataset.copyLabel);
+          button.title = button.dataset.copyLabel;
+        }, 1600);
+      });
+    });
+
+    const intentDialog = document.getElementById('checkpoint-intents');
+    document.querySelectorAll('[data-intent-dialog]').forEach((button) => {
+      button.addEventListener('click', () => intentDialog.showModal());
+    });
+    intentDialog.querySelector('[data-dialog-close]').addEventListener('click', () => intentDialog.close());
+    intentDialog.addEventListener('click', (event) => {
+      if (event.target === intentDialog) intentDialog.close();
+    });
+  </script>
 </body>
 </html>
