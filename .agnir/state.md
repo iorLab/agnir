@@ -51,6 +51,20 @@ Key Svif receipts:
 
 No Agnir defect was exposed by the Svif adoption case. Previously satisfied v1 gates remain closed.
 
+## Launch and adoption strategy
+
+The Principal-approved post-v1 launch/adoption strategy is canonical at `adoption/README.md`.
+
+- category: **Project Continuity**;
+- positioning: project-owned durable continuity, not tool-owned generic AI memory;
+- primary first audience: AI coding power users with fresh-session / cross-surface continuity pain;
+- first proof experience: a canonical fresh-session recovery demo;
+- launch sequence: hygiene → design-user adoption → technical launch → broader developer launch;
+- north-star evidence: successful external cold-start resumes in Projects outside direct maintainer control;
+- early adoption targets are product-learning targets, not conformance/release gates.
+
+`brand/` remains the visual identity authority; `adoption/` owns launch, positioning, demos, community and case-study strategy. Adoption material does not redefine Core/profile semantics.
+
 ## Release evidence chain
 
 - independent implementation gate: issue #26 clean `PASS`;
@@ -59,4 +73,4 @@ No Agnir defect was exposed by the Svif adoption case. Previously satisfied v1 g
 - stable arm/tag revision: `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - stable publication workflow: `34039014354`, attempts 1 and 2 success.
 
-Agnir is now in stable maintenance + downstream adoption mode. Brand integration and its temporary branch are complete; GitHub About metadata is a small repository-host administrative follow-up, not a protocol/release gate.
+Agnir is now in stable maintenance + downstream adoption mode. Brand integration and its temporary branch are complete; GitHub About metadata and launch-readiness work are post-v1 adoption follow-up, not protocol/release gates.

@@ -61,6 +61,18 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Brand identity is a product/public surface and **does not redefine Agnir Core/profile semantics**.
 - GitHub repository About description/topics are repository-host metadata, not canonical Project truth. Failure to mutate host metadata because an integration lacks metadata-write permission must be surfaced explicitly and must not be treated as a product/brand integration failure.
 
+## Launch and adoption positioning
+
+- The Principal-approved canonical launch/adoption strategy is `adoption/README.md`.
+- Agnir's public category is **Project Continuity**. Generic “AI memory” / “agent memory” language may be used as adjacent discovery vocabulary but must not replace the product category or imply tool-owned memory semantics.
+- The primary first-user value is fresh-session recovery: **the Project persists; Executors come and go**.
+- Public messaging should lead with pain → outcome → Project ownership → mechanism → protocol credibility; deep protocol vocabulary should not be the first marketing experience for ordinary users.
+- The first audience is AI coding power users; later audiences include Agent/IDE/tool builders and infrastructure/interoperability communities.
+- Launch sequencing is Wave 0 hygiene → Wave 1 external design-user adoption → Wave 2 technical launch → Wave 3 broader developer launch.
+- The adoption north star is successful external cold-start resumes in Projects outside direct maintainer control. Stars, forks and impressions are secondary signals.
+- Early numeric adoption targets are product-learning targets, not conformance requirements or release gates.
+- `brand/` remains the canonical visual identity authority; `adoption/` owns positioning, launch, demo, community and case-study strategy. Neither adoption copy nor host metadata may silently redefine Core/profile semantics.
+
 ## Post-release branch-ref retirement policy
 
 - `main` is the sole intended long-lived authoritative branch; temporary refs should be retired after their work is completed and their material result is durably represented.

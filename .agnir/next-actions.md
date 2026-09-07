@@ -1,14 +1,17 @@
 # Agnir Next Actions
 
-Agnir `v1.0.0` stable is published and verified. Canonical brand integration, public README branding, integrated-branch retirement, and the first post-v1 real-project adoption evidence are complete.
+Agnir `v1.0.0` stable is published and verified. Canonical brand integration, public README branding, integrated-branch retirement, the first post-v1 real-project adoption evidence, and the Principal-approved launch/adoption strategy are complete.
 
 1. **Operate in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Patch releases must not silently redefine the stable public contract.
-2. **Complete the GitHub About administrative surface.** Repository metadata is currently still `description=null` / `topics=[]` because the available GitHub Actions token has metadata read-only permission. Use a repository-admin UI/API credential to set the intended description and topics; this is host metadata only and does not alter Project truth.
-3. **Continue collecting post-1.0 adoption evidence.** Svif is the first accepted real-project 0.2→1.0 promotion case. Add further adoption evidence only when it materially expands confidence; do not reopen satisfied release gates by default.
-4. **Keep the three retained evidence-anchor refs until an equally durable replacement exists.** `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0` are non-authoritative evidence anchors, not active product lines.
-5. **Keep brand production truth locked.** README/public derivatives may use the canonical masters, but must not aesthetically reinterpret the approved Agnir identity. Material visual changes require new Principal approval.
-6. **Shift active product execution back to Svif where appropriate.** Svif's own canonical continuity governs its ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
-7. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
+2. **Complete Wave 0 launch hygiene.** Finish the GitHub About administrative surface, confirm license/contribution presentation, provide an obvious external feedback path, and prepare stable public share surfaces. Repository metadata is currently still `description=null` / `topics=[]` because the available GitHub Actions token has metadata read-only permission; use repository-admin UI/API authority for that host-only change.
+3. **Produce the canonical 30-second fresh-session demo.** Demonstrate the user-visible contrast between an unassisted fresh session and a fresh Executor resuming Project-owned Agnir continuity. Lead with value, not protocol vocabulary.
+4. **Recruit the first external design users.** Target Projects not controlled by Agnir maintainers; verify public understanding, one-line installation, second-session value, and retention without hidden founding-context coaching.
+5. **Collect material post-1.0 adoption evidence.** Svif is the first accepted real-project 0.2→1.0 promotion case. Prioritize genuine external cold-start resumes, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations. Do not reopen satisfied release gates by default.
+6. **Keep the three retained evidence-anchor refs until an equally durable replacement exists.** `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0` are non-authoritative evidence anchors, not active product lines.
+7. **Keep brand production truth locked.** Adoption/demo/social materials may consume canonical brand assets, but must not aesthetically reinterpret the approved Agnir identity. Material visual changes require new Principal approval.
+8. **Run technical launch only after external proof exists.** Use the fresh-session value story first; use independent implementation, lineage/reconciliation, mount/storage relocation, and conformance as credibility layers after the user value is understood.
+9. **Shift active product execution back to Svif where appropriate.** Svif's own canonical continuity governs its ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
+10. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
 
 ## Intended GitHub About metadata
 
@@ -24,6 +27,21 @@ Topics:
 - `protocol`
 - `developer-tools`
 
+Discovery/SEO surfaces may additionally use adjacent terms such as `agent-memory`, `project-memory`, `coding-agents`, or `context-engineering` where useful, but the product category remains **Project Continuity**.
+
+## Adoption targets
+
+These are product-learning targets, not release gates:
+
+- 10 external Projects initialized;
+- 5 users reach a second genuinely fresh session;
+- 3 users continue using Agnir for more than 7 days;
+- 3 distinct execution surfaces represented across adoption evidence;
+- 2 cross-Executor continuation cases;
+- 1 external integration or independent implementation beyond the v1 release gate.
+
+Canonical strategy: `adoption/README.md`.
+
 ## Recent maintenance receipts
 
 - brand PR #11 merge: `37e08498448797de56dc7ab03823bdc2d430a38f`;
@@ -36,7 +54,8 @@ Topics:
 - retirement conformance: `34077763682` / `101607125572` success;
 - one-shot workflow removal: `222d60c0467c0368b1aefe68b55cc01ef43cda56`;
 - post-removal conformance: `34077835425` / `101607318275` success;
-- Svif adoption evidence: `.agnir/evidence/2026-09-07-svif-agnir-1.0-adoption.md`.
+- Svif adoption evidence: `.agnir/evidence/2026-09-07-svif-agnir-1.0-adoption.md`;
+- launch/adoption strategy evidence: `.agnir/evidence/2026-09-07-launch-adoption-strategy.md`.
 
 ## Invariants
 
@@ -45,4 +64,5 @@ Topics:
 - Published tags are immutable.
 - Historical Core/profile 0.1 and 0.2 remain supported.
 - Brand assets are product surfaces, not Core semantic dependencies.
+- Adoption strategy and repository-host metadata are not Core semantic dependencies.
 - Repository-host About metadata is not canonical Project truth.
