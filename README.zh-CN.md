@@ -183,6 +183,7 @@ Agnir 不负责真正的项目工作。它让连续性持久、可发现、归�
 `0.1` 项目按照 [`spec/CORE_0_1_TO_0_2_MIGRATION.md`](spec/CORE_0_1_TO_0_2_MIGRATION.md) 显式迁移到 `0.2`。Core / profile `1.0` 是**对已经在 `0.2` 下通过独立实现验证的行为进行稳定性晋升**，不是功能驱动的重新设计。已有 `0.2` 项目可以继续保持 `0.2`；把声明改成 `1.0` 是另一项必须单独授权、由项目自己拥有的晋升操作，规范见 [`spec/CORE_0_2_TO_1_0_PROMOTION.md`](spec/CORE_0_2_TO_1_0_PROMOTION.md)。
 
 ## 当前版本与发布状态
+<!-- 机器兼容发布标记，不渲染：Repository stable package：`v1.0.0` | 已接受 release candidate：`v1.0.0-rc.1` -->
 
 **仓库稳定包：`v1.0.0`** — Core `1.0` + `repository-filesystem/1.0`。
 
