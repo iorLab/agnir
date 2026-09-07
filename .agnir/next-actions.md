@@ -1,15 +1,15 @@
 # Agnir Next Actions
 
-Agnir `v1.0.0` stable is published and verified. Canonical brand integration, the Principal-approved launch/adoption strategy, the bilingual website source, the render-safe/localized public-surface repair, GitHub Pages enablement, and scoped automatic Pages deployment are accepted on authoritative `main`.
+Agnir `v1.0.0` stable is published and verified. Canonical brand integration, the Principal-approved launch/adoption strategy, the bilingual website source, render-safe/localized public surfaces, GitHub Pages enablement, scoped automatic deployment, transparent website branding, and external GitHub Issues feedback intake are accepted on authoritative `main`.
 
 1. **Operate in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Patch releases must not silently redefine the stable public contract.
-2. **Complete the remaining Wave 0 repository-host surface.** The repository description is correct and Pages is live. Add the intended topics, confirm license/contribution presentation, provide an obvious external feedback path, prepare stable public share surfaces, and set the repository homepage URL to the verified Pages site when host/public readback is accepted.
+2. **Close the last Wave 0 host/legal decisions.** GitHub description, Pages, homepage, and feedback intake are in place. Add the intended repository topics when host metadata authority is available. Make an explicit Principal decision on repository license before adding a license file or contribution-licensing language; do not infer a license from predecessor projects or general open-source convention.
 3. **Produce the canonical 30-second fresh-session demo.** Demonstrate the visible contrast between an unassisted fresh session and a fresh Executor resuming Project-owned Agnir continuity. Lead with value, not protocol vocabulary.
 4. **Recruit the first external design users.** Target Projects not controlled by Agnir maintainers; verify public understanding, one-line installation, second-session value, and retention without hidden founding-context coaching.
-5. **Collect material post-1.0 adoption evidence.** Svif is the first accepted real-project 0.2→1.0 promotion case. Prioritize genuine external cold-start resumes, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations. Do not reopen satisfied release gates by default.
+5. **Collect material post-1.0 adoption evidence.** Svif is the first accepted real-project 0.2→1.0 promotion case. Use the public adoption-report issue form as an intake surface, then review material reports before accepting them as evidence. Prioritize genuine external cold-start resumes, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
 6. **Keep the three retained evidence-anchor refs until an equally durable replacement exists.** `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0` are non-authoritative evidence anchors, not active product lines.
 7. **Retire completed temporary public-surface branches when branch-deletion authority is available.** Completed maintenance branches are not product lines; their material results must first be represented on `main` and in Evidence.
-8. **Keep brand production truth locked.** README, website, adoption/demo and social materials may consume canonical brand assets, but must not aesthetically reinterpret the approved Agnir identity. Material visual changes require new Principal approval.
+8. **Keep brand production truth locked.** README, website, adoption/demo and social materials may consume approved brand assets or deterministic derivatives from approved masters, but must not aesthetically reinterpret the Agnir identity. Material visual changes require new Principal approval.
 9. **Run technical launch only after external proof exists.** Use the fresh-session value story first; use independent implementation, lineage/reconciliation, mount/storage relocation, and conformance as credibility layers after the user value is understood.
 10. **Shift active product execution back to Svif where appropriate.** Svif's own canonical continuity governs its ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
 11. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
@@ -26,13 +26,11 @@ First successful manual deployment:
 
 Accepted automatic deployment:
 
-- PR #33 final head `17d26109567dd3e242854651079422a0fb858632`;
-- synthetic-merge conformance run `34084048316`, job `101624594459` — success;
-- authoritative merge `b781782c2c2b97f70a66e52f810d7ad18fb0395e`;
-- post-merge conformance run `34084087070`, job `101624702082` — success;
-- automatic Pages run `34084087062` triggered by the authoritative `main` push;
-- automatic build job `101624702365` — success;
-- automatic deploy job `101624730737` — success.
+- PR #33 authoritative merge `b781782c2c2b97f70a66e52f810d7ad18fb0395e`;
+- automatic Pages run `34084087062`, build `101624702365`, deploy `101624730737` — success;
+- transparent-logo/Wave 0 feedback merge `16810a514620e8a62660948fb9477ba8106baceb`;
+- post-merge conformance run `34085888593`, job `101629727855` — success;
+- automatic Pages run `34085888590`, build `101629727838`, deploy `101629760644` — success.
 
 Default public URL:
 
@@ -41,18 +39,23 @@ Default public URL:
 Automatic publication triggers only on authoritative `main` changes to:
 
 - `website/**`;
-- `brand/exports/png/agnir-dark-usage.png`;
-- `brand/exports/agnir-favicon.svg`;
+- `brand/masters/agnir-mark.svg`;
+- `brand/masters/agnir-wordmark.svg`;
+- `brand/tools/build-production-derivatives.py`;
 - `brand/exports/png/agnir-social-card.png`;
 - `.github/workflows/pages.yml`.
 
-Manual `workflow_dispatch` remains enabled.
+The Pages build materializes `assets/agnir-horizontal-dark.svg` from approved masters using the deterministic production-derivative builder. The accepted artifact is self-contained, uses the approved white dark-treatment wordmark, has no `<rect>` background, and has no external `<image>` dependency. Manual `workflow_dispatch` remains enabled.
 
-## Intended GitHub About metadata
+## GitHub About / feedback state
 
-Description — **currently set**:
+Description — **set**:
 
 `Agnir — project-owned durable continuity, assembled from discoverable Project truth: state, next actions, decisions, and evidence.`
+
+Homepage — **set**:
+
+`https://iorlab.github.io/agnir`
 
 Topics — **still pending**:
 
@@ -64,11 +67,16 @@ Topics — **still pending**:
 
 Discovery/SEO surfaces may additionally use adjacent terms such as `agent-memory`, `project-memory`, `coding-agents`, or `context-engineering` where useful, but the product category remains **Project Continuity**.
 
-Intended homepage:
+Feedback — **live**:
 
-`https://iorlab.github.io/agnir/`
+- GitHub issue chooser is linked from both website language variants;
+- structured issue forms exist for bug reports, product ideas, and adoption reports;
+- Discussions remain disabled and are not required for the current first-feedback path.
 
-Current host state: Pages enabled; description set; homepage empty; topics empty; recognized license absent; Discussions disabled.
+License — **Principal decision required**:
+
+- no repository license is currently recognized;
+- do not add or infer a license without explicit Principal authorization.
 
 ## Adoption targets
 
@@ -85,12 +93,13 @@ Canonical strategy: `adoption/README.md`.
 
 ## Recent public-surface receipts
 
-- render-safe acceptance checkpoint: `38fbeade7995021f4764762cd11b90c2092f75da`;
-- first Pages manual deployment: run `34083599723`, build `101623363101`, deploy `101623390599` — success;
-- automatic Pages authoritative merge: `b781782c2c2b97f70a66e52f810d7ad18fb0395e`;
-- automatic Pages run `34084087062`, build `101624702365`, deploy `101624730737` — success;
-- post-merge conformance run `34084087070`, job `101624702082` — success;
-- Pages evidence: `.agnir/evidence/2026-09-07-pages-live-auto-deploy.md`.
+- automatic Pages acceptance checkpoint: `0ef44f9a66b26e4ab80f83dbf347d14a41d7e5ba`;
+- PR #35 synthetic conformance: run `34085855448`, job `101629640557` — success;
+- transparent-logo/Wave 0 feedback merge: `16810a514620e8a62660948fb9477ba8106baceb`;
+- post-merge conformance: run `34085888593`, job `101629727855` — success;
+- automatic Pages run: `34085888590`, build `101629727838`, deploy `101629760644` — success;
+- deployed Pages artifact: id `10005182999`, digest `sha256:ac4a9f5c653e15f0ba6d8e1edb7fcd22227aedbd950789d7657868378013b034`;
+- evidence: `.agnir/evidence/2026-09-07-transparent-website-logo-wave0-feedback.md`.
 
 ## Invariants
 
@@ -103,5 +112,6 @@ Canonical strategy: `adoption/README.md`.
 - GitHub-hosted public visual assets must be render-self-contained at the referenced/deployed path.
 - Localized public prose should not accidentally mix display languages; exact technical identifiers/navigation remain allowed exceptions.
 - Website source readiness, Pages enablement, deployment success, and public presentation verification are distinct observations.
-- Automatic Pages deployment must be scoped to public-site inputs and authoritative `main`; unrelated Project changes must not trigger publication.
+- Automatic Pages deployment must be scoped to actual public-site inputs and authoritative `main`; unrelated Project changes must not trigger publication.
 - Repository-host About/Pages metadata is not canonical Project truth.
+- A public adoption report is an evidence candidate, not automatic evidence acceptance.
