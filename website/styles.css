@@ -48,6 +48,15 @@ button { font: inherit; }
 }
 
 .brand img { display: block; width: 168px; height: auto; }
+.brand-tagline {
+  margin-right: auto;
+  color: var(--cream);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+  opacity: 0.82;
+}
 nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 22px; color: var(--muted); font-size: 0.94rem; }
 nav a:hover, .footer-links a:hover { color: var(--text); }
 nav .lang { color: var(--sand-bright); }
@@ -226,6 +235,10 @@ h3 { margin-bottom: 8px; font-size: 1.08rem; }
 .site-footer { display: flex; justify-content: space-between; gap: 24px; padding: 34px 0 46px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
 .site-footer strong { color: var(--text); margin-right: 12px; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 18px; }
+
+@media (max-width: 900px) {
+  .brand-tagline { display: none; }
+}
 
 @media (max-width: 1050px) {
   .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 72px; }
