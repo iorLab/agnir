@@ -60,6 +60,7 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Canonical production geometry remains under `brand/masters/`; public delivery assets remain under `brand/exports/`; approved visual authority remains documented under `brand/APPROVED-VISUAL-REFERENCE.md` and `brand/brand-handoff.md`.
 - Brand identity is a product/public surface and **does not redefine Agnir Core/profile semantics**.
 - GitHub repository About description/topics are repository-host metadata, not canonical Project truth. Failure to mutate host metadata because an integration lacks metadata-write permission must be surfaced explicitly and must not be treated as a product/brand integration failure.
+- README display must use an approved treatment appropriate to the viewer theme. A fixed dark-wordmark asset must not be used on an unknown/light-or-dark GitHub canvas when an approved light/dark pair exists. The accepted README repair uses GitHub theme-aware `<picture>` selection between `brand/exports/agnir-horizontal-dark.svg` and `brand/exports/agnir-horizontal-light.svg`; it does not authorize any logo redesign.
 
 ## Launch and adoption positioning
 
@@ -72,6 +73,16 @@ This file records active durable decisions required to operate and evolve Agnir 
 - The adoption north star is successful external cold-start resumes in Projects outside direct maintainer control. Stars, forks and impressions are secondary signals.
 - Early numeric adoption targets are product-learning targets, not conformance requirements or release gates.
 - `brand/` remains the canonical visual identity authority; `adoption/` owns positioning, launch, demo, community and case-study strategy. Neither adoption copy nor host metadata may silently redefine Core/profile semantics.
+
+## Public website boundary
+
+- `website/` is the canonical source for the minimal Agnir public website. It is a product/adoption surface, not a Core/profile contract and not Project continuity storage.
+- The website must materialize approved `adoption/` positioning rather than invent a competing product category or protocol story.
+- The website must consume approved `brand/` exports and must not duplicate, redraw, regenerate, or become a second visual authority. The deployment workflow copies canonical exports into the Pages artifact.
+- The intended first host is GitHub Pages at `https://iorlab.github.io/agnir/`; this is a repository-host surface, not canonical Project truth.
+- Website source readiness and live host publication are separate states. A URL must not be called live until host configuration, deployment, and public readback succeed.
+- `.github/workflows/pages.yml` remains manual-dispatch until Pages is enabled and the first live deployment is verified. Automatic `main` deployment may be enabled later as ordinary public-surface maintenance after a successful live baseline exists.
+- A custom domain is not implied or authorized by the existence of website source; custom-domain selection is a separate repository-host/brand decision.
 
 ## Post-release branch-ref retirement policy
 
