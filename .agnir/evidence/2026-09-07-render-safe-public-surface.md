@@ -35,10 +35,11 @@ Changes:
 1. `README.md`
    - replaces theme-aware nested-reference SVG rendering with approved self-contained `brand/exports/png/agnir-dark-usage.png`;
    - removes accidental Chinese display text from English identity copy;
-   - removes Chinese command aliases from English Agent instructions while retaining the Simplified Chinese language-navigation link.
+   - keeps historical machine-only cross-language aliases in non-rendering HTML comments only where the existing self-host package tests still require them.
 2. `README.zh-CN.md`
    - uses the same render-safe approved PNG lockup;
-   - localizes public prose into Simplified Chinese while retaining exact technical identifiers, filenames, commands and version labels where required.
+   - localizes public prose into Simplified Chinese while retaining exact technical identifiers, filenames, commands and version labels where required;
+   - preserves older literal self-host markers only in non-rendering compatibility comments so they no longer leak into the visible README.
 3. `website/index.html` / `website/zh-CN.html`
    - use `assets/agnir-dark-usage.png` for the header lockup;
    - Simplified Chinese product copy is localized instead of mixing English marketing fragments throughout.
@@ -47,10 +48,24 @@ Changes:
    - stops copying the nested-reference horizontal dark SVG for site-header use.
 5. `website/README.md`
    - records the render-self-contained asset requirement and why the PNG is the accepted host-safe delivery derivative.
-6. `.agnir/decisions.md`
+6. `conformance/test_1_0_package_surface.py`
+   - validates the localized visible Simplified Chinese package-status/support wording instead of requiring the previous mixed-language display text.
+7. `.agnir/decisions.md`
    - records render-self-contained public-asset and localized-prose invariants.
 
 No visual master, Core/profile contract, Project/lineage identity, stable release tag or release identity changes.
+
+## Conformance pressure
+
+PR `#31` exposed two layers of historical public-copy coupling before the final candidate became green:
+
+- first synthetic run `34082048733` failed because the Chinese README self-host gate expected the historical literal install marker `为这个 Project 安装并初始化 Agnir...`;
+- follow-up runs used non-rendering compatibility comments so visible copy could remain localized while self-host discovery/package markers stayed backward-compatible;
+- run `34082389127` reached the full suite after stable gates passed and exposed one remaining `test_1_0_package_surface.py` assertion that required visible mixed-language support wording;
+- that package-surface assertion was updated to the actual localized Simplified Chinese wording rather than reintroducing mixed-language visible copy;
+- final synthetic-merge acceptance is the first PR #31 run on the final head where repository self-host, stable package gates and the full `test_*.py` suite all succeed.
+
+This conformance adjustment validates public package presentation only. It does not modify Core/profile semantics or compatibility dispatch.
 
 ## Pages execution boundary
 
@@ -70,7 +85,7 @@ Pages live publication remains pending until an authority capable of changing re
 Final acceptance requires:
 
 1. branch behind authoritative `main` = 0 before integration;
-2. synthetic-merge conformance success;
+2. synthetic-merge conformance success on the final head;
 3. coherent integration of Project changes plus reconciled target continuity;
 4. authoritative post-merge conformance success;
-5. public README readback showing the PNG asset reference and language-clean identity copy.
+5. public README readback showing the PNG asset reference and language-clean visible identity copy.
