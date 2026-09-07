@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - public/trim-install-cta
-    paths:
-      - ".github/workflows/tmp-zh-install-polish.yml"
 
 permissions:
   contents: write
@@ -19,35 +17,13 @@ jobs:
         with:
           ref: public/trim-install-cta
 
-      - name: Apply approved Chinese install copy
+      - name: Apply approved copy
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-
-          page = Path("website/zh-CN.html")
-          text = page.read_text(encoding="utf-8")
-
-          button_block = '''      <div class="actions install-actions">
-            <a class="button secondary" href="https://github.com/iorLab/agnir">在 GitHub 查看</a>
-          </div>
-'''
-          old_microcopy = '先装上。等你下次打开新会话，再说一句“继续”，区别会立刻出现。'
-          new_microcopy = '先装上，打开新会话，说一句“继续”，区别会立刻出现。'
-
-          if button_block not in text:
-              raise SystemExit("GitHub install button block not found")
-          if old_microcopy not in text:
-              raise SystemExit("old Chinese microcopy not found")
-
-          text = text.replace(button_block, '', 1)
-          text = text.replace(old_microcopy, new_microcopy, 1)
-          page.write_text(text, encoding="utf-8")
-
-          Path(".github/workflows/tmp-zh-install-polish.yml").unlink()
-          PY
-
+          sed -i '/<div class="actions install-actions">/,/<\/div>/d' website/zh-CN.html
+          sed -i 's/先装上。等你下次打开新会话，再说一句“继续”，区别会立刻出现。/先装上，打开新会话，说一句“继续”，区别会立刻出现。/' website/zh-CN.html
+          rm .github/workflows/tmp-zh-install-polish.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
