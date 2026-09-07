@@ -1,0 +1,50 @@
+name: Temporary Chinese proof title layout
+
+on:
+  push:
+    branches:
+      - public/zh-proof-title-single-line
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: public/zh-proof-title-single-line
+
+      - name: Keep Chinese proof title on one line
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('website/styles.css')
+          text = path.read_text(encoding='utf-8')
+          marker = '.proof-stats span { color: var(--muted); text-align: right; font-size: 0.9rem; }\n'
+          addition = '''\n.zh-page .proof-copy h2 {\n  white-space: nowrap;\n  font-size: clamp(2.1rem, 3.4vw, 3.15rem);\n}\n\n'''
+          if '.zh-page .proof-copy h2 {' not in text:
+              if marker not in text:
+                  raise SystemExit('proof stats marker not found')
+              text = text.replace(marker, marker + addition, 1)
+
+          mobile_marker = '@media (max-width: 640px) {\n'
+          mobile_rule = '''@media (max-width: 560px) {\n  .zh-page .proof-copy h2 { white-space: normal; }\n}\n\n'''
+          if '@media (max-width: 560px)' not in text:
+              if mobile_marker not in text:
+                  raise SystemExit('mobile marker not found')
+              text = text.replace(mobile_marker, mobile_rule + mobile_marker, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Remove temporary workflow and commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/tmp-zh-proof-title.yml
+          git add website/styles.css
+          git commit -m "website: keep Chinese proof title on one line"
+          git push origin HEAD:public/zh-proof-title-single-line
