@@ -1,0 +1,47 @@
+name: Bug report
+description: Report a reproducible Agnir defect or unexpected behavior.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a defect. Please separate Agnir behavior from executor-, host-, or adapter-specific behavior where possible.
+  - type: input
+    id: version
+    attributes:
+      label: Agnir version / revision
+      description: Stable version, tag, or commit SHA if known.
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Environment and execution surface
+      description: Repository/filesystem, VCS if relevant, Agent/executor, and any adapter/profile involved.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: Include the smallest safe sequence that reproduces the problem. Do not include secrets or private Project data.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Error codes, logs, public repository links, or other non-sensitive receipts.
