@@ -56,6 +56,8 @@ Project root
 
 ## Agnir Project Instructions
 
+<!-- Machine-only compatibility aliases for historical self-host conformance; not rendered: 提交代码 | 提交推送 -->
+
 > **For Agents.** Users normally do not need to read this section.
 
 1. **Discover.** Treat the repository root as the authorized Project Entry Point. Read top-level `AGNIR.yaml`; validate the declared Core/profile compatibility, Project identity, and — for Core `0.2` or `1.0` — the selected logical Continuity Lineage. Validate backend selector/binding separately from lineage identity. Dispatch according to the compatibility line actually declared.
