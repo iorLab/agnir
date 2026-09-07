@@ -14,11 +14,27 @@ Canonical positioning remains in `adoption/README.md`. Canonical visual identity
 - `zh-CN.html` — Simplified Chinese landing page;
 - `styles.css` — self-contained responsive presentation, with no external font or JavaScript dependency.
 
-The landing page leads with the post-v1 adoption story:
+## User-first information order
 
-> Your agent forgets. Your project shouldn't.
+The landing page is intentionally organized around the user's first questions rather than the protocol's conceptual structure.
 
-and demonstrates fresh-session recovery before introducing protocol vocabulary.
+Preferred order:
+
+1. show the fresh-session problem and Agnir outcome immediately;
+2. put installation before conceptual explanation;
+3. show the ordinary use loop, including an explicit Checkpoint boundary;
+4. remove common adoption doubts before asking the reader to absorb protocol vocabulary;
+5. explain Project Continuity, State, Next Actions, Decisions, Evidence, portability, and protocol credibility only after the user already understands the value and how to start.
+
+The hero should prefer a visible **without Agnir / with Agnir** fresh-session comparison over an abstract continuity-state card. Public copy should be concise, direct, and outcome-led.
+
+## Checkpoint UX
+
+Checkpointing is part of the normal user loop and must not be hidden behind protocol terminology.
+
+Public examples may tell the user to say `checkpoint` at a meaningful save/finish boundary. Natural-language equivalents such as `save progress`, “stop here”, “收尾”, “先到这里”, or “保存进度” may be shown as intent examples where appropriate.
+
+These examples describe user intent, not a normative fixed-keyword parser. The Agent/Skill procedure remains responsible for recognizing checkpoint/save/finish/commit boundaries and applying the actual Agnir checkpoint semantics.
 
 ## Localization
 
