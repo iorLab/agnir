@@ -1,6 +1,6 @@
 # Repository Tree / 目录树
 
-本页是 `iorLab/agnir` 当前仓库的结构与职责地图。README 提供快速导航；这里列出 active compatibility contracts、profiles、conformance、Project continuity、release surfaces、brand/adoption surfaces 与历史参考。
+本页是 `iorLab/agnir` 当前仓库的结构与职责地图。README 提供快速导航；这里列出 active compatibility contracts、profiles、conformance、Project continuity、release surfaces、brand/adoption/website surfaces 与历史参考。
 
 维护规则：新增、删除、移动或实质改变这里列出的文件职责时，应在同一个 change set 中同步更新本页。`.agnir/evidence/` 按目录职责记录，不逐个枚举全部 Evidence 文件。
 
@@ -28,9 +28,16 @@ agnir/
 ├── adoption/                                             # positioning, launch, demos, design-user and case-study strategy
 │   └── README.md                                         # Principal-approved post-v1 launch/adoption strategy
 │
+├── website/                                              # minimal public website source; not a Core contract
+│   ├── README.md                                         # website responsibility + publication boundary
+│   ├── index.html                                        # English Project Continuity landing page
+│   ├── zh-CN.html                                        # Simplified Chinese landing page
+│   └── styles.css                                        # self-contained responsive presentation
+│
 ├── .github/
 │   └── workflows/
-│       └── conformance.yml                               # main/release CI + exact gated publication jobs
+│       ├── conformance.yml                               # main/release CI + exact gated publication jobs
+│       └── pages.yml                                     # manual GitHub Pages artifact/deploy workflow
 │
 ├── spec/
 │   ├── AGNIR_CORE.md                                     # Core 0.1 compatibility contract
@@ -112,6 +119,8 @@ agnir/
 - **VCS mapping:** Core/profile `0.2` and `1.0` use their normative Core/profile VCS semantics. A VCS selector is not logical lineage identity; a commit SHA is a receipt, not identity.
 - **Brand boundary:** `brand/` is the canonical approved visual identity/production-asset authority; brand assets do not define Core semantics.
 - **Adoption boundary:** `adoption/` owns post-v1 positioning, launch, demo, design-user, community and case-study strategy; adoption materials may consume brand assets but do not redefine them or Core semantics.
+- **Website boundary:** `website/` materializes adoption messaging into a static public surface. It consumes canonical brand exports during deployment, does not duplicate visual authority, and remains separate from Core/profile semantics.
+- **Website publication:** `.github/workflows/pages.yml` is manual-dispatch until GitHub Pages is enabled for the repository. Website source readiness and live host publication are separate states.
 
 Historical `.agnir/evidence/` and Git history may contain earlier draft/RC wording because those records describe earlier checkpoints accurately.
 
@@ -119,4 +128,4 @@ Historical `.agnir/evidence/` and Git history may contain earlier draft/RC wordi
 
 用户安装/升级时只需要 README 开头的简短提示。Agent 获取 distribution 后由根目录 `SKILL.md` 承担完整 procedure；初始化后的 Project 通过自己的 `AGENTS.md -> README -> AGNIR.yaml` route activation。
 
-本页不是第二套协议。Core `0.1` / `0.2` / `1.0` 分别以对应 Core contract 为准；repository-filesystem `0.1` / `0.2` / `1.0` 分别以对应 profile 为准；0.2 -> 1.0 Project promotion 以 `spec/CORE_0_2_TO_1_0_PROMOTION.md` 为准；机器可读 manifest 约束在 `schemas/`；Agent procedure 以 `SKILL.md` 为准；`brand/` 负责视觉身份；`adoption/` 负责采用策略；`history/` 只保存 predecessor/history material。
+本页不是第二套协议。Core `0.1` / `0.2` / `1.0` 分别以对应 Core contract 为准；repository-filesystem `0.1` / `0.2` / `1.0` 分别以对应 profile 为准；0.2 -> 1.0 Project promotion 以 `spec/CORE_0_2_TO_1_0_PROMOTION.md` 为准；机器可读 manifest 约束在 `schemas/`；Agent procedure 以 `SKILL.md` 为准；`brand/` 负责视觉身份；`adoption/` 负责采用策略；`website/` 负责公开网站 source；`history/` 只保存 predecessor/history material。
