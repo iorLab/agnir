@@ -1,7 +1,11 @@
 # Agnir
 
 <p align="center">
-  <img src="brand/exports/png/agnir-dark-usage.png" alt="Agnir" width="430">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="brand/exports/agnir-horizontal-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="brand/exports/agnir-horizontal-light.svg">
+    <img src="brand/exports/agnir-horizontal-light.svg" alt="Agnir" width="430">
+  </picture>
 </p>
 
 <p align="center"><strong>Project-owned durable continuity.</strong></p>

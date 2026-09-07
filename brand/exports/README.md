@@ -12,7 +12,7 @@ Direct package-level SVG treatments:
 - `agnir-app-icon.svg`
 - `agnir-favicon.svg`
 
-These SVGs reference approved masters by relative path so geometry is not forked into a second authority. Keep the `brand/exports/` + `brand/masters/` package relationship intact.
+These horizontal SVG exports are deterministically materialized from the approved masters and are self-contained with transparent backgrounds. Geometry remains authoritative in `brand/masters/`; the exports are render-safe delivery derivatives for README, website, and other public surfaces.
 
 ## Materialized PNG delivery package
 
