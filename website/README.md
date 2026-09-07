@@ -20,6 +20,20 @@ The landing page leads with the post-v1 adoption story:
 
 and demonstrates fresh-session recovery before introducing protocol vocabulary.
 
+## Localization
+
+Public localization should optimize for how the target developer community actually speaks, not for literal sentence-by-sentence equivalence.
+
+For Simplified Chinese developer-facing copy:
+
+- use **Agent** rather than the uncommon literal translation `智能体`;
+- keep familiar developer terms such as `API`, `IDE`, `Core`, `profile`, `Skill`, `Checkpoint`, and `prompt` in English where that is more idiomatic;
+- translate explanatory prose into natural Simplified Chinese while preserving Agnir's Project Continuity semantics;
+- do not let localization redefine Core/profile terms or product category boundaries;
+- avoid awkward literal renderings such as “兼容执行器”, “连续性表面”, or “协调回检查点” when a clearer developer-facing phrase preserves the same meaning.
+
+The Chinese public surface may therefore differ structurally from the English sentence while remaining semantically aligned with the approved positioning in `adoption/README.md`.
+
 ## Brand assets
 
 Do not duplicate or manually redraw Agnir production geometry under `website/`.
