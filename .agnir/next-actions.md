@@ -1,9 +1,9 @@
 # Agnir Next Actions
 
-Agnir `v1.0.0` stable is published and verified. Canonical brand integration, the Principal-approved launch/adoption strategy, the bilingual website source, render-safe/localized public surfaces, GitHub Pages enablement, scoped automatic deployment, transparent website branding, and external GitHub Issues feedback intake are accepted on authoritative `main`.
+Agnir `v1.0.0` stable is published and verified. Canonical brand integration, the Principal-approved launch/adoption strategy, the bilingual website source, render-safe/localized public surfaces, GitHub Pages enablement, scoped automatic deployment, transparent website/README branding, Apache-2.0 licensing, bilingual contribution guidance, and external GitHub Issues feedback intake are accepted on authoritative `main`.
 
 1. **Operate in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Patch releases must not silently redefine the stable public contract.
-2. **Close the last Wave 0 host/legal decisions.** GitHub description, Pages, homepage, and feedback intake are in place. Add the intended repository topics when host metadata authority is available. Make an explicit Principal decision on repository license before adding a license file or contribution-licensing language; do not infer a license from predecessor projects or general open-source convention.
+2. **Close the last Wave 0 host metadata item.** GitHub description, Pages, homepage, feedback intake, Apache-2.0 license, and contribution guidance are in place. Add the intended repository topics when host metadata authority is available.
 3. **Produce the canonical 30-second fresh-session demo.** Demonstrate the visible contrast between an unassisted fresh session and a fresh Executor resuming Project-owned Agnir continuity. Lead with value, not protocol vocabulary.
 4. **Recruit the first external design users.** Target Projects not controlled by Agnir maintainers; verify public understanding, one-line installation, second-session value, and retention without hidden founding-context coaching.
 5. **Collect material post-1.0 adoption evidence.** Svif is the first accepted real-project 0.2→1.0 promotion case. Use the public adoption-report issue form as an intake surface, then review material reports before accepting them as evidence. Prioritize genuine external cold-start resumes, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
@@ -73,10 +73,11 @@ Feedback — **live**:
 - structured issue forms exist for bug reports, product ideas, and adoption reports;
 - Discussions remain disabled and are not required for the current first-feedback path.
 
-License — **Principal decision required**:
+License — **accepted**:
 
-- no repository license is currently recognized;
-- do not add or infer a license without explicit Principal authorization.
+- Principal-selected repository license: **Apache License 2.0**;
+- root `LICENSE` is present and GitHub recognizes SPDX `Apache-2.0`;
+- bilingual contribution guidance is present in `CONTRIBUTING.md` and `CONTRIBUTING.zh-CN.md`.
 
 ## Adoption targets
 
@@ -93,6 +94,11 @@ Canonical strategy: `adoption/README.md`.
 
 ## Recent public-surface receipts
 
+- Apache-2.0 + transparent README PR #37 synthetic conformance: run `34091609897`, job `101646061660` — success;
+- authoritative Apache-2.0 + transparent README merge: `66784f9ca962d919761a1e2bb4fd3676434b37ef`;
+- post-merge conformance: run `34091660524`, job `101646233499` — success;
+- one-shot deterministic README/export materialization: run `34091381247`, job `101645375363` — success;
+- GitHub host license readback: Apache License 2.0 / SPDX `Apache-2.0`;
 - automatic Pages acceptance checkpoint: `0ef44f9a66b26e4ab80f83dbf347d14a41d7e5ba`;
 - PR #35 synthetic conformance: run `34085855448`, job `101629640557` — success;
 - transparent-logo/Wave 0 feedback merge: `16810a514620e8a62660948fb9477ba8106baceb`;

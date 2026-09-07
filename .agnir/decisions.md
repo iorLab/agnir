@@ -61,8 +61,8 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Brand identity is a product/public surface and **does not redefine Agnir Core/profile semantics**.
 - GitHub repository About description/topics are repository-host metadata, not canonical Project truth. Failure to mutate host metadata because an integration lacks metadata-write permission must be surfaced explicitly and must not be treated as a product/brand integration failure.
 - GitHub-hosted README and website surfaces must use an approved **render-self-contained** visual artifact at the actual rendered/deployed path. An SVG that depends on nested relative `<image>` references is not accepted for those host surfaces unless the final rendered artifact has first been materialized without those dependencies.
-- README currently uses the approved self-contained `brand/exports/png/agnir-dark-usage.png` delivery derivative because GitHub README rendering previously suppressed nested SVG dependencies.
-- Website header branding uses a different accepted presentation: `.github/workflows/pages.yml` runs the approved deterministic `brand/tools/build-production-derivatives.py` against `brand/masters/agnir-mark.svg` and `brand/masters/agnir-wordmark.svg`, producing a self-contained dark horizontal SVG with the approved particle A, white wordmark, and **transparent background**. This deterministic materialization is not a redesign and does not create a second geometry authority.
+- README variants use a theme-aware `<picture>` selecting the approved self-contained transparent `brand/exports/agnir-horizontal-dark.svg` or `brand/exports/agnir-horizontal-light.svg`. These exports are deterministically materialized from the approved production masters; no background rectangle or external nested `<image>` dependency is accepted on the rendered README surface.
+- Website header branding uses the same accepted presentation principle: `.github/workflows/pages.yml` runs the approved deterministic `brand/tools/build-production-derivatives.py` against `brand/masters/agnir-mark.svg` and `brand/masters/agnir-wordmark.svg`, producing a self-contained dark horizontal SVG with the approved particle A, white wordmark, and **transparent background**. Deterministic materialization is not a redesign and does not create a second geometry authority.
 - The background-bearing `agnir-dark-usage.png` is a usage presentation and is not the accepted inline website-header asset on a differently colored page background.
 - Localized public README and website prose should stay in the language of that surface. Language-switch navigation and exact technical identifiers, filenames, commands, protocol names, or version labels are allowed exceptions; accidental bilingual display labels are not.
 
@@ -97,7 +97,9 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Repository description, homepage URL, topics, Pages settings, and Discussions availability are repository-host metadata, not canonical Project truth.
 - The current accepted public homepage is `https://iorlab.github.io/agnir/`; host readback may omit the trailing slash while referring to the same site.
 - GitHub Issues is sufficient as the first external feedback path; Discussions is optional and may remain disabled unless a later community need justifies it.
-- Repository license selection is a Principal/legal-policy decision. An Executor must not infer a license from predecessor repositories, conventions, or neighboring projects. No license file or contribution-licensing statement may be added without explicit Principal authorization.
+- The Principal explicitly selected **Apache License 2.0** for Agnir on 2026-09-07. Root `LICENSE` is the canonical repository license surface, and GitHub host recognition must resolve to SPDX `Apache-2.0`.
+- Contributions intentionally submitted for inclusion are handled under the repository's Apache-2.0 terms unless explicitly stated otherwise; bilingual contribution guidance lives in `CONTRIBUTING.md` and `CONTRIBUTING.zh-CN.md`.
+- Apache-2.0 licensing does not authorize redesign or misuse of Agnir branding; `brand/` remains the visual/trademark-usage authority.
 
 ## Post-release branch-ref retirement policy
 
