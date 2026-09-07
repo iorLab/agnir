@@ -28,7 +28,7 @@ jobs:
           cp website/index.html _site/index.html
           cp website/zh-CN.html _site/zh-CN.html
           cp website/styles.css _site/styles.css
-          cp brand/exports/agnir-horizontal-dark.svg _site/assets/agnir-horizontal-dark.svg
+          cp brand/exports/png/agnir-dark-usage.png _site/assets/agnir-dark-usage.png
           cp brand/exports/agnir-favicon.svg _site/assets/agnir-favicon.svg
           cp brand/exports/png/agnir-social-card.png _site/assets/agnir-social-card.png
           touch _site/.nojekyll
