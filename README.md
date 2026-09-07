@@ -1,11 +1,7 @@
 # Agnir
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="brand/exports/agnir-horizontal-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="brand/exports/agnir-horizontal-light.svg">
-    <img src="brand/exports/agnir-horizontal-light.svg" alt="Agnir" width="430">
-  </picture>
+  <img src="brand/exports/png/agnir-dark-usage.png" alt="Agnir" width="430">
 </p>
 
 <p align="center"><strong>Project-owned durable continuity.</strong></p>
@@ -18,7 +14,7 @@ Agnir is a **project-owned durable continuity protocol**. It lets a Project resu
 
 ## Identity
 
-Agnir is the **Structure Layer / 结构层** of the Svif × Agnir family identity: a warm sand / mineral system built from particles, geometry, and a central anchor. The particle-built **A** expresses the same product idea as the protocol itself — durable Project truth is not one opaque memory blob, but a small set of discoverable, attributable pieces that can be recovered and reconciled safely.
+Agnir is the **Structure Layer** of the Svif × Agnir family identity: a warm sand / mineral system built from particles, geometry, and a central anchor. The particle-built **A** expresses the same product idea as the protocol itself — durable Project truth is not one opaque memory blob, but a small set of discoverable, attributable pieces that can be recovered and reconciled safely.
 
 The approved identity is now canonical on `main`. Production masters live in [`brand/masters/`](brand/masters/); delivery PNGs, app-icon and favicon surfaces live in [`brand/exports/png/`](brand/exports/png/); the locked visual authority and usage rules live in [`brand/APPROVED-VISUAL-REFERENCE.md`](brand/APPROVED-VISUAL-REFERENCE.md) and [`brand/brand-handoff.md`](brand/brand-handoff.md). The visual identity is a product surface, not a Core semantic dependency.
 
@@ -66,7 +62,7 @@ Project root
 2. **Load.** Load Current State and Next Actions from the declared selected continuity. Load Decisions and Evidence when they materially constrain the operation. Prefer durable Project truth over private conversational memory unless superseded by a newer Principal instruction or directly observed Project fact.
 3. **Work.** Perform the actual Project task outside Agnir Core. Use root `SKILL.md` for install, migration, compatibility promotion, upgrade, or repair.
 4. **Checkpoint.** At an intentional checkpoint, save-progress, finish, or repository **commit boundary**, reconcile only material continuity changes for the selected lineage. Unchanged durable truth is a no-op. Reject stale-base publication with `AGNIR_CHECKPOINT_CONFLICT` rather than overwriting newer truth.
-5. **Commit / push.** In repository context, `commit`, `提交代码`, or equivalent intent means checkpoint before commit and preferably one revision for Project + Agnir changes. `commit and push`, `提交推送`, or equivalent adds push plus destination-ref verification.
+5. **Commit / push.** In repository context, `commit` or equivalent intent means checkpoint before commit and preferably one revision for Project + Agnir changes. `commit and push` or equivalent adds push plus destination-ref verification.
 6. **Integrate lineages safely.** For Core `0.2`/`1.0` parallel continuity, source continuity is reconciliation input, not target truth. Stage without target advancement when Agnir controls the path, reconcile target continuity against the integrated Project result, then publish integrated Project + reconciled target checkpoint coherently.
 
 Root `AGENTS.md` is intentionally a locator to this section; it must not become a second copy of Project state or the Agnir procedure.
