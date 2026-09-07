@@ -40,15 +40,15 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
             "Core `1.0`",
             "repository-filesystem/1.0",
             "CORE_0_2_TO_1_0_PROMOTION.md",
-            "已有 Core/profile `0.1` 与 `0.2` Project 继续受支持",
+            "已有 Core / profile `0.1` 与 `0.2` 项目继续受支持",
         ):
             self.assertIn(marker, chinese)
 
         if VERSION == "1.0.0":
             self.assertIn("Repository stable package: `v1.0.0`", english)
             self.assertIn("Accepted release candidate: `v1.0.0-rc.1`", english)
-            self.assertIn("Repository stable package：`v1.0.0`", chinese)
-            self.assertIn("已接受 release candidate：`v1.0.0-rc.1`", chinese)
+            self.assertIn("仓库稳定包：`v1.0.0`", chinese)
+            self.assertIn("已接受的发布候选版：`v1.0.0-rc.1`", chinese)
             self.assertNotIn("Promotion candidate in development", english)
             self.assertNotIn("正在开发的 promotion candidate", chinese)
         else:
