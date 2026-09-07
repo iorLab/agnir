@@ -3,16 +3,14 @@
 Agnir `v1.0.0` stable is published and verified. Canonical brand integration, the Principal-approved launch/adoption strategy, the bilingual website source, render-safe/localized public surfaces, GitHub Pages enablement, scoped automatic deployment, transparent website/README branding, Apache-2.0 licensing, bilingual contribution guidance, and external GitHub Issues feedback intake are accepted on authoritative `main`.
 
 1. **Operate in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Patch releases must not silently redefine the stable public contract.
-2. **Close the last Wave 0 host metadata item.** GitHub description, Pages, homepage, feedback intake, Apache-2.0 license, and contribution guidance are in place. Add the intended repository topics when host metadata authority is available.
-3. **Produce the canonical 30-second fresh-session demo.** Demonstrate the visible contrast between an unassisted fresh session and a fresh Executor resuming Project-owned Agnir continuity. Lead with value, not protocol vocabulary.
-4. **Recruit the first external design users.** Target Projects not controlled by Agnir maintainers; verify public understanding, one-line installation, second-session value, and retention without hidden founding-context coaching.
-5. **Collect material post-1.0 adoption evidence.** Svif is the first accepted real-project 0.2→1.0 promotion case. Use the public adoption-report issue form as an intake surface, then review material reports before accepting them as evidence. Prioritize genuine external cold-start resumes, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
-6. **Keep the three retained evidence-anchor refs until an equally durable replacement exists.** `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0` are non-authoritative evidence anchors, not active product lines.
-7. **Retire completed temporary public-surface branches when branch-deletion authority is available.** Completed maintenance branches are not product lines; their material results must first be represented on `main` and in Evidence.
-8. **Keep brand production truth locked.** README, website, adoption/demo and social materials may consume approved brand assets or deterministic derivatives from approved masters, but must not aesthetically reinterpret the Agnir identity. Material visual changes require new Principal approval.
-9. **Run technical launch only after external proof exists.** Use the fresh-session value story first; use independent implementation, lineage/reconciliation, mount/storage relocation, and conformance as credibility layers after the user value is understood.
-10. **Shift active product execution back to Svif where appropriate.** Svif's own canonical continuity governs its ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
-11. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
+2. **Produce the canonical 30-second fresh-session demo.** Demonstrate the visible contrast between an unassisted fresh session and a fresh Executor resuming Project-owned Agnir continuity. Lead with value, not protocol vocabulary.
+3. **Recruit the first external design users.** Target Projects not controlled by Agnir maintainers; verify public understanding, one-line installation, second-session value, and retention without hidden founding-context coaching.
+4. **Collect material post-1.0 adoption evidence.** Svif is the first accepted real-project 0.2→1.0 promotion case. Use the public adoption-report issue form as an intake surface, then review material reports before accepting them as evidence. Prioritize genuine external cold-start resumes, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
+5. **Keep brand production truth locked.** README, website, adoption/demo and social materials may consume approved brand assets or deterministic derivatives from approved masters, but must not aesthetically reinterpret the Agnir identity. Material visual changes require new Principal approval.
+6. **Run technical launch only after external proof exists.** Use the fresh-session value story first; use independent implementation, lineage/reconciliation, mount/storage relocation, and conformance as credibility layers after the user value is understood.
+7. **Keep merged-head cleanup enabled.** `main` is the sole long-lived branch and GitHub `delete_branch_on_merge=true` is accepted housekeeping; do not retain completed staging branches unless a new explicit evidence need requires one.
+8. **Shift active product execution back to Svif where appropriate.** Svif's own canonical continuity governs its ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
+9. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
 
 ## GitHub Pages accepted state
 
@@ -57,7 +55,7 @@ Homepage — **set**:
 
 `https://iorlab.github.io/agnir`
 
-Topics — **still pending**:
+Topics — **set**:
 
 - `durable-continuity`
 - `project-continuity`
