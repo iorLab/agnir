@@ -24,27 +24,34 @@ The Principal-approved Agnir identity system is authoritative on `main` and is s
 - brand acceptance checkpoint: `e5305ab0474c4c8c562dbfbfaca54185b84d07f1`;
 - README/brand public-surface + first adoption evidence commit: `75dde01da2123e731a6de461fb2f3269fd6bbbbb`;
 - public-surface conformance run/job: `34077491299` / `101606358819` — success;
-- README identity: Agnir = sand/warm-mineral **Structure Layer / 结构层**, particle-built A with a central anchor;
 - canonical production masters remain under `brand/masters/`; delivery PNG/app-icon/favicon surfaces remain under `brand/exports/png/`.
 
-The later GitHub dark-theme README defect is now repaired on authoritative `main`. The defect was presentation-only: the former fixed `agnir-horizontal-lockup.png` used a dark wordmark that became visually suppressed on GitHub dark mode, leaving the particle mark to appear horizontally displaced. Both README variants now use GitHub theme-aware `<picture>` markup selecting the approved `brand/exports/agnir-horizontal-dark.svg` / `agnir-horizontal-light.svg` pair. No master geometry, wordmark path, particle field, palette, or approved visual authority changed.
+The first post-v1 README repair (PR #30) correctly diagnosed the original dark-wordmark PNG issue but its replacement was not actually GitHub-render-safe. The selected `brand/exports/agnir-horizontal-dark.svg` and `agnir-horizontal-light.svg` exports contain nested relative `<image>` references to master SVG files. GitHub README sanitization did not resolve that dependency, producing the blank logo area observed by the Principal. The same dependency would also be broken by the flattened Pages artifact because the referenced masters were not copied.
 
-Public-surface integration receipts:
+A second public-surface repair is now staged on `maintenance/readme-render-language-cleanup`:
+
+- both README variants use approved self-contained `brand/exports/png/agnir-dark-usage.png`;
+- English public prose removes accidental Chinese display text while retaining the language-switch link;
+- Simplified Chinese README prose has been localized substantially, retaining exact protocol identifiers, filenames, commands and version names only where needed;
+- both website language variants use the same render-safe approved PNG lockup;
+- the Simplified Chinese website surface is localized instead of mixing English product-copy fragments throughout;
+- `.github/workflows/pages.yml` copies the PNG lockup into the deployment artifact instead of the nested-reference SVG.
+
+No brand master geometry, wordmark path, particle field, palette, Core/profile semantics, stable tag, or release identity changes in this repair.
+
+Previous PR #30 receipts remain valid for the source/website introduction itself:
 
 - PR: `#30`;
 - final staging head: `aa9be855a4d8eca55ffc927d6fe22de2cf70b6f7`;
 - PR synthetic-merge conformance: run `34079325656` — success;
 - authoritative squash merge: `4b29fb8becc0b155a2598c09b8199342e40a9e65`;
-- authoritative post-merge conformance: run `34079406444` / repository job `101611700144` — success;
-- release publication jobs on this ordinary maintenance change: skipped as required.
+- authoritative post-merge conformance: run `34079406444` / repository job `101611700144` — success.
 
-The material result of `maintenance/readme-website-public-surface` is canonical on `main`; the temporary branch now carries no unique product truth and is retireable under ordinary housekeeping policy.
-
-GitHub repository About metadata is **partially complete** by current host readback. The description is now set to the intended Agnir description. Topics remain empty, homepage remains empty, GitHub reports `has_pages=false`, and no recognized repository license is present. These are repository-host/public-adoption surfaces, not Core or release state.
+GitHub repository About metadata is **partially complete** by current host readback. The description is set to the intended Agnir description. Topics remain empty, homepage remains empty, GitHub reports `has_pages=false`, and no recognized repository license is present. These are repository-host/public-adoption surfaces, not Core or release state.
 
 ## Public website source
 
-A minimal bilingual public website source is now canonical on `main` under `website/`.
+A minimal bilingual public website source is canonical on `main` under `website/`; the render-safe asset/localization repair described above is currently staged.
 
 - English landing page: `website/index.html`;
 - Simplified Chinese landing page: `website/zh-CN.html`;
@@ -52,9 +59,9 @@ A minimal bilingual public website source is now canonical on `main` under `webs
 - responsibility/publication boundary: `website/README.md`;
 - deployment workflow: `.github/workflows/pages.yml`.
 
-The website materializes the approved adoption strategy: it leads with **Project Continuity**, fresh-session recovery, Project-owned truth, one-line installation, and then protocol credibility. It consumes canonical approved brand exports at deploy time instead of duplicating/redrawing brand masters.
+The website materializes the approved adoption strategy: it leads with **Project Continuity**, fresh-session recovery, Project-owned truth, one-line installation, and then protocol credibility. It consumes canonical approved brand exports rather than duplicating/redrawing brand masters.
 
-The intended default host is `https://iorlab.github.io/agnir/`, but **the website is not live yet**. Current GitHub host readback reports `has_pages=false`. The repository must first enable Pages with **GitHub Actions** as the publishing source; then the manual `Deploy Agnir website` workflow must succeed and the public URL/assets must be verified. Source readiness and live host publication remain separate states.
+The intended default host is `https://iorlab.github.io/agnir/`, but **the website is not live yet**. Current GitHub host readback reports `has_pages=false`. The available GitHub connector in this session exposes repository/ref/PR/content operations but no Pages-settings mutation or workflow-dispatch action. `actions/configure-pages` cannot solve this with the ordinary `GITHUB_TOKEN`: its documented enablement mode requires a separate token with repository administration/pages write authority. Therefore the repository must still enable Pages with **GitHub Actions** as the publishing source through an authority that can mutate the Pages setting; then `Deploy Agnir website` must run and the public URL/assets must be verified. Source readiness and live host publication remain separate states.
 
 ## Post-1.0 adoption evidence
 
@@ -69,7 +76,6 @@ Key Svif receipts:
 - staging/full run: `34076031454` success;
 - PR #9 synthetic-merge checks: `34076166897` success;
 - authoritative promotion merge: `5da0eb76e38e817ba0f5111ce2b08750afa3b9c3`;
-- authoritative post-merge checks: `34076249501` success;
 - Svif post-promotion checkpoint: `6c2c33da68e88a221ba36289d895f0423d64063a`.
 
 No Agnir defect was exposed by the Svif adoption case. Previously satisfied v1 gates remain closed.
@@ -96,4 +102,4 @@ The Principal-approved post-v1 launch/adoption strategy is canonical at `adoptio
 - stable arm/tag revision: `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - stable publication workflow: `34039014354`, attempts 1 and 2 success.
 
-Agnir is now in stable maintenance + downstream adoption mode. README theme repair and bilingual website source are accepted non-semantic public-surface maintenance. The immediate host-side follow-up is Pages enablement/live verification plus remaining Wave 0 repository metadata/feedback/license work; these are not protocol/release gates.
+Agnir is now in stable maintenance + downstream adoption mode. The immediate repository change is a non-semantic public rendering/localization repair. After it is integrated and verified, the remaining host-side follow-up is Pages enablement/live verification plus the rest of Wave 0 repository metadata/feedback/license work; these are not protocol/release gates.

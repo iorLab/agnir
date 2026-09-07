@@ -26,9 +26,11 @@ Do not duplicate or manually redraw Agnir production assets under `website/`.
 
 The Pages workflow copies these canonical exports into the deployment artifact:
 
-- `brand/exports/agnir-horizontal-dark.svg`;
+- `brand/exports/png/agnir-dark-usage.png` — render-safe dark lockup used by the site header;
 - `brand/exports/agnir-favicon.svg`;
 - `brand/exports/png/agnir-social-card.png`.
+
+The site deliberately uses the raster dark-usage lockup rather than `brand/exports/agnir-horizontal-dark.svg` because that SVG contains nested relative `<image>` references to master SVGs. Those references are not portable across GitHub README sanitization or the flattened Pages artifact. The PNG is an approved delivery derivative and renders without external dependencies.
 
 If a public website needs a new visual derivative, produce and approve it through the `brand/` system first.
 
