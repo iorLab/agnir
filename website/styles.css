@@ -101,6 +101,7 @@ h3 { margin-bottom: 8px; font-size: 1.08rem; }
 .hero-line { display: block; }
 .zh-page .hero-copy h1 { font-size: clamp(3.05rem, 4.8vw, 5.05rem); }
 .zh-page .hero-line { white-space: nowrap; }
+.zh-page .hero-line + .hero-line { margin-top: 8px; }
 
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .button {
