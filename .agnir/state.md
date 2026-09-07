@@ -21,11 +21,21 @@ The Principal-approved Agnir identity system remains authoritative under `brand/
 
 Current accepted public behavior:
 
-- English README uses approved self-contained `brand/exports/png/agnir-dark-usage.png` and keeps visible product prose English apart from language navigation and exact technical identifiers;
-- Simplified Chinese README uses the same README-safe lockup and localized visible prose;
+- English README uses a theme-aware `<picture>` selecting the approved self-contained transparent `brand/exports/agnir-horizontal-dark.svg` or `brand/exports/agnir-horizontal-light.svg`, and keeps visible product prose English apart from language navigation and exact technical identifiers;
+- Simplified Chinese README uses the same theme-aware transparent lockup system and localized visible prose;
 - the website no longer uses the background-bearing `agnir-dark-usage.png` in its navigation header;
 - Pages now runs `brand/tools/build-production-derivatives.py` against the approved `brand/masters/agnir-mark.svg` and `brand/masters/agnir-wordmark.svg` to materialize a self-contained dark horizontal lockup with the approved particle A, white wordmark, and transparent background;
 - no brand master geometry, Core/profile semantics, Project/lineage identity, stable tag, or release identity changed.
+
+Apache-2.0 + README transparent-lockup acceptance receipts:
+
+- Principal authorization: `同意，按 Apache-2.0 + 透明 README logo 推进`;
+- deterministic one-shot materialization: run `34091381247`, job `101645375363` — success;
+- PR #37 synthetic-merge conformance: run `34091609897`, repository job `101646061660` — success;
+- authoritative squash merge: `66784f9ca962d919761a1e2bb4fd3676434b37ef`;
+- authoritative post-merge conformance: run `34091660524`, repository job `101646233499` — success;
+- GitHub host readback recognizes license key/SPDX `apache-2.0` / `Apache-2.0`;
+- authoritative README readback shows the theme-aware transparent self-contained light/dark SVG `<picture>` surface.
 
 Transparent-logo repair receipts:
 
@@ -61,10 +71,11 @@ Default public URL: `https://iorlab.github.io/agnir/`.
 - homepage metadata: set to `https://iorlab.github.io/agnir`;
 - feedback path: live through GitHub Issues, with structured bug, product-idea, and adoption-report forms; both website language variants link to the issue chooser;
 - topics: still empty;
-- recognized repository license: absent;
+- recognized repository license: **Apache License 2.0** (`Apache-2.0`);
+- contribution guidance: live in `CONTRIBUTING.md` and `CONTRIBUTING.zh-CN.md`;
 - Discussions: disabled; this is not currently a feedback blocker because GitHub Issues is the accepted first external feedback surface.
 
-The only material unfinished Wave 0 repository-host decisions are topic metadata and license/contribution presentation. License selection is a Principal/legal policy choice and must not be inferred by an Executor.
+The only material unfinished Wave 0 repository-host item is topic metadata. Repository licensing and contribution presentation are closed under the Principal-approved Apache-2.0 decision.
 
 ## Post-1.0 adoption evidence
 
@@ -93,4 +104,4 @@ The Principal-approved strategy is canonical at `adoption/README.md`:
 - stable arm/tag revision: `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - stable publication workflow: `34039014354`, attempts 1 and 2 success.
 
-Agnir remains in stable maintenance + downstream adoption mode. Pages, automatic deployment, transparent website branding, and external feedback intake are closed. Immediate public-adoption work is the remaining topic/license Wave 0 decisions, followed by the canonical fresh-session demo and external design-user evidence.
+Agnir remains in stable maintenance + downstream adoption mode. Pages, automatic deployment, transparent website/README branding, Apache-2.0 licensing, contribution guidance, and external feedback intake are closed. Immediate public-adoption work is the remaining topic metadata, followed by the canonical fresh-session demo and external design-user evidence.
