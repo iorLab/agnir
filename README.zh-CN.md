@@ -1,10 +1,22 @@
 # Agnir
 
+<p align="center">
+  <img src="brand/exports/png/agnir-horizontal-lockup.png" alt="Agnir" width="520">
+</p>
+
+<p align="center"><strong>Project-owned durable continuity.</strong></p>
+
 [English](README.md) | **简体中文**
 
 Agnir 是一个**由 Project 自己拥有的持久连续性协议（project-owned durable continuity protocol）**。它让 Project 在 Agent、对话、执行环境、存储实现或并行工作上下文变化时仍能安全继续。持久 continuity 属于 Project；execution surface 与 backend selector 都不是 canonical truth 的所有者。
 
 **名称。** `Agnir` 来自冰岛语 `agnir`，是 `ögn` 的主格复数，含义接近“小颗粒 / 微小片段”。Project continuity 由少量可发现的 Project truth 组成：Current State、Next Actions、Decisions 与 Evidence。
+
+## 品牌识别
+
+Agnir 是 Svif × Agnir 家族识别中的 **Structure Layer / 结构层**：以暖沙色 / 矿物色、颗粒、几何结构和中央锚点构成。由颗粒组成的 **A** 与产品本身表达同一件事——durable Project truth 不是一个不可解释的大型“记忆块”，而是一组可发现、可归属、可恢复并可安全 reconciliation 的 Project truth。
+
+已经批准的 Agnir identity system 现已成为 `main` 上的 canonical 品牌资产。生产级 vector master 位于 [`brand/masters/`](brand/masters/)，PNG、app icon 与 favicon delivery surface 位于 [`brand/exports/png/`](brand/exports/png/)，锁定的视觉 authority 与使用规则分别见 [`brand/APPROVED-VISUAL-REFERENCE.md`](brand/APPROVED-VISUAL-REFERENCE.md) 和 [`brand/brand-handoff.md`](brand/brand-handoff.md)。品牌视觉是产品表面的一部分，但不是 Agnir Core 的语义依赖。
 
 ## 从这里开始
 

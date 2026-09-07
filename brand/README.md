@@ -1,6 +1,6 @@
 # Agnir brand system
 
-This directory contains the branch-approved Agnir identity system derived from the Principal-approved Today 10:42 AM visual reference.
+This directory contains the **canonical Agnir identity system** derived from the Principal-approved Today 10:42 AM visual reference and integrated into authoritative `main` through PR #11.
 
 ## Directory responsibilities
 
@@ -36,8 +36,16 @@ Agnir v0.3 was accepted in Principal-facing clean review and promoted to these p
 
 ## QA
 
-`qa/FINAL-QA.md` defines the symmetric 13-item final QA scope shared with Svif. Large raster QA sheets and delivery bundles are hash-recorded until they can be preserved through a byte-safe repository path.
+`qa/FINAL-QA.md` defines the symmetric 13-item final QA scope shared with Svif. The complete PNG delivery package and byte-exact approved reference boards are preserved under `brand/` and hash-verified.
 
-## Integration status
+## Canonical integration status
 
-Everything in this directory is branch-local until reconciled with the latest authoritative `main` and integrated coherently. The locked visual authority must not be regenerated or aesthetically reinterpreted during integration.
+The identity system is now authoritative Project content on `main`.
+
+- PR #11: merged;
+- final integration branch head: `3ce946741835498d91aad9ab1eba0cfad6188e30`;
+- authoritative squash merge: `37e08498448797de56dc7ab03823bdc2d430a38f`;
+- post-merge conformance: run `34042053904` / repository job `101510482659` — success;
+- stable `v1.0.0` and accepted `v1.0.0-rc.1` release tags were not changed.
+
+The locked visual authority must not be regenerated, aesthetically reinterpreted, or treated as permission to redesign the identity. Future derivatives must remain faithful to the approved masters and applicable reference board.

@@ -1,6 +1,6 @@
 # Approved visual reference — 2026-09-02
 
-Status: **Principal-approved visual lock on `brand/identity-system`; not canonical Project truth until reconciled and merged to authoritative `main`.**
+Status: **Principal-approved visual lock; canonical on authoritative `main` after PR #11 integration.**
 
 The Principal explicitly ended further visual exploration and selected the **Today, 10:42 AM** brand asset version as the reference to preserve.
 
@@ -35,3 +35,5 @@ The deterministic `v0.1` SVG reconstruction, its small-size variants/specificati
 ## Future production rule
 
 Any future vectorization, export, favicon/app-icon generation, README integration, or other production derivative must be a **faithful extraction/reconstruction of this approved visual reference**, not a redesign. Material visual deviation requires new Principal approval.
+
+Canonical integration receipt: PR #11, authoritative squash merge `37e08498448797de56dc7ab03823bdc2d430a38f`, post-merge conformance run `34042053904` success.

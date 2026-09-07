@@ -1,10 +1,22 @@
 # Agnir
 
+<p align="center">
+  <img src="brand/exports/png/agnir-horizontal-lockup.png" alt="Agnir" width="520">
+</p>
+
+<p align="center"><strong>Project-owned durable continuity.</strong></p>
+
 **English** | [简体中文](README.zh-CN.md)
 
 Agnir is a **project-owned durable continuity protocol**. It lets a Project resume safely when Agents, conversations, execution environments, storage implementations, or parallel work contexts change. The Project owns durable continuity; execution surfaces and backend selectors do not.
 
 **Name.** `Agnir` is taken from Icelandic `agnir`, the nominative plural of `ögn`, meaning a tiny bit or particle. Durable continuity is assembled from small discoverable pieces of Project truth: Current State, Next Actions, Decisions, and Evidence.
+
+## Identity
+
+Agnir is the **Structure Layer / 结构层** of the Svif × Agnir family identity: a warm sand / mineral system built from particles, geometry, and a central anchor. The particle-built **A** expresses the same product idea as the protocol itself — durable Project truth is not one opaque memory blob, but a small set of discoverable, attributable pieces that can be recovered and reconciled safely.
+
+The approved identity is now canonical on `main`. Production masters live in [`brand/masters/`](brand/masters/); delivery PNGs, app-icon and favicon surfaces live in [`brand/exports/png/`](brand/exports/png/); the locked visual authority and usage rules live in [`brand/APPROVED-VISUAL-REFERENCE.md`](brand/APPROVED-VISUAL-REFERENCE.md) and [`brand/brand-handoff.md`](brand/brand-handoff.md). The visual identity is a product surface, not a Core semantic dependency.
 
 ## Start Here
 
