@@ -1,6 +1,15 @@
 name: Deploy Agnir website
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "website/**"
+      - "brand/exports/png/agnir-dark-usage.png"
+      - "brand/exports/agnir-favicon.svg"
+      - "brand/exports/png/agnir-social-card.png"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:

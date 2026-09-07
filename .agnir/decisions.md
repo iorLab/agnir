@@ -82,9 +82,11 @@ This file records active durable decisions required to operate and evolve Agnir 
 - The website must materialize approved `adoption/` positioning rather than invent a competing product category or protocol story.
 - The website must consume approved `brand/` exports and must not duplicate, redraw, regenerate, or become a second visual authority. The deployment workflow copies canonical exports into the Pages artifact.
 - Website brand assets copied into a flattened deployment artifact must be self-contained at the copied path; nested relative source dependencies must not be assumed to survive artifact construction.
-- The intended first host is GitHub Pages at `https://iorlab.github.io/agnir/`; this is a repository-host surface, not canonical Project truth.
-- Website source readiness and live host publication are separate states. A URL must not be called live until host configuration, deployment, and public readback succeed.
-- `.github/workflows/pages.yml` remains manual-dispatch until Pages is enabled and the first live deployment is verified. Automatic `main` deployment may be enabled later as ordinary public-surface maintenance after a successful live baseline exists.
+- The default first host is GitHub Pages at `https://iorlab.github.io/agnir/`; this is a repository-host surface, not canonical Project truth.
+- Website source readiness, Pages enablement, deployment success, and public presentation verification are distinct observations.
+- The first manual Pages deployment succeeded in workflow run `34083599723`, with both build and deploy successful and repository host readback reporting `has_pages=true`.
+- After that live baseline, `.github/workflows/pages.yml` may automatically deploy authoritative `main` pushes **only when public-site inputs change**: `website/**`, the exact canonical brand exports consumed by the deployment artifact, or the Pages workflow itself. Unrelated Core, conformance, release, or continuity-only commits must not trigger website publication.
+- `workflow_dispatch` remains available as a manual recovery/republication path after automatic deployment is enabled.
 - A custom domain is not implied or authorized by the existence of website source; custom-domain selection is a separate repository-host/brand decision.
 
 ## Post-release branch-ref retirement policy
