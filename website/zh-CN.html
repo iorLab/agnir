@@ -15,6 +15,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/agnir-favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="alternate" hreflang="en" href="https://iorlab.github.io/agnir/">
+  <link rel="alternate" hreflang="zh-CN" href="https://iorlab.github.io/agnir/zh-CN.html">
+  <link rel="alternate" hreflang="x-default" href="https://iorlab.github.io/agnir/">
 
   <style>
     .back-to-top {
@@ -54,7 +57,7 @@
       <a href="#why">为什么用</a>
       <a href="https://github.com/iorLab/agnir">GitHub</a>
       <a href="https://github.com/iorLab/agnir/issues/new/choose">反馈</a>
-      <a class="lang" href="index.html" lang="en">English</a>
+      <a class="lang" href="index.html" lang="en" data-language-choice="en">English</a>
     </nav>
   </header>
 
@@ -202,7 +205,7 @@
       <a href="https://github.com/iorLab/agnir">GitHub</a>
       <a href="https://github.com/iorLab/agnir/issues/new/choose">反馈</a>
       <a href="https://github.com/iorLab/agnir/blob/main/spec/AGNIR_CORE_1_0.md">Core 1.0</a>
-      <a href="index.html" lang="en">English</a>
+      <a href="index.html" lang="en" data-language-choice="en">English</a>
     </div>
   </footer>
 
@@ -238,6 +241,14 @@
           button.setAttribute('aria-label', button.dataset.copyLabel);
           button.title = button.dataset.copyLabel;
         }, 1600);
+      });
+    });
+
+    document.querySelectorAll('[data-language-choice]').forEach((link) => {
+      link.addEventListener('click', () => {
+        try {
+          window.localStorage.setItem('agnir-language', link.dataset.languageChoice);
+        } catch {}
       });
     });
 
