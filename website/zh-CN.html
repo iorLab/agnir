@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#15110d">
-  <title>Agnir — 由项目自己拥有的持久连续性</title>
-  <meta name="description" content="Agnir 让项目自己拥有持久连续性，使新的智能体或执行上下文无需依赖前序私有聊天历史即可安全继续。">
+  <title>Agnir — 让项目拥有自己的连续性</title>
+  <meta name="description" content="Agnir 把当前状态、下一步、决策和证据留在项目里，让新的 Agent 或执行环境无需依赖上一段私有聊天记录，也能安全接着做。">
   <meta property="og:title" content="Agnir — 项目连续性">
-  <meta property="og:description" content="智能体会忘记，项目不应该。">
+  <meta property="og:description" content="Agent 会忘。项目不该忘。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iorlab.github.io/agnir/zh-CN.html">
   <meta property="og:image" content="https://iorlab.github.io/agnir/assets/agnir-social-card.png">
@@ -23,7 +23,7 @@
     </a>
     <nav aria-label="主导航">
       <a href="#why">为什么</a>
-      <a href="#how">如何工作</a>
+      <a href="#how">怎么工作</a>
       <a href="#install">安装</a>
       <a href="https://github.com/iorLab/agnir">GitHub</a>
       <a href="https://github.com/iorLab/agnir/issues/new/choose">反馈</a>
@@ -35,92 +35,92 @@
     <section class="hero shell">
       <div class="hero-copy">
         <p class="eyebrow">项目连续性</p>
-        <h1>智能体会忘记。<br>项目不应该。</h1>
-        <p class="lede">Agnir 让项目自己拥有持久连续性：当前状态、后续行动、决策与证据，由新的兼容执行器发现并继续。</p>
+        <h1>Agent 会忘。<br>项目不该忘。</h1>
+        <p class="lede">Agnir 把真正需要延续的项目事实留在项目里：当前状态、下一步、决策和证据。换一个新的 Agent 或执行环境，也能发现这些信息并继续。</p>
         <div class="actions">
           <a class="button primary" href="#install">安装 Agnir</a>
           <a class="button secondary" href="https://github.com/iorLab/agnir">在 GitHub 查看</a>
         </div>
-        <p class="principle">项目会持续存在；执行器来来去去。</p>
+        <p class="principle">项目会一直在；Agent 可以换。</p>
       </div>
 
-      <div class="continuity-card" aria-label="Agnir 连续性模型">
-        <div class="card-topline"><span>Agnir 连续性</span><span>v1.0.0 稳定版</span></div>
-        <div class="truth-row"><span class="truth-key">状态</span><span>API 实现已完成</span></div>
-        <div class="truth-row"><span class="truth-key">后续</span><span>补充失败路径集成测试</span></div>
-        <div class="truth-row"><span class="truth-key">决策</span><span>保持公开 API 兼容性</span></div>
-        <div class="truth-row"><span class="truth-key">证据</span><span>已验证修订与测试回执</span></div>
+      <div class="continuity-card" aria-label="Agnir 项目连续性模型">
+        <div class="card-topline"><span>Agnir 项目连续性</span><span>v1.0.0 稳定版</span></div>
+        <div class="truth-row"><span class="truth-key">状态</span><span>API 实现完成</span></div>
+        <div class="truth-row"><span class="truth-key">下一步</span><span>补充失败路径集成测试</span></div>
+        <div class="truth-row"><span class="truth-key">决策</span><span>保持公开 API 兼容</span></div>
+        <div class="truth-row"><span class="truth-key">证据</span><span>已验证的版本与测试回执</span></div>
         <div class="anchor-dot" aria-hidden="true"></div>
       </div>
     </section>
 
     <section id="why" class="section shell">
       <div class="section-heading">
-        <p class="eyebrow">30 秒价值故事</p>
-        <h2>新会话，同一个项目连续性。</h2>
-        <p>没有持久的项目事实时，新会话必须重新推断上下文；有了 Agnir，项目自己携带真正需要延续的内容。</p>
+        <p class="eyebrow">30 秒看懂价值</p>
+        <h2>新会话，继续同一个项目。</h2>
+        <p>没有持久的项目事实，新会话只能重新猜上下文；有了 Agnir，真正需要延续的信息会跟着项目走。</p>
       </div>
       <div class="demo-grid">
         <article class="terminal muted">
-          <div class="terminal-label">新会话 — 没有 Agnir</div>
+          <div class="terminal-label">新会话 · 没有 Agnir</div>
           <p><span class="prompt">你 ›</span> 继续。</p>
-          <p><span class="agent">智能体 ›</span> 我们之前做到哪里了？</p>
+          <p><span class="agent">Agent ›</span> 我们之前做到哪了？</p>
         </article>
         <article class="terminal live">
-          <div class="terminal-label">新会话 — 使用 Agnir</div>
+          <div class="terminal-label">新会话 · 使用 Agnir</div>
           <p><span class="prompt">你 ›</span> 继续。</p>
-          <p><span class="agent">智能体 ›</span> 已加载 Agnir。下一步是集成测试。继续执行。</p>
+          <p><span class="agent">Agent ›</span> 已加载 Agnir。下一步是补集成测试，我继续。</p>
         </article>
       </div>
     </section>
 
     <section class="section shell">
       <div class="section-heading narrow">
-        <p class="eyebrow">由项目自己拥有的事实</p>
-        <h2>不是另一个不可解释的记忆黑箱。</h2>
-        <p>Agnir 保存一组很小、可发现的连续性表面。它属于项目，而不是某个聊天、模型、IDE 或存储实现。</p>
+        <p class="eyebrow">项目自己保存的事实</p>
+        <h2>不是又一个记忆黑箱。</h2>
+        <p>Agnir 只保存少量、可发现、需要长期延续的项目事实。它们属于项目，不属于某次聊天、某个模型、某个 IDE 或某种存储方案。</p>
       </div>
       <div class="feature-grid">
-        <article><span>01</span><h3>当前状态</h3><p>现在有哪些持久事实。</p></article>
-        <article><span>02</span><h3>后续行动</h3><p>还剩什么工作，以及先后顺序。</p></article>
-        <article><span>03</span><h3>决策</h3><p>未来执行器必须保留的约束与选择。</p></article>
-        <article><span>04</span><h3>证据</h3><p>支持恢复、审计、迁移与协调的回执。</p></article>
+        <article><span>01</span><h3>当前状态</h3><p>现在已经确定了什么。</p></article>
+        <article><span>02</span><h3>下一步</h3><p>接下来做什么，按什么顺序。</p></article>
+        <article><span>03</span><h3>决策</h3><p>以后继续开发时不能丢掉的约束和选择。</p></article>
+        <article><span>04</span><h3>证据</h3><p>支持恢复、审查、迁移和对齐的可验证记录。</p></article>
       </div>
     </section>
 
     <section id="how" class="section shell split">
       <div class="section-heading">
-        <p class="eyebrow">如何工作</p>
-        <h2>发现。加载。工作。检查点。</h2>
+        <p class="eyebrow">怎么工作</p>
+        <h2>发现 → 加载 → 工作 → Checkpoint</h2>
       </div>
       <ol class="steps">
-        <li><strong>发现</strong><span>新的执行器从已授权项目开始，找到 Agnir 发现记录。</span></li>
-        <li><strong>加载</strong><span>解析已选择的连续性，并加载当前任务真正需要的项目事实。</span></li>
-        <li><strong>工作</strong><span>执行器在 Agnir Core 之外完成真正的项目工作。</span></li>
-        <li><strong>检查点</strong><span>把实质变化协调回一个一致、持久、由项目自己拥有的检查点。</span></li>
+        <li><strong>发现</strong><span>新的 Agent 从当前项目出发，找到 Agnir 的发现入口。</span></li>
+        <li><strong>加载</strong><span>读取当前连续性，以及这次任务真正需要的状态、下一步、决策和证据。</span></li>
+        <li><strong>工作</strong><span>Agent 正常完成项目工作；Agnir 不接管你的开发流程。</span></li>
+        <li><strong>Checkpoint</strong><span>有实质变化时，把新的项目事实整理并写回成一致、可恢复的 Checkpoint。</span></li>
       </ol>
     </section>
 
     <section class="section shell proof">
       <div class="proof-copy">
-        <p class="eyebrow">为可迁移而设计</p>
-        <h2>更换执行器，不要更换项目。</h2>
-        <p>Agnir Core 对 Git、GitHub、文件系统、ChatGPT、具体智能体、Skill 与存储引擎保持中立。这些属于围绕连续性契约构建的 profile、适配器或分发层职责。</p>
+        <p class="eyebrow">为跨工具而设计</p>
+        <h2>换 Agent，不换项目。</h2>
+        <p>Agnir Core 不绑定 Git、GitHub、文件系统、ChatGPT、某个具体 Agent、Skill 或存储引擎。它们属于围绕项目连续性构建的 profile、适配器或分发层。</p>
       </div>
       <div class="proof-stats" aria-label="Agnir 发布证明">
         <div><strong>v1.0.0</strong><span>最新稳定版</span></div>
-        <div><strong>PASS</strong><span>独立实现门槛通过</span></div>
+        <div><strong>PASS</strong><span>独立实现验证通过</span></div>
         <div><strong>Svif</strong><span>首个已记录的下游采用案例</span></div>
       </div>
     </section>
 
     <section id="install" class="section shell install">
-      <p class="eyebrow">从这里开始</p>
-      <h2>只把一个意图交给智能体。</h2>
-      <p>你不需要在提示词里携带 Agnir 的实现清单。</p>
+      <p class="eyebrow">开始使用</p>
+      <h2>给 Agent 一句话就够了。</h2>
+      <p>不用把 Agnir 的实现步骤塞进 prompt。</p>
       <pre><code>为这个项目安装并初始化 Agnir：https://github.com/iorLab/agnir</code></pre>
       <div class="actions">
-        <a class="button primary" href="https://github.com/iorLab/agnir/blob/main/README.zh-CN.md#从这里开始">安装说明</a>
+        <a class="button primary" href="https://github.com/iorLab/agnir/blob/main/README.zh-CN.md#从这里开始">安装指南</a>
         <a class="button secondary" href="https://github.com/iorLab/agnir/blob/main/adoption/README.md">发布与采用策略</a>
       </div>
     </section>
@@ -129,7 +129,7 @@
   <footer class="site-footer shell">
     <div>
       <strong>Agnir</strong>
-      <span>由项目自己拥有的持久连续性。</span>
+      <span>让连续性留在项目里。</span>
     </div>
     <div class="footer-links">
       <a href="https://github.com/iorLab/agnir">GitHub</a>
