@@ -1,0 +1,48 @@
+name: Temporary Chinese install polish
+
+on:
+  push:
+    branches:
+      - public/trim-install-cta
+    paths:
+      - ".github/workflows/tmp-zh-install-polish.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: public/trim-install-cta
+
+      - name: Apply approved Chinese install copy
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          page = Path("website/zh-CN.html")
+          text = page.read_text(encoding="utf-8")
+          old = '''      <div class="actions install-actions">
+                <a class="button secondary" href="https://github.com/iorLab/agnir">在 GitHub 查看</a>
+              </div>
+              <p class="microcopy">先装上。等你下次打开新会话，再说一句“继续”，区别会立刻出现。</p>'''
+          new = '''      <p class="microcopy">先装上，打开新会话，说一句“继续”，区别会立刻出现。</p>'''
+          if old not in text:
+              raise SystemExit("expected Chinese install block not found")
+          page.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          workflow = Path(".github/workflows/tmp-zh-install-polish.yml")
+          workflow.unlink()
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "website: trim Chinese install section"
+          git push origin HEAD:public/trim-install-cta
