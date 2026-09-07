@@ -1,0 +1,67 @@
+name: One-shot transparent README materialization
+
+on:
+  push:
+    branches:
+      - maintenance/apache2-readme-transparent
+    paths:
+      - ".github/workflows/one-shot-readme-transparent.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/apache2-readme-transparent
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Materialize transparent self-contained lockups and patch READMEs
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          python brand/tools/build-production-derivatives.py --repo . --out "${tmp}"
+          cp "${tmp}/agnir-horizontal-dark.svg" brand/exports/agnir-horizontal-dark.svg
+          cp "${tmp}/agnir-horizontal-light.svg" brand/exports/agnir-horizontal-light.svg
+
+          python - <<'PY'
+          from pathlib import Path
+
+          old = '''<p align="center">\n  <img src="brand/exports/png/agnir-dark-usage.png" alt="Agnir" width="430">\n</p>'''
+          new = '''<p align="center">\n  <picture>\n    <source media="(prefers-color-scheme: dark)" srcset="brand/exports/agnir-horizontal-dark.svg">\n    <source media="(prefers-color-scheme: light)" srcset="brand/exports/agnir-horizontal-light.svg">\n    <img src="brand/exports/agnir-horizontal-light.svg" alt="Agnir" width="430">\n  </picture>\n</p>'''
+
+          for name in ("README.md", "README.zh-CN.md"):
+              path = Path(name)
+              text = path.read_text(encoding="utf-8")
+              if old not in text:
+                  raise SystemExit(f"expected README lockup block not found in {name}")
+              path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          exports = Path("brand/exports/README.md")
+          text = exports.read_text(encoding="utf-8")
+          old_note = "These SVGs reference approved masters by relative path so geometry is not forked into a second authority. Keep the `brand/exports/` + `brand/masters/` package relationship intact."
+          new_note = "These horizontal SVG exports are deterministically materialized from the approved masters and are self-contained with transparent backgrounds. Geometry remains authoritative in `brand/masters/`; the exports are render-safe delivery derivatives for README, website, and other public surfaces."
+          if old_note in text:
+              text = text.replace(old_note, new_note, 1)
+          exports.write_text(text, encoding="utf-8")
+          PY
+
+          rm .github/workflows/one-shot-readme-transparent.yml
+
+      - name: Commit materialized public-surface repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md README.zh-CN.md brand/exports/README.md brand/exports/agnir-horizontal-dark.svg brand/exports/agnir-horizontal-light.svg .github/workflows/one-shot-readme-transparent.yml
+          git commit -m "public: use transparent theme-aware README lockup"
+          git push origin HEAD:maintenance/apache2-readme-transparent
