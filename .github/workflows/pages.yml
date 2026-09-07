@@ -6,8 +6,9 @@ on:
       - main
     paths:
       - "website/**"
-      - "brand/exports/png/agnir-dark-usage.png"
-      - "brand/exports/agnir-favicon.svg"
+      - "brand/masters/agnir-mark.svg"
+      - "brand/masters/agnir-wordmark.svg"
+      - "brand/tools/build-production-derivatives.py"
       - "brand/exports/png/agnir-social-card.png"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -37,9 +38,9 @@ jobs:
           cp website/index.html _site/index.html
           cp website/zh-CN.html _site/zh-CN.html
           cp website/styles.css _site/styles.css
-          cp brand/exports/png/agnir-dark-usage.png _site/assets/agnir-dark-usage.png
-          cp brand/exports/agnir-favicon.svg _site/assets/agnir-favicon.svg
+          python brand/tools/build-production-derivatives.py --repo . --out _site/assets
           cp brand/exports/png/agnir-social-card.png _site/assets/agnir-social-card.png
+          rm -f _site/assets/agnir-favicon-32-source.svg _site/assets/agnir-favicon-16-source.svg
           touch _site/.nojekyll
 
       - name: Upload GitHub Pages artifact
