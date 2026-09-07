@@ -15,17 +15,17 @@ GitHub Actions workflow run `34083599723` completed successfully on `main` revis
 - deploy job `101623390599`: `success`;
 - repository host readback after deployment: `has_pages=true`.
 
-The intended public host remains:
+The default public host is:
 
 `https://iorlab.github.io/agnir/`
 
-The connected GitHub evidence establishes that Pages is enabled and the Pages artifact deployed successfully. Public browser readback is a separate host observation and should continue to be checked when presentation changes materially.
+The connected GitHub evidence establishes that Pages is enabled and the Pages artifact deployed successfully. Public browser readback remains a distinct presentation observation and should be repeated when visible site content changes materially.
 
-## Automatic deployment policy
+## Accepted automatic deployment policy
 
 After the successful first manual publication, the Principal approved promotion from manual-only publication to scoped automatic publication.
 
-Candidate workflow behavior:
+Accepted workflow behavior:
 
 - automatically run on `push` to authoritative `main` only when one of these public-site inputs changes:
   - `website/**`;
@@ -34,19 +34,25 @@ Candidate workflow behavior:
   - `brand/exports/png/agnir-social-card.png`;
   - `.github/workflows/pages.yml`;
 - retain `workflow_dispatch` as a manual recovery/republication path;
-- do not redeploy for unrelated Core, conformance, release, or continuity-only commits.
+- do not intentionally redeploy for unrelated Core, conformance, release, or continuity-only commits.
 
 This is a repository-host/public-adoption change only. It does not change Core/profile semantics, Project identity, logical lineage identity, stable release identity, or approved brand geometry.
 
-## Acceptance gate
+## Acceptance receipts
 
-Automatic publication is accepted only after:
+All acceptance conditions are satisfied:
 
-1. the candidate is current with authoritative `main`;
-2. synthetic-merge Agnir conformance succeeds;
-3. the candidate is integrated coherently into `main`;
-4. authoritative post-merge Agnir conformance succeeds;
-5. the Pages workflow is observed to trigger automatically from the authoritative `main` push caused by the workflow change itself;
-6. that automatic Pages run completes successfully.
+1. candidate branch `maintenance/pages-auto-deploy` was current with authoritative `main` before integration (`behind_by=0`);
+2. PR #33 synthetic-merge Agnir conformance run `34084048316`, repository job `101624594459` — success;
+3. PR #33 was squash-merged coherently to authoritative `main` as `b781782c2c2b97f70a66e52f810d7ad18fb0395e`;
+4. authoritative post-merge Agnir conformance run `34084087070`, repository job `101624702082` — success;
+5. the same authoritative `main` push automatically triggered `Deploy Agnir website` run `34084087062` with event `push`;
+6. automatic build job `101624702365` and deploy job `101624730737` both completed successfully.
 
-Until all six conditions hold, the manual live baseline remains valid but automatic deployment is only staged.
+Therefore scoped automatic GitHub Pages publication is **accepted**.
+
+## Follow-up boundary
+
+A continuity-only acceptance checkpoint should not match the Pages path filter. If that later checkpoint produces no Pages run while conformance succeeds, that is additional evidence that unrelated continuity maintenance does not redeploy the public website.
+
+Remaining Wave 0 work is repository metadata/license/feedback hygiene and public adoption material, not Pages enablement or deployment automation.
