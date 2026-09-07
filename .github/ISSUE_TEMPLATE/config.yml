@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Agnir documentation
+    url: https://github.com/iorLab/agnir#start-here
+    about: Start with the canonical install and usage documentation.
+  - name: Agnir public website
+    url: https://iorlab.github.io/agnir/
+    about: Read the Project Continuity overview and installation entry point.
