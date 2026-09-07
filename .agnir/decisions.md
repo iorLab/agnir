@@ -43,32 +43,23 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Local locator escape without an authorized external Locator Chain is `AGNIR_DISCOVERY_UNRESOLVABLE`; distinguishable denied external authorization is `AGNIR_DISCOVERY_UNAUTHORIZED`.
 - State/Next Actions/non-null Decisions resolve to regular files; non-null Evidence resolves to a directory; baseline Evidence discovery exposes immediate regular-file children only.
 
-## Independent implementation and RC acceptance
-
-- The v1 independent-implementation gate is satisfied by issue #26, final verdict `PASS`.
-- Core/profile `1.0` promotion was accepted on authoritative main through issue #27 / PR #28.
-- Immutable `v1.0.0-rc.1` at `092945289f1a0a9803e4fe0583104aa380ceaadc` is accepted release evidence.
-- RC workflow `34026167762` succeeded both on initial publication and a fresh immutable-source attempt; RC acceptance checkpoint is `afc07d062b957e8dbfe3f859834c787e64aa52be`.
-- The RC tag must never be moved, retagged, or rewritten during stable publication.
-
-## Stable v1.0.0 publication policy
-
-- `release/v1.0.0` is a temporary staging/evidence lineage with logical identity `urn:agnir:lineage:v1.0.0` bound separately to selector `refs/heads/release/v1.0.0`.
-- A green staging branch is not authoritative stable truth. Its product/package changes must be reconciled into `urn:agnir:lineage:authoritative` on `refs/heads/main`.
-- Stable publication is **main-only** and remains dormant until authoritative exact-source conformance passes.
-- The only stable publication arm message is `release: publish v1.0.0 stable` on `refs/heads/main`.
-- Stable publication must create/verify immutable tag `v1.0.0` at that exact authoritative arm revision, create/verify a non-draft non-prerelease GitHub Release, verify `releases/latest == v1.0.0`, and verify accepted RC immutability.
-- Stable publication does not authorize unrelated feature work or semantic redesign.
-
 ## Stable v1.0.0 publication acceptance
 
 - Stable `v1.0.0` is accepted as published at exact authoritative arm/tag revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`.
 - GitHub Release id `383612171` is the accepted non-draft, non-prerelease stable Release; `releases/latest` resolves to `v1.0.0`.
 - Publication workflow `34039014354` succeeded on attempt 1 and on a fresh immutable-source attempt 2.
-- Attempt 1 repository/publication jobs were `101502237380` / `101502271312`; fresh attempt 2 jobs were `101502430280` / `101502473422`.
 - Accepted RC `v1.0.0-rc.1` remains exactly `092945289f1a0a9803e4fe0583104aa380ceaadc` and is immutable release evidence.
-- Issue #29 is closed completed. The v1.0.0 release gate is closed; ordinary stable maintenance now applies.
+- The v1.0.0 release gate is closed; ordinary stable maintenance now applies.
 - Post-release metadata checkpoints on `main` may advance beyond the immutable `v1.0.0` tag without changing what source was released. Release identity is the tag revision, not the later continuity receipt.
+
+## Brand identity and public presentation
+
+- The Principal-approved Agnir visual identity is canonical Project content on `main` after PR #11.
+- Agnir's locked direction is sand/warm-mineral **Structure Layer / 结构层**, with a particle-built A and central anchor. The approved reference/master assets are the visual authority; downstream derivatives are not permission to redesign them.
+- Public README variants should surface the canonical Agnir lockup and explain the identity in terms consistent with the approved brand system and the product concept.
+- Canonical production geometry remains under `brand/masters/`; public delivery assets remain under `brand/exports/`; approved visual authority remains documented under `brand/APPROVED-VISUAL-REFERENCE.md` and `brand/brand-handoff.md`.
+- Brand identity is a product/public surface and **does not redefine Agnir Core/profile semantics**.
+- GitHub repository About description/topics are repository-host metadata, not canonical Project truth. Failure to mutate host metadata because an integration lacks metadata-write permission must be surfaced explicitly and must not be treated as a product/brand integration failure.
 
 ## Post-release branch-ref retirement policy
 
@@ -77,7 +68,15 @@ This file records active durable decisions required to operate and evolve Agnir 
 - A diverged evidence-only ref is retained by default when deleting it would remove the clearest durable reachability anchor for an accepted external or release checkpoint. It may be retired only after an equally durable replacement exists.
 - Branch retirement must never move or delete a published release tag.
 - Safe retirement may rely on merged PR history, authoritative ancestry, immutable release tags, and canonical `.agnir/evidence/` receipts to establish that the branch ref itself is no longer required.
-- The first post-v1 cleanup retired 17 completed temporary refs while deliberately retaining `brand/identity-system`, `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0` for active/evidence reasons.
+- The completed `brand/identity-system` branch was retired after PR #11, canonical brand acceptance, README publication, exact tag verification, and a dedicated successful retirement workflow.
+- The three retained evidence-only refs are currently `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0`.
+
+## Post-1.0 adoption evidence policy
+
+- Successful downstream adoption should be recorded as evidence when it materially demonstrates compatibility/promotion behavior beyond the release test matrix.
+- A downstream adoption case does not reopen satisfied v1 gates unless it exposes a real product/conformance defect.
+- Svif's explicit Project-owned Agnir `0.2` → `1.0` promotion is accepted as the first recorded real-project post-v1 adoption case.
+- That Svif case preserved Project identity, logical lineage, selector, memory locators, historical adapter compatibility, Svif product version, brand assets, and the immutable Preview.1 distribution boundary; no Agnir defect was exposed.
 
 ## Release and repository governance
 

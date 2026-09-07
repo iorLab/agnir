@@ -1,39 +1,48 @@
 # Agnir Next Actions
 
-Agnir `v1.0.0` stable is published and verified. The approved brand identity system has now been integrated into authoritative `main` and verified by post-merge conformance.
+Agnir `v1.0.0` stable is published and verified. Canonical brand integration, public README branding, integrated-branch retirement, and the first post-v1 real-project adoption evidence are complete.
 
-1. **Operate in stable-maintenance mode.** `v1.0.0` remains the current latest stable distribution. Patch releases must preserve the stable Core/profile 1.0 public contract unless a deliberate new compatibility line is introduced.
-2. **Preserve multi-version support.** Keep historical Core/profile `0.1` and `0.2` compatibility/migration surfaces working and tested. Do not silently reinterpret or relabel them as `1.0`.
-3. **Treat `0.2` -> `1.0` as an explicit Project-owned promotion.** Preserve authorization, staging, stale-source rejection, identity/lineage preservation, and idempotence semantics.
-4. **Preserve retained evidence-anchor refs until an equally durable replacement exists.** `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0` are non-authoritative evidence anchors, not active product lines.
-5. **Retire `brand/identity-system` when convenient after this checkpoint is verified.** PR #11 is merged and the material brand result is canonical on `main`; the branch is no longer an active product line.
-6. **Collect post-1.0 adoption evidence without reopening satisfied gates by default.** Reopen a release/compatibility gate only if new evidence exposes a real defect.
-7. **Keep cross-project follow-up scoped correctly.** Svif may consume Agnir 1.0 through its Continuity Provider integration, but Svif compatibility/binding updates belong to Svif's own canonical continuity and must not be smuggled into Agnir maintenance.
-8. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
+1. **Operate in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Patch releases must not silently redefine the stable public contract.
+2. **Complete the GitHub About administrative surface.** Repository metadata is currently still `description=null` / `topics=[]` because the available GitHub Actions token has metadata read-only permission. Use a repository-admin UI/API credential to set the intended description and topics; this is host metadata only and does not alter Project truth.
+3. **Continue collecting post-1.0 adoption evidence.** Svif is the first accepted real-project 0.2→1.0 promotion case. Add further adoption evidence only when it materially expands confidence; do not reopen satisfied release gates by default.
+4. **Keep the three retained evidence-anchor refs until an equally durable replacement exists.** `release/v1.0.0-rc.1`, `release/v1.0.0`, and `validation/mount-boundary-v0.2.0` are non-authoritative evidence anchors, not active product lines.
+5. **Keep brand production truth locked.** README/public derivatives may use the canonical masters, but must not aesthetically reinterpret the approved Agnir identity. Material visual changes require new Principal approval.
+6. **Shift active product execution back to Svif where appropriate.** Svif's own canonical continuity governs its ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
+7. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
 
-## Brand integration receipts
+## Intended GitHub About metadata
 
-- PR: `#11`;
-- final brand head: `3ce946741835498d91aad9ab1eba0cfad6188e30`;
-- authoritative squash merge: `37e08498448797de56dc7ab03823bdc2d430a38f`;
-- post-merge conformance run/job: `34042053904` / `101510482659` — success;
-- byte-exact reference and complete PNG preservation: closed/verified;
-- published `v1.0.0` and `v1.0.0-rc.1` tags: unchanged.
+Description:
 
-## Stable release receipts
+`Agnir — project-owned durable continuity, assembled from discoverable Project truth: state, next actions, decisions, and evidence.`
 
-- latest stable: `v1.0.0`;
-- stable/tag revision: `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
-- stable GitHub Release id: `383612171`;
-- publication workflow: `34039014354`;
-- accepted RC remains `v1.0.0-rc.1` -> `092945289f1a0a9803e4fe0583104aa380ceaadc`;
-- issue #29: closed completed.
+Topics:
+
+- `durable-continuity`
+- `project-continuity`
+- `state-management`
+- `protocol`
+- `developer-tools`
+
+## Recent maintenance receipts
+
+- brand PR #11 merge: `37e08498448797de56dc7ab03823bdc2d430a38f`;
+- brand acceptance checkpoint: `e5305ab0474c4c8c562dbfbfaca54185b84d07f1`;
+- README + brand-surface + Svif adoption commit: `75dde01da2123e731a6de461fb2f3269fd6bbbbb`;
+- corresponding conformance: `34077491299` / `101606358819` success;
+- About-write attempt: workflow `34077611205` / job `101606699693` failed with GitHub HTTP 403 before branch deletion because Actions had `Metadata: read` only;
+- brand-branch retirement arm: `77eaada2b200b2fb3dd73309eddd259623540666`;
+- retirement workflow/job: `34077763678` / `101607125525` success;
+- retirement conformance: `34077763682` / `101607125572` success;
+- one-shot workflow removal: `222d60c0467c0368b1aefe68b55cc01ef43cda56`;
+- post-removal conformance: `34077835425` / `101607318275` success;
+- Svif adoption evidence: `.agnir/evidence/2026-09-07-svif-agnir-1.0-adoption.md`.
 
 ## Invariants
 
 - Durable continuity belongs to the Project.
 - Project identity != logical lineage identity != selector/revision receipt.
-- Source/staging continuity is reconciliation input, not automatic target truth.
 - Published tags are immutable.
 - Historical Core/profile 0.1 and 0.2 remain supported.
-- Brand assets do not redefine Agnir Core/profile semantics.
+- Brand assets are product surfaces, not Core semantic dependencies.
+- Repository-host About metadata is not canonical Project truth.
