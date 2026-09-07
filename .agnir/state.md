@@ -36,30 +36,36 @@ Current accepted public behavior:
 
 ## Public website and Pages host state
 
-The bilingual static website source is canonical under `website/`.
+The bilingual static website source is canonical under `website/` and GitHub Pages publication is **live and automatically maintained**.
 
-The Principal has now completed the one-time GitHub Pages enablement and first manual publication.
+First live baseline:
 
-Verified host/deployment receipts:
-
-- manual workflow run: `34083599723` on authoritative `main` revision `38fbeade7995021f4764762cd11b90c2092f75da` — success;
+- manual workflow run `34083599723` on authoritative `main` revision `38fbeade7995021f4764762cd11b90c2092f75da` — success;
 - build job `101623363101` — success;
 - deploy job `101623390599` — success;
-- fresh repository host readback: `has_pages=true`.
+- repository host readback after enablement: `has_pages=true`.
 
-The intended/default public URL is `https://iorlab.github.io/agnir/`.
+Scoped automatic publication was then accepted through PR #33:
 
-A scoped automatic Pages deployment change is now staged on `maintenance/pages-auto-deploy`. The candidate retains manual `workflow_dispatch` and adds automatic deployment for authoritative `main` pushes only when `website/**`, the exact brand exports consumed by the site, or `.github/workflows/pages.yml` changes. Unrelated Core/conformance/release/continuity-only commits do not redeploy the site.
+- PR #33 final head: `17d26109567dd3e242854651079422a0fb858632`;
+- PR synthetic-merge conformance: run `34084048316`, repository job `101624594459` — success;
+- authoritative squash merge: `b781782c2c2b97f70a66e52f810d7ad18fb0395e`;
+- authoritative post-merge conformance: run `34084087070`, repository job `101624702082` — success;
+- automatic Pages run triggered by that same authoritative `main` push: `34084087062`;
+- automatic Pages build job `101624702365` — success;
+- automatic Pages deploy job `101624730737` — success.
 
-Automatic publication is not accepted until the candidate passes synthetic-merge conformance, is integrated to `main`, authoritative post-merge conformance succeeds, and the workflow is observed to trigger and complete successfully from that authoritative push.
+The default public URL is `https://iorlab.github.io/agnir/`.
+
+`.github/workflows/pages.yml` now deploys automatically on authoritative `main` only when public-site inputs change: `website/**`, the exact canonical brand exports consumed by the site, or the Pages workflow itself. Manual `workflow_dispatch` remains available. Unrelated Core/conformance/release/continuity-only commits do not intentionally trigger website deployment.
 
 Evidence: `.agnir/evidence/2026-09-07-pages-live-auto-deploy.md`.
 
 ## Repository-host Wave 0 state
 
 - description: set correctly;
-- GitHub Pages: enabled; first deployment successful;
-- homepage metadata: still empty pending final live URL/public-surface acceptance;
+- GitHub Pages: enabled and automatically deployed for scoped public-site changes;
+- homepage metadata: still empty;
 - topics: still empty;
 - recognized repository license: absent;
 - Discussions: disabled.
@@ -91,4 +97,4 @@ The Principal-approved strategy is canonical at `adoption/README.md`:
 - stable arm/tag revision: `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - stable publication workflow: `34039014354`, attempts 1 and 2 success.
 
-Agnir remains in stable maintenance + downstream adoption mode. The first Pages publication blocker is closed; automatic deployment is staged for acceptance, followed by the remaining Wave 0 metadata/license/feedback work and the canonical fresh-session demo.
+Agnir remains in stable maintenance + downstream adoption mode. Pages enablement and scoped automatic deployment are closed. Immediate public-adoption work is the remaining Wave 0 metadata/license/feedback hygiene plus the canonical fresh-session demo and external design-user evidence.
