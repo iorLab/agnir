@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#15110d">
   <title>Agnir — Project-owned durable continuity</title>
-  <meta name="description" content="Agnir gives a Project its own durable continuity so fresh Agents and execution contexts can resume safely without predecessor-private chat history.">
+  <meta name="description" content="Install Agnir once, checkpoint Project truth, and let a fresh Agent continue from the Project instead of reconstructing private chat context.">
   <meta property="og:title" content="Agnir — Project Continuity">
   <meta property="og:description" content="Your agent forgets. Your project shouldn't.">
   <meta property="og:type" content="website">
@@ -22,9 +22,9 @@
       <img src="assets/agnir-horizontal-dark.svg" alt="Agnir">
     </a>
     <nav aria-label="Primary navigation">
-      <a href="#why">Why</a>
-      <a href="#how">How</a>
       <a href="#install">Install</a>
+      <a href="#use">How to use</a>
+      <a href="#why">Why Agnir</a>
       <a href="https://github.com/iorLab/agnir">GitHub</a>
       <a href="https://github.com/iorLab/agnir/issues/new/choose">Feedback</a>
       <a class="lang" href="zh-CN.html" lang="zh-CN">中文</a>
@@ -36,92 +36,113 @@
       <div class="hero-copy">
         <p class="eyebrow">Project Continuity</p>
         <h1>Your agent forgets.<br>Your project shouldn't.</h1>
-        <p class="lede">Agnir gives the Project its own durable continuity: current state, next actions, decisions, and evidence that a fresh compatible Executor can discover and resume.</p>
+        <p class="lede">Install Agnir once. In a fresh session, say “continue” and a compatible Agent can read the Project's current state, next actions, decisions, and evidence — then keep going.</p>
         <div class="actions">
           <a class="button primary" href="#install">Install Agnir</a>
-          <a class="button secondary" href="https://github.com/iorLab/agnir">View on GitHub</a>
+          <a class="button secondary" href="#use">See the 30-second flow</a>
         </div>
-        <p class="principle">The Project persists; Executors come and go.</p>
+        <div class="trust-line" aria-label="Agnir reassurance">
+          <span>No Agent lock-in</span>
+          <span>No private-chat dependency</span>
+          <span>Doesn't take over your workflow</span>
+        </div>
       </div>
 
-      <div class="continuity-card" aria-label="Agnir continuity model">
-        <div class="card-topline"><span>Agnir continuity</span><span>v1.0.0 stable</span></div>
-        <div class="truth-row"><span class="truth-key">STATE</span><span>API implementation complete</span></div>
-        <div class="truth-row"><span class="truth-key">NEXT</span><span>Add failure-path integration tests</span></div>
-        <div class="truth-row"><span class="truth-key">DECISION</span><span>Preserve public API compatibility</span></div>
-        <div class="truth-row"><span class="truth-key">EVIDENCE</span><span>Verified revision + test receipts</span></div>
-        <div class="anchor-dot" aria-hidden="true"></div>
+      <div class="hero-demo" aria-label="Fresh-session comparison">
+        <article class="terminal hero-terminal muted">
+          <div class="terminal-label">Fresh session · without Agnir</div>
+          <p><span class="prompt">you ›</span> Continue.</p>
+          <p><span class="agent">Agent ›</span> What were we working on?</p>
+        </article>
+        <article class="terminal hero-terminal live">
+          <div class="terminal-label">Fresh session · with Agnir</div>
+          <p><span class="prompt">you ›</span> Continue.</p>
+          <p><span class="agent">Agent ›</span> Loaded Agnir. Integration tests are next. Continuing.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="install" class="section shell install first-section">
+      <div class="section-heading">
+        <p class="eyebrow">Install first</p>
+        <h2>One sentence to get started.</h2>
+        <p>You do not need to learn the protocol first or copy an implementation checklist into your prompt. Give your Agent one intent:</p>
+      </div>
+      <pre><code>Install and initialize Agnir for this Project: https://github.com/iorLab/agnir</code></pre>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/iorLab/agnir#start-here">Installation guide</a>
+        <a class="button secondary" href="https://github.com/iorLab/agnir">View on GitHub</a>
+      </div>
+      <p class="microcopy">Install it now. The value becomes obvious the first time you open a genuinely fresh session and say “continue”.</p>
+    </section>
+
+    <section id="use" class="section shell">
+      <div class="section-heading">
+        <p class="eyebrow">How to use it</p>
+        <h2>Four steps. That's it.</h2>
+        <p>Agnir should disappear into normal Project work. The only new habit is creating a durable Checkpoint when you reach a meaningful boundary.</p>
+      </div>
+      <div class="use-grid">
+        <article>
+          <span class="step-number">01</span>
+          <h3>Install</h3>
+          <p>Give your Agent the one-line install intent above.</p>
+        </article>
+        <article>
+          <span class="step-number">02</span>
+          <h3>Work normally</h3>
+          <p>Build, debug, review, commit, or refactor as usual. Agnir does not replace your development workflow.</p>
+        </article>
+        <article class="checkpoint-step">
+          <span class="step-number">03</span>
+          <h3>Checkpoint</h3>
+          <p>At a meaningful stopping point, say <code>checkpoint</code>. <code>save progress</code> or “stop here” are also clear intent examples. The point is to signal a save/finish boundary, not memorize a magic keyword.</p>
+        </article>
+        <article>
+          <span class="step-number">04</span>
+          <h3>Continue in a fresh session</h3>
+          <p>Open a new context and say “continue”. The Agent reloads the Project-owned continuity and resumes from there.</p>
+        </article>
       </div>
     </section>
 
     <section id="why" class="section shell">
-      <div class="section-heading">
-        <p class="eyebrow">30-second value story</p>
-        <h2>New session. Same project continuity.</h2>
-        <p>Without durable Project truth, a fresh session must reconstruct context. With Agnir, the Project carries forward what matters.</p>
+      <div class="section-heading narrow">
+        <p class="eyebrow">Remove the doubts</p>
+        <h2>What Agnir does not ask you to give up.</h2>
       </div>
-      <div class="demo-grid">
-        <article class="terminal muted">
-          <div class="terminal-label">Fresh session — without Agnir</div>
-          <p><span class="prompt">you ›</span> Continue.</p>
-          <p><span class="agent">agent ›</span> What were we working on?</p>
-        </article>
-        <article class="terminal live">
-          <div class="terminal-label">Fresh session — with Agnir</div>
-          <p><span class="prompt">you ›</span> Continue.</p>
-          <p><span class="agent">agent ›</span> Loaded Agnir. Integration tests are next. Continuing.</p>
-        </article>
+      <div class="question-grid">
+        <article><h3>Will this lock me to one Agent?</h3><p>No. Agnir is designed so Project continuity does not belong to one Agent, model, chat, or execution surface.</p></article>
+        <article><h3>Do I need to preserve every chat?</h3><p>No. Agnir keeps the small set of Project facts that actually need to survive, instead of treating chat history as the source of truth.</p></article>
+        <article><h3>Will it take over Git, my IDE, or my workflow?</h3><p>No. Your tools keep doing their jobs. Agnir only defines how durable Project continuity is discovered, loaded, and checkpointed.</p></article>
+        <article><h3>Is this another opaque memory database?</h3><p>No. State, next actions, decisions, and evidence are Project-owned, inspectable surfaces rather than a hidden memory blob.</p></article>
       </div>
     </section>
 
-    <section class="section shell">
-      <div class="section-heading narrow">
-        <p class="eyebrow">Project-owned truth</p>
-        <h2>Not another opaque memory blob.</h2>
-        <p>Agnir keeps a small, discoverable continuity surface that belongs to the Project rather than to one chat, model, IDE, or storage implementation.</p>
+    <section id="concept" class="section shell concept">
+      <div class="section-heading">
+        <p class="eyebrow">The concept, after the value</p>
+        <h2>So what is Agnir?</h2>
+        <p>Agnir is a <strong>Project Continuity</strong> protocol: a portable contract for keeping the small amount of durable Project truth a fresh Agent needs to continue safely.</p>
       </div>
       <div class="feature-grid">
         <article><span>01</span><h3>Current State</h3><p>What is durably true now.</p></article>
-        <article><span>02</span><h3>Next Actions</h3><p>What remains to be done, in order.</p></article>
-        <article><span>03</span><h3>Decisions</h3><p>Constraints and choices future Executors must preserve.</p></article>
-        <article><span>04</span><h3>Evidence</h3><p>Receipts that support recovery, audit, migration, and reconciliation.</p></article>
+        <article><span>02</span><h3>Next Actions</h3><p>What should happen next, in order.</p></article>
+        <article><span>03</span><h3>Decisions</h3><p>Constraints and choices future Agents must preserve.</p></article>
+        <article><span>04</span><h3>Evidence</h3><p>Receipts that make recovery, review, migration, and reconciliation trustworthy.</p></article>
       </div>
-    </section>
-
-    <section id="how" class="section shell split">
-      <div class="section-heading">
-        <p class="eyebrow">How it works</p>
-        <h2>Discover. Load. Work. Checkpoint.</h2>
-      </div>
-      <ol class="steps">
-        <li><strong>Discover</strong><span>A fresh Executor starts from the authorized Project and finds its Agnir discovery record.</span></li>
-        <li><strong>Load</strong><span>It resolves the selected continuity and loads the Project truth needed for the current task.</span></li>
-        <li><strong>Work</strong><span>The Executor performs the real Project work outside Agnir Core.</span></li>
-        <li><strong>Checkpoint</strong><span>Material changes are reconciled back into a coherent, durable Project-owned checkpoint.</span></li>
-      </ol>
     </section>
 
     <section class="section shell proof">
       <div class="proof-copy">
         <p class="eyebrow">Portable by design</p>
-        <h2>Switch executors, not projects.</h2>
-        <p>Agnir Core is neutral about Git, GitHub, filesystems, ChatGPT, specific Agents, Skills, and storage engines. Those are profiles, adapters, or distribution concerns around the continuity contract.</p>
+        <h2>Switch Agents, not Projects.</h2>
+        <p>Agnir Core is neutral about Git, GitHub, filesystems, ChatGPT, specific Agents, Skills, and storage engines. Those belong around the Project Continuity contract, not inside it.</p>
       </div>
       <div class="proof-stats" aria-label="Agnir release proof">
         <div><strong>v1.0.0</strong><span>latest stable</span></div>
         <div><strong>PASS</strong><span>independent implementation gate</span></div>
         <div><strong>Svif</strong><span>first recorded downstream adoption case</span></div>
-      </div>
-    </section>
-
-    <section id="install" class="section shell install">
-      <p class="eyebrow">Start here</p>
-      <h2>Give your Agent one intent.</h2>
-      <p>You do not need to carry Agnir's implementation checklist in your prompt.</p>
-      <pre><code>Install and initialize Agnir for this Project: https://github.com/iorLab/agnir</code></pre>
-      <div class="actions">
-        <a class="button primary" href="https://github.com/iorLab/agnir#start-here">Installation guide</a>
-        <a class="button secondary" href="https://github.com/iorLab/agnir/blob/main/adoption/README.md">Launch & adoption strategy</a>
       </div>
     </section>
   </main>
@@ -132,6 +153,7 @@
       <span>Project-owned durable continuity.</span>
     </div>
     <div class="footer-links">
+      <a href="#install">Install</a>
       <a href="https://github.com/iorLab/agnir">GitHub</a>
       <a href="https://github.com/iorLab/agnir/issues/new/choose">Feedback</a>
       <a href="https://github.com/iorLab/agnir/blob/main/spec/AGNIR_CORE_1_0.md">Core 1.0</a>
