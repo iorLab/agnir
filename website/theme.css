@@ -73,6 +73,9 @@ html[data-theme="light"] .theme-icon-moon { display: none; }
   align-self: center;
   flex: 0 0 auto;
 }
+.theme-toggle + .language-picker {
+  margin-left: -10px;
+}
 .language-trigger {
   list-style: none;
   user-select: none;
@@ -200,6 +203,7 @@ html[data-theme="light"] .back-to-top:hover {
     height: 32px;
   }
   .language-menu { min-width: 168px; }
+  .theme-toggle + .language-picker { margin-left: -6px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
