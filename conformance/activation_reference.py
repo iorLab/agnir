@@ -15,6 +15,8 @@ class ActivationFailure(RuntimeError):
 class ActivationSnapshot:
     agents_path: Path
     readme_path: Path
+    # Compatibility field retained for pre-1.0.1 self-host helpers. On the new
+    # direct route it contains the canonical instruction content from AGNIR.md.
     readme_section: str
     instructions_path: Path
     instructions: str
@@ -85,13 +87,15 @@ def resolve_agent_activation(project_root: Path) -> ActivationSnapshot:
 
         if not readme_path.is_file():
             raise ActivationFailure("AGNIR_ACTIVATION_NOT_FOUND: missing README.md compatibility locator")
-        readme_section = _extract_section(readme_path.read_text(encoding="utf-8"), ACTIVATION_HEADING)
-        if CANONICAL_INSTRUCTIONS not in readme_section:
+        compatibility_section = _extract_section(
+            readme_path.read_text(encoding="utf-8"), ACTIVATION_HEADING
+        )
+        if CANONICAL_INSTRUCTIONS not in compatibility_section:
             raise ActivationFailure(
                 "AGNIR_ACTIVATION_UNRESOLVABLE: README compatibility section must point to AGNIR.md"
             )
         copied_markers = sum(
-            marker in readme_section
+            marker in compatibility_section
             for marker in ("Current State", "Next Actions", "Decisions", "Evidence", "checkpoint evaluation")
         )
         if copied_markers >= 3:
@@ -102,7 +106,7 @@ def resolve_agent_activation(project_root: Path) -> ActivationSnapshot:
         return ActivationSnapshot(
             agents_path=agents_path,
             readme_path=readme_path,
-            readme_section=readme_section,
+            readme_section=instructions,
             instructions_path=instructions_path,
             instructions=instructions,
             route="agnir-md",
