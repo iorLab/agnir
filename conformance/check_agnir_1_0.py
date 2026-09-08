@@ -2,17 +2,10 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from activation_reference import ActivationFailure, resolve_agent_activation
-from check_agnir_0_1 import (
-    fail,
-    require_full_repository_tree,
-    require_readme_diagrams,
-    require_readme_entry_guide,
-    require_readme_repository_tree,
-    require_skill_package,
-)
 from repository_filesystem_1_0_reference import (
     CORE_1_0_VERSION,
     PROFILE_1_0,
@@ -38,6 +31,11 @@ BINDINGS = {
         "refs/heads/release/v1.0.0",
     ),
 }
+
+
+def fail(message: str) -> None:
+    print(f"FAIL: {message}", file=sys.stderr)
+    raise SystemExit(1)
 
 
 def resolve_expected_binding(manifest: str) -> tuple[str, str]:
@@ -85,16 +83,130 @@ def require_1_0_contracts() -> None:
             fail(f"0.2 -> 1.0 promotion contract missing marker: {marker}")
 
 
+def require_1_0_distribution_surface() -> None:
+    for path in (
+        "SKILL.md",
+        "AGENTS.md",
+        "AGNIR.md",
+        "AGNIR.yaml",
+        "README.md",
+        "README.zh-CN.md",
+        "REPOSITORY_TREE.md",
+        "RELEASE.md",
+        "VERSIONING.md",
+        "conformance/activation_reference.py",
+        "conformance/agents_merge_reference.py",
+        "conformance/operation_dispatch_reference.py",
+        "conformance/test_agent_activation.py",
+        "conformance/test_agents_merge.py",
+        "conformance/test_operation_dispatch.py",
+    ):
+        if not (ROOT / path).exists():
+            fail(f"missing 1.0.x distribution surface: {path}")
+
+    skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+    for marker in (
+        "## Install or initialize Agnir",
+        "canonical Executor-facing Project activation and operation surface",
+        "backward-compatible locator only",
+        "Agnir `1.0.1` is an activation/packaging reliability patch over `1.0.0`",
+        "checkpoint evaluation",
+        "Project-defined pre-commit policy when declared",
+        "Do not execute an isolated Git commit path",
+        "## Repair",
+    ):
+        if marker not in skill:
+            fail(f"SKILL.md missing 1.0.x activation-hardening marker: {marker}")
+
+    instructions = (ROOT / "AGNIR.md").read_text(encoding="utf-8")
+    for marker in (
+        "# Agnir Project Instructions",
+        "Project Entry Point",
+        "AGNIR.yaml",
+        "Current State",
+        "Next Actions",
+        "Decisions",
+        "Evidence",
+        "checkpoint evaluation",
+        "AGNIR_CHECKPOINT_CONFLICT",
+        "提交",
+        "Project-defined pre-commit policy",
+        "A legitimate checkpoint no-op does not require an `.agnir/` diff",
+    ):
+        if marker not in instructions:
+            fail(f"AGNIR.md missing activation/operation marker: {marker}")
+
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    if "AGNIR.md" not in agents or "Current State" in agents or "Next Actions" in agents:
+        fail("AGENTS.md must remain a minimal locator to AGNIR.md")
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    heading = "## Agnir Project Instructions"
+    if heading not in readme:
+        fail("README.md missing backward-compatible Agnir Project Instructions heading")
+    section = readme.split(heading, 1)[1].split("\n## ", 1)[0]
+    if "AGNIR.md" not in section or "backward-compatible locator" not in section:
+        fail("README activation compatibility section must point to AGNIR.md")
+    for forbidden in ("Current State", "Next Actions", "AGNIR_CHECKPOINT_CONFLICT"):
+        if forbidden in section:
+            fail("README compatibility locator must not fork AGNIR.md procedure")
+
+    tree = (ROOT / "REPOSITORY_TREE.md").read_text(encoding="utf-8")
+    for marker in ("AGNIR.md", "operation_dispatch_reference.py", "test_operation_dispatch.py"):
+        if marker not in tree:
+            fail(f"REPOSITORY_TREE.md missing v1.0.1 surface marker: {marker}")
+
+
+def require_public_entry_surfaces() -> None:
+    english = (ROOT / "README.md").read_text(encoding="utf-8")
+    chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+    for text, markers in (
+        (
+            english,
+            (
+                "## Start Here",
+                "Install and initialize Agnir for this Project: https://github.com/iorLab/agnir",
+                "Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir",
+                "No recurring Agnir prompt is required.",
+                "Project root\n→ AGENTS.md\n→ AGNIR.md\n→ AGNIR.yaml",
+                "## What Agnir Adds to a Project",
+                "## Architecture Diagram",
+                "## Continuity Flow",
+            ),
+        ),
+        (
+            chinese,
+            (
+                "## 从这里开始",
+                "为这个项目安装并初始化 Agnir：https://github.com/iorLab/agnir",
+                "把这个项目的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir",
+                "项目根目录\n→ AGENTS.md\n→ AGNIR.md\n→ AGNIR.yaml",
+                "## Agnir 会给项目增加什么",
+                "## 架构图",
+                "## 连续性流程",
+            ),
+        ),
+    ):
+        for marker in markers:
+            if marker not in text:
+                fail(f"public README surface missing marker: {marker}")
+
+
 def main() -> None:
-    require_skill_package()
     require_1_0_contracts()
+    require_1_0_distribution_surface()
+    require_public_entry_surfaces()
 
     try:
         activation = resolve_agent_activation(ROOT)
     except ActivationFailure as exc:
         fail(str(exc))
-    if "AGNIR.yaml" not in activation.readme_section:
-        fail("Core 1.0 self-host activation did not resolve AGNIR.yaml")
+    if activation.route != "agnir-md":
+        fail("1.0.x self-host must use direct AGNIR.md activation")
+    if activation.instructions_path.name != "AGNIR.md":
+        fail("1.0.x self-host did not resolve AGNIR.md as canonical Project instructions")
+    if "AGNIR.yaml" not in activation.instructions:
+        fail("1.0.x self-host activation did not resolve AGNIR.yaml")
 
     manifest = (ROOT / "AGNIR.yaml").read_text(encoding="utf-8")
     expected_lineage, expected_selector = resolve_expected_binding(manifest)
@@ -131,19 +243,17 @@ def main() -> None:
         fail("logical lineage identity must not be inferred from the selector")
 
     repository_version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-    if repository_version not in {"1.0.0-rc.1", "1.0.0"}:
+    if repository_version not in {"1.0.0-rc.1", "1.0.0", "1.0.1"}:
         fail(f"unexpected Core 1.0 repository version: {repository_version}")
     if f'repository_version: "{repository_version}"' not in manifest:
         fail(f"AGNIR.yaml does not declare repository_version {repository_version}")
 
     release = (ROOT / "RELEASE.md").read_text(encoding="utf-8")
     for marker in (
-        repository_version,
-        "Core",
+        "Core compatibility line",
         "1.0",
         "repository-filesystem/1.0",
         "SKILL.md",
-        "promotion",
         "latest stable",
     ):
         if marker not in release:
@@ -162,57 +272,10 @@ def main() -> None:
         if not (ROOT / path).exists():
             fail(f"Core/profile 1.0 source removed supported compatibility artifact: {path}")
 
-    require_readme_entry_guide(
-        "README.md",
-        start_heading="## Start Here",
-        surface_heading="## What Agnir Adds to a Project",
-        architecture_heading="## Architecture Diagram",
-        install_prompt="Install and initialize Agnir for this Project: https://github.com/iorLab/agnir",
-        upgrade_prompt="Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir",
-        existing_marker="No recurring Agnir prompt is required.",
-        forbidden_checklist="Requirements:\n1.",
-    )
-    require_readme_entry_guide(
-        "README.zh-CN.md",
-        start_heading="## 从这里开始",
-        surface_heading="## Agnir 会给 Project 增加什么",
-        architecture_heading="## 架构图",
-        install_prompt="为这个 Project 安装并初始化 Agnir：https://github.com/iorLab/agnir",
-        upgrade_prompt="把这个 Project 的 Agnir 升级到最新稳定版：https://github.com/iorLab/agnir",
-        existing_marker="不需要再给 Agent 任何 Agnir bootstrap 提示词。",
-        forbidden_checklist="要求：\n1.",
-    )
-    require_readme_diagrams(
-        "README.md",
-        ("## Architecture Diagram", "## Continuity Flow"),
-        architecture_markers=(
-            "non-destructive setup",
-            "EDIT: add activation locator only",
-            "EDIT: add Agnir instructions only",
-            "ADD: discovery anchor",
-            "ADD: durable continuity",
-        ),
-        flow_forbidden_markers=("EDIT: add", "ADD: discovery", "ADD: durable"),
-    )
-    require_readme_diagrams(
-        "README.zh-CN.md",
-        ("## 架构图", "## 连续性流程"),
-        architecture_markers=(
-            "非破坏性 setup",
-            "编辑：仅添加 activation locator",
-            "编辑：仅添加 Agnir instructions",
-            "新增：discovery anchor",
-            "新增：durable continuity",
-        ),
-        flow_forbidden_markers=("编辑：仅添加", "新增：discovery", "新增：durable"),
-    )
-    require_readme_repository_tree("README.md", "## Repository structure")
-    require_readme_repository_tree("README.zh-CN.md", "## 仓库结构")
-    require_full_repository_tree()
-
     print(
         f"PASS: Agnir Core {snapshot.version} / {snapshot.profile} self-host "
-        f"lineage {snapshot.lineage_identity} selector {expected_selector} repository {repository_version}"
+        f"via {activation.route}; lineage {snapshot.lineage_identity} selector {expected_selector} "
+        f"repository {repository_version}"
     )
 
 
