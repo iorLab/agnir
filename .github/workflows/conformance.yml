@@ -27,7 +27,7 @@ jobs:
             0.2.0|0.2.0-rc.1)
               python conformance/check_agnir_0_2.py
               ;;
-            1.0.0|1.0.0-rc.1)
+            1.0.1|1.0.0|1.0.0-rc.1)
               python conformance/check_agnir_1_0.py
               ;;
             *)
@@ -69,12 +69,111 @@ jobs:
           github.ref == 'refs/heads/main' ||
           github.ref == 'refs/heads/release/v0.2.0' ||
           github.ref == 'refs/heads/release/v1.0.0' ||
+          github.ref == 'refs/heads/release/v1.0.1' ||
           github.base_ref == 'main' ||
           github.head_ref == 'release/v0.2.0' ||
-          github.head_ref == 'release/v1.0.0'
+          github.head_ref == 'release/v1.0.0' ||
+          github.head_ref == 'release/v1.0.1'
         run: python -m unittest discover -s conformance -p 'test_stable_release_gates.py' -v
       - name: Full conformance suite
         run: python -m unittest discover -s conformance -p 'test_*.py' -v
+
+  publish-v1-0-1:
+    name: Publish v1.0.1 stable release
+    needs: repository-filesystem
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.event.head_commit.message == 'release: publish v1.0.1 stable'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install conformance dependencies
+        run: python -m pip install --disable-pip-version-check -r conformance/requirements.txt
+      - name: Verify exact v1.0.1 publication candidate
+        run: |
+          set -euo pipefail
+          test "$(cat VERSION)" = "1.0.1"
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          grep -q 'version: "1.0"' AGNIR.yaml
+          grep -q 'discovery_profile: "repository-filesystem/1.0"' AGNIR.yaml
+          grep -q 'repository_version: "1.0.1"' AGNIR.yaml
+          grep -q 'lineage: "urn:agnir:lineage:authoritative"' AGNIR.yaml
+          grep -q 'selector: "refs/heads/main"' AGNIR.yaml
+          grep -q 'Before doing Project work in this repository, read and follow `AGNIR.md`' AGENTS.md
+          grep -q '# Agnir Project Instructions' AGNIR.md
+          grep -q 'checkpoint evaluation' AGNIR.md
+          python conformance/check_agnir_1_0.py
+          python -m unittest discover -s conformance -p 'test_*.py' -v
+      - name: Create immutable v1.0.1 tag and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="v1.0.1"
+          previous_tag="v1.0.0"
+          previous_sha="6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3"
+          accepted_rc="v1.0.0-rc.1"
+          accepted_rc_sha="092945289f1a0a9803e4fe0583104aa380ceaadc"
+          repo="${GITHUB_REPOSITORY}"
+
+          test "$(gh api "repos/${repo}/git/ref/tags/${previous_tag}" --jq '.object.sha')" = "${previous_sha}"
+          test "$(gh api "repos/${repo}/git/ref/tags/${accepted_rc}" --jq '.object.sha')" = "${accepted_rc_sha}"
+
+          if tag_json=$(gh api "repos/${repo}/git/ref/tags/${tag}" 2>/dev/null); then
+            test "$(printf '%s' "${tag_json}" | jq -r '.object.sha')" = "${GITHUB_SHA}"
+          else
+            gh api --method POST "repos/${repo}/git/refs" \
+              -f ref="refs/tags/${tag}" \
+              -f sha="${GITHUB_SHA}" >/dev/null
+          fi
+
+          body=$(cat <<EOF
+          Agnir v1.0.1 stable patch release.
+
+          Exact authoritative candidate: ${GITHUB_SHA}
+          Conformance workflow: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          Core: 1.0 (unchanged)
+          Profile: repository-filesystem/1.0 (unchanged)
+
+          This patch hardens Project activation and repository commit-intent dispatch. `AGNIR.md` becomes the canonical Executor-facing Project instruction surface; legacy v1.0.0 README activation remains compatible for upgrade/repair. Checkpoint no-op semantics remain unchanged.
+          EOF
+          )
+
+          if release_json=$(gh api "repos/${repo}/releases/tags/${tag}" 2>/dev/null); then
+            test "$(printf '%s' "${release_json}" | jq -r '.tag_name')" = "${tag}"
+            test "$(printf '%s' "${release_json}" | jq -r '.prerelease')" = "false"
+            test "$(printf '%s' "${release_json}" | jq -r '.draft')" = "false"
+          else
+            gh api --method POST "repos/${repo}/releases" \
+              -f tag_name="${tag}" \
+              -f target_commitish="${GITHUB_SHA}" \
+              -f name="Agnir ${tag}" \
+              -f body="${body}" \
+              -F draft=false \
+              -F prerelease=false >/dev/null
+          fi
+
+          tag_sha=$(gh api "repos/${repo}/git/ref/tags/${tag}" --jq '.object.sha')
+          prerelease=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.prerelease')
+          draft=$(gh api "repos/${repo}/releases/tags/${tag}" --jq '.draft')
+          latest=$(gh api "repos/${repo}/releases/latest" --jq '.tag_name')
+          previous_sha_after=$(gh api "repos/${repo}/git/ref/tags/${previous_tag}" --jq '.object.sha')
+          accepted_rc_after=$(gh api "repos/${repo}/git/ref/tags/${accepted_rc}" --jq '.object.sha')
+          test "${tag_sha}" = "${GITHUB_SHA}"
+          test "${prerelease}" = "false"
+          test "${draft}" = "false"
+          test "${latest}" = "${tag}"
+          test "${previous_sha_after}" = "${previous_sha}"
+          test "${accepted_rc_after}" = "${accepted_rc_sha}"
+          echo "PASS: ${tag} -> ${tag_sha}; latest=${latest}; v1.0.0=${previous_sha_after}; accepted-rc=${accepted_rc_after}"
 
   publish-v1-0-0:
     name: Publish v1.0.0 stable release
