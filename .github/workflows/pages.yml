@@ -37,6 +37,8 @@ jobs:
           mkdir -p _site/assets
           cp website/index.html _site/index.html
           cp website/zh-CN.html _site/zh-CN.html
+          cp website/ja.html _site/ja.html
+          cp website/ko.html _site/ko.html
           cp website/styles.css _site/styles.css
           cp website/theme.css _site/theme.css
           cp website/theme.js _site/theme.js
