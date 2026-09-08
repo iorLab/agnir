@@ -37,7 +37,7 @@ agnir/
 ├── .github/
 │   └── workflows/
 │       ├── conformance.yml                               # main/release CI + exact gated publication jobs
-│       └── pages.yml                                     # manual GitHub Pages artifact/deploy workflow
+│       └── pages.yml                                     # scoped GitHub Pages artifact/deploy workflow
 │
 ├── spec/
 │   ├── AGNIR_CORE.md                                     # Core 0.1 compatibility contract
@@ -60,8 +60,9 @@ agnir/
 │   └── agnir-manifest-1.0.schema.json                    # repository-filesystem/1.0 schema
 │
 ├── conformance/
-│   ├── activation_reference.py                           # AGENTS.md -> README activation resolver
-│   ├── agents_merge_reference.py                         # non-destructive AGENTS merge
+│   ├── activation_reference.py                           # direct AGENTS.md -> AGNIR.md resolver + legacy README compatibility
+│   ├── agents_merge_reference.py                         # non-destructive AGENTS locator merge/upgrade
+│   ├── operation_dispatch_reference.py                   # short repository-intent checkpoint interception model
 │   ├── checkpoint_reference.py                           # no-op/coherent/stale-base checkpoint model
 │   ├── upgrade_reference.py                              # compatible upgrade / stable-target model
 │   ├── core_reference.py                                 # Core 0.1 shared failure semantics
@@ -77,17 +78,18 @@ agnir/
 │   ├── workspace_registry_reference.py                   # multi-Project isolation model
 │   ├── check_agnir_0_1.py                                # Core/profile 0.1 self-host helper
 │   ├── check_agnir_0_2.py                                # Core/profile 0.2 self-host gate
-│   ├── check_agnir_1_0.py                                # Core/profile 1.0 RC/stable self-host gate
-│   ├── test_agent_activation.py                          # prompt-free activation pressure
-│   ├── test_agents_merge.py                              # AGENTS preservation/idempotence/conflict pressure
+│   ├── check_agnir_1_0.py                                # Core/profile 1.0 self-host gate across 1.0.x distribution
+│   ├── test_agent_activation.py                          # direct + legacy activation pressure
+│   ├── test_agents_merge.py                              # AGENTS preservation/idempotence/legacy-upgrade/conflict pressure
+│   ├── test_operation_dispatch.py                        # commit/提交 checkpoint-dispatch pressure
 │   ├── test_checkpoint_semantics.py                      # checkpoint semantics
 │   ├── test_upgrade_semantics.py                         # upgrade/migration classification
-│   ├── test_skill_package.py                             # Skill + UX + release-status pressure
-│   ├── test_1_0_package_surface.py                       # 1.0 package/RC/stable publication surface pressure
+│   ├── test_skill_package.py                             # Skill + activation UX + release-status pressure
+│   ├── test_1_0_package_surface.py                       # 1.0 compatibility/distribution/publication surface pressure
 │   ├── test_core_1_0_stability.py                        # Core 1.0 stability semantics
 │   ├── test_repository_filesystem_1_0.py                 # exact 1.0 discovery/failure pressure
 │   ├── test_repository_filesystem_1_0_promotion.py       # explicit 0.2 -> 1.0 promotion pressure
-│   ├── test_stable_release_gates.py                      # version-scoped stable 0.2/1.0 package gates
+│   ├── test_stable_release_gates.py                      # version-scoped stable package gates
 │   └── test_*.py                                         # remaining backend/lineage/migration/integration pressure
 │
 ├── history/
@@ -95,14 +97,15 @@ agnir/
 │   ├── MIGRATION_PPMP_V2.md                              # historical predecessor migration material
 │   └── BRANCH_ARCHIVE.md                                 # retired branch tip index
 │
-├── SKILL.md                                               # canonical Agent-facing procedure
-├── AGENTS.md                                              # locator to README Agnir Project Instructions
+├── SKILL.md                                               # canonical Agent-facing distribution procedure
+├── AGENTS.md                                              # locator-only entry to AGNIR.md
+├── AGNIR.md                                               # canonical Executor-facing Project activation + operation policy
 ├── AGNIR.yaml                                             # selected Project/lineage discovery record
-├── README.md                                              # English user/Agent entry point
-├── README.zh-CN.md                                        # 简体中文 parallel entry point
+├── README.md                                              # English user entry + backward-compatible activation locator
+├── README.zh-CN.md                                        # 简体中文 parallel user entry + compatibility locator
 ├── REPOSITORY_TREE.md                                     # 本文件
 ├── RELEASE.md                                             # stable source package + publication invariant
-├── RELEASE_MILESTONES.md                                  # v0.1/v0.2/v1 milestone meaning
+├── RELEASE_MILESTONES.md                                  # v0.1/v0.2/v1/1.0.x milestone meaning
 ├── VERSIONING.md                                          # repository/Core/profile version policy
 ├── V1_RELEASE_CRITERIA.md                                 # v1 stability gates
 └── VERSION                                                # selected source-tree repository SemVer
@@ -110,22 +113,22 @@ agnir/
 
 ## 当前版本职责
 
-- **当前 stable distribution source package:** repository `1.0.0`, Core `1.0`, `repository-filesystem/1.0`. `latest stable` resolution remains determined by the actually published non-prerelease Release, not by this moving branch.
-- **Accepted RC evidence:** immutable `v1.0.0-rc.1` at `092945289f1a0a9803e4fe0583104aa380ceaadc`; it remains prerelease evidence and must not be moved during stable publication.
+- **Latest published stable:** `v1.0.0` remains the latest published non-prerelease release until a separately authorized `v1.0.1` publication succeeds.
+- **v1.0.1 patch scope:** dedicated `AGNIR.md` Project activation/operation surface, direct locator from `AGENTS.md`, legacy README activation compatibility for pre-upgrade Projects, short commit-intent checkpoint interception, and associated Skill/conformance/packaging hardening. Core `1.0` and `repository-filesystem/1.0` do not change.
+- **Accepted RC evidence for the stable 1.0 compatibility line:** immutable `v1.0.0-rc.1` at `092945289f1a0a9803e4fe0583104aa380ceaadc`; it remains prerelease evidence and must not be moved.
 - **Historical compatibility:** Core/profile `0.1` and `0.2` normative/schema/reference/tests remain supported. A `1.0.x` distribution dispatches according to the Project compatibility identifiers actually declared.
 - **Stable 0.2 -> 1.0 promotion contract:** `spec/CORE_0_2_TO_1_0_PROMOTION.md` plus `conformance/repository_filesystem_1_0_promotion_reference.py` and `conformance/test_repository_filesystem_1_0_promotion.py`.
-- **Release gates:** `conformance/test_stable_release_gates.py` is version-scoped for stable `0.2.0` and `1.0.0`. `conformance/test_1_0_package_surface.py` verifies both immutable RC publication and the dormant main-only stable `v1.0.0` publication path.
-- **Stable publication boundary:** `release/v1.0.0` is staging/reconciliation input. Exact stable publication is authorized only from verified authoritative `main` with commit message `release: publish v1.0.0 stable`.
+- **Activation packaging boundary:** `AGNIR.md` is Project-level Executor procedure, `AGNIR.yaml` is machine-readable discovery, `.agnir/` is durable continuity, `AGENTS.md` is locator-only, README is human-facing plus backward-compatible locator. None changes Agnir Core semantics.
+- **Checkpoint boundary:** repository commit intent requires checkpoint evaluation; unchanged continuity is a valid no-op. A conformance implementation must not equate successful checkpoint evaluation with mandatory `.agnir/` mutation.
 - **VCS mapping:** Core/profile `0.2` and `1.0` use their normative Core/profile VCS semantics. A VCS selector is not logical lineage identity; a commit SHA is a receipt, not identity.
 - **Brand boundary:** `brand/` is the canonical approved visual identity/production-asset authority; brand assets do not define Core semantics.
 - **Adoption boundary:** `adoption/` owns post-v1 positioning, launch, demo, design-user, community and case-study strategy; adoption materials may consume brand assets but do not redefine them or Core semantics.
 - **Website boundary:** `website/` materializes adoption messaging into a static public surface. It consumes canonical brand exports during deployment, does not duplicate visual authority, and remains separate from Core/profile semantics.
-- **Website publication:** `.github/workflows/pages.yml` is manual-dispatch until GitHub Pages is enabled for the repository. Website source readiness and live host publication are separate states.
 
-Historical `.agnir/evidence/` and Git history may contain earlier draft/RC wording because those records describe earlier checkpoints accurately.
+Historical `.agnir/evidence/` and Git history may contain earlier activation/RC wording because those records describe earlier checkpoints accurately.
 
 ## 如何使用这张树
 
-用户安装/升级时只需要 README 开头的简短提示。Agent 获取 distribution 后由根目录 `SKILL.md` 承担完整 procedure；初始化后的 Project 通过自己的 `AGENTS.md -> README -> AGNIR.yaml` route activation。
+用户安装/升级时只需要 README 开头的简短提示。Executor 获取 distribution 后由根目录 `SKILL.md` 承担安装、升级、迁移与 repair 等完整 distribution procedure；初始化/升级后的 Project 通过自己的 `AGENTS.md -> AGNIR.md -> AGNIR.yaml` route activation。旧 `1.0.0` Project 的 `AGENTS.md -> README -> AGNIR.yaml` route 只作为升级/repair 前的兼容入口保留。
 
-本页不是第二套协议。Core `0.1` / `0.2` / `1.0` 分别以对应 Core contract 为准；repository-filesystem `0.1` / `0.2` / `1.0` 分别以对应 profile 为准；0.2 -> 1.0 Project promotion 以 `spec/CORE_0_2_TO_1_0_PROMOTION.md` 为准；机器可读 manifest 约束在 `schemas/`；Agent procedure 以 `SKILL.md` 为准；`brand/` 负责视觉身份；`adoption/` 负责采用策略；`website/` 负责公开网站 source；`history/` 只保存 predecessor/history material。
+本页不是第二套协议。Core `0.1` / `0.2` / `1.0` 分别以对应 Core contract 为准；repository-filesystem `0.1` / `0.2` / `1.0` 分别以对应 profile 为准；0.2 -> 1.0 Project promotion 以 `spec/CORE_0_2_TO_1_0_PROMOTION.md` 为准；机器可读 manifest 约束在 `schemas/`；distribution procedure 以 `SKILL.md` 为准；具体 Project 的 activation/operation surface 以其 `AGNIR.md` 为准；`brand/` 负责视觉身份；`adoption/` 负责采用策略；`website/` 负责公开网站 source；`history/` 只保存 predecessor/history material。
