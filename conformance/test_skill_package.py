@@ -23,9 +23,10 @@ class SkillPackageTests(unittest.TestCase):
             "## Install or initialize Agnir",
             "### Merge existing AGENTS.md safely",
             "preserve its existing unrelated content",
-            "equivalent Agnir locator already exists",
+            "equivalent `AGNIR.md` locator already exists",
             "do not guess and do not overwrite it",
             "report the exact conflict to the Principal",
+            "AGNIR.md",
             "AGNIR.yaml",
             ".agnir/state.md",
             ".agnir/next-actions.md",
@@ -34,6 +35,7 @@ class SkillPackageTests(unittest.TestCase):
             "## Agnir Project Instructions",
             "AGENTS.md",
             "fresh repository activation test",
+            "backward-compatible locator only",
             "### Complete execution-surface activation",
             "## Upgrade an existing Agnir Project",
             "## Resume or use an existing Agnir Project",
@@ -79,7 +81,22 @@ class SkillPackageTests(unittest.TestCase):
             "提交代码",
             "提交推送",
             "checkpoint evaluation",
+            "Project-defined pre-commit policy when declared",
             "not by global string matching",
+            "Do not execute an isolated Git commit path",
+            "Never manufacture State or Evidence changes",
+        ):
+            self.assertIn(marker, text)
+
+    def test_skill_defines_1_0_1_activation_upgrade_without_core_promotion(self) -> None:
+        text = SKILL.read_text(encoding="utf-8")
+        for marker in (
+            "Agnir `1.0.1` is an activation/packaging reliability patch over `1.0.0`",
+            "does not change Core `1.0`",
+            "creating canonical `AGNIR.md`",
+            "upgrading the Agnir locator in `AGENTS.md`",
+            "reducing the README Agnir instruction section to a compatibility locator",
+            "compatible operational upgrade",
         ):
             self.assertIn(marker, text)
 
@@ -133,7 +150,7 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
-    def test_versioning_defines_1_0_promotion_and_current_release_status(self) -> None:
+    def test_versioning_defines_1_0_line_and_current_release_status(self) -> None:
         versioning = (ROOT / "VERSIONING.md").read_text(encoding="utf-8")
         milestones = (ROOT / "RELEASE_MILESTONES.md").read_text(encoding="utf-8")
         for marker in (
@@ -153,9 +170,12 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, milestones)
 
-        if VERSION == "1.0.0":
-            self.assertIn("Repository `1.0.0` is the stable package line", versioning)
-            self.assertIn("Repository `1.0.0` is the stable source package", milestones)
+        if VERSION == "1.0.1":
+            self.assertIn("1.0.1", versioning)
+            self.assertIn("1.0.1", milestones)
+        elif VERSION == "1.0.0":
+            self.assertIn("v1.0.0", versioning)
+            self.assertIn("v1.0.0", milestones)
         else:
             self.assertIn("v0.2.0", versioning)
             self.assertIn("v0.2.0", milestones)
@@ -204,7 +224,7 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, chinese)
 
-    def test_readme_project_surface_marks_add_vs_entry_only(self) -> None:
+    def test_readme_project_surface_includes_dedicated_agnir_md(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
         chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
 
@@ -212,16 +232,18 @@ class SkillPackageTests(unittest.TestCase):
         surface_zh = chinese.split("## Agnir 会给 Project 增加什么", 1)[1].split("## 架构图", 1)[0]
 
         self.assertIn("Agnir does not take over existing Project files.", surface_en)
+        self.assertIn("AGNIR.md", surface_en)
         self.assertIn("[EDIT: add entry only]", surface_en)
         self.assertGreaterEqual(surface_en.count("[EDIT: add entry only]"), 2)
-        self.assertGreaterEqual(surface_en.count("[ADD]"), 6)
+        self.assertGreaterEqual(surface_en.count("[ADD]"), 7)
         self.assertIn("preserve existing instructions", surface_en)
         self.assertIn("preserve existing content", surface_en)
 
         self.assertIn("Agnir 不会接管已有 Project 文件。", surface_zh)
+        self.assertIn("AGNIR.md", surface_zh)
         self.assertIn("[编辑：仅添加入口]", surface_zh)
         self.assertGreaterEqual(surface_zh.count("[编辑：仅添加入口]"), 2)
-        self.assertGreaterEqual(surface_zh.count("[新增]"), 6)
+        self.assertGreaterEqual(surface_zh.count("[新增]"), 7)
         self.assertIn("保留原有 instructions", surface_zh)
         self.assertIn("保留原有内容", surface_zh)
 
@@ -235,15 +257,17 @@ class SkillPackageTests(unittest.TestCase):
             self.assertNotIn("AGNIR_CORE_0_2_DRAFT.md", text)
             self.assertNotIn("REPOSITORY_FILESYSTEM_0_2_DRAFT.md", text)
 
-    def test_initialized_project_instructions_persist_commit_boundary_semantics(self) -> None:
+    def test_agnir_md_owns_commit_boundary_semantics_and_readme_is_locator_only(self) -> None:
+        instructions = (ROOT / "AGNIR.md").read_text(encoding="utf-8")
         english = (ROOT / "README.md").read_text(encoding="utf-8")
-        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
         section_en = english.split("## Agnir Project Instructions", 1)[1].split("\n## ", 1)[0]
-        section_zh = chinese.split("## Agnir Project Instructions", 1)[1].split("\n## ", 1)[0]
 
-        for marker in ("commit", "提交代码", "提交推送", "commit boundary"):
-            self.assertIn(marker, section_en)
-            self.assertIn(marker, section_zh)
+        for marker in ("commit", "提交代码", "提交推送", "checkpoint evaluation"):
+            self.assertIn(marker, instructions)
+        self.assertIn("AGNIR.md", section_en)
+        self.assertIn("backward-compatible locator", section_en)
+        for duplicated in ("Current State", "Next Actions", "AGNIR_CHECKPOINT_CONFLICT"):
+            self.assertNotIn(duplicated, section_en)
 
 
 if __name__ == "__main__":
