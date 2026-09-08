@@ -1,6 +1,6 @@
 # Agnir Versioning
 
-Status: active versioning policy. Repository `1.0.0` is the stable package line aligned with Core `1.0` + `repository-filesystem/1.0`; published non-prerelease tag `v1.0.0` is now the current latest stable release.
+Status: active versioning policy. Published non-prerelease tag `v1.0.0` remains the current latest stable release while the backward-compatible `1.0.1` activation/packaging patch is prepared. Both use Core `1.0` + `repository-filesystem/1.0`.
 
 Agnir distinguishes **repository release version** from **Core compatibility version** and profile/extension compatibility versions.
 
@@ -9,10 +9,25 @@ Agnir distinguishes **repository release version** from **Core compatibility ver
 Repository releases use semantic versioning for the Agnir product/distribution as a whole.
 
 - PATCH: backward-compatible fixes, documentation corrections, conformance repairs, packaging fixes, and implementation changes that do not materially expand the supported product contract.
-- MINOR before 1.0: backward-compatible or intentionally pre-1.0 contract evolution, including substantial new capabilities. Repository `v0.2.0` published Continuity Lineages through Core `0.2` after explicit migration, dual-backend conformance, real-Project validation, and an RC cycle.
+- MINOR: backward-compatible product-contract expansion after 1.0 when new supported capability is materially added without breaking the existing contract.
 - MAJOR at/after 1.0: incompatible changes to the stable public contract.
 
-A repository prerelease-to-stable promotion such as `0.2.0-rc.1` → `0.2.0` or `1.0.0-rc.1` → `1.0.0` does not itself change Core/profile compatibility. Compatibility is determined by the declared Core/profile versions, not by the presence or absence of a SemVer prerelease suffix.
+A repository prerelease-to-stable promotion such as `1.0.0-rc.1` → `1.0.0` does not itself change Core/profile compatibility. Compatibility is determined by the declared Core/profile versions, not by the presence or absence of a SemVer prerelease suffix.
+
+## v1.0.1 activation/packaging patch
+
+Repository `1.0.1` is a PATCH-level distribution evolution over `1.0.0`. Its intended scope is deliberately narrow:
+
+- introduce root `AGNIR.md` as the canonical Executor-facing Project activation and operation surface;
+- keep `AGENTS.md` locator-only and point it directly to `AGNIR.md`;
+- retain README `Agnir Project Instructions` as a backward-compatible locator for pre-upgrade `1.0.0` Projects rather than a second procedure copy;
+- preserve the legacy `AGENTS.md → README` route long enough to activate an existing `1.0.0` Project safely before compatible upgrade/repair;
+- make short repository-context `commit` / `提交` / `提交代码` intent dispatch explicitly pass through checkpoint evaluation before VCS commit;
+- keep checkpoint no-op semantics intact: checkpoint evaluation is required, `.agnir/` mutation is not;
+- keep Project-defined pre-commit verification separate from Agnir Core checkpoint semantics;
+- update Skill/conformance/packaging so fresh install and `1.0.0` → `1.0.1` upgrade converge on the direct `AGENTS.md → AGNIR.md → AGNIR.yaml` route.
+
+This patch **does not** introduce Core `1.1`, `repository-filesystem/1.1`, a new Project identity model, a new Continuity Lineage model, or new checkpoint semantics. Existing Core/profile compatibility declarations do not change merely because the `1.0.1` distribution is installed.
 
 ## Core compatibility version
 
@@ -22,7 +37,8 @@ Published/supported lines include:
 
 - repository `v0.1.1` exposes Core `0.1`;
 - repository `v0.2.0` exposes Core `0.2`;
-- repository `v1.0.0` exposes stable Core `1.0` for fresh/promoted 1.0 Projects while retaining support for historical `0.1` and `0.2` Projects.
+- repository `v1.0.0` exposes stable Core `1.0` for fresh/promoted 1.0 Projects while retaining support for historical `0.1` and `0.2` Projects;
+- repository `v1.0.1` continues to expose the same Core `1.0` semantics when published; its changes are distribution/activation packaging only.
 
 Core `1.0` is a deliberate **stability promotion of the behavior proven under Core `0.2`**, not a semantic redesign. The stable normative contract is `spec/AGNIR_CORE_1_0.md`; promotion from an existing Core/profile `0.2` Project is governed by `spec/CORE_0_2_TO_1_0_PROMOTION.md`.
 
@@ -33,7 +49,8 @@ Core version changes are driven by protocol compatibility semantics, not by repo
 Profiles/extensions version their own contracts independently where appropriate.
 
 - repository `v0.2.0` combines Core `0.2` with `repository-filesystem/0.2`;
-- repository `v1.0.0` combines Core `1.0` with stable `repository-filesystem/1.0` for fresh/promoted 1.0 Projects while continuing to ship supported historical compatibility paths.
+- repository `v1.0.0` combines Core `1.0` with stable `repository-filesystem/1.0` for fresh/promoted 1.0 Projects while continuing to ship supported historical compatibility paths;
+- repository `v1.0.1` keeps `repository-filesystem/1.0` unchanged.
 
 Other adapters/extensions retain their own identifiers and compatibility rules.
 
@@ -70,22 +87,20 @@ A Core/profile `0.1` Project reaches `1.0` through the existing explicit `0.1` �
 
 `latest stable` means an actually published non-prerelease tag/release. A moving `main`, temporary promotion/release branch, RC, or untagged commit is not silently substituted for a stable release.
 
-A prerelease target requires explicit Principal authorization. The accepted `v1.0.0-rc.1` is release evidence and remains immutable prerelease history; it never substitutes for stable resolution.
+The accepted `v1.0.0-rc.1` is release evidence and remains immutable prerelease history; it never substitutes for stable resolution.
 
-The repository `1.0.0` source tree is the stable package. Publication created the non-prerelease `v1.0.0` tag/Release at exact stable source revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`; stable resolution therefore selects `v1.0.0`. Published release tags are immutable by Project policy.
+Publication created the non-prerelease `v1.0.0` tag/Release at exact stable source revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`; until a separately authorized and verified `v1.0.1` publication completes, stable resolution continues to select `v1.0.0`. Published release tags are immutable by Project policy.
 
-## Meaning of v1.0.0
+## Meaning of the 1.0 line
 
-`v1.0.0` is the point at which Agnir commits to stable public compatibility and migration discipline for downstream Projects. It does not mean feature-complete in the sense of supporting every backend or platform.
+`v1.0.0` is the point at which Agnir committed to stable public compatibility and migration discipline for downstream Projects. Patch releases in the `1.0.x` distribution may harden implementation, documentation, activation, packaging, and conformance without changing the stable Core/profile contract.
 
-The stable version alignment is:
+The compatibility alignment remains:
 
 ```text
-Agnir repository v1.0.0
+Agnir repository 1.0.x
 ├── Core 1.0
 └── repository-filesystem/1.0
 ```
 
 Historical Core/profile `0.1` and `0.2` contracts remain immutable compatibility surfaces rather than being rewritten as 1.0 history.
-
-The release gate is defined in `V1_RELEASE_CRITERIA.md`. The exact immutable `v1.0.0-rc.1` cycle completed successfully before stable-package preparation; stable `v1.0.0` publication then completed at exact authoritative revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3` with a fresh immutable-source rerun.
