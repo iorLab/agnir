@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark">
+  <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#15110d">
+  <script src="theme.js"></script>
   <title>Agnir — 让项目拥有自己的连续性</title>
   <meta name="description" content="装一次 Agnir，在阶段结束时留下 Checkpoint；下次打开新会话说“继续”，Agent 就能从项目里恢复状态、下一步、决策和证据并接着做。">
   <meta property="og:title" content="Agnir — 项目连续性">
@@ -45,11 +46,13 @@
     @media (max-width: 640px) { .back-to-top { right: 16px; bottom: 16px; width: 42px; height: 42px; } }
     @media (prefers-reduced-motion: reduce) { .back-to-top { transition: none; } }
   </style>
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body class="zh-page">
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Agnir 首页">
-      <img src="assets/agnir-horizontal-dark.svg" alt="Agnir">
+      <img class="brand-logo-dark" src="assets/agnir-horizontal-dark.svg" alt="Agnir">
+      <img class="brand-logo-light" src="assets/agnir-horizontal-light.svg" alt="Agnir">
     </a>
     <span class="brand-tagline">AI Native 的项目记忆</span>
     <nav aria-label="主导航">
@@ -58,6 +61,10 @@
       <a href="#why">为什么用</a>
       <a href="https://github.com/iorLab/agnir">GitHub</a>
       <a href="https://github.com/iorLab/agnir/issues/new/choose">反馈</a>
+      <button class="theme-toggle" type="button" data-theme-toggle data-light-label="切换到亮色模式" data-dark-label="切换到暗色模式" aria-label="切换主题" title="切换主题">
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.7 8.7 0 1 0 20.2 15.1Z"></path></svg>
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+      </button>
       <a class="lang" href="index.html" lang="en" data-language-choice="en">English</a>
     </nav>
   </header>

@@ -38,6 +38,8 @@ jobs:
           cp website/index.html _site/index.html
           cp website/zh-CN.html _site/zh-CN.html
           cp website/styles.css _site/styles.css
+          cp website/theme.css _site/theme.css
+          cp website/theme.js _site/theme.js
           python brand/tools/build-production-derivatives.py --repo . --out _site/assets
           cp brand/exports/png/agnir-social-card.png _site/assets/agnir-social-card.png
           rm -f _site/assets/agnir-favicon-32-source.svg _site/assets/agnir-favicon-16-source.svg
