@@ -18,8 +18,7 @@ class AgentsMergeTests(unittest.TestCase):
 
         self.assertTrue(merged.startswith(existing))
         self.assertIn("## Agnir", merged)
-        self.assertIn("Agnir Project Instructions", merged)
-        self.assertIn("README.md", merged)
+        self.assertIn("AGNIR.md", merged)
         self.assertNotIn("Current State", merged)
         self.assertNotIn("Next Actions", merged)
 
@@ -28,22 +27,34 @@ class AgentsMergeTests(unittest.TestCase):
 
         self.assertTrue(merged.startswith("# Agent Instructions\n"))
         self.assertIn("## Agnir", merged)
-        self.assertIn("README.md", merged)
+        self.assertIn("AGNIR.md", merged)
         self.assertNotIn("AGNIR.yaml", merged)
         self.assertNotIn("Current State", merged)
 
-    def test_existing_equivalent_locator_is_idempotent(self) -> None:
+    def test_existing_v1_0_1_locator_is_idempotent(self) -> None:
         existing = (
             "# Agent Instructions\n\n"
-            "Before Project work, read the Agnir Project Instructions in README.md.\n"
+            "Before Project work, read and follow `AGNIR.md`.\n"
         )
 
         self.assertEqual(merge_agents_locator(existing), existing)
 
+    def test_legacy_v1_0_0_readme_locator_is_upgraded_in_place(self) -> None:
+        existing = (
+            "# Agent Instructions\n\n"
+            "Before Project work, read the Agnir Project Instructions in README.md.\n"
+            "Keep this repository tidy.\n"
+        )
+
+        merged = merge_agents_locator(existing)
+        self.assertIn("Before Project work, read and follow `AGNIR.md`.", merged)
+        self.assertIn("Keep this repository tidy.", merged)
+        self.assertNotIn("Agnir Project Instructions in README.md", merged)
+
     def test_explicit_conflict_fails_before_merge(self) -> None:
         existing = (
             "# Agent Instructions\n\n"
-            "Do not read README.md before working on this Project.\n"
+            "Do not read AGNIR.md before working on this Project.\n"
         )
 
         with self.assertRaisesRegex(AgentsMergeConflict, "AGNIR_INSTALL_AGENTS_CONFLICT"):
@@ -51,7 +62,7 @@ class AgentsMergeTests(unittest.TestCase):
 
         self.assertEqual(
             existing,
-            "# Agent Instructions\n\nDo not read README.md before working on this Project.\n",
+            "# Agent Instructions\n\nDo not read AGNIR.md before working on this Project.\n",
         )
 
 

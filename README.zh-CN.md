@@ -60,34 +60,26 @@ Execution-surface bootstrap
 
 某些执行载体需要一个**一次性的持久项目定位信息**，新的上下文才能进入项目自己的激活路径。安装或升级时，Agnir Skill 必须在获得授权且具备能力时配置该载体，否则给用户一个**可直接复制的交接内容**。它必须把**执行载体激活**与**仓库激活**分开报告。执行载体配置属于适配层行为，不属于 Agnir Core 或项目记忆。
 
-**执行载体启动配置**必须**只追加项目定位信息**，并保留与 Agnir 无关的既有指令。安装、迁移、兼容性晋升、升级或修复时，根目录 [`SKILL.md`](SKILL.md) 是面向智能体的权威操作流程。
+**执行载体启动配置**必须**只追加项目定位信息**，并保留与 Agnir 无关的既有指令。安装、迁移、兼容性晋升、升级或修复时，根目录 [`SKILL.md`](SKILL.md) 是面向智能体的权威分发操作流程。
 
 仓库型项目会持久保存自己的激活路径：
 
 ```text
 项目根目录
 → AGENTS.md
-→ README.md / Agnir 项目指令
+→ AGNIR.md
 → AGNIR.yaml
 → 已选择的持久连续性
 ```
 
-`latest stable` 永远指实际发布的非预发布 tag / Release，而不是移动中的 `main`、临时 release 分支、RC 或未打 tag 的提交。当前源码树承载仓库 `1.0.0` 稳定包；只有当非预发布 `v1.0.0` Release 在精确的权威修订上成功发布后，普通稳定版升级解析才会选择它。已接受的 `v1.0.0-rc.1` 仍只是预发布证据。
+`AGNIR.md` 是面向 Executor 的权威激活与项目操作入口。`README.md#Agnir-Project-Instructions` 只作为 Agnir `1.0.0` 旧激活路径的向后兼容定位入口保留。
+
+`latest stable` 永远指实际发布的非预发布 tag / Release，而不是移动中的 `main`、临时 release 分支、RC 或未打 tag 的提交。当前最新已发布稳定包仍是 `v1.0.0`；`v1.0.1` 的激活加固在单独完成正式发布前只是向后兼容的 patch 演进。稳定版升级解析只有在对应非预发布 Release 于精确权威修订上成功发布后才会前进。
 
 ## Agnir 项目指令
 <!-- ## Agnir Project Instructions -->
-<!-- 机器兼容别名，不渲染：提交代码 | 提交推送 | commit boundary -->
 
-> **给智能体。** 普通用户通常不需要阅读这一节。
-
-1. **发现。** 把仓库根目录视为已授权的项目入口。读取顶层 `AGNIR.yaml`；验证已声明的 Core / profile 兼容性与项目身份；对 Core `0.2` 或 `1.0`，还要验证已选择的逻辑连续性谱系。后端 selector / binding 与谱系身份必须分别验证，并按照项目实际声明的兼容版本分派处理。
-2. **加载。** 从已声明的选定连续性中加载当前状态与后续行动；当决策或证据会实质约束当前操作时再加载它们。除非有更新的 Principal 指令或直接观察到的项目事实，否则持久的项目事实优先于私有对话记忆。
-3. **工作。** 真正的项目工作发生在 Agnir Core 之外。安装、迁移、兼容性晋升、升级或修复时使用根目录 `SKILL.md`。
-4. **检查点。** 在明确的检查点、保存进度、结束操作或仓库**提交边界**上，只协调选定谱系中发生实质变化的连续性。持久事实没有变化就是空操作；遇到过期基线时必须返回 `AGNIR_CHECKPOINT_CONFLICT`，而不是覆盖更新的事实。
-5. **提交 / 推送。** 在仓库上下文中，`commit` 或等价意图表示先建立检查点再提交，并优先用一个修订同时承载项目变化与 Agnir 变化。`commit and push` 或等价意图还包括推送以及目标 ref 验证。
-6. **安全集成谱系。** 对 Core `0.2` / `1.0` 的并行连续性，源连续性只是协调输入，不是目标事实。Agnir 控制集成路径时，先暂存且不推进目标，再针对集成后的项目结果协调目标连续性，最后一致地发布集成后的项目与已协调的目标检查点。
-
-根目录 `AGENTS.md` 故意只作为定位入口，不能成为第二份项目状态或 Agnir 操作流程。
+权威 Agnir 激活与项目操作指令位于 [`AGNIR.md`](AGNIR.md)。本节标题仅作为旧 Agnir `1.0.0` 激活路径的向后兼容定位入口保留，不再复制完整操作流程。
 
 ## Agnir 会给项目增加什么
 <!-- ## Agnir 会给 Project 增加什么 -->
@@ -98,13 +90,14 @@ Agnir 不会接管已有 Project 文件。
 保留原有内容
 -->
 
-参考 Agnir Skill 初始化仓库 / 文件系统项目时，只建立一个很小的、由项目自己拥有的连续性表面。**Agnir 不会接管已有项目文件。** 对 `AGENTS.md` 与 `README.md`，Skill 只增加所需入口并保留无关内容。
+参考 Agnir Skill 初始化仓库 / 文件系统项目时，只建立一个很小的、由项目自己拥有的连续性表面。**Agnir 不会接管已有项目文件。** 对现有项目文件，Skill 只增加所需入口并保留无关内容。
 
 ```text
 Project/
-├── AGENTS.md                 # [编辑：仅添加入口] 添加激活定位信息；保留现有指令
+├── AGENTS.md                 # [编辑：仅添加入口] 添加到 AGNIR.md 的定位信息；保留现有指令
+├── AGNIR.md                  # [新增] 面向 Executor 的权威激活 + 项目操作指令
 ├── AGNIR.yaml                # [新增] 发现锚点：身份、兼容性、谱系、记忆定位信息
-├── README.md                 # [编辑：仅添加入口] 添加 Agnir 指令；保留现有内容
+├── README.md                 # [编辑：仅添加入口] 添加向后兼容定位信息；保留现有内容
 └── .agnir/                   # [新增] 由项目自己拥有的持久连续性
     ├── state.md              # [新增] 当前持久事实
     ├── next-actions.md       # [新增] 按顺序排列的后续工作
@@ -126,17 +119,19 @@ Project/
 
 ```mermaid
 flowchart TB
-    U[用户\n简短意图] --> K[Agnir Agent Skill\nSKILL.md 保存操作流程]
+    U[用户\n简短意图] --> K[Agnir Agent Skill\nSKILL.md 保存分发操作流程]
     K -. 必要时执行载体交接 .-> X[执行载体启动配置\n编辑：只追加项目定位信息]
     X --> P[目标项目根目录]
     K -. 非破坏性设置 .-> P
 
     subgraph T[目标项目表面]
         G[AGENTS.md\n编辑：只添加激活定位信息]
-        H[README.md\n编辑：只添加 Agnir 指令]
+        I[AGNIR.md\n新增：权威项目指令]
+        H[README.md\n编辑：只添加兼容定位信息]
         A[AGNIR.yaml\n新增：发现锚点]
         F[.agnir/\n新增：持久连续性]
-        G --> H --> A
+        G --> I --> A
+        H -. 旧路径定位 .-> I
     end
 
     P --> G
@@ -147,7 +142,7 @@ flowchart TB
     M --> F
 ```
 
-`SKILL.md`、`AGENTS.md → README` 与执行载体启动配置都属于围绕 Core 的打包 / 激活约定，不是 Core 依赖。
+`SKILL.md`、`AGENTS.md → AGNIR.md`、README 向后兼容定位入口与执行载体启动配置都属于围绕 Core 的打包 / 激活约定，不是 Core 依赖。
 
 Core `0.2` 显式引入了**连续性谱系**；Core `1.0` 将已经通过独立实现验证的同一语义模型稳定化。项目身份、逻辑谱系身份、selector / binding 与修订回执始终是不同概念。
 <!-- 机器兼容术语，不渲染：Continuity Lineage -->
@@ -162,7 +157,7 @@ Skill 把简短用户意图与完整智能体操作流程分开。稳定版安�
 flowchart TD
     C[新的智能体 / 新执行上下文] --> P[获得已授权的项目根目录]
     P --> A[读取 AGENTS.md]
-    A --> I[跟随 README 中的 Agnir 项目指令]
+    A --> I[跟随 AGNIR.md 项目指令]
     I --> R[读取 AGNIR.yaml / 解析精确兼容版本]
     R --> V{兼容性与项目身份有效?}
     V -- 否 --> F[显式返回发现失败]
@@ -182,21 +177,23 @@ Agnir 不负责真正的项目工作。它让连续性持久、可发现、归�
 
 - 已发布 `v0.1.1`：Core `0.1` + `repository-filesystem/0.1`；
 - 已发布 `v0.2.0`：Core `0.2` + `repository-filesystem/0.2`；
-- 仓库稳定包 `v1.0.0`：Core `1.0` + `repository-filesystem/1.0`，同时继续携带并测试历史 `0.1` / `0.2` 兼容路径。
+- 已发布 `v1.0.0`：Core `1.0` + `repository-filesystem/1.0`，同时继续携带并测试历史 `0.1` / `0.2` 兼容路径。
 
 `0.1` 项目按照 [`spec/CORE_0_1_TO_0_2_MIGRATION.md`](spec/CORE_0_1_TO_0_2_MIGRATION.md) 显式迁移到 `0.2`。Core / profile `1.0` 是**对已经在 `0.2` 下通过独立实现验证的行为进行稳定性晋升**，不是功能驱动的重新设计。已有 `0.2` 项目可以继续保持 `0.2`；把声明改成 `1.0` 是另一项必须单独授权、由项目自己拥有的晋升操作，规范见 [`spec/CORE_0_2_TO_1_0_PROMOTION.md`](spec/CORE_0_2_TO_1_0_PROMOTION.md)。
 
 ## 当前版本与发布状态
 <!-- 机器兼容发布标记，不渲染：Repository stable package：`v1.0.0` | 已接受 release candidate：`v1.0.0-rc.1` -->
 
-**仓库稳定包：`v1.0.0`** — Core `1.0` + `repository-filesystem/1.0`。
+**最新已发布稳定包：`v1.0.0`** — Core `1.0` + `repository-filesystem/1.0`。
 
-**已接受的发布候选版：`v1.0.0-rc.1`**，精确修订为 `092945289f1a0a9803e4fe0583104aa380ceaadc`；不可变 RC 周期已经通过首次发布与新鲜源码验证。
+**正在开发的 patch 演进：`v1.0.1`** — 仅加固 activation / packaging 可靠性；Core `1.0` 与 `repository-filesystem/1.0` 不变。
 
-稳定版发布是独立的权威 `main` 操作。`release/v1.0.0` 暂存谱系只提供协调输入；只有精确的权威 `main` 在完整目标验证通过后才能准备发布。
+**1.0 稳定线已接受的发布候选版：`v1.0.0-rc.1`**，精确修订为 `092945289f1a0a9803e4fe0583104aa380ceaadc`；不可变 RC 周期已经通过首次发布与新鲜源码验证。
+
+稳定版发布是独立的权威 `main` 操作。release 暂存谱系只提供协调输入；只有精确的权威 `main` 在完整目标验证通过后才能准备发布。
 
 ```text
-Agnir repository v1.0.0
+Agnir repository 1.0.x
 ├── Core 1.0
 └── repository-filesystem/1.0
 ```
@@ -219,6 +216,7 @@ agnir/
 ├── profiles/                              # 仓库 / 文件系统兼容 profile
 ├── conformance/
 │   ├── activation_reference.py
+│   ├── operation_dispatch_reference.py
 │   ├── checkpoint_reference.py
 │   ├── check_agnir_1_0.py
 │   ├── test_skill_package.py
@@ -228,8 +226,9 @@ agnir/
 ├── adoption/                              # 定位、发布、演示与采用策略
 ├── website/                               # 静态公共网站源码
 ├── history/                               # 前身 / 历史材料
-├── SKILL.md                               # 面向智能体的权威操作流程
-├── AGENTS.md                              # 项目指令定位入口
+├── SKILL.md                               # 面向智能体的权威分发操作流程
+├── AGENTS.md                              # AGNIR.md 定位入口
+├── AGNIR.md                               # 权威项目激活 + 操作指令
 ├── AGNIR.yaml                             # 项目 / 谱系发现锚点
 ├── README.md
 ├── README.zh-CN.md
@@ -252,4 +251,4 @@ Agnir 与 Svif 是两个独立产品。Agnir 负责持久项目连续性的语�
 
 ## 范围
 
-Agnir Core 对 Git、GitHub、仓库、文件系统、ChatGPT、具体智能体产品与存储引擎保持中立。仓库 / 文件系统行为、VCS 映射、执行载体交接与 Agent Skill 打包都属于围绕 Core 契约构建的 profile / adapter / distribution 层职责。
+Agnir Core 对 Git、GitHub、仓库、文件系统、ChatGPT、具体智能体产品与存储引擎保持中立。`AGNIR.md`、仓库 / 文件系统行为、VCS 映射、执行载体交接与 Agent Skill 打包都属于围绕 Core 契约构建的 profile / adapter / distribution 层职责。

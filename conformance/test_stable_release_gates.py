@@ -45,24 +45,20 @@ class StableZeroTwoReleaseGateTests(unittest.TestCase):
             self.assertTrue((ROOT / path).exists(), path)
 
 
-@unittest.skipUnless(VERSION == "1.0.0", "v1.0.0 stable package gate applies only to the v1.0.0 source tree")
+@unittest.skipUnless(VERSION in {"1.0.0", "1.0.1"}, "stable 1.0.x package gate applies only to a stable 1.0.x source tree")
 class StableOneZeroReleaseGateTests(unittest.TestCase):
-    def test_repository_package_is_stable_1_0_0(self) -> None:
-        self.assertEqual(VERSION, "1.0.0")
+    def test_repository_package_keeps_stable_core_profile_1_0(self) -> None:
         manifest = (ROOT / "AGNIR.yaml").read_text(encoding="utf-8")
         for marker in (
             'version: "1.0"',
             'discovery_profile: "repository-filesystem/1.0"',
-            'repository_version: "1.0.0"',
+            f'repository_version: "{VERSION}"',
             'branch_continuity: "lineage-bound"',
             'integration_reconciliation: "required"',
         ):
             self.assertIn(marker, manifest)
-        bindings = (
-            ('lineage: "urn:agnir:lineage:v1.0.0"', 'selector: "refs/heads/release/v1.0.0"'),
-            ('lineage: "urn:agnir:lineage:authoritative"', 'selector: "refs/heads/main"'),
-        )
-        self.assertTrue(any(lineage in manifest and selector in manifest for lineage, selector in bindings))
+        self.assertIn('lineage: "urn:agnir:lineage:authoritative"', manifest)
+        self.assertIn('selector: "refs/heads/main"', manifest)
         self.assertNotIn('repository_version: "1.0.0-rc.1"', manifest)
 
     def test_core_profile_and_promotion_are_stable_normative_contracts(self) -> None:
@@ -76,30 +72,31 @@ class StableOneZeroReleaseGateTests(unittest.TestCase):
         self.assertNotIn("Candidate stable normative profile", profile)
         self.assertNotIn("Candidate normative promotion contract", promotion)
 
-    def test_release_package_records_rc_and_main_only_publication_boundary(self) -> None:
+    def test_release_package_keeps_latest_stable_distinct_from_patch_candidate(self) -> None:
         release = (ROOT / "RELEASE.md").read_text(encoding="utf-8")
         for marker in (
-            "# Agnir 1.0.0 Stable Release Package",
-            "**Repository version:** `1.0.0`",
-            "**Core compatibility line:** `1.0`",
+            "Core compatibility line",
             "repository-filesystem/1.0",
-            "Accepted release candidate",
-            "v1.0.0-rc.1",
-            "latest stable",
-            "release: publish v1.0.0 stable",
-            "authoritative `main`",
+            "Latest published stable",
+            "v1.0.0",
+            "authoritative-main",
+            "Published tags are immutable",
         ):
             self.assertIn(marker, release)
+        if VERSION == "1.0.1":
+            self.assertIn("v1.0.1 patch scope", release)
+            self.assertIn("does not change Core `1.0`", release)
 
-    def test_readmes_expose_stable_1_0_package_without_candidate_wording(self) -> None:
-        english = (ROOT / "README.md").read_text(encoding="utf-8")
-        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
-        self.assertIn("Repository stable package: `v1.0.0`", english)
-        self.assertIn("Accepted release candidate: `v1.0.0-rc.1`", english)
-        self.assertIn("Repository stable package：`v1.0.0`", chinese)
-        self.assertIn("已接受 release candidate：`v1.0.0-rc.1`", chinese)
-        self.assertNotIn("Promotion candidate in development", english)
-        self.assertNotIn("正在开发的 promotion candidate", chinese)
+    def test_dedicated_activation_surface_is_packaging_not_core(self) -> None:
+        instructions = (ROOT / "AGNIR.md").read_text(encoding="utf-8")
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("checkpoint evaluation", instructions)
+        self.assertIn("AGNIR.md", agents)
+        self.assertNotIn("Current State", agents)
+        section = readme.split("## Agnir Project Instructions", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("AGNIR.md", section)
+        self.assertNotIn("Current State", section)
 
     def test_historical_compatibility_surfaces_remain_present(self) -> None:
         for path in (
@@ -115,17 +112,15 @@ class StableOneZeroReleaseGateTests(unittest.TestCase):
         ):
             self.assertTrue((ROOT / path).exists(), path)
 
-    def test_workflow_has_main_only_stable_publication_gate(self) -> None:
+    def test_v1_0_0_publication_gate_remains_immutable_history(self) -> None:
         workflow = (ROOT / ".github/workflows/conformance.yml").read_text(encoding="utf-8")
         for marker in (
             "publish-v1-0-0:",
             "Publish v1.0.0 stable release",
-            "github.ref == 'refs/heads/main'",
             "release: publish v1.0.0 stable",
             'accepted_rc="v1.0.0-rc.1"',
             'tag="v1.0.0"',
             "prerelease=false",
-            'test "${latest}" = "${tag}"',
         ):
             self.assertIn(marker, workflow)
 

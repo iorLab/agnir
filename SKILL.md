@@ -33,16 +33,17 @@ A distribution that supports several compatibility lines must dispatch a Project
 
 ## Install or initialize Agnir
 
-Treat the target Project root—not this Skill repository—as the authorized Project Entry Point. Before writing, inspect existing `README.md`, `AGENTS.md`, `AGNIR.yaml`, and `.agnir/`. Preserve unrelated Project content; merge rather than destructively replace.
+Treat the target Project root—not this Skill repository—as the authorized Project Entry Point. Before writing, inspect existing `README.md`, `AGENTS.md`, `AGNIR.md`, `AGNIR.yaml`, and `.agnir/`. Preserve unrelated Project content; merge rather than destructively replace.
 
 ### Merge existing AGENTS.md safely
 
-1. If `AGENTS.md` is absent, create only a minimal Agnir locator to README `Agnir Project Instructions`.
+1. If `AGENTS.md` is absent, create only a minimal Agnir locator to root `AGNIR.md`.
 2. If it exists, preserve its existing unrelated content and add only the locator.
-3. If an equivalent Agnir locator already exists, treat the merge as idempotent.
-4. Keep `AGENTS.md` locator-only; do not copy durable continuity or the full procedure into it.
-5. Detect instruction conflicts before writes.
-6. If resolving a conflict would require overriding/reinterpreting existing Project instructions, do not guess and do not overwrite it. Stop and report the exact conflict to the Principal.
+3. If an equivalent `AGNIR.md` locator already exists, treat the merge as idempotent.
+4. If a legacy Agnir `1.0.0` locator points to README `Agnir Project Instructions`, upgrade that locator in place to `AGNIR.md` while preserving unrelated instructions.
+5. Keep `AGENTS.md` locator-only; do not copy durable continuity or the full procedure into it.
+6. Detect instruction conflicts before writes.
+7. If resolving a conflict would require overriding/reinterpreting existing Project instructions, do not guess and do not overwrite it. Stop and report the exact conflict to the Principal.
 
 ### Create the discovery record and durable memory
 
@@ -65,11 +66,21 @@ Create concise initial truth and at least one initialization Evidence item when 
 
 ### Persist Project activation
 
-In target `README.md`, create/update the exact heading `## Agnir Project Instructions`. Tell future Agents to read `AGNIR.yaml`, validate compatibility/Project identity/selected lineage, load State and Next Actions, load Decisions/Evidence when relevant, prefer durable Project truth over private Agent memory, and checkpoint at save/finish/commit boundaries.
+Create/update root `AGNIR.md` as the canonical Executor-facing Project activation and operation surface. It must tell future Executors to:
 
-Persist repository intent semantics there: authorized `commit` / `提交代码` means checkpoint before commit and preferably Project + Agnir changes in one VCS revision; `提交推送` means checkpoint + commit + push + destination-ref verification.
+- enter through the authorized Project Entry Point;
+- read `AGNIR.yaml` and validate compatibility, Project identity, selected lineage, and selector/binding where applicable;
+- load Current State and Next Actions, plus Decisions/Evidence when relevant;
+- prefer durable Project truth over private Executor memory unless superseded by newer Principal intent or direct Project observation;
+- perform checkpoint evaluation at save/finish/commit boundaries;
+- treat unchanged durable truth as a checkpoint no-op rather than manufacturing `.agnir/` mutations;
+- reject stale checkpoint publication with `AGNIR_CHECKPOINT_CONFLICT`;
+- interpret repository `commit` / `提交` / `提交代码` as checkpoint evaluation → Project-defined pre-commit policy when declared → commit;
+- interpret `commit and push` / `提交推送` as checkpoint evaluation → Project-defined pre-commit policy when declared → commit → push → destination-ref verification.
 
-Create/update root `AGENTS.md` according to the safe merge rules so it points to `## Agnir Project Instructions` without duplicating the procedure.
+In target `README.md`, create/update the exact heading `## Agnir Project Instructions` as a **backward-compatible locator only**. That section must point to `AGNIR.md` and must not duplicate the full procedure.
+
+Create/update root `AGENTS.md` according to the safe merge rules so it points directly to `AGNIR.md` without duplicating the procedure.
 
 ### Verify repository activation
 
@@ -78,10 +89,14 @@ Finish with a fresh repository activation test (the repository-layer fresh activ
 ```text
 Project root
 → AGENTS.md
-→ README.md / Agnir Project Instructions
+→ AGNIR.md
 → AGNIR.yaml
 → declared selected durable memory
 ```
+
+Also verify the backward-compatible README heading points to `AGNIR.md` rather than containing a second procedure copy.
+
+A pre-`1.0.1` Project may still enter through the legacy route `AGENTS.md → README.md / Agnir Project Instructions → AGNIR.yaml` **only so the existing Project can be activated safely before upgrade/repair**. New installs and successfully upgraded Projects use the direct `AGNIR.md` route.
 
 If continuation still depends on the installation conversation or installing Agent's private memory, repository activation is incomplete.
 
@@ -115,12 +130,14 @@ Ask the Principal to append or merge the block; do not overwrite unrelated exist
 
 ## Upgrade an existing Agnir Project
 
-Upgrade is **not re-initialization**. Activate the existing Project first. Preserve Project identity, memory locators/content, unrelated README/`AGENTS.md` content, unrelated extensions, and still-valid surface locators unless another authorized operation changes them.
+Upgrade is **not re-initialization**. Activate the existing Project first through its currently valid activation route. Preserve Project identity, memory locators/content, unrelated README/`AGENTS.md`/`AGNIR.md` content, unrelated extensions, and still-valid surface locators unless another authorized operation changes them.
+
+Agnir `1.0.1` is an activation/packaging reliability patch over `1.0.0`: it does not change Core `1.0`, `repository-filesystem/1.0`, Project identity, logical lineage identity, or checkpoint semantics. For a `1.0.0` Project, migrate the activation packaging by creating canonical `AGNIR.md`, upgrading the Agnir locator in `AGENTS.md`, and reducing the README Agnir instruction section to a compatibility locator. Reconcile this as an operational upgrade, not a Core/profile promotion.
 
 ### Classify before mutating
 
 - **no-op** — same operational package and no material drift;
-- **compatible operational upgrade** — Core/profile compatibility lines unchanged;
+- **compatible operational upgrade** — Core/profile compatibility lines unchanged, including `1.0.0` → `1.0.1` activation packaging;
 - **migration or promotion required** — Core/profile compatibility identifiers change. Surface `AGNIR_UPGRADE_MIGRATION_REQUIRED`-class semantics and do not silently rewrite compatibility.
 
 A newer Agnir distribution may continue to operate a supported older compatibility line. In particular, a `1.0.x` distribution may resolve a valid `0.2` Project through its `0.2` compatibility path; merely installing the newer distribution is not authorization to rewrite the Project to Core/profile `1.0`.
@@ -129,8 +146,8 @@ A Project without older operational provenance remains valid; missing provenance
 
 ### Apply a compatible operational upgrade
 
-1. Preserve `project.identity`, memory locators/content, and unrelated extensions.
-2. Non-destructively merge the target activation/procedure contract.
+1. Preserve `project.identity`, logical lineage identity where applicable, memory locators/content, and unrelated extensions.
+2. Non-destructively merge the target activation/procedure contract, including canonical `AGNIR.md` for `1.0.1+` packaging.
 3. When supported, record actual applied package provenance:
 
 ```yaml
@@ -188,7 +205,7 @@ For a supported `0.1` Project that is intentionally brought to `1.0`, preserve b
 Do not ask for another bootstrap prompt.
 
 1. read root `AGENTS.md`;
-2. follow README `Agnir Project Instructions`;
+2. follow root `AGNIR.md` when the direct locator is present; for a pre-`1.0.1` Project, the legacy README `Agnir Project Instructions` route remains acceptable until compatible upgrade/repair;
 3. read `AGNIR.yaml`;
 4. validate and dispatch according to the actually declared Core/profile, then validate Project identity;
 5. for Core `0.2` or `1.0`, resolve exactly one selected logical lineage from explicit/context/default selection and validate any selector binding separately;
@@ -212,13 +229,17 @@ At an intentional checkpoint/save/finish/commit boundary:
 8. fresh-resolve the same Project identity/lineage after publication;
 9. ensure a fresh Executor can resume.
 
+Checkpoint evaluation is mandatory at the boundary; `.agnir/` mutation is not. Never manufacture State or Evidence changes solely to make a commit appear checkpointed.
+
 ## Commit and push integration
 
 Interpret repository intent by context, not by global string matching.
 
-- `commit`, `提交`, `提交代码` in repository context: checkpoint evaluation → commit.
-- `commit and push`, `提交推送`: checkpoint evaluation → commit → push → verify actual destination ref.
+- `commit`, `提交`, `提交代码` in repository context: checkpoint evaluation → Project-defined pre-commit policy when declared → commit.
+- `commit and push`, `提交推送`: checkpoint evaluation → Project-defined pre-commit policy when declared → commit → push → verify actual destination ref.
 - a bare `提交` outside repository context does not automatically mean VCS.
+
+Do not execute an isolated Git commit path that bypasses checkpoint evaluation in an Agnir-enabled Project.
 
 If Project and continuity both changed, prefer one VCS revision. If checkpoint evaluation is no-op, commit only requested Project changes. Revision IDs are receipts, not identity.
 
@@ -253,12 +274,13 @@ If target continuity remains unreconciled, surface `AGNIR_LINEAGE_RECONCILIATION
 Repair the earliest broken layer; never invent truth.
 
 1. confirm authorized Project Entry Point;
-2. validate `AGENTS.md` → README `Agnir Project Instructions` activation;
-3. validate `AGNIR.yaml`, declared Core/profile, and Project identity;
-4. for `0.2` or `1.0`, validate selected logical lineage and selector/binding separately;
-5. validate memory locators/authorization boundaries;
-6. reconcile durable truth only after discovery is trustworthy;
-7. if an external mechanism advanced an unreconciled target, treat it as recovery-required and construct a coherent target checkpoint;
-8. re-run fresh repository activation and required surface activation verification.
+2. validate `AGENTS.md` → `AGNIR.md` activation, or recognize the legacy `AGENTS.md` → README `Agnir Project Instructions` route only as pre-`1.0.1` compatibility input;
+3. validate the README compatibility locator when `AGNIR.md` is canonical;
+4. validate `AGNIR.yaml`, declared Core/profile, and Project identity;
+5. for `0.2` or `1.0`, validate selected logical lineage and selector/binding separately;
+6. validate memory locators/authorization boundaries;
+7. reconcile durable truth only after discovery is trustworthy;
+8. if an external mechanism advanced an unreconciled target, treat it as recovery-required and construct a coherent target checkpoint;
+9. re-run fresh repository activation and required surface activation verification.
 
 Never repair by guessing a sibling Project/branch/lineage, copying source continuity wholesale into target, rewriting unrelated Project instructions, silently relabeling one compatibility line as another, or treating private chat history as canonical Project truth.
