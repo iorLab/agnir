@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#15110d">
+  <script src="theme.js"></script>
+  <title>Agnir — 프로젝트에 연속성을 남기세요</title>
+  <meta name="description" content="Agnir를 한 번 설치하고 중요한 시점마다 Checkpoint를 남기세요. 다음 새 세션에서 “계속”이라고 말하면 Agent가 프로젝트에서 현재 상태, 다음 작업, 결정, 근거를 읽어와 그대로 이어서 작업합니다.">
+  <meta property="og:title" content="Agnir — Project Continuity">
+  <meta property="og:description" content="Agent는 잊습니다. 프로젝트는 잊지 않습니다.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://iorlab.github.io/agnir/ko.html">
+  <meta property="og:image" content="https://iorlab.github.io/agnir/assets/agnir-social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/agnir-favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="alternate" hreflang="en" href="https://iorlab.github.io/agnir/">
+  <link rel="alternate" hreflang="zh-CN" href="https://iorlab.github.io/agnir/zh-CN.html">
+  <link rel="alternate" hreflang="ja" href="https://iorlab.github.io/agnir/ja.html">
+  <link rel="alternate" hreflang="ko" href="https://iorlab.github.io/agnir/ko.html">
+  <link rel="alternate" hreflang="x-default" href="https://iorlab.github.io/agnir/">
+
+  <style>
+    .back-to-top {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 30;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(239, 215, 195, 0.22);
+      border-radius: 50%;
+      background: rgba(24, 19, 15, 0.92);
+      color: #efd7c3;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 140ms ease, transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+    .back-to-top:hover { border-color: rgba(237, 190, 151, 0.55); background: rgba(30, 23, 17, 0.98); }
+    .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    @media (max-width: 640px) { .back-to-top { right: 16px; bottom: 16px; width: 42px; height: 42px; } }
+    @media (prefers-reduced-motion: reduce) { .back-to-top { transition: none; } }
+  </style>
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Agnir 홈">
+      <img class="brand-logo-dark" src="assets/agnir-horizontal-dark.svg" alt="Agnir">
+      <img class="brand-logo-light" src="assets/agnir-horizontal-light.svg" alt="Agnir">
+    </a>
+    <span class="brand-tagline">AI 네이티브 프로젝트 메모리</span>
+    <nav aria-label="주요 탐색">
+      <a href="#install">설치</a>
+      <a href="#use">사용법</a>
+      <a href="#why">왜 Agnir인가</a>
+      <a href="https://github.com/iorLab/agnir">GitHub</a>
+      <a href="https://github.com/iorLab/agnir/issues/new/choose">피드백</a>
+      <button class="theme-toggle" type="button" data-theme-toggle data-light-label="라이트 모드로 전환" data-dark-label="다크 모드로 전환" aria-label="테마 전환" title="테마 전환">
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.7 8.7 0 1 0 20.2 15.1Z"></path></svg>
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+      </button>
+      <a class="lang" href="index.html" lang="en" data-language-choice="en">English</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Project Continuity</p>
+        <h1>Agent는 잊습니다.<br>프로젝트는 잊지 않습니다.</h1>
+        <p class="lede">Agent에게 한 문장으로 Agnir를 설치하세요. 다음 새 세션에서 “계속”이라고 말하면 프로젝트에서 현재 상태, 다음 작업, 결정, 근거를 읽어와 그대로 이어서 작업합니다.</p>
+        <div class="actions">
+          <a class="button primary" href="#install">Agnir 설치</a>
+          <a class="button secondary" href="#use">30초 만에 시작</a>
+        </div>
+        <div class="trust-line" aria-label="Agnir 안심 포인트">
+          <span>특정 Agent에 종속되지 않음</span>
+          <span>비공개 채팅 기록에 의존하지 않음</span>
+          <span>기존 개발 흐름을 바꾸지 않음</span>
+        </div>
+      </div>
+
+      <div class="hero-demo" aria-label="새 세션 비교">
+        <article class="terminal hero-terminal muted">
+          <div class="terminal-label">새 세션 · Agnir 없음</div>
+          <p><span class="prompt">나 ›</span> 계속.</p>
+          <p><span class="agent">Agent ›</span> 이전에 어디까지 했나요?</p>
+        </article>
+        <article class="terminal hero-terminal live">
+          <div class="terminal-label">새 세션 · Agnir 사용</div>
+          <p><span class="prompt">나 ›</span> 계속.</p>
+          <p><span class="agent">Agent ›</span> Agnir를 불러왔습니다. 다음은 통합 테스트 추가입니다. 계속 진행하겠습니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="install" class="section shell install first-section">
+      <div class="section-heading">
+        <p class="eyebrow">먼저 설치</p>
+        <h2>한 문장이면 시작됩니다.</h2>
+        <p>아래 프롬프트를 복사해 Agent에 붙여 넣으세요.</p>
+      </div>
+      <div class="copy-block">
+        <pre id="install-command-ko"><code>이 프로젝트에 Agnir를 설치하고 초기화해 줘: https://github.com/iorLab/agnir</code></pre>
+        <button class="copy-button" type="button" data-copy-target="install-command-ko" data-copy-label="설치 지시 복사" data-copied-label="복사됨" aria-label="설치 지시 복사" title="설치 지시 복사">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8z"></path><path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1 1v1"></path></svg>
+        </button>
+      </div>
+      <p class="microcopy">지금 설치한 뒤 새 세션을 열어 “계속”이라고 말해 보세요. 차이가 바로 드러납니다.</p>
+    </section>
+
+    <section id="use" class="section shell">
+      <div class="section-heading">
+        <p class="eyebrow">사용법</p>
+        <h2>네 단계면 충분합니다.</h2>
+        <p>Agnir는 일상 작업에 부담을 더하지 않습니다. “<button class="intent-link" type="button" data-intent-dialog>상태 저장</button>” 의도를 표현하면 복구 가능한 Checkpoint를 남깁니다.</p>
+      </div>
+      <div class="use-grid">
+        <article>
+          <span class="step-number">01</span>
+          <h3>설치</h3>
+          <p>위의 한 줄 설치 지시를 Agent에 전달합니다.</p>
+        </article>
+        <article>
+          <span class="step-number">02</span>
+          <h3>평소처럼 작업</h3>
+          <p>개발, 디버깅, 리뷰, 커밋, 리팩터링을 지금처럼 계속하세요. Agnir는 개발 흐름을 대체하지 않습니다.</p>
+        </article>
+        <article class="checkpoint-step">
+          <span class="step-number">03</span>
+          <h3>Checkpoint</h3>
+          <p>의미 있는 구간에서 “<button class="intent-link" type="button" data-intent-dialog>상태 저장</button>” 의도를 전달하세요. Agnir가 현재 프로젝트 상태를 복구 가능한 형태로 남깁니다.</p>
+        </article>
+        <article>
+          <span class="step-number">04</span>
+          <h3>새 세션에서 계속</h3>
+          <p>새 세션을 열고 “계속”이라고 말하세요. Agent가 프로젝트에서 Agnir를 다시 불러와 마지막 Checkpoint부터 작업을 이어갑니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="why" class="section shell">
+      <div class="section-heading narrow">
+        <p class="eyebrow">걱정부터 없애기</p>
+        <h2>기존 작업 방식을 바꿀 필요 없습니다.</h2>
+      </div>
+      <div class="question-grid">
+        <article><h3>특정 Agent에 묶이게 되나요?</h3><p>아닙니다. Agnir의 연속성은 프로젝트에 속하며 특정 Agent, 모델, 채팅, 실행 환경에 속하지 않습니다.</p></article>
+        <article><h3>모든 채팅 기록을 저장해야 하나요?</h3><p>아닙니다. Agnir는 세션을 넘어 정말 남겨야 할 소량의 프로젝트 사실만 보존하며, 채팅 기록을 프로젝트의 진실로 취급하지 않습니다.</p></article>
+        <article><h3>Git, IDE, 개발 흐름을 대신하나요?</h3><p>아닙니다. 기존 도구는 그대로 사용하면 됩니다. Agnir는 지속 가능한 프로젝트 상태를 찾고, 불러오고, Checkpoint하는 역할만 합니다.</p></article>
+        <article><h3>또 다른 불투명한 메모리 시스템인가요?</h3><p>아닙니다. 다음 작업, 결정, 근거는 읽을 수 있는 Markdown 문서로 프로젝트 안에 남습니다.</p></article>
+      </div>
+    </section>
+
+    <section id="concept" class="section shell concept">
+      <div class="section-heading">
+        <p class="eyebrow">마지막으로 개념</p>
+        <h2>그래서 Agnir는 무엇인가요?</h2>
+        <p>Agnir는 <strong>Project Continuity(프로젝트 연속성)</strong> 프로토콜입니다. 새 Agent가 안전하게 이어서 작업하는 데 필요한 소량의 지속 가능한 프로젝트 사실을 프로젝트 자체에 남기는 이식 가능한 규약입니다.</p>
+      </div>
+      <div class="feature-grid">
+        <article><span>01</span><h3>현재 상태</h3><p>지금 확정되어 있는 것.</p></article>
+        <article><span>02</span><h3>다음 작업</h3><p>다음에 무엇을 어떤 순서로 할지.</p></article>
+        <article><span>03</span><h3>결정</h3><p>다음 Agent도 지켜야 할 제약과 선택.</p></article>
+        <article><span>04</span><h3>근거</h3><p>복구, 검토, 이전, 정렬을 검증할 수 있는 기록.</p></article>
+      </div>
+    </section>
+
+    <section class="section shell proof">
+      <div class="proof-copy">
+        <p class="eyebrow">도구를 넘나들도록 설계</p>
+        <h2>Agent를 바꿔도, 프로젝트는 그대로.</h2>
+        <p>Agnir Core는 Git, GitHub, 파일 시스템, ChatGPT, 특정 Agent, Skill, 저장소 엔진에 종속되지 않습니다. 이들은 Project Continuity 계약을 둘러싼 도구일 뿐, 프로젝트를 특정 도구에 묶는 중심이 아닙니다.</p>
+      </div>
+      <div class="proof-stats" aria-label="Agnir 릴리스 증거">
+        <div><strong>v1.0.0</strong><span>최신 안정 버전</span></div>
+        <div><strong>PASS</strong><span>독립 구현 검증 통과</span></div>
+        <div><strong>Svif</strong><span>처음 기록된 다운스트림 채택 사례</span></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="intent-dialog" id="checkpoint-intents" aria-labelledby="checkpoint-intents-title">
+    <div class="dialog-card">
+      <button class="dialog-close" type="button" data-dialog-close aria-label="닫기">×</button>
+      <p class="eyebrow">자주 쓰는 표현</p>
+      <h2 id="checkpoint-intents-title">“상태 저장” 의도만 전달하면 됩니다</h2>
+      <div class="trigger-list" aria-label="자주 쓰는 Checkpoint 표현">
+        <code>checkpoint</code>
+        <code>진행 상황 저장</code>
+        <code>여기까지</code>
+        <code>마무리해 줘</code>
+        <code>현재 상태 저장</code>
+        <code>save progress</code>
+      </div>
+      <p class="dialog-note">이 표현들은 예시일 뿐, 고정된 명령어가 아닙니다.</p>
+    </div>
+  </dialog>
+
+  <footer class="site-footer shell">
+    <div>
+      <strong>Agnir</strong>
+      <span>연속성을 프로젝트 안에 남깁니다.</span>
+    </div>
+    <div class="footer-links">
+      <a href="#install">설치</a>
+      <a href="https://github.com/iorLab/agnir">GitHub</a>
+      <a href="https://github.com/iorLab/agnir/issues/new/choose">피드백</a>
+      <a href="https://github.com/iorLab/agnir/blob/main/spec/AGNIR_CORE_1_0.md">Core 1.0</a>
+    </div>
+  </footer>
+
+  <button class="back-to-top" type="button" data-back-to-top aria-label="맨 위로" title="맨 위로">↑</button>
+
+  <script>
+    const copyIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8z"></path><path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1 1v1"></path></svg>';
+    const checkIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>';
+
+    document.querySelectorAll('[data-copy-target]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        const text = target.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          textarea.remove();
+        }
+        button.innerHTML = checkIcon;
+        button.classList.add('copied');
+        button.setAttribute('aria-label', button.dataset.copiedLabel);
+        button.title = button.dataset.copiedLabel;
+        setTimeout(() => {
+          button.innerHTML = copyIcon;
+          button.classList.remove('copied');
+          button.setAttribute('aria-label', button.dataset.copyLabel);
+          button.title = button.dataset.copyLabel;
+        }, 1600);
+      });
+    });
+
+    document.querySelectorAll('[data-language-choice]').forEach((link) => {
+      link.addEventListener('click', () => {
+        try {
+          window.localStorage.setItem('agnir-language', link.dataset.languageChoice);
+        } catch {}
+      });
+    });
+
+    const intentDialog = document.getElementById('checkpoint-intents');
+    document.querySelectorAll('[data-intent-dialog]').forEach((button) => {
+      button.addEventListener('click', () => intentDialog.showModal());
+    });
+    intentDialog.querySelector('[data-dialog-close]').addEventListener('click', () => intentDialog.close());
+    intentDialog.addEventListener('click', (event) => {
+      if (event.target === intentDialog) intentDialog.close();
+    });
+  </script>
+
+  <script>
+    const backToTopButton = document.querySelector('[data-back-to-top]');
+    const syncBackToTop = () => backToTopButton.classList.toggle('visible', window.scrollY > 520);
+    backToTopButton.addEventListener('click', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+    window.addEventListener('scroll', syncBackToTop, { passive: true });
+    syncBackToTop();
+  </script>
+</body>
+</html>
