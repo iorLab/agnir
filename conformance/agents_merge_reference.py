@@ -7,18 +7,18 @@ class AgentsMergeConflict(RuntimeError):
 
 AGNIR_LOCATOR_BLOCK = """## Agnir
 
-Before Project work, read and follow the **Agnir Project Instructions** section in `README.md`.
+Before Project work, read and follow `AGNIR.md`.
 
-This is a locator only. The README section is the canonical Agnir instruction; do not duplicate the full Agnir rules here.
+This is a locator only. `AGNIR.md` is the canonical Agnir activation and Project-operation instruction; do not duplicate the full Agnir rules here.
 """
 
-# Deliberately small, explicit conformance vocabulary. Production Agents still have to
+# Deliberately small, explicit conformance vocabulary. Production Executors still have to
 # reason about semantic conflicts beyond these exact phrases rather than guessing.
 _EXPLICIT_CONFLICTS = (
-    "do not read readme.md",
-    "don't read readme.md",
-    "ignore readme.md",
-    "do not follow readme.md",
+    "do not read agnir.md",
+    "don't read agnir.md",
+    "ignore agnir.md",
+    "do not follow agnir.md",
     "do not read agnir.yaml",
     "ignore agnir.yaml",
     "do not use agnir",
@@ -26,11 +26,32 @@ _EXPLICIT_CONFLICTS = (
 )
 
 
+def _upgrade_legacy_locator(original: str) -> str | None:
+    lines = original.splitlines(keepends=True)
+    changed = False
+    upgraded: list[str] = []
+    for line in lines:
+        lowered = line.casefold()
+        if "agnir project instructions" in lowered and "readme.md" in lowered:
+            ending = "\n" if line.endswith("\n") else ""
+            upgraded.append("Before Project work, read and follow `AGNIR.md`." + ending)
+            changed = True
+            continue
+        if "readme section" in lowered and "canonical agnir" in lowered:
+            ending = "\n" if line.endswith("\n") else ""
+            upgraded.append("`AGNIR.md` is the canonical Agnir instruction." + ending)
+            changed = True
+            continue
+        upgraded.append(line)
+    return "".join(upgraded) if changed else None
+
+
 def merge_agents_locator(existing: str | None) -> str:
     """Reference non-destructive merge for the Agnir AGENTS.md locator.
 
-    Existing content is preserved exactly as a prefix. Explicitly contradictory
-    instructions fail before mutation. An existing equivalent locator is idempotent.
+    Existing unrelated content is preserved. Explicitly contradictory instructions fail
+    before mutation. The v1.0.0 README locator is upgraded in place to the v1.0.1
+    `AGNIR.md` locator; an existing v1.0.1 locator is idempotent.
     """
 
     original = existing or ""
@@ -42,8 +63,12 @@ def merge_agents_locator(existing: str | None) -> str:
             "with durable Agnir activation"
         )
 
-    if "agnir project instructions" in lowered and "readme.md" in lowered:
+    if "agnir.md" in lowered and "agnir" in lowered:
         return original
+
+    upgraded = _upgrade_legacy_locator(original)
+    if upgraded is not None:
+        return upgraded
 
     if not original:
         return "# Agent Instructions\n\n" + AGNIR_LOCATOR_BLOCK
