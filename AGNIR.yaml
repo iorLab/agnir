@@ -30,14 +30,18 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/main"
   agnir/release:
-    phase: "stable-v1.0.1-candidate"
+    phase: "stable-v1.0.1-implemented-publication-pending"
     repository_version: "1.0.1"
     core_contract: "spec/AGNIR_CORE_1_0.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_1_0.md"
     promotion_contract: "spec/CORE_0_2_TO_1_0_PROMOTION.md"
-    candidate_pr: 50
-    candidate_ref: "release/v1.0.1-activation-hardening"
-    candidate_scope: "activation-packaging-hardening"
+    implementation_pr: 50
+    staging_checkpoint_revision: "162b9069ed485834f3f2c6f68ab49e41200cfd4d"
+    staging_checkpoint_verification_run: 34255122900
+    implementation_revision: "f07a792816956815876703472d55f711b5528387"
+    implementation_verification_run: 34255207555
+    implementation_verification_job: 102159143123
+    staging_ref_retired: true
     stable_issue: 29
     stable_issue_status: "closed-completed"
     target_base_revision: "11148c3063e63dd1ea7450b9d538ac1eccec5639"
@@ -71,7 +75,7 @@ extensions:
     fresh_publication_job: 101502473422
     previous_latest_stable: "v0.2.0"
     latest_stable: "v1.0.0"
-    publication_status: "v1.0.0-published-v1.0.1-candidate"
+    publication_status: "v1.0.0-published-v1.0.1-implementation-accepted"
     target_ref: "refs/heads/main"
   agnir/operations:
     distribution: "agnir-agent-skill"

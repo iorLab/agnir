@@ -2,13 +2,25 @@
 
 Durable continuity belongs to the Project.
 
-## Stable release and active patch candidate
+## Stable release and accepted v1.0.1 implementation
 
 Agnir `v1.0.0` remains **published, independently verified, and the latest stable release**. Its immutable tag remains at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`; accepted `v1.0.0-rc.1` remains immutable at `092945289f1a0a9803e4fe0583104aa380ceaadc`.
 
-Repository/distribution `1.0.1` is now an **implemented, conformance-green patch candidate** on PR #50 / `release/v1.0.1-activation-hardening`. It is not yet published and does not replace `v1.0.0` as latest stable.
+Repository/distribution `1.0.1` activation/packaging hardening is now **implemented, merged into authoritative `main`, and post-merge conformance verified**. It is not yet published and does not replace `v1.0.0` as latest stable.
 
-The `1.0.1` candidate changes activation/packaging reliability only:
+Accepted implementation receipts:
+
+- PR: `#50` — merged;
+- final staging checkpoint head: `162b9069ed485834f3f2c6f68ab49e41200cfd4d`;
+- authoritative squash merge: `f07a792816956815876703472d55f711b5528387`;
+- authoritative post-merge conformance run: `34255207555` — success;
+- repository job: `102159143123` — success;
+- `Publish v1.0.1 stable release` job: skipped as intended;
+- repository branch readback after merge: only `main`; the completed staging branch is retired;
+- GitHub `releases/latest`: `v1.0.0`;
+- tag readback contains no `v1.0.1` tag.
+
+The `1.0.1` implementation changes activation/packaging reliability only:
 
 - Core remains `1.0`;
 - repository/filesystem remains `repository-filesystem/1.0`;
@@ -22,25 +34,15 @@ The `1.0.1` candidate changes activation/packaging reliability only:
 - checkpoint evaluation is mandatory at the boundary, but unchanged durable truth remains a valid no-op and does not require artificial `.agnir/` mutation;
 - Project-defined pre-commit verification remains Project policy, not Agnir Core semantics.
 
-Exact pre-checkpoint candidate validation:
-
-- candidate head: `ea254e09b999dde8024a76d32e55d5d5fe5868d6`;
-- PR: #50;
-- workflow: `34254831971`;
-- repository job: `102157842277`;
-- result: **success**;
-- self-host, Core 0.1 regression, Core 0.2 surfaces, Core 1.0 stability/discovery/promotion, stable package gates, and full conformance suite all passed;
-- all publication jobs, including `Publish v1.0.1 stable release`, were correctly skipped.
-
-`VERSION` and `AGNIR.yaml extensions.agnir/release.repository_version` both declare repository source package `1.0.1`. `AGNIR.yaml` still declares Core `1.0`, `repository-filesystem/1.0`, authoritative Project identity/lineage, and `latest_stable: "v1.0.0"`. The `agnir/operations` applied stable package remains `1.0.0` until an actual `v1.0.1` stable publication is accepted.
+`VERSION` and `AGNIR.yaml extensions.agnir/release.repository_version` declare repository source package `1.0.1`. `AGNIR.yaml` still declares Core `1.0`, `repository-filesystem/1.0`, authoritative Project identity/lineage, and `latest_stable: "v1.0.0"`. The `agnir/operations` applied stable package remains `1.0.0` until an actual `v1.0.1` stable publication is accepted.
 
 ## Publication boundary
 
-Implementation, PR acceptance, or merge does not publish `v1.0.1`.
+Implementation acceptance is complete. Stable publication is still a separate Project-owned operation.
 
 The dormant main-only publication job is armed only by exact authoritative-main commit intent `release: publish v1.0.1 stable`. It re-verifies exact source and full conformance before creating/validating `v1.0.1`, verifies `releases/latest == v1.0.1`, and verifies immutable `v1.0.0` / `v1.0.0-rc.1` receipts remain unchanged.
 
-Stable publication therefore remains a separate Project-owned operation after target reconciliation and explicit authorization.
+Until that separately authorized publication transaction succeeds, `v1.0.0` remains latest stable and `agnir/operations` continues to record applied stable package `1.0.0`.
 
 ## Public product state
 
