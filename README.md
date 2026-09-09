@@ -58,7 +58,7 @@ Project root
 
 `AGNIR.md` is the canonical Executor-facing activation and Project-operation surface. `README.md#Agnir-Project-Instructions` remains only as a backward-compatible locator for Agnir `1.0.0` activation paths.
 
-`latest stable` means an actually published non-prerelease tag/Release, never a moving `main`, temporary release branch, RC, or untagged commit. The latest published stable package is `v1.0.0`; the `v1.0.1` activation-hardening work is a backward-compatible patch evolution until separately published. Stable-upgrade resolution advances only after the corresponding non-prerelease Release is successfully published at its exact authoritative revision.
+`latest stable` means an actually published non-prerelease tag/Release, never a moving `main`, temporary release branch, RC, or untagged commit. The latest published stable package is `v1.0.1`, released from exact authoritative revision `f56d25b22997c259c660651e7357334b063093e1`. Core `1.0` and `repository-filesystem/1.0` remain unchanged; stable-upgrade resolution now selects `v1.0.1`.
 
 ## Agnir Project Instructions
 
@@ -144,19 +144,20 @@ Supported compatibility lines remain explicit:
 
 - published `v0.1.1`: Core `0.1` + `repository-filesystem/0.1`;
 - published `v0.2.0`: Core `0.2` + `repository-filesystem/0.2`;
-- published `v1.0.0`: Core `1.0` + `repository-filesystem/1.0`, while historical `0.1`/`0.2` compatibility paths remain shipped and tested.
+- published `v1.0.0`: first stable Core `1.0` + `repository-filesystem/1.0` release, while historical `0.1`/`0.2` compatibility paths remain shipped and tested;
+- published `v1.0.1`: same Core `1.0` + `repository-filesystem/1.0`, with activation/packaging reliability hardening only.
 
 A `0.1` Project migrates explicitly to `0.2` under [`spec/CORE_0_1_TO_0_2_MIGRATION.md`](spec/CORE_0_1_TO_0_2_MIGRATION.md). Core/profile `1.0` is a **stability promotion of behavior independently validated under `0.2`**, not a feature-driven redesign. An existing `0.2` Project may remain `0.2`; changing its declaration to `1.0` is a separately authorized Project-owned promotion governed by [`spec/CORE_0_2_TO_1_0_PROMOTION.md`](spec/CORE_0_2_TO_1_0_PROMOTION.md).
 
 ## Active line and release status
 
-**Latest published stable package: `v1.0.0`** — Core `1.0` + `repository-filesystem/1.0`.
+**Latest published stable package: `v1.0.1`** — Core `1.0` + `repository-filesystem/1.0`, exact stable source `f56d25b22997c259c660651e7357334b063093e1`.
 
-**Patch evolution in development: `v1.0.1`** — activation/packaging reliability only; Core `1.0` and `repository-filesystem/1.0` remain unchanged.
+**Published patch: `v1.0.1`** — activation/packaging reliability hardening only; Core `1.0` and `repository-filesystem/1.0` remain unchanged.
 
 **Accepted release candidate for the 1.0 stable line: `v1.0.0-rc.1`** at exact revision `092945289f1a0a9803e4fe0583104aa380ceaadc`; the immutable RC cycle passed both publication and fresh-source verification.
 
-Stable publication is a distinct authoritative-main operation. A release staging lineage is reconciliation input only; publication may be armed only on exact authoritative `main` after full target verification.
+Stable publication remains a distinct authoritative-main operation. A release staging lineage is reconciliation input only; published tags remain immutable after acceptance.
 
 ```text
 Agnir repository 1.0.x

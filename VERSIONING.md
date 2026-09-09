@@ -1,6 +1,6 @@
 # Agnir Versioning
 
-Status: active versioning policy. Published non-prerelease tag `v1.0.0` remains the current latest stable release while the backward-compatible `1.0.1` activation/packaging patch is prepared. Both use Core `1.0` + `repository-filesystem/1.0`.
+Status: active versioning policy. Published non-prerelease tag `v1.0.1` is the current latest stable repository/distribution release. It uses the same Core `1.0` + `repository-filesystem/1.0` compatibility line as `v1.0.0`.
 
 Agnir distinguishes **repository release version** from **Core compatibility version** and profile/extension compatibility versions.
 
@@ -16,7 +16,7 @@ A repository prerelease-to-stable promotion such as `1.0.0-rc.1` â†’ `1.0.0` doe
 
 ## v1.0.1 activation/packaging patch
 
-Repository `1.0.1` is a PATCH-level distribution evolution over `1.0.0`. Its intended scope is deliberately narrow:
+Repository `1.0.1` is a published PATCH-level distribution evolution over `1.0.0`. Its scope is deliberately narrow:
 
 - introduce root `AGNIR.md` as the canonical Executor-facing Project activation and operation surface;
 - keep `AGENTS.md` locator-only and point it directly to `AGNIR.md`;
@@ -29,6 +29,8 @@ Repository `1.0.1` is a PATCH-level distribution evolution over `1.0.0`. Its int
 
 This patch **does not** introduce Core `1.1`, `repository-filesystem/1.1`, a new Project identity model, a new Continuity Lineage model, or new checkpoint semantics. Existing Core/profile compatibility declarations do not change merely because the `1.0.1` distribution is installed.
 
+Published stable source: `v1.0.1` -> `f56d25b22997c259c660651e7357334b063093e1`.
+
 ## Core compatibility version
 
 The Core compatibility version describes the normative protocol semantics an implementation or Project expects.
@@ -38,7 +40,7 @@ Published/supported lines include:
 - repository `v0.1.1` exposes Core `0.1`;
 - repository `v0.2.0` exposes Core `0.2`;
 - repository `v1.0.0` exposes stable Core `1.0` for fresh/promoted 1.0 Projects while retaining support for historical `0.1` and `0.2` Projects;
-- repository `v1.0.1` continues to expose the same Core `1.0` semantics when published; its changes are distribution/activation packaging only.
+- repository `v1.0.1` exposes the same Core `1.0` semantics; its changes are distribution/activation packaging only.
 
 Core `1.0` is a deliberate **stability promotion of the behavior proven under Core `0.2`**, not a semantic redesign. The stable normative contract is `spec/AGNIR_CORE_1_0.md`; promotion from an existing Core/profile `0.2` Project is governed by `spec/CORE_0_2_TO_1_0_PROMOTION.md`.
 
@@ -89,11 +91,11 @@ A Core/profile `0.1` Project reaches `1.0` through the existing explicit `0.1` â
 
 The accepted `v1.0.0-rc.1` is release evidence and remains immutable prerelease history; it never substitutes for stable resolution.
 
-Publication created the non-prerelease `v1.0.0` tag/Release at exact stable source revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`; until a separately authorized and verified `v1.0.1` publication completes, stable resolution continues to select `v1.0.0`. Published release tags are immutable by Project policy.
+Publication created the non-prerelease `v1.0.1` tag/Release at exact stable source revision `f56d25b22997c259c660651e7357334b063093e1`; stable resolution now selects `v1.0.1`. Previous stable `v1.0.0` remains immutable history at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`. Published release tags are immutable by Project policy.
 
 ## Meaning of the 1.0 line
 
-`v1.0.0` is the point at which Agnir committed to stable public compatibility and migration discipline for downstream Projects. Patch releases in the `1.0.x` distribution may harden implementation, documentation, activation, packaging, and conformance without changing the stable Core/profile contract.
+`v1.0.0` is the point at which Agnir committed to stable public compatibility and migration discipline for downstream Projects. Patch releases such as `v1.0.1` may harden implementation, documentation, activation, packaging, and conformance without changing the stable Core/profile contract.
 
 The compatibility alignment remains:
 

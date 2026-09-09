@@ -3,7 +3,7 @@
 - `v0.1.x`: established and pressure-tested the first stable Core `0.1` + repository/filesystem `0.1` profile.
 - `v0.2.0`: stable pre-1.0 feature release line for Continuity Lineages. Its acceptance gates included Core `0.2` design, explicit `0.1` → `0.2` migration, materially different VCS and non-VCS backend conformance, fresh install/resume, real-Project validation, mount-boundary evidence, and an RC cycle. Historical Core/profile `0.2` remains a supported compatibility surface after 1.0 rather than being renamed in place.
 - `v1.0.0`: published stability milestone. Core `1.0` + `repository-filesystem/1.0` deliberately promote the independently validated `0.2` behavior into the first long-term stable compatibility identifiers. Existing `0.2` Projects remain supported and are not forcibly rewritten; explicit semantics-preserving `0.2` → `1.0` Project promotion remains separately authorized and conformance-tested.
-- `v1.0.1`: PATCH maintenance milestone for activation/packaging reliability. It introduces dedicated `AGNIR.md` Project instructions, direct `AGENTS.md → AGNIR.md` activation, a backward-compatible README locator for `1.0.0` Projects, and explicit short commit-intent checkpoint dispatch. Core `1.0` + `repository-filesystem/1.0` remain unchanged; checkpoint no-op semantics remain unchanged.
+- `v1.0.1`: published PATCH maintenance milestone for activation/packaging reliability. It introduces dedicated `AGNIR.md` Project instructions, direct `AGENTS.md → AGNIR.md` activation, a backward-compatible README locator for `1.0.0` Projects, and explicit short commit-intent checkpoint dispatch. Core `1.0` + `repository-filesystem/1.0` remain unchanged; checkpoint no-op semantics remain unchanged.
 
 ## v1 acceptance receipts
 
@@ -21,18 +21,20 @@ The v1 stability milestone reached publication only after:
 
 ## Current publication status
 
-`v1.0.0` is the current published latest stable release while `v1.0.1` is being prepared as ordinary stable maintenance.
+`v1.0.1` is the current published latest stable repository/distribution release.
 
-- stable tag/revision: `v1.0.0` -> `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
-- GitHub Release id: `383612171`;
-- publication workflow `34039014354`, attempt 1 success;
-- fresh immutable-source workflow `34039014354`, attempt 2 success;
-- `releases/latest == v1.0.0` until a later stable patch publication succeeds;
+- stable tag/revision: `v1.0.1` -> `f56d25b22997c259c660651e7357334b063093e1`;
+- GitHub Release id: `385176185`;
+- publication workflow: `34301559338` — success;
+- repository/conformance job: `102309347343` — success;
+- stable publication job: `102309386242` — success;
+- `releases/latest == v1.0.1`;
+- previous stable `v1.0.0` remains immutable at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - accepted `v1.0.0-rc.1` remains immutable at `092945289f1a0a9803e4fe0583104aa380ceaadc`.
 
-## v1.0.1 patch acceptance intent
+## v1.0.1 patch acceptance
 
-The `1.0.1` patch should be accepted only if all of the following hold:
+The `1.0.1` patch was accepted after all of the following held:
 
 - direct fresh activation succeeds through `AGENTS.md → AGNIR.md → AGNIR.yaml → selected continuity`;
 - an existing `1.0.0` README-based activation route remains usable long enough to perform a compatible upgrade/repair;
@@ -43,4 +45,4 @@ The `1.0.1` patch should be accepted only if all of the following hold:
 - historical Core/profile `0.1` and `0.2` support remains green;
 - full conformance is green on the exact candidate.
 
-Publication of `v1.0.1` remains a distinct authoritative-main transaction; implementation or PR acceptance alone does not make it the latest stable release.
+Publication of `v1.0.1` was a distinct authoritative-main transaction and did not follow automatically from implementation or PR acceptance.

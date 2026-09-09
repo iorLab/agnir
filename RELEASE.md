@@ -1,8 +1,8 @@
 # Agnir 1.0.x Stable Release Package
 
-**Current candidate repository version:** `1.0.1`
+**Current repository version:** `1.0.1`
 
-**Latest published stable:** `v1.0.0`
+**Latest published stable:** `v1.0.1`
 
 **Core compatibility line:** `1.0`
 
@@ -10,11 +10,24 @@
 
 ## Status
 
-Agnir `v1.0.0` remains the **published latest stable** release. Its immutable tag points to exact authoritative revision `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`; GitHub Release id `383612171` is non-draft and non-prerelease.
+Agnir `v1.0.1` is the **published latest stable** repository/distribution release.
 
-Repository `1.0.1` is a backward-compatible PATCH candidate for activation/packaging reliability. It does not change Core `1.0`, `repository-filesystem/1.0`, the Project identity model, Continuity Lineage semantics, checkpoint semantics, or historical compatibility lines.
+Accepted stable publication receipts:
 
-`latest stable` remains a publication property, not a moving-branch property. Until an exact authoritative `v1.0.1` publication succeeds, normal stable resolution continues to select published `v1.0.0`.
+- tag: `v1.0.1`;
+- exact authoritative source revision: `f56d25b22997c259c660651e7357334b063093e1`;
+- GitHub Release id: `385176185`;
+- published at: `2026-09-09T02:02:14Z`;
+- publication workflow: `34301559338` — success;
+- repository/conformance job: `102309347343` — success;
+- stable publication job: `102309386242` — success;
+- `releases/latest == v1.0.1`;
+- previous stable `v1.0.0` remains exactly `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
+- accepted `v1.0.0-rc.1` remains exactly `092945289f1a0a9803e4fe0583104aa380ceaadc`.
+
+Repository `1.0.1` is a backward-compatible PATCH for activation/packaging reliability. It **does not change Core `1.0`**, `repository-filesystem/1.0`, the Project identity model, Continuity Lineage semantics, checkpoint semantics, or historical compatibility lines.
+
+`latest stable` is a publication property, not a moving-branch property. Stable resolution now selects the published non-prerelease `v1.0.1` release, not later untagged `main` commits.
 
 ## v1.0.1 patch scope
 
@@ -113,9 +126,9 @@ The v1 readiness baseline was closed before the original stable cycle. Accepted 
 
 The immutable accepted RC for the stable 1.0 compatibility line remains `v1.0.0-rc.1` at `092945289f1a0a9803e4fe0583104aa380ceaadc`.
 
-## v1.0.1 acceptance gate
+## v1.0.1 acceptance evidence
 
-Before publication, exact candidate verification must demonstrate:
+The exact publication candidate demonstrated:
 
 1. direct fresh activation through `AGENTS.md → AGNIR.md → AGNIR.yaml`;
 2. legacy `1.0.0` README-route activation remains usable as compatible upgrade/repair input;
@@ -124,13 +137,15 @@ Before publication, exact candidate verification must demonstrate:
 5. commit-and-push includes destination-ref verification;
 6. checkpoint no-op remains legal without `.agnir/` mutation;
 7. Core/profile `0.1`, `0.2`, and `1.0` conformance remains green;
-8. full repository conformance passes on the exact candidate.
+8. full repository conformance passed on the exact candidate.
+
+Publication run `34301559338` repeated exact-source verification and the full suite before creating the stable tag/Release.
 
 ## Stable publication invariant
 
-Implementation, a green PR, or an authoritative-main merge does **not** by itself publish `v1.0.1`.
+Implementation, a green PR, or an authoritative-main merge does **not** by itself publish a stable release.
 
-A stable patch publication must be a separately armed authoritative-main transaction. The publication path must verify the exact source candidate, create/validate immutable `refs/tags/v1.0.1`, create/validate a non-draft/non-prerelease GitHub Release, verify `releases/latest == v1.0.1`, and verify the existing `v1.0.0` tag remains exactly at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`.
+`v1.0.1` was published only through the separately armed authoritative-main transaction `release: publish v1.0.1 stable`. The publication path verified the exact source candidate, created/validated immutable `refs/tags/v1.0.1`, created/validated a non-draft/non-prerelease GitHub Release, verified `releases/latest == v1.0.1`, and verified the existing `v1.0.0` tag remained exactly at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`.
 
 Published tags are immutable by Project policy.
 
