@@ -1,0 +1,233 @@
+.agnir-demo-player {
+  display: block;
+  min-width: 0;
+}
+
+.demo-frame {
+  overflow: hidden;
+  border: 1px solid rgba(213, 154, 97, 0.42);
+  border-radius: 22px;
+  background:
+    linear-gradient(150deg, rgba(213, 154, 97, 0.08), transparent 36%),
+    var(--bg-soft);
+  box-shadow: var(--shadow);
+}
+
+.demo-topbar {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font: 700 0.7rem/1 ui-sans-serif, sans-serif;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.demo-mode {
+  color: var(--sand-bright);
+}
+
+.agnir-demo-player[data-demo-mode="without"] .demo-mode {
+  color: var(--muted);
+}
+
+.demo-time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.02em;
+}
+
+.demo-scene {
+  min-height: 390px;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 30px 26px;
+}
+
+.demo-scene-head {
+  min-height: 92px;
+}
+
+.demo-session {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--sand);
+  font: 700 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demo-scene h3 {
+  max-width: 520px;
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.demo-messages {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.demo-message {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  gap: 14px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.025);
+  font: 0.88rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.demo-message.agent-message {
+  border-color: rgba(213, 154, 97, 0.28);
+  background: rgba(213, 154, 97, 0.055);
+}
+
+.demo-role {
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.demo-message-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+}
+
+.demo-note {
+  margin: auto 0 0;
+  padding-top: 24px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.demo-scene.is-close {
+  min-height: 390px;
+  justify-content: center;
+  text-align: center;
+}
+
+.demo-scene.is-close .demo-scene-head {
+  min-height: 0;
+}
+
+.demo-scene.is-close .demo-session {
+  margin-bottom: 18px;
+}
+
+.demo-scene.is-close h3 {
+  max-width: none;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+}
+
+.demo-scene.is-close .demo-note {
+  margin: 18px 0 0;
+  padding: 0;
+  font-size: 0.95rem;
+}
+
+.demo-progress {
+  height: 4px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.demo-progress-fill {
+  width: 0;
+  height: 100%;
+  background: var(--sand);
+  transition: width 80ms linear;
+}
+
+.demo-controls {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 16px 0 18px;
+  border-top: 1px solid var(--line);
+}
+
+.demo-control-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.demo-control {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--cream);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.demo-control:hover {
+  border-color: rgba(239, 215, 195, 0.34);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.demo-source {
+  color: var(--muted);
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.demo-source:hover {
+  color: var(--sand-bright);
+}
+
+@media (max-width: 760px) {
+  .demo-scene {
+    min-height: 360px;
+    padding: 24px 20px 22px;
+  }
+
+  .demo-scene-head {
+    min-height: 82px;
+  }
+
+  .demo-message {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .demo-controls {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 13px 16px 15px;
+  }
+
+  .demo-source {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 520px) {
+  .demo-topbar {
+    padding-inline: 16px;
+  }
+
+  .demo-scene {
+    min-height: 410px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-progress-fill {
+    transition: none;
+  }
+}

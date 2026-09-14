@@ -150,6 +150,25 @@
     });
   };
 
+  const loadFreshSessionDemo = () => {
+    if (!document.querySelector('.hero-demo')) return;
+
+    if (!document.querySelector('link[data-fresh-session-demo]')) {
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = 'demo.css';
+      stylesheet.dataset.freshSessionDemo = 'true';
+      document.head.appendChild(stylesheet);
+    }
+
+    if (!document.querySelector('script[data-fresh-session-demo]')) {
+      const script = document.createElement('script');
+      script.src = 'demo.js';
+      script.dataset.freshSessionDemo = 'true';
+      document.head.appendChild(script);
+    }
+  };
+
   applyTheme(readThemePreference() || (systemTheme.matches ? 'light' : 'dark'));
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -161,6 +180,7 @@
 
     createLanguagePicker();
     applyTheme(root.dataset.theme || 'dark');
+    loadFreshSessionDemo();
   });
 
   const syncSystemTheme = (event) => {
