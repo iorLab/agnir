@@ -139,8 +139,13 @@
         row.className = `demo-message-row ${event.role === 'you' ? 'is-user' : 'is-agent'}`;
 
         const avatar = document.createElement('span');
-        avatar.className = 'demo-avatar';
-        avatar.textContent = event.role === 'you' ? (locale === 'zh-CN' ? '你' : 'Y') : 'A';
+        if (event.role === 'agent') {
+          avatar.className = 'demo-avatar agent-spark-icon';
+          avatar.setAttribute('aria-hidden', 'true');
+        } else {
+          avatar.className = 'demo-avatar';
+          avatar.textContent = locale === 'zh-CN' ? '你' : 'Y';
+        }
 
         const bubble = document.createElement('div');
         bubble.className = 'demo-bubble';
