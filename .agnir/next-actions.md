@@ -4,12 +4,32 @@ Agnir `v1.0.1` is published and verified as the latest stable repository/distrib
 
 1. **Operate the 1.0 line in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Future patch releases must not silently expand or redefine the stable contract.
 2. **Optionally repair the v1.0.1 GitHub Release-body wording.** One cosmetic sentence omitted the literal `AGNIR.md` because of shell command substitution in an unquoted heredoc. Any repair must update host metadata only; do not move/recreate `v1.0.1` or change release identity.
-3. **Complete human visual review of the new Install-section conversation preview.** PR `#54` is published. Confirm the live install area matches the approved mockup direction: install copy remains legible on the left, the Agent chat illustration is balanced on the right, the warm four-point Agent icon is visually consistent with the dynamic demo, mobile stacking is clean, and dark/light plus English / Simplified Chinese / Japanese / Korean presentations remain usable. This is public-surface polish, not a Core or adoption gate.
+3. **Complete human visual review of the refined Install-section two-session preview.** PR `#55` is published. Confirm the live install area now reads unmistakably as two different Agent sessions: Session A above, Fresh Session B below, with the “open a fresh session” divider, consistent four-point Agent icon, clean desktop/mobile balance, and usable dark/light plus English / Simplified Chinese / Japanese / Korean presentation. Also confirm the hero comparison caption now reads **“两个新会话都只收到一句：‘继续。’ 但大有不同。”** in Simplified Chinese. This is public-surface polish, not a Core or adoption gate.
 4. **Recruit the first external design users and collect material adoption evidence.** The synchronized split-screen fresh-session demo v3 has passed Principal human visual review and is the primary first-contact proof surface. Prioritize genuine external cold-start resumes, second-session value, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
 5. **Keep brand/public-surface truth locked.** README, website, adoption/demo and social materials may consume approved brand assets/deterministic derivatives but must not reinterpret approved identity or Core semantics.
 6. **Keep merged-head cleanup enabled.** `main` remains the sole intended long-lived authoritative branch; completed staging branches should remain retired after their material result and evidence are durably represented.
 7. **Shift active product execution back to Svif where appropriate.** Svif owns its own canonical continuity and ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
 8. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
+
+## Install preview split-session refinement receipts
+
+- Principal direction: replace the single long Install conversation with two vertically stacked windows so a genuinely new session is visually explicit; also add **“但大有不同。”** to the Simplified Chinese hero comparison caption;
+- implementation PR: `#55` — merged;
+- implementation source head: `3c073e80ad87db9a11d2beb89f9e90d4d92f6482`;
+- authoritative merge: `06749842054d612a64af46f5509f9baffe99da03`;
+- PR conformance: run `34826216679` — success;
+- post-merge conformance: run `34826272500` — success;
+- Pages publication: run `34826272497` — build and deploy success;
+- Pages build job: `103919066599` — success;
+- Pages deploy job: `103919099750` — success;
+- Pages artifact: `10340342962`;
+- artifact digest: `sha256:1c48ae65668aa4f9f0ce81d706e91c964def43656367290b7025971dd051c0e0`;
+- new source stylesheet: `website/install-chat-sessions.css`;
+- published `install-chat.css` includes the split-session rules;
+- direct artifact inspection confirmed localized Session A / Fresh Session B copy and contrast wording;
+- published `theme.js` / `demo.js`: `node --check` success;
+- refinement evidence: `.agnir/evidence/2026-09-14-install-preview-split-session-refinement.md`;
+- Principal live visual review of the refined preview: **pending**.
 
 ## Install conversation preview receipts
 
@@ -24,10 +44,9 @@ Agnir `v1.0.1` is published and verified as the latest stable repository/distrib
 - Pages deploy job: `103914266875` — success;
 - Pages artifact: `10340210569`;
 - artifact digest: `sha256:a36d2fc1712a1dac1bd6137ec5d3202b4480933d259f22b2131524390395c761`;
-- new public stylesheet: `website/install-chat.css`;
-- published `theme.js` / `demo.js`: `node --check` success from the Pages artifact;
+- public stylesheet: `website/install-chat.css`;
 - publication evidence: `.agnir/evidence/2026-09-14-install-conversation-preview.md`;
-- Principal live visual review: **pending**.
+- visual status: **superseded before acceptance by PR #55 split-session refinement**.
 
 ## Split-screen demo v3 acceptance receipts
 
