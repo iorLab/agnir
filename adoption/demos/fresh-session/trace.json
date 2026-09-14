@@ -1,26 +1,12 @@
 {
-  "schema": "agnir.demo.fresh-session/1",
+  "schema": "agnir.demo.conversation/2",
   "id": "fresh-session-recovery",
   "duration_ms": 30000,
   "scenario": {
     "task": "Add a version field to /api/health, preserve the existing status field for compatibility, then add failure-path tests.",
-    "completed_before_checkpoint": [
-      "version field implemented",
-      "status compatibility preserved"
-    ],
     "next_action": "add failure-path tests",
     "decision": "preserve backward compatibility for status"
   },
-  "timeline": [
-    { "id": "without-work", "start_ms": 0, "end_ms": 5000, "mode": "without" },
-    { "id": "without-fresh", "start_ms": 5000, "end_ms": 9000, "mode": "without" },
-    { "id": "without-loss", "start_ms": 9000, "end_ms": 13000, "mode": "without" },
-    { "id": "with-work", "start_ms": 13000, "end_ms": 18000, "mode": "with" },
-    { "id": "with-checkpoint", "start_ms": 18000, "end_ms": 22000, "mode": "with" },
-    { "id": "with-fresh", "start_ms": 22000, "end_ms": 25000, "mode": "with" },
-    { "id": "with-resume", "start_ms": 25000, "end_ms": 29000, "mode": "with" },
-    { "id": "close", "start_ms": 29000, "end_ms": 30000, "mode": "close" }
-  ],
   "copy": {
     "en": {
       "controls": {
@@ -29,79 +15,40 @@
         "replay": "Replay",
         "progress": "Demo progress"
       },
-      "modes": {
+      "labels": {
+        "demo": "30-second live demo",
         "without": "Without Agnir",
-        "with": "With Agnir"
+        "with": "With Agnir",
+        "fresh": "Fresh session",
+        "sessionA": "Session A",
+        "sessionB": "Fresh Session B"
       },
-      "scenes": {
-        "without-work": {
-          "session": "Session A",
-          "title": "Do real Project work",
-          "messages": [
-            { "role": "you", "text": "Add a version field to /api/health. Keep status compatible, then add failure-path tests." },
-            { "role": "agent", "text": "Implemented version and preserved status compatibility. Failure-path tests are still pending." }
-          ],
-          "note": "Session ends."
-        },
-        "without-fresh": {
-          "session": "Fresh Session B",
-          "title": "Open a genuinely fresh session",
-          "messages": [
-            { "role": "you", "text": "Continue." }
-          ],
-          "note": "No predecessor-private chat context is available."
-        },
-        "without-loss": {
-          "session": "Fresh Session B",
-          "title": "The context is gone",
-          "messages": [
-            { "role": "you", "text": "Continue." },
-            { "role": "agent", "text": "What were we working on?" }
-          ],
-          "note": "The human has to reconstruct the Project state."
-        },
-        "with-work": {
-          "session": "Session A",
-          "title": "Same work, now with Agnir",
-          "messages": [
-            { "role": "you", "text": "Add a version field to /api/health. Keep status compatible, then add failure-path tests." },
-            { "role": "agent", "text": "Implemented version and preserved status compatibility. Failure-path tests are still pending." }
-          ],
-          "note": "The unfinished work is the same."
-        },
-        "with-checkpoint": {
-          "session": "Session A",
-          "title": "Checkpoint at a meaningful boundary",
-          "messages": [
-            { "role": "you", "text": "Checkpoint." },
-            { "role": "agent", "text": "Project continuity reconciled. Current state, next action, and compatibility decision are recoverable." }
-          ],
-          "note": "Session ends. The durable truth stays with the Project."
-        },
-        "with-fresh": {
-          "session": "Fresh Session B",
-          "title": "Open a genuinely fresh session",
-          "messages": [
-            { "role": "you", "text": "Continue." }
-          ],
-          "note": "The user still provides no reconstruction prompt."
-        },
-        "with-resume": {
-          "session": "Fresh Session B",
-          "title": "Recover and continue",
-          "messages": [
-            { "role": "you", "text": "Continue." },
-            { "role": "agent", "text": "Current state: /api/health includes version and still returns status. Next: add failure-path tests. Decision: preserve status compatibility. Continuing with the tests…" }
-          ],
-          "note": "The value is continuation, not merely reciting memory."
-        },
-        "close": {
-          "session": "Agnir",
-          "title": "New session. Same Project continuity.",
-          "messages": [],
-          "note": "The Project persists; Executors come and go."
-        }
-      }
+      "events": [
+        { "at_ms": 0, "type": "session", "mode": "without", "title": "Fresh session · without Agnir", "subtitle": "No predecessor chat context" },
+        { "at_ms": 350, "type": "message", "role": "you", "duration_ms": 550, "text": "Continue." },
+        { "at_ms": 1200, "type": "message", "role": "agent", "duration_ms": 1250, "text": "What were we working on?" },
+        { "at_ms": 3000, "type": "transition", "duration_ms": 900, "title": "Same Project. Now with Agnir.", "subtitle": "Watch the whole handoff." },
+        { "at_ms": 4000, "type": "reset", "mode": "with", "title": "Session A · Agnir enabled", "subtitle": "Working normally" },
+        { "at_ms": 4300, "type": "message", "role": "you", "duration_ms": 1550, "text": "Add a version field to /api/health, keep status compatible, then add failure-path tests." },
+        { "at_ms": 6100, "type": "message", "role": "agent", "duration_ms": 1100, "text": "I’ll update the endpoint first, then leave the failure-path tests for the next step." },
+        { "at_ms": 7400, "type": "tool", "status": "working", "label": "Read", "text": "src/api/health.ts" },
+        { "at_ms": 8100, "type": "tool", "status": "done", "label": "Edited", "text": "src/api/health.ts  +3  −1" },
+        { "at_ms": 9000, "type": "message", "role": "agent", "duration_ms": 1350, "text": "version is implemented and status stays backward-compatible. Failure-path tests are still pending." },
+        { "at_ms": 10700, "type": "message", "role": "you", "duration_ms": 700, "text": "Checkpoint." },
+        { "at_ms": 11700, "type": "tool", "status": "done", "label": "Agnir", "text": "reconciled State · Next Actions · Decisions" },
+        { "at_ms": 12800, "type": "message", "role": "agent", "duration_ms": 1100, "text": "Saved. Next action: add failure-path tests." },
+        { "at_ms": 14300, "type": "transition", "duration_ms": 1100, "title": "Session A closed", "subtitle": "A genuinely fresh session starts with no private chat history." },
+        { "at_ms": 15500, "type": "reset", "mode": "with", "title": "Fresh Session B · no chat history", "subtitle": "Same Project" },
+        { "at_ms": 15900, "type": "message", "role": "you", "duration_ms": 550, "text": "Continue." },
+        { "at_ms": 16800, "type": "tool", "status": "working", "label": "Agnir", "text": "discovered AGNIR.yaml" },
+        { "at_ms": 17650, "type": "tool", "status": "done", "label": "Loaded", "text": "state.md · next-actions.md · decisions.md" },
+        { "at_ms": 18700, "type": "message", "role": "agent", "duration_ms": 2300, "text": "I found the checkpoint. /api/health already returns version and keeps status compatible. Next: add failure-path tests. I’ll continue from there." },
+        { "at_ms": 21300, "type": "tool", "status": "working", "label": "Read", "text": "tests/health.test.ts" },
+        { "at_ms": 22100, "type": "tool", "status": "done", "label": "Edited", "text": "tests/health.test.ts  +12" },
+        { "at_ms": 23000, "type": "tool", "status": "done", "label": "Test", "text": "14 passed · 0 failed" },
+        { "at_ms": 24100, "type": "message", "role": "agent", "duration_ms": 1850, "text": "Failure-path tests are added and all 14 tests pass. The Project moved forward without reconstructing the old chat." },
+        { "at_ms": 27000, "type": "finale", "duration_ms": 3000, "title": "New session. Same Project continuity.", "subtitle": "The Project persists; Executors come and go." }
+      ]
     },
     "zh-CN": {
       "controls": {
@@ -110,79 +57,40 @@
         "replay": "重播",
         "progress": "Demo 进度"
       },
-      "modes": {
+      "labels": {
+        "demo": "30 秒动态 Demo",
         "without": "没有 Agnir",
-        "with": "使用 Agnir"
+        "with": "使用 Agnir",
+        "fresh": "全新会话",
+        "sessionA": "会话 A",
+        "sessionB": "全新会话 B"
       },
-      "scenes": {
-        "without-work": {
-          "session": "会话 A",
-          "title": "先做真实项目工作",
-          "messages": [
-            { "role": "you", "text": "给 /api/health 增加 version 字段，保持 status 兼容，然后补 failure-path tests。" },
-            { "role": "agent", "text": "version 已实现，status 兼容性保留。failure-path tests 还没做。" }
-          ],
-          "note": "会话结束。"
-        },
-        "without-fresh": {
-          "session": "全新会话 B",
-          "title": "打开一个真正的新会话",
-          "messages": [
-            { "role": "you", "text": "继续。" }
-          ],
-          "note": "这里没有上一个会话的私有聊天上下文。"
-        },
-        "without-loss": {
-          "session": "全新会话 B",
-          "title": "上下文断了",
-          "messages": [
-            { "role": "you", "text": "继续。" },
-            { "role": "agent", "text": "我们之前做到哪了？" }
-          ],
-          "note": "人需要重新解释项目状态。"
-        },
-        "with-work": {
-          "session": "会话 A",
-          "title": "同样的工作，这次装了 Agnir",
-          "messages": [
-            { "role": "you", "text": "给 /api/health 增加 version 字段，保持 status 兼容，然后补 failure-path tests。" },
-            { "role": "agent", "text": "version 已实现，status 兼容性保留。failure-path tests 还没做。" }
-          ],
-          "note": "未完成的工作完全相同。"
-        },
-        "with-checkpoint": {
-          "session": "会话 A",
-          "title": "在有意义的阶段做 Checkpoint",
-          "messages": [
-            { "role": "you", "text": "Checkpoint。" },
-            { "role": "agent", "text": "项目连续性已对齐。当前状态、下一步和兼容性决策都可以在新会话恢复。" }
-          ],
-          "note": "会话结束。持久信息留在项目里。"
-        },
-        "with-fresh": {
-          "session": "全新会话 B",
-          "title": "再次打开真正的新会话",
-          "messages": [
-            { "role": "you", "text": "继续。" }
-          ],
-          "note": "用户仍然没有补一大段背景说明。"
-        },
-        "with-resume": {
-          "session": "全新会话 B",
-          "title": "恢复状态，然后直接继续",
-          "messages": [
-            { "role": "you", "text": "继续。" },
-            { "role": "agent", "text": "当前状态：/api/health 已加入 version，并继续返回 status。下一步：补 failure-path tests。决策：保持 status 向后兼容。我继续写测试……" }
-          ],
-          "note": "价值不是复述记忆，而是真正接着做。"
-        },
-        "close": {
-          "session": "Agnir",
-          "title": "新会话，同一个项目连续性。",
-          "messages": [],
-          "note": "项目会留下来，Executor 可以更换。"
-        }
-      }
+      "events": [
+        { "at_ms": 0, "type": "session", "mode": "without", "title": "全新会话 · 没有 Agnir", "subtitle": "没有上一个会话的私有聊天上下文" },
+        { "at_ms": 350, "type": "message", "role": "you", "duration_ms": 550, "text": "继续。" },
+        { "at_ms": 1200, "type": "message", "role": "agent", "duration_ms": 1250, "text": "我们之前做到哪了？" },
+        { "at_ms": 3000, "type": "transition", "duration_ms": 900, "title": "同一个项目，这次装上 Agnir。", "subtitle": "看完整个交接过程。" },
+        { "at_ms": 4000, "type": "reset", "mode": "with", "title": "会话 A · 已启用 Agnir", "subtitle": "照常工作" },
+        { "at_ms": 4300, "type": "message", "role": "you", "duration_ms": 1550, "text": "给 /api/health 增加 version 字段，保持 status 兼容，然后补 failure-path tests。" },
+        { "at_ms": 6100, "type": "message", "role": "agent", "duration_ms": 1100, "text": "我先改接口，failure-path tests 留作下一步。" },
+        { "at_ms": 7400, "type": "tool", "status": "working", "label": "读取", "text": "src/api/health.ts" },
+        { "at_ms": 8100, "type": "tool", "status": "done", "label": "已修改", "text": "src/api/health.ts  +3  −1" },
+        { "at_ms": 9000, "type": "message", "role": "agent", "duration_ms": 1350, "text": "version 已实现，status 保持向后兼容。failure-path tests 还没做。" },
+        { "at_ms": 10700, "type": "message", "role": "you", "duration_ms": 700, "text": "先到这里，保存进度。" },
+        { "at_ms": 11700, "type": "tool", "status": "done", "label": "Agnir", "text": "已对齐 当前状态 · 下一步 · 决策" },
+        { "at_ms": 12800, "type": "message", "role": "agent", "duration_ms": 1100, "text": "已保存。下一步：补 failure-path tests。" },
+        { "at_ms": 14300, "type": "transition", "duration_ms": 1100, "title": "会话 A 已结束", "subtitle": "下面打开真正的新会话，没有旧聊天记录。" },
+        { "at_ms": 15500, "type": "reset", "mode": "with", "title": "全新会话 B · 无聊天历史", "subtitle": "还是同一个项目" },
+        { "at_ms": 15900, "type": "message", "role": "you", "duration_ms": 550, "text": "继续。" },
+        { "at_ms": 16800, "type": "tool", "status": "working", "label": "Agnir", "text": "发现 AGNIR.yaml" },
+        { "at_ms": 17650, "type": "tool", "status": "done", "label": "已加载", "text": "state.md · next-actions.md · decisions.md" },
+        { "at_ms": 18700, "type": "message", "role": "agent", "duration_ms": 2300, "text": "我找到了上次的 Checkpoint。/api/health 已加入 version，并保持 status 兼容。下一步是补 failure-path tests，我直接继续。" },
+        { "at_ms": 21300, "type": "tool", "status": "working", "label": "读取", "text": "tests/health.test.ts" },
+        { "at_ms": 22100, "type": "tool", "status": "done", "label": "已修改", "text": "tests/health.test.ts  +12" },
+        { "at_ms": 23000, "type": "tool", "status": "done", "label": "测试", "text": "14 通过 · 0 失败" },
+        { "at_ms": 24100, "type": "message", "role": "agent", "duration_ms": 1850, "text": "failure-path tests 已补完，14 个测试全部通过。没有重新解释旧聊天，项目直接往前走了。" },
+        { "at_ms": 27000, "type": "finale", "duration_ms": 3000, "title": "新会话，同一个项目连续性。", "subtitle": "项目会留下来，Executor 可以更换。" }
+      ]
     }
   }
 }
