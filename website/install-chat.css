@@ -1,0 +1,331 @@
+.agent-spark-icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  display: inline-block;
+  border: 1px solid rgba(213, 154, 97, 0.72);
+  border-radius: 50%;
+  background: rgba(213, 154, 97, 0.075);
+  color: var(--sand-bright);
+  box-shadow: inset 0 0 0 1px rgba(213, 154, 97, 0.035), 0 0 22px rgba(213, 154, 97, 0.07);
+}
+
+.agent-spark-icon::before,
+.agent-spark-icon::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+}
+
+.agent-spark-icon::before {
+  width: 48%;
+  height: 48%;
+  left: 25%;
+  top: 27%;
+  filter: drop-shadow(0 0 5px rgba(237, 190, 151, 0.4));
+}
+
+.agent-spark-icon::after {
+  width: 13%;
+  height: 13%;
+  right: 19%;
+  top: 19%;
+  opacity: 0.9;
+}
+
+.install-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 352px);
+  gap: clamp(42px, 6vw, 82px);
+  align-items: center;
+}
+
+.install-content {
+  min-width: 0;
+}
+
+.install-content .section-heading {
+  max-width: 760px;
+}
+
+.install-content .copy-block {
+  max-width: none;
+}
+
+.install-chat-preview {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(213, 154, 97, 0.42);
+  border-radius: 20px;
+  background:
+    linear-gradient(155deg, rgba(213, 154, 97, 0.06), transparent 34%),
+    #100d0b;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+}
+
+.install-chat-chrome {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.install-chat-agent-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.install-chat-agent-title .agent-spark-icon {
+  width: 34px;
+  height: 34px;
+}
+
+.install-chat-agent-title strong {
+  color: var(--text);
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+}
+
+.install-chat-window-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.install-chat-window-dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(239, 215, 195, 0.18);
+}
+
+.install-chat-window-dots i:first-child {
+  background: var(--sand);
+}
+
+.install-chat-thread {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 16px 16px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(213, 154, 97, 0.045), transparent 15rem),
+    rgba(0, 0, 0, 0.1);
+}
+
+.install-chat-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  max-width: 92%;
+}
+
+.install-chat-message.is-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  max-width: 88%;
+}
+
+.install-chat-message-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.install-chat-message.is-user .install-chat-message-body {
+  align-items: flex-end;
+}
+
+.install-chat-message .agent-spark-icon {
+  width: 32px;
+  height: 32px;
+  margin-top: 1px;
+}
+
+.install-user-icon {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  margin-top: 1px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--muted);
+}
+
+.install-user-icon svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.install-chat-bubble {
+  padding: 10px 11px;
+  border: 1px solid rgba(239, 215, 195, 0.1);
+  border-radius: 5px 14px 14px 14px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.install-chat-message.is-user .install-chat-bubble {
+  border-color: rgba(213, 154, 97, 0.27);
+  border-radius: 14px 5px 14px 14px;
+  background: rgba(169, 108, 45, 0.24);
+  color: var(--cream);
+}
+
+.install-chat-time {
+  color: rgba(200, 183, 170, 0.52);
+  font-size: 0.59rem;
+  line-height: 1;
+}
+
+.install-chat-composer {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px 12px;
+}
+
+.install-chat-input {
+  min-width: 0;
+  flex: 1 1 auto;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.022);
+  color: rgba(200, 183, 170, 0.5);
+  font-size: 0.68rem;
+}
+
+.install-chat-send {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(213, 154, 97, 0.58);
+  border-radius: 10px;
+  color: var(--sand-bright);
+  background: rgba(213, 154, 97, 0.045);
+}
+
+.install-chat-send svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.demo-avatar.agent-spark-icon {
+  border-radius: 50%;
+  border-color: rgba(213, 154, 97, 0.5);
+  background: rgba(213, 154, 97, 0.09);
+  color: var(--sand-bright);
+  font-size: 0;
+}
+
+.demo-avatar.agent-spark-icon::before {
+  width: 50%;
+  height: 50%;
+  left: 24%;
+  top: 27%;
+}
+
+.demo-avatar.agent-spark-icon::after {
+  width: 13%;
+  height: 13%;
+  right: 17%;
+  top: 17%;
+}
+
+html[data-theme="light"] .install-chat-preview {
+  background:
+    linear-gradient(155deg, rgba(194, 129, 46, 0.07), transparent 34%),
+    #fffaf5;
+  box-shadow: 0 24px 60px rgba(83, 56, 35, 0.13);
+}
+
+html[data-theme="light"] .install-chat-thread {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(194, 129, 46, 0.055), transparent 15rem),
+    rgba(77, 49, 28, 0.018);
+}
+
+html[data-theme="light"] .install-chat-bubble {
+  background: rgba(77, 49, 28, 0.035);
+}
+
+html[data-theme="light"] .install-chat-message.is-user .install-chat-bubble {
+  background: rgba(194, 129, 46, 0.11);
+  color: var(--text);
+}
+
+html[data-theme="light"] .install-user-icon,
+html[data-theme="light"] .install-chat-input {
+  background: rgba(77, 49, 28, 0.028);
+}
+
+html[data-theme="light"] .install-chat-time {
+  color: rgba(111, 93, 80, 0.68);
+}
+
+@media (max-width: 1050px) {
+  .install-layout {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .install-chat-preview {
+    width: min(100%, 440px);
+  }
+}
+
+@media (max-width: 640px) {
+  .install-layout {
+    gap: 34px;
+  }
+
+  .install-chat-preview {
+    width: 100%;
+  }
+
+  .install-chat-thread {
+    min-height: 330px;
+    padding-inline: 13px;
+  }
+
+  .install-chat-message,
+  .install-chat-message.is-user {
+    max-width: 95%;
+  }
+
+  .install-chat-bubble {
+    font-size: 0.72rem;
+  }
+}
