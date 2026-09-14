@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "website/**"
+      - "adoption/demos/fresh-session/trace.json"
       - "brand/masters/agnir-mark.svg"
       - "brand/masters/agnir-wordmark.svg"
       - "brand/tools/build-production-derivatives.py"
@@ -42,6 +43,9 @@ jobs:
           cp website/styles.css _site/styles.css
           cp website/theme.css _site/theme.css
           cp website/theme.js _site/theme.js
+          cp website/demo.css _site/demo.css
+          cp website/demo.js _site/demo.js
+          cp adoption/demos/fresh-session/trace.json _site/fresh-session-demo.json
           python brand/tools/build-production-derivatives.py --repo . --out _site/assets
           cp brand/exports/png/agnir-social-card.png _site/assets/agnir-social-card.png
           rm -f _site/assets/agnir-favicon-32-source.svg _site/assets/agnir-favicon-16-source.svg
