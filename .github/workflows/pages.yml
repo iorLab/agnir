@@ -44,6 +44,8 @@ jobs:
           cp website/theme.css _site/theme.css
           cp website/theme.js _site/theme.js
           cp website/install-chat.css _site/install-chat.css
+          cat website/install-chat-sessions.css >> _site/install-chat.css
+          cp website/install-chat-sessions.css _site/install-chat-sessions.css
           cp website/demo.css _site/demo.css
           cp website/demo.js _site/demo.js
           cp adoption/demos/fresh-session/trace.json _site/fresh-session-demo.json
