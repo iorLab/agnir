@@ -48,6 +48,8 @@ The Principal-approved Agnir brand identity remains canonical under `brand/`. Th
 
 The public product category remains **Project Continuity**. The first-user value remains fresh-session recovery: **the Project persists; Executors come and go**. `adoption/README.md` remains canonical launch/adoption strategy.
 
+The canonical 30-second fresh-session recovery demo is now implemented under `adoption/demos/fresh-session/` and published through the website. `trace.json` is the deterministic presentation source; the website player consumes the published trace, autoplays when motion preferences allow, provides pause/replay controls, preserves the static hero comparison as a safe fallback, and does not redefine Agnir Core semantics. PR `#51` merged at `226ac6f502e4fefc1a3bbb10472802d83ef51c03`; post-merge conformance and Pages build/deploy succeeded. Published-artifact structure and JavaScript/trace syntax were independently rechecked after deployment. Human visual presentation review of the live demo remains a distinct pending observation.
+
 Svif remains the first accepted real-project post-1.0 adoption case. External cold-start resumes, external design users, cross-Executor cases, and independently built integrations remain the highest-value next adoption evidence.
 
 ## Invariants
