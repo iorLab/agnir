@@ -4,12 +4,30 @@ Agnir `v1.0.1` is published and verified as the latest stable repository/distrib
 
 1. **Operate the 1.0 line in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Future patch releases must not silently expand or redefine the stable contract.
 2. **Optionally repair the v1.0.1 GitHub Release-body wording.** One cosmetic sentence omitted the literal `AGNIR.md` because of shell command substitution in an unquoted heredoc. Any repair must update host metadata only; do not move/recreate `v1.0.1` or change release identity.
-3. **Complete human visual review of the conversational fresh-session demo v2.** The first live review rejected the slide/card presentation model, and PR `#52` replaced it with a persistent Agent-chat playback. Review the live English and Simplified Chinese versions on desktop/mobile and confirm that the experience now reads as one continuous Agent workflow: streamed messages, inline tool activity, explicit Session A closure, fresh private-transcript reset, `Continue.`-only recovery, Agnir discovery/load, and resumed test work. If accepted, close the visual-review item; if not, fix only observed presentation defects without changing Core semantics or returning to scene-card slides.
-4. **Recruit the first external design users and collect material adoption evidence.** After the conversational demo passes human visual review, use it as the primary first-contact proof surface. Prioritize genuine external cold-start resumes, second-session value, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
+3. **Complete human visual review of the synchronized split-screen fresh-session demo v3.** PR `#53` now keeps **Without Agnir** and **With Agnir** visible simultaneously on desktop while both play dynamic Agent workflows on one shared timeline. Review the live English and Simplified Chinese versions on desktop/mobile and confirm that the side-by-side comparison is immediately legible, the two fresh sessions both receive only `Continue.` / `继续。`, the left side clearly stalls on missing context, and the right side clearly resumes through Agnir into verified test work. If accepted, close the visual-review item; if not, fix only observed presentation defects without changing Core semantics or reverting to scene-card slides.
+4. **Recruit the first external design users and collect material adoption evidence.** After the split-screen demo passes human visual review, use it as the primary first-contact proof surface. Prioritize genuine external cold-start resumes, second-session value, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
 5. **Keep brand/public-surface truth locked.** README, website, adoption/demo and social materials may consume approved brand assets/deterministic derivatives but must not reinterpret approved identity or Core semantics.
 6. **Keep merged-head cleanup enabled.** `main` remains the sole intended long-lived authoritative branch; completed staging branches should remain retired after their material result and evidence are durably represented.
 7. **Shift active product execution back to Svif where appropriate.** Svif owns its own canonical continuity and ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
 8. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
+
+## Split-screen demo v3 receipts
+
+- Principal direction: keep **Without Agnir** and **With Agnir** as simultaneous windows, like the original static comparison, but make both dynamic;
+- implementation PR: `#53` — merged;
+- implementation source head: `a74371b37f044af2837c7de3d4178f26cf299d8d`;
+- authoritative merge: `64e61ad1f21d15362cedbfb8376ab1d0adb6343d`;
+- PR conformance: run `34819370697` — success;
+- post-merge conformance: run `34819425531` — success;
+- Pages publication: run `34819425549` — build and deploy success;
+- Pages build job: `103897304068` — success;
+- Pages deploy job: `103897345459` — success;
+- Pages artifact: `10338020626`;
+- artifact digest: `sha256:50ae43bdc8d18e5ab05057fee5406fbb6c7f9282eb585109de34a5dbb94501de`;
+- deterministic trace schema: `agnir.demo.split-screen/3`;
+- canonical presentation contract: `adoption/demos/fresh-session/README.md`;
+- deterministic trace: `adoption/demos/fresh-session/trace.json`;
+- publication evidence: `.agnir/evidence/2026-09-14-split-screen-demo.md`.
 
 ## Conversational demo v2 correction receipts
 
@@ -24,8 +42,6 @@ Agnir `v1.0.1` is published and verified as the latest stable repository/distrib
 - Pages deploy job: `103871540152` — success;
 - Pages artifact: `10335125320`;
 - artifact digest: `sha256:1d5c069f64bbbadddc18966b4e477b2e90b2ebb33ca8a94593aa96bcccc24e9f`;
-- canonical presentation contract: `adoption/demos/fresh-session/README.md`;
-- deterministic conversation trace: `adoption/demos/fresh-session/trace.json`;
 - correction evidence: `.agnir/evidence/2026-09-14-conversational-demo-correction.md`.
 
 ## Canonical demo v1 receipts
