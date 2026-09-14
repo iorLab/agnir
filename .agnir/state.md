@@ -58,6 +58,10 @@ The split-screen implementation source head is `a74371b37f044af2837c7de3d4178f26
 
 On 2026-09-14, the Principal completed human visual review of the live split-screen v3 and explicitly accepted the result: **“看过了，这个版本我觉得可以。”** The canonical fresh-session demo visual-review gate is therefore closed. The split-screen v3 is now the accepted primary first-contact demo surface for Agnir adoption work.
 
+PR `#54` adds a native install-conversation illustration to the website's **Install first / 先安装** section, following the Principal-approved mockup direction. The install copy remains on the left while a compact Agent chat window appears on the right on desktop; narrow/mobile layouts stack the preview below the install copy. The preview is HTML/CSS rather than a raster screenshot, is localized for English / Simplified Chinese / Japanese / Korean, supports dark/light themes, and uses the same warm four-point Agent sparkle icon as the dynamic fresh-session demo Agent avatars. This is a public-presentation surface only and does not redefine Core or checkpoint semantics.
+
+The install-preview source head is `09c66f9b9aecf452241970bebb670fe9ea44e111`; PR `#54` merged at `a285c8868ae65ab2759b8f9b88572fd47f359161`. PR conformance run `34824713563`, post-merge conformance run `34824764737`, and Pages run `34824764786` succeeded; Pages build job `103914219408` and deploy job `103914266875` both succeeded. Published artifact `10340210569` has digest `sha256:a36d2fc1712a1dac1bd6137ec5d3202b4480933d259f22b2131524390395c761`. Direct artifact inspection confirmed `install-chat.css`, the localized preview injector, and the Agent sparkle avatar integration; published `theme.js` and `demo.js` both pass `node --check`. Human visual review of this new install-section preview remains pending and does not reopen the already accepted split-screen demo v3 gate.
+
 Svif remains the first accepted real-project post-1.0 adoption case. External cold-start resumes, external design users, cross-Executor cases, and independently built integrations are now the highest-value next adoption evidence.
 
 ## Invariants

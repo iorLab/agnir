@@ -4,11 +4,30 @@ Agnir `v1.0.1` is published and verified as the latest stable repository/distrib
 
 1. **Operate the 1.0 line in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Future patch releases must not silently expand or redefine the stable contract.
 2. **Optionally repair the v1.0.1 GitHub Release-body wording.** One cosmetic sentence omitted the literal `AGNIR.md` because of shell command substitution in an unquoted heredoc. Any repair must update host metadata only; do not move/recreate `v1.0.1` or change release identity.
-3. **Recruit the first external design users and collect material adoption evidence.** The synchronized split-screen fresh-session demo v3 has passed Principal human visual review and is now the primary first-contact proof surface. Prioritize genuine external cold-start resumes, second-session value, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
-4. **Keep brand/public-surface truth locked.** README, website, adoption/demo and social materials may consume approved brand assets/deterministic derivatives but must not reinterpret approved identity or Core semantics.
-5. **Keep merged-head cleanup enabled.** `main` remains the sole intended long-lived authoritative branch; completed staging branches should remain retired after their material result and evidence are durably represented.
-6. **Shift active product execution back to Svif where appropriate.** Svif owns its own canonical continuity and ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
-7. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
+3. **Complete human visual review of the new Install-section conversation preview.** PR `#54` is published. Confirm the live install area matches the approved mockup direction: install copy remains legible on the left, the Agent chat illustration is balanced on the right, the warm four-point Agent icon is visually consistent with the dynamic demo, mobile stacking is clean, and dark/light plus English / Simplified Chinese / Japanese / Korean presentations remain usable. This is public-surface polish, not a Core or adoption gate.
+4. **Recruit the first external design users and collect material adoption evidence.** The synchronized split-screen fresh-session demo v3 has passed Principal human visual review and is the primary first-contact proof surface. Prioritize genuine external cold-start resumes, second-session value, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
+5. **Keep brand/public-surface truth locked.** README, website, adoption/demo and social materials may consume approved brand assets/deterministic derivatives but must not reinterpret approved identity or Core semantics.
+6. **Keep merged-head cleanup enabled.** `main` remains the sole intended long-lived authoritative branch; completed staging branches should remain retired after their material result and evidence are durably represented.
+7. **Shift active product execution back to Svif where appropriate.** Svif owns its own canonical continuity and ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
+8. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
+
+## Install conversation preview receipts
+
+- Principal direction: add the approved Agent conversation-window illustration to the Install section and reuse its warm four-point Agent icon in the dynamic demo;
+- implementation PR: `#54` — merged;
+- implementation source head: `09c66f9b9aecf452241970bebb670fe9ea44e111`;
+- authoritative merge: `a285c8868ae65ab2759b8f9b88572fd47f359161`;
+- PR conformance: run `34824713563` — success;
+- post-merge conformance: run `34824764737` — success;
+- Pages publication: run `34824764786` — build and deploy success;
+- Pages build job: `103914219408` — success;
+- Pages deploy job: `103914266875` — success;
+- Pages artifact: `10340210569`;
+- artifact digest: `sha256:a36d2fc1712a1dac1bd6137ec5d3202b4480933d259f22b2131524390395c761`;
+- new public stylesheet: `website/install-chat.css`;
+- published `theme.js` / `demo.js`: `node --check` success from the Pages artifact;
+- publication evidence: `.agnir/evidence/2026-09-14-install-conversation-preview.md`;
+- Principal live visual review: **pending**.
 
 ## Split-screen demo v3 acceptance receipts
 
