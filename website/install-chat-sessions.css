@@ -1,0 +1,216 @@
+.install-chat-preview.is-session-stack {
+  overflow: visible;
+  display: grid;
+  gap: 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.install-chat-window {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(239, 215, 195, 0.16);
+  border-radius: 18px;
+  background:
+    linear-gradient(155deg, rgba(213, 154, 97, 0.045), transparent 34%),
+    #100d0b;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+}
+
+.install-chat-window.is-fresh-session {
+  border-color: rgba(213, 154, 97, 0.48);
+  box-shadow:
+    inset 0 0 0 1px rgba(213, 154, 97, 0.045),
+    0 20px 48px rgba(0, 0, 0, 0.22);
+}
+
+.install-chat-session-name {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  margin-left: 2px;
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.018);
+  font-size: 0.61rem;
+  font-weight: 720;
+  white-space: nowrap;
+}
+
+.is-fresh-session .install-chat-session-name {
+  border-color: rgba(213, 154, 97, 0.34);
+  color: var(--sand-bright);
+  background: rgba(213, 154, 97, 0.07);
+}
+
+.install-chat-session-transition {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+  color: var(--sand-bright);
+  font-size: 0.64rem;
+  font-weight: 760;
+  letter-spacing: 0.02em;
+}
+
+.install-chat-session-transition span {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(213, 154, 97, 0.34));
+}
+
+.install-chat-session-transition span:last-child {
+  background: linear-gradient(90deg, rgba(213, 154, 97, 0.34), transparent);
+}
+
+.install-chat-window .install-chat-chrome {
+  min-height: 50px;
+  padding-inline: 12px;
+}
+
+.install-chat-window .install-chat-agent-title {
+  gap: 8px;
+}
+
+.install-chat-window .install-chat-agent-title .agent-spark-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.install-chat-window .install-chat-agent-title strong {
+  font-size: 0.82rem;
+}
+
+.install-chat-window .install-chat-thread.is-compact {
+  min-height: 138px;
+  gap: 10px;
+  padding: 14px 12px 13px;
+}
+
+.install-chat-window.is-session-a .install-chat-thread.is-compact {
+  min-height: 150px;
+}
+
+.install-chat-window.is-fresh-session .install-chat-thread.is-compact {
+  min-height: 132px;
+}
+
+.install-chat-window .install-chat-message {
+  gap: 7px;
+  max-width: 96%;
+}
+
+.install-chat-window .install-chat-message.is-user {
+  max-width: 92%;
+}
+
+.install-chat-window .install-chat-message .agent-spark-icon,
+.install-chat-window .install-user-icon {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
+}
+
+.install-chat-window .install-user-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.install-chat-window .install-chat-bubble {
+  padding: 8px 9px;
+  font-size: 0.71rem;
+  line-height: 1.45;
+}
+
+.install-chat-window .install-chat-time {
+  font-size: 0.56rem;
+}
+
+.install-chat-window .install-chat-composer {
+  min-height: 45px;
+  padding: 0 10px 9px;
+}
+
+.install-chat-window .install-chat-input,
+.install-chat-window .install-chat-send {
+  min-height: 35px;
+  height: 35px;
+}
+
+.install-chat-window .install-chat-send {
+  width: 35px;
+  flex-basis: 35px;
+}
+
+.hero-demo-fallback-caption {
+  grid-column: 1 / -1;
+  margin: 8px 4px 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.demo-contrast-addendum {
+  color: var(--sand-bright);
+  font-weight: 800;
+}
+
+html[data-theme="light"] .install-chat-preview.is-session-stack {
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-theme="light"] .install-chat-window {
+  background:
+    linear-gradient(155deg, rgba(194, 129, 46, 0.06), transparent 34%),
+    #fffaf5;
+  box-shadow: 0 18px 42px rgba(83, 56, 35, 0.11);
+}
+
+html[data-theme="light"] .install-chat-window.is-fresh-session {
+  box-shadow:
+    inset 0 0 0 1px rgba(194, 129, 46, 0.045),
+    0 20px 48px rgba(83, 56, 35, 0.13);
+}
+
+html[data-theme="light"] .install-chat-session-name {
+  background: rgba(77, 49, 28, 0.025);
+}
+
+html[data-theme="light"] .is-fresh-session .install-chat-session-name {
+  background: rgba(194, 129, 46, 0.09);
+}
+
+@media (max-width: 1050px) {
+  .install-chat-preview.is-session-stack {
+    width: min(100%, 460px);
+  }
+}
+
+@media (max-width: 640px) {
+  .install-chat-preview.is-session-stack {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .install-chat-session-transition {
+    gap: 8px;
+    font-size: 0.61rem;
+  }
+
+  .install-chat-window .install-chat-thread.is-compact,
+  .install-chat-window.is-session-a .install-chat-thread.is-compact,
+  .install-chat-window.is-fresh-session .install-chat-thread.is-compact {
+    min-height: 0;
+  }
+
+  .install-chat-window .install-chat-message,
+  .install-chat-window .install-chat-message.is-user {
+    max-width: 97%;
+  }
+}
