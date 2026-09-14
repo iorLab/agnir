@@ -2,13 +2,13 @@
 
 Status: canonical adoption demo scenario
 
-This directory defines Agnir's primary 30-second fresh-session recovery demo. It is an adoption/product surface, not Agnir Core and not Project continuity storage.
+This directory defines Agnir's primary approximately-30-second fresh-session recovery demo. It is an adoption/product surface, not Agnir Core and not Project continuity storage.
 
 ## Product claim being demonstrated
 
 > A fresh compatible Executor can recover the durable Project truth needed to continue without predecessor-private conversational context.
 
-The demo should make one contrast obvious before it explains any protocol vocabulary:
+The demo must make one contrast obvious before it explains protocol vocabulary:
 
 - without Agnir, a fresh session has to reconstruct what happened;
 - with Agnir, the Project supplies Current State, Next Actions, Decisions, and Evidence/Checkpoint context so work can continue.
@@ -27,42 +27,59 @@ The first session completes the implementation and leaves the failure-path tests
 
 ### Without Agnir
 
-1. Session A receives the task and completes the implementation portion.
-2. Session A ends.
-3. A genuinely fresh Session B receives only `Continue.` / `继续。`.
-4. Session B cannot know what work was in progress from predecessor-private context and asks what it was working on.
+A short cold-open is sufficient:
+
+1. a genuinely fresh session receives only `Continue.` / `继续。`;
+2. it has no predecessor-private context;
+3. it asks what the user was working on.
+
+This section establishes the pain but must not consume most of the demo.
 
 ### With Agnir
 
-1. Session A receives the same task and completes the same implementation portion.
-2. The user reaches a meaningful stopping point and checkpoints the Project.
-3. Session A ends.
-4. A genuinely fresh Session B receives only `Continue.` / `继续。`.
-5. Session B recovers the Project-owned durable truth:
-   - Current State: `/api/health` now includes `version` and still returns `status`;
-   - Next Action: add failure-path tests;
-   - Decision: preserve backward compatibility for `status`.
-6. Session B continues with the tests.
+The main demo shows the full working handoff as one continuous Agent conversation:
+
+1. Session A receives the real task.
+2. The Agent visibly reads/edits Project files.
+3. The implementation reaches a meaningful stopping point.
+4. The user expresses checkpoint/save-progress intent.
+5. Agnir visibly reconciles the durable Project truth.
+6. Session A ends.
+7. A genuinely fresh Session B starts with no predecessor-private chat history.
+8. The user provides only `Continue.` / `继续。`.
+9. The fresh Agent discovers Agnir, loads State / Next Actions / Decisions, explains what it recovered, then continues the unfinished work.
+10. The Agent visibly edits the pending tests and verifies them successfully.
 
 The value is continuation, not merely reciting memory.
 
 ## Canonical trace
 
-`trace.json` is the deterministic presentation trace for this scenario. The public website consumes the same trace at build/runtime rather than maintaining an unrelated marketing script.
+`trace.json` is the deterministic presentation trace for this scenario. The public website consumes the same trace at runtime rather than maintaining an unrelated marketing script.
 
-The trace is intentionally a presentation fixture. It does not assert that Agnir Core defines UI timing, chat wording, Agent output formatting, or a fixed `checkpoint` keyword parser.
+The trace is intentionally a presentation fixture. It does not assert that Agnir Core defines UI timing, chat wording, Agent output formatting, a fixed checkpoint keyword parser, or a specific execution-surface UI.
 
 ## Presentation contract
 
-Primary presentation:
+The primary presentation is a **continuous Agent-chat playback**, not a slide deck and not a sequence of scene cards.
+
+Required behavior:
 
 - website hero demo;
 - approximately 30 seconds;
+- one persistent generic Agent-workspace window;
+- messages appear over time inside the same transcript;
+- Agent replies visibly stream/type rather than appearing as finished cards;
+- file reads, edits, Agnir discovery/checkpoint activity, and verification appear inline as lightweight tool-operation rows;
+- the Session A -> Fresh Session B boundary is visually explicit;
+- Fresh Session B begins with an empty private-chat transcript and receives only `Continue.` / `继续。`;
+- the conversation scrolls naturally as new work appears;
 - silent autoplay when motion preferences allow;
 - visible pause/play and replay controls;
-- responsive layout;
+- responsive desktop/mobile layout;
 - reduced-motion mode does not autoplay;
-- if the trace cannot load, the existing static without/with-Agnir comparison remains as a safe fallback.
+- if the trace cannot load, the server-rendered static without/with-Agnir comparison remains as a safe fallback.
+
+Do **not** implement the primary demo as independent slides whose whole contents are replaced at scene boundaries. Session transitions may briefly use an overlay, but the actual work must read visually as a live conversation unfolding in a persistent Agent workspace.
 
 Derived media such as MP4/WebM, GIFs, social clips, screenshots, or README images may be produced from this scenario, but they are not the canonical source.
 
@@ -71,9 +88,12 @@ Derived media such as MP4/WebM, GIFs, social clips, screenshots, or README image
 A first-time viewer should be able to answer all of these after one playback:
 
 1. What goes wrong in a fresh session without durable Project continuity?
-2. What is different after Agnir is installed and checkpointed?
-3. Does the new session receive a long human re-prompt? — **No.** It receives only `Continue.` / `继续。`.
-4. Does Agnir merely remember chat? — **No.** The Project supplies durable state needed to continue the work.
-5. What is the closing value statement? — **New session. Same Project continuity.**
+2. What actual work did Session A complete?
+3. What remained unfinished at the checkpoint?
+4. Was Session B genuinely fresh? — **Yes.** Its private transcript starts empty.
+5. What did the user tell Session B? — Only `Continue.` / `继续。`.
+6. What did the fresh Agent recover from the Project?
+7. Did it merely summarize the old state? — **No.** It continued into the pending test work and verified the result.
+8. What is the closing value statement? — **New session. Same Project continuity.**
 
 Do not lead this demo with lineage selectors, mount-boundary behavior, compatibility promotion, conflict semantics, or other protocol-depth material. Those belong in later technical demos.

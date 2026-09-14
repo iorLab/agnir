@@ -6,15 +6,17 @@
   if (locale !== 'en' && locale !== 'zh-CN') return;
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sourceLabel = locale === 'zh-CN' ? '查看可复现场景 ↗' : 'View reproducible scenario ↗';
+  const workspaceLabel = locale === 'zh-CN' ? 'Agent 工作区' : 'Agent workspace';
 
-  const formatTime = (milliseconds) => {
-    const seconds = Math.max(0, Math.min(30, Math.floor(milliseconds / 1000)));
+  const formatTime = (milliseconds, duration) => {
+    const seconds = Math.max(0, Math.min(Math.ceil(duration / 1000), Math.floor(milliseconds / 1000)));
     return `00:${String(seconds).padStart(2, '0')}`;
   };
 
   const roleLabel = (role) => {
     if (role === 'agent') return 'Agent';
-    return locale === 'zh-CN' ? '你' : 'you';
+    return locale === 'zh-CN' ? '你' : 'You';
   };
 
   fetch('fresh-session-demo.json', { cache: 'no-cache' })
@@ -23,24 +25,36 @@
       return response.json();
     })
     .then((trace) => {
-      const copy = trace.copy && trace.copy[locale];
-      const timeline = Array.isArray(trace.timeline) ? trace.timeline : [];
-      if (!copy || timeline.length === 0 || !Number.isFinite(trace.duration_ms)) return;
+      const localized = trace.copy && trace.copy[locale];
+      const events = localized && Array.isArray(localized.events) ? localized.events : [];
+      if (!localized || events.length === 0 || !Number.isFinite(trace.duration_ms)) return;
 
       host.classList.add('agnir-demo-player');
       host.innerHTML = `
-        <div class="demo-frame" aria-live="polite">
-          <div class="demo-topbar">
-            <span class="demo-mode" data-demo-mode></span>
+        <div class="demo-chat" role="region" aria-label="${localized.labels.demo}">
+          <div class="demo-chrome">
+            <span class="demo-window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="demo-workspace">${workspaceLabel}</span>
             <span class="demo-time" data-demo-time></span>
           </div>
-          <div class="demo-scene" data-demo-scene>
-            <div class="demo-scene-head">
-              <span class="demo-session" data-demo-session></span>
-              <h3 data-demo-title></h3>
+          <div class="demo-sessionbar">
+            <div>
+              <span class="demo-session-title" data-demo-session-title></span>
+              <span class="demo-session-subtitle" data-demo-session-subtitle></span>
             </div>
-            <div class="demo-messages" data-demo-messages></div>
-            <p class="demo-note" data-demo-note></p>
+            <span class="demo-mode" data-demo-mode></span>
+          </div>
+          <div class="demo-transcript-wrap">
+            <div class="demo-transcript" data-demo-transcript></div>
+            <div class="demo-overlay" data-demo-overlay hidden>
+              <span class="demo-overlay-kicker" data-demo-overlay-kicker></span>
+              <strong data-demo-overlay-title></strong>
+              <span data-demo-overlay-subtitle></span>
+            </div>
+          </div>
+          <div class="demo-composer" aria-hidden="true">
+            <span>${locale === 'zh-CN' ? '给 Agent 发消息…' : 'Message the Agent…'}</span>
+            <b>↵</b>
           </div>
           <div class="demo-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-demo-progress-wrap>
             <div class="demo-progress-fill" data-demo-progress></div>
@@ -48,109 +62,239 @@
           <div class="demo-controls">
             <div class="demo-control-buttons">
               <button type="button" class="demo-control" data-demo-toggle></button>
-              <button type="button" class="demo-control" data-demo-replay>${copy.controls.replay}</button>
+              <button type="button" class="demo-control" data-demo-replay>${localized.controls.replay}</button>
             </div>
-            <a class="demo-source" href="https://github.com/iorLab/agnir/tree/main/adoption/demos/fresh-session">${locale === 'zh-CN' ? '查看可复现场景 ↗' : 'View reproducible scenario ↗'}</a>
+            <a class="demo-source" href="https://github.com/iorLab/agnir/tree/main/adoption/demos/fresh-session">${sourceLabel}</a>
           </div>
         </div>`;
 
+      const transcript = host.querySelector('[data-demo-transcript]');
+      const sessionTitle = host.querySelector('[data-demo-session-title]');
+      const sessionSubtitle = host.querySelector('[data-demo-session-subtitle]');
       const modeElement = host.querySelector('[data-demo-mode]');
       const timeElement = host.querySelector('[data-demo-time]');
-      const sceneElement = host.querySelector('[data-demo-scene]');
-      const sessionElement = host.querySelector('[data-demo-session]');
-      const titleElement = host.querySelector('[data-demo-title]');
-      const messagesElement = host.querySelector('[data-demo-messages]');
-      const noteElement = host.querySelector('[data-demo-note]');
       const progressWrap = host.querySelector('[data-demo-progress-wrap]');
       const progressElement = host.querySelector('[data-demo-progress]');
       const toggleButton = host.querySelector('[data-demo-toggle]');
       const replayButton = host.querySelector('[data-demo-replay]');
+      const overlay = host.querySelector('[data-demo-overlay]');
+      const overlayKicker = host.querySelector('[data-demo-overlay-kicker]');
+      const overlayTitle = host.querySelector('[data-demo-overlay-title]');
+      const overlaySubtitle = host.querySelector('[data-demo-overlay-subtitle]');
 
       let elapsed = 0;
       let playing = !reduceMotion;
       let previousTimestamp = null;
       let animationFrame = null;
-      let renderedSceneId = null;
+      let nextEventIndex = 0;
+      let activeMessages = [];
+      let activeTools = [];
+      let overlayUntil = 0;
 
-      const sceneForTime = (milliseconds) => timeline.find((scene) => milliseconds >= scene.start_ms && milliseconds < scene.end_ms) || timeline[timeline.length - 1];
+      const setMode = (mode) => {
+        host.dataset.demoMode = mode || 'with';
+        if (mode === 'without') {
+          modeElement.textContent = localized.labels.without;
+        } else {
+          modeElement.textContent = localized.labels.with;
+        }
+      };
 
-      const renderScene = (timelineScene) => {
-        if (!timelineScene || renderedSceneId === timelineScene.id) return;
-        renderedSceneId = timelineScene.id;
+      const setSession = (event, clear = false) => {
+        if (clear) transcript.replaceChildren();
+        sessionTitle.textContent = event.title || '';
+        sessionSubtitle.textContent = event.subtitle || '';
+        setMode(event.mode);
+      };
 
-        const sceneCopy = copy.scenes[timelineScene.id];
-        if (!sceneCopy) return;
+      const showOverlay = (event, finale = false) => {
+        overlay.hidden = false;
+        overlay.classList.toggle('is-finale', finale);
+        overlayKicker.textContent = finale ? 'Agnir' : (locale === 'zh-CN' ? '切换会话' : 'Session boundary');
+        overlayTitle.textContent = event.title || '';
+        overlaySubtitle.textContent = event.subtitle || '';
+        overlayUntil = event.at_ms + (event.duration_ms || 800);
+      };
 
-        const isClose = timelineScene.mode === 'close';
-        sceneElement.classList.toggle('is-close', isClose);
-        host.dataset.demoMode = timelineScene.mode;
+      const hideOverlay = () => {
+        overlay.hidden = true;
+        overlay.classList.remove('is-finale');
+        overlayUntil = 0;
+      };
 
-        modeElement.textContent = isClose ? 'Agnir' : copy.modes[timelineScene.mode];
-        sessionElement.textContent = sceneCopy.session || '';
-        titleElement.textContent = sceneCopy.title || '';
-        noteElement.textContent = sceneCopy.note || '';
-        messagesElement.replaceChildren();
+      const appendMessage = (event) => {
+        const row = document.createElement('div');
+        row.className = `demo-message-row ${event.role === 'you' ? 'is-user' : 'is-agent'}`;
 
-        (sceneCopy.messages || []).forEach((message) => {
-          const row = document.createElement('p');
-          row.className = `demo-message ${message.role === 'agent' ? 'agent-message' : 'user-message'}`;
+        const avatar = document.createElement('span');
+        avatar.className = 'demo-avatar';
+        avatar.textContent = event.role === 'you' ? (locale === 'zh-CN' ? '你' : 'Y') : 'A';
 
-          const label = document.createElement('span');
-          label.className = `demo-role ${message.role === 'agent' ? 'agent' : 'prompt'}`;
-          label.textContent = `${roleLabel(message.role)} ›`;
+        const bubble = document.createElement('div');
+        bubble.className = 'demo-bubble';
 
-          const text = document.createElement('span');
-          text.className = 'demo-message-text';
-          text.textContent = message.text;
+        const label = document.createElement('span');
+        label.className = 'demo-message-role';
+        label.textContent = roleLabel(event.role);
 
-          row.append(label, text);
-          messagesElement.appendChild(row);
+        const text = document.createElement('span');
+        text.className = 'demo-message-text';
+        text.textContent = '';
+
+        const cursor = document.createElement('span');
+        cursor.className = 'demo-typing-cursor';
+        cursor.setAttribute('aria-hidden', 'true');
+
+        bubble.append(label, text, cursor);
+        row.append(avatar, bubble);
+        transcript.appendChild(row);
+
+        activeMessages.push({ event, row, text, cursor });
+      };
+
+      const appendTool = (event) => {
+        const row = document.createElement('div');
+        row.className = `demo-tool ${event.status === 'working' ? 'is-working' : 'is-done'}`;
+
+        const icon = document.createElement('span');
+        icon.className = 'demo-tool-icon';
+        icon.textContent = event.status === 'working' ? '●' : '✓';
+
+        const label = document.createElement('strong');
+        label.textContent = event.label || '';
+
+        const text = document.createElement('span');
+        text.textContent = event.text || '';
+
+        row.append(icon, label, text);
+        transcript.appendChild(row);
+
+        if (Number.isFinite(event.duration_ms) && event.duration_ms > 0) {
+          activeTools.push({ event, row, icon });
+        }
+      };
+
+      const processEvent = (event) => {
+        switch (event.type) {
+          case 'session':
+            hideOverlay();
+            setSession(event, true);
+            break;
+          case 'reset':
+            hideOverlay();
+            setSession(event, true);
+            break;
+          case 'message':
+            appendMessage(event);
+            break;
+          case 'tool':
+            appendTool(event);
+            break;
+          case 'transition':
+            showOverlay(event, false);
+            break;
+          case 'finale':
+            showOverlay(event, true);
+            break;
+          default:
+            break;
+        }
+      };
+
+      const updateTyping = () => {
+        activeMessages = activeMessages.filter((item) => {
+          const duration = reduceMotion ? 1 : Math.max(1, item.event.duration_ms || 1);
+          const ratio = Math.max(0, Math.min(1, (elapsed - item.event.at_ms) / duration));
+          const count = Math.ceil(item.event.text.length * ratio);
+          item.text.textContent = item.event.text.slice(0, count);
+          const done = ratio >= 1;
+          item.cursor.hidden = done;
+          if (done) item.row.classList.add('is-complete');
+          return !done;
+        });
+
+        activeTools = activeTools.filter((item) => {
+          const done = elapsed >= item.event.at_ms + item.event.duration_ms;
+          if (done) {
+            item.row.classList.remove('is-working');
+            item.row.classList.add('is-done');
+            item.icon.textContent = '✓';
+          }
+          return !done;
         });
       };
 
-      const renderProgress = () => {
+      const processDueEvents = () => {
+        while (nextEventIndex < events.length && events[nextEventIndex].at_ms <= elapsed) {
+          processEvent(events[nextEventIndex]);
+          nextEventIndex += 1;
+        }
+
+        if (overlayUntil && elapsed >= overlayUntil) hideOverlay();
+        updateTyping();
+        transcript.scrollTop = transcript.scrollHeight;
+      };
+
+      const updateChrome = () => {
         const bounded = Math.max(0, Math.min(trace.duration_ms, elapsed));
         const percent = (bounded / trace.duration_ms) * 100;
         progressElement.style.width = `${percent}%`;
         progressWrap.setAttribute('aria-valuenow', String(Math.round(percent)));
-        progressWrap.setAttribute('aria-label', copy.controls.progress);
-        timeElement.textContent = `${formatTime(bounded)} / ${formatTime(trace.duration_ms)}`;
-        renderScene(sceneForTime(bounded === trace.duration_ms ? bounded - 1 : bounded));
-        toggleButton.textContent = playing ? copy.controls.pause : copy.controls.play;
-        toggleButton.setAttribute('aria-label', playing ? copy.controls.pause : copy.controls.play);
+        progressWrap.setAttribute('aria-label', localized.controls.progress);
+        timeElement.textContent = `${formatTime(bounded, trace.duration_ms)} / ${formatTime(trace.duration_ms, trace.duration_ms)}`;
+        toggleButton.textContent = playing ? localized.controls.pause : localized.controls.play;
+        toggleButton.setAttribute('aria-label', playing ? localized.controls.pause : localized.controls.play);
+      };
+
+      const resetPlayback = () => {
+        elapsed = 0;
+        previousTimestamp = null;
+        nextEventIndex = 0;
+        activeMessages = [];
+        activeTools = [];
+        overlayUntil = 0;
+        transcript.replaceChildren();
+        hideOverlay();
+        sessionTitle.textContent = '';
+        sessionSubtitle.textContent = '';
+        setMode('without');
+        processDueEvents();
+        updateChrome();
       };
 
       const tick = (timestamp) => {
         if (!playing) {
-          previousTimestamp = null;
           animationFrame = null;
+          previousTimestamp = null;
           return;
         }
 
         if (previousTimestamp === null) previousTimestamp = timestamp;
-        const delta = Math.min(250, timestamp - previousTimestamp);
+        const delta = Math.min(120, timestamp - previousTimestamp);
         previousTimestamp = timestamp;
         elapsed += delta;
 
         if (elapsed >= trace.duration_ms) {
           elapsed = trace.duration_ms;
+          processDueEvents();
           playing = false;
-          renderProgress();
-          previousTimestamp = null;
+          updateChrome();
           animationFrame = null;
+          previousTimestamp = null;
           return;
         }
 
-        renderProgress();
+        processDueEvents();
+        updateChrome();
         animationFrame = requestAnimationFrame(tick);
       };
 
       const start = () => {
-        if (playing && animationFrame !== null) return;
-        if (elapsed >= trace.duration_ms) elapsed = 0;
+        if (animationFrame !== null) return;
+        if (elapsed >= trace.duration_ms) resetPlayback();
         playing = true;
         previousTimestamp = null;
-        renderProgress();
+        updateChrome();
         animationFrame = requestAnimationFrame(tick);
       };
 
@@ -159,7 +303,7 @@
         previousTimestamp = null;
         if (animationFrame !== null) cancelAnimationFrame(animationFrame);
         animationFrame = null;
-        renderProgress();
+        updateChrome();
       };
 
       toggleButton.addEventListener('click', () => {
@@ -168,8 +312,9 @@
       });
 
       replayButton.addEventListener('click', () => {
-        elapsed = 0;
-        renderedSceneId = null;
+        if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+        resetPlayback();
         start();
       });
 
@@ -177,10 +322,10 @@
         if (document.hidden && playing) pause();
       });
 
-      renderProgress();
+      resetPlayback();
       if (playing) animationFrame = requestAnimationFrame(tick);
     })
     .catch(() => {
-      // Keep the server-rendered static comparison as the safe fallback.
+      // Keep the server-rendered static comparison if the trace cannot load.
     });
 })();
