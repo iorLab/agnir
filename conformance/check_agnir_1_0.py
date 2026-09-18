@@ -109,6 +109,7 @@ def require_1_0_distribution_surface() -> None:
         "## Install or initialize Agnir",
         "canonical Executor-facing Project activation and operation surface",
         "backward-compatible locator only",
+        "Agnir `1.0.2` is a locator-only execution-surface packaging patch over `1.0.1`",
         "Agnir `1.0.1` is an activation/packaging reliability patch over `1.0.0`",
         "checkpoint evaluation",
         "Project-defined pre-commit policy when declared",
@@ -243,7 +244,7 @@ def main() -> None:
         fail("logical lineage identity must not be inferred from the selector")
 
     repository_version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-    if repository_version not in {"1.0.0-rc.1", "1.0.0", "1.0.1"}:
+    if repository_version not in {"1.0.0-rc.1", "1.0.0", "1.0.1", "1.0.2"}:
         fail(f"unexpected Core 1.0 repository version: {repository_version}")
     if f'repository_version: "{repository_version}"' not in manifest:
         fail(f"AGNIR.yaml does not declare repository_version {repository_version}")
