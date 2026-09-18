@@ -1,6 +1,6 @@
 # Agnir Versioning
 
-Status: active versioning policy. Published non-prerelease tag `v1.0.1` is the current latest stable repository/distribution release. It uses the same Core `1.0` + `repository-filesystem/1.0` compatibility line as `v1.0.0`.
+Status: active versioning policy. Repository source `1.0.2` is an accepted PATCH publication candidate. Published non-prerelease tag `v1.0.1` remains the current latest stable until the separate `v1.0.2` publication transaction succeeds. Both use Core `1.0` + `repository-filesystem/1.0`.
 
 Agnir distinguishes **repository release version** from **Core compatibility version** and profile/extension compatibility versions.
 
@@ -13,6 +13,18 @@ Repository releases use semantic versioning for the Agnir product/distribution a
 - MAJOR at/after 1.0: incompatible changes to the stable public contract.
 
 A repository prerelease-to-stable promotion such as `1.0.0-rc.1` â†’ `1.0.0` does not itself change Core/profile compatibility. Compatibility is determined by the declared Core/profile versions, not by the presence or absence of a SemVer prerelease suffix.
+
+## v1.0.2 execution-surface locator patch
+
+Repository `1.0.2` is a PATCH-level distribution evolution over `1.0.1`. Its scope is deliberately narrow:
+
+- make the persistent ChatGPT Project handoff locator-only and intentionally small;
+- use exactly the canonical Project/ref plus a first-substantive-turn instruction to read root `AGENTS.md`;
+- keep Agnir discovery, durable-truth authority, checkpoint, and repository-operation semantics in the Project-owned `AGENTS.md -> AGNIR.md -> AGNIR.yaml` path rather than duplicating them into workspace instructions;
+- add conformance that rejects reintroduction of those duplicated semantics into the ChatGPT handoff;
+- preserve separate repository activation and execution-surface activation status/verification.
+
+This patch does **not** introduce Core `1.1`, `repository-filesystem/1.1`, new continuity semantics, or a new checkpoint model. Until publication succeeds, `v1.0.1` remains latest stable.
 
 ## v1.0.1 activation/packaging patch
 
@@ -40,7 +52,8 @@ Published/supported lines include:
 - repository `v0.1.1` exposes Core `0.1`;
 - repository `v0.2.0` exposes Core `0.2`;
 - repository `v1.0.0` exposes stable Core `1.0` for fresh/promoted 1.0 Projects while retaining support for historical `0.1` and `0.2` Projects;
-- repository `v1.0.1` exposes the same Core `1.0` semantics; its changes are distribution/activation packaging only.
+- repository `v1.0.1` exposes the same Core `1.0` semantics; its changes are distribution/activation packaging only;
+- repository `v1.0.2` keeps Core `1.0` and narrows ChatGPT persistent Project Instructions to a locator-only execution-surface handoff.
 
 Core `1.0` is a deliberate **stability promotion of the behavior proven under Core `0.2`**, not a semantic redesign. The stable normative contract is `spec/AGNIR_CORE_1_0.md`; promotion from an existing Core/profile `0.2` Project is governed by `spec/CORE_0_2_TO_1_0_PROMOTION.md`.
 
@@ -52,7 +65,8 @@ Profiles/extensions version their own contracts independently where appropriate.
 
 - repository `v0.2.0` combines Core `0.2` with `repository-filesystem/0.2`;
 - repository `v1.0.0` combines Core `1.0` with stable `repository-filesystem/1.0` for fresh/promoted 1.0 Projects while continuing to ship supported historical compatibility paths;
-- repository `v1.0.1` keeps `repository-filesystem/1.0` unchanged.
+- repository `v1.0.1` keeps `repository-filesystem/1.0` unchanged;
+- repository `v1.0.2` also keeps `repository-filesystem/1.0` unchanged.
 
 Other adapters/extensions retain their own identifiers and compatibility rules.
 
@@ -91,11 +105,11 @@ A Core/profile `0.1` Project reaches `1.0` through the existing explicit `0.1` â
 
 The accepted `v1.0.0-rc.1` is release evidence and remains immutable prerelease history; it never substitutes for stable resolution.
 
-Publication created the non-prerelease `v1.0.1` tag/Release at exact stable source revision `f56d25b22997c259c660651e7357334b063093e1`; stable resolution now selects `v1.0.1`. Previous stable `v1.0.0` remains immutable history at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`. Published release tags are immutable by Project policy.
+Publication created the non-prerelease `v1.0.1` tag/Release at exact stable source revision `f56d25b22997c259c660651e7357334b063093e1`; stable resolution continues to select `v1.0.1` while repository `1.0.2` is only a candidate. A successful `v1.0.2` publication will advance stable resolution; it must not move `v1.0.1` or earlier tags. Previous stable `v1.0.0` remains immutable history at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`. Published release tags are immutable by Project policy.
 
 ## Meaning of the 1.0 line
 
-`v1.0.0` is the point at which Agnir committed to stable public compatibility and migration discipline for downstream Projects. Patch releases such as `v1.0.1` may harden implementation, documentation, activation, packaging, and conformance without changing the stable Core/profile contract.
+`v1.0.0` is the point at which Agnir committed to stable public compatibility and migration discipline for downstream Projects. Patch releases such as `v1.0.1` and `v1.0.2` may harden implementation, documentation, activation, packaging, execution-surface onboarding, and conformance without changing the stable Core/profile contract.
 
 The compatibility alignment remains:
 
