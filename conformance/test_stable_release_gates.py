@@ -45,7 +45,7 @@ class StableZeroTwoReleaseGateTests(unittest.TestCase):
             self.assertTrue((ROOT / path).exists(), path)
 
 
-@unittest.skipUnless(VERSION in {"1.0.0", "1.0.1"}, "stable 1.0.x package gate applies only to a stable 1.0.x source tree")
+@unittest.skipUnless(VERSION in {"1.0.0", "1.0.1", "1.0.2"}, "stable 1.0.x package gate applies only to a stable 1.0.x source tree")
 class StableOneZeroReleaseGateTests(unittest.TestCase):
     def test_repository_package_keeps_stable_core_profile_1_0(self) -> None:
         manifest = (ROOT / "AGNIR.yaml").read_text(encoding="utf-8")
@@ -86,6 +86,10 @@ class StableOneZeroReleaseGateTests(unittest.TestCase):
         if VERSION == "1.0.1":
             self.assertIn("v1.0.1 patch scope", release)
             self.assertIn("does not change Core `1.0`", release)
+        elif VERSION == "1.0.2":
+            self.assertIn("v1.0.2 patch scope", release)
+            self.assertIn("locator-only ChatGPT Project handoff", release)
+            self.assertIn("does not change Core `1.0`", release)
 
     def test_dedicated_activation_surface_is_packaging_not_core(self) -> None:
         instructions = (ROOT / "AGNIR.md").read_text(encoding="utf-8")
@@ -111,6 +115,18 @@ class StableOneZeroReleaseGateTests(unittest.TestCase):
             "conformance/repository_filesystem_0_2_reference.py",
         ):
             self.assertTrue((ROOT / path).exists(), path)
+
+    def test_v1_0_2_publication_gate_is_exact_authoritative_main_trigger(self) -> None:
+        workflow = (ROOT / ".github/workflows/conformance.yml").read_text(encoding="utf-8")
+        for marker in (
+            "publish-v1-0-2:",
+            "Publish v1.0.2 stable release",
+            "release: publish v1.0.2 stable",
+            'tag="v1.0.2"',
+            'previous_tag="v1.0.1"',
+            "prerelease=false",
+        ):
+            self.assertIn(marker, workflow)
 
     def test_v1_0_0_publication_gate_remains_immutable_history(self) -> None:
         workflow = (ROOT / ".github/workflows/conformance.yml").read_text(encoding="utf-8")
