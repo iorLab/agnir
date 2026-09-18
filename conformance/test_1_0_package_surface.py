@@ -28,7 +28,7 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
         ):
             self.assertTrue((ROOT / path).exists(), path)
 
-    def test_readmes_explain_1_0_1_as_packaging_patch_not_core_change(self) -> None:
+    def test_readmes_explain_1_0_x_patches_without_core_change(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
         chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
 
@@ -39,6 +39,7 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
             "Existing Core/profile `0.1` and `0.2` Projects remain supported",
             "AGNIR.md",
             "v1.0.1",
+            "v1.0.2",
         ):
             self.assertIn(marker, english)
         for marker in (
@@ -48,13 +49,16 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
             "已有 Core / profile `0.1` 与 `0.2` 项目继续受支持",
             "AGNIR.md",
             "v1.0.1",
+            "v1.0.2",
         ):
             self.assertIn(marker, chinese)
 
-        self.assertIn("Latest published stable package: `v1.0.1`", english)
-        self.assertIn("最新已发布稳定包：`v1.0.1`", chinese)
-        self.assertIn("Published patch: `v1.0.1`", english)
-        self.assertIn("已发布 patch：`v1.0.1`", chinese)
+        self.assertIn("Latest published stable package: `v1.0.2`", english)
+        self.assertIn("最新已发布稳定包：`v1.0.2`", chinese)
+        self.assertIn("Published patch: `v1.0.2`", english)
+        self.assertIn("已发布 patch：`v1.0.2`", chinese)
+        self.assertIn("Previous patch: `v1.0.1`", english)
+        self.assertIn("上一 patch：`v1.0.1`", chinese)
 
     def test_skill_dispatches_0_1_0_2_and_1_0_without_silent_relabeling(self) -> None:
         skill = (ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -104,7 +108,7 @@ class OneZeroPackageSurfaceTests(unittest.TestCase):
 
     def test_self_host_ci_dispatches_current_1_0_source_line(self) -> None:
         workflow = (ROOT / ".github/workflows/conformance.yml").read_text(encoding="utf-8")
-        self.assertIn("1.0.1|1.0.0|1.0.0-rc.1", workflow)
+        self.assertIn("1.0.2|1.0.1|1.0.0|1.0.0-rc.1", workflow)
         self.assertIn("python conformance/check_agnir_1_0.py", workflow)
 
     def test_v1_0_0_publication_is_immutable_historical_gate(self) -> None:
