@@ -30,8 +30,8 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/main"
   agnir/release:
-    phase: "stable-v1.0.1-published"
-    repository_version: "1.0.1"
+    phase: "stable-v1.0.2-implemented-publication-pending"
+    repository_version: "1.0.2"
     core_contract: "spec/AGNIR_CORE_1_0.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_1_0.md"
     promotion_contract: "spec/CORE_0_2_TO_1_0_PROMOTION.md"
@@ -65,7 +65,14 @@ extensions:
     accepted_rc_acceptance_checkpoint: "afc07d062b957e8dbfe3f859834c787e64aa52be"
     previous_latest_stable: "v1.0.0"
     latest_stable: "v1.0.1"
-    publication_status: "published-verified"
+    candidate_scope: "chatgpt-project-locator-only"
+    candidate_implementation_pr: 58
+    candidate_implementation_revision: "2c62d026c48405c3e299f0f57d6a674b3f6f9e1c"
+    candidate_implementation_verification_run: 35353464865
+    candidate_acceptance_checkpoint: "4fde39128e5edf3fba3d7906a279918b1c38b7c2"
+    candidate_acceptance_verification_run: 35353700740
+    candidate_acceptance_verification_job: 105627739027
+    publication_status: "v1.0.1-published-v1.0.2-candidate"
     target_ref: "refs/heads/main"
   agnir/operations:
     distribution: "agnir-agent-skill"

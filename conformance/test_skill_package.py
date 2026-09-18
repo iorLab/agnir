@@ -101,6 +101,16 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
+    def test_skill_defines_1_0_2_locator_only_upgrade_without_core_promotion(self) -> None:
+        text = SKILL.read_text(encoding="utf-8")
+        for marker in (
+            "Agnir `1.0.2` is a locator-only execution-surface packaging patch over `1.0.1`",
+            "two-line locator-only handoff",
+            "`1.0.1` → `1.0.2` locator-only execution-surface packaging",
+            "does not change Core `1.0`",
+        ):
+            self.assertIn(marker, text)
+
     def test_skill_defines_1_0_1_activation_upgrade_without_core_promotion(self) -> None:
         text = SKILL.read_text(encoding="utf-8")
         for marker in (
@@ -183,7 +193,10 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, milestones)
 
-        if VERSION == "1.0.1":
+        if VERSION == "1.0.2":
+            self.assertIn("1.0.2", versioning)
+            self.assertIn("1.0.2", milestones)
+        elif VERSION == "1.0.1":
             self.assertIn("1.0.1", versioning)
             self.assertIn("1.0.1", milestones)
         elif VERSION == "1.0.0":

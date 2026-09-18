@@ -42,6 +42,21 @@ The GitHub Release body has one cosmetic omission: the intended literal `` `AGNI
 
 This is a repository-host presentation defect, not a package-integrity or protocol defect. It must not be repaired by moving/recreating the published tag. A future authorized metadata repair may update only the Release body while preserving release identity.
 
+## v1.0.2 publication candidate
+
+On 2026-09-18, the Principal explicitly authorized **publish `v1.0.2`** after accepting the locator-only ChatGPT Project bootstrap contract.
+
+The release scope is intentionally PATCH-only:
+
+- publish the already accepted two-line ChatGPT Project locator handoff;
+- keep Project continuity behind `AGENTS.md -> AGNIR.md -> AGNIR.yaml -> selected durable continuity`;
+- add exact `v1.0.2` release packaging, conformance, and an authoritative-main publication gate;
+- preserve Core `1.0`, `repository-filesystem/1.0`, Project identity, Continuity Lineage, checkpoint semantics, and historical `0.1`/`0.2` compatibility.
+
+Candidate staging branch: `release/v1.0.2`. Repository source version is `1.0.2`; **latest stable remains `v1.0.1` until publication actually succeeds**. Publication is allowed only through an exact `main` commit message `release: publish v1.0.2 stable`, after candidate and authoritative-main conformance are green.
+
+Accepted implementation inputs are PR `#58` / merge `2c62d026c48405c3e299f0f57d6a674b3f6f9e1c` and acceptance checkpoint `4fde39128e5edf3fba3d7906a279918b1c38b7c2`, with authoritative conformance run `35353700740` success.
+
 ## Public product state
 
 The Principal-approved Agnir brand identity remains canonical under `brand/`. The bilingual README/website, scoped GitHub Pages publication, transparent render-self-contained brand surfaces, Apache-2.0 licensing, bilingual contribution guidance, repository topics/homepage, and GitHub Issues feedback intake remain accepted public surfaces on authoritative `main`.

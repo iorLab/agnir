@@ -4,6 +4,7 @@
 - `v0.2.0`: stable pre-1.0 feature release line for Continuity Lineages. Its acceptance gates included Core `0.2` design, explicit `0.1` → `0.2` migration, materially different VCS and non-VCS backend conformance, fresh install/resume, real-Project validation, mount-boundary evidence, and an RC cycle. Historical Core/profile `0.2` remains a supported compatibility surface after 1.0 rather than being renamed in place.
 - `v1.0.0`: published stability milestone. Core `1.0` + `repository-filesystem/1.0` deliberately promote the independently validated `0.2` behavior into the first long-term stable compatibility identifiers. Existing `0.2` Projects remain supported and are not forcibly rewritten; explicit semantics-preserving `0.2` → `1.0` Project promotion remains separately authorized and conformance-tested.
 - `v1.0.1`: published PATCH maintenance milestone for activation/packaging reliability. It introduces dedicated `AGNIR.md` Project instructions, direct `AGENTS.md → AGNIR.md` activation, a backward-compatible README locator for `1.0.0` Projects, and explicit short commit-intent checkpoint dispatch. Core `1.0` + `repository-filesystem/1.0` remain unchanged; checkpoint no-op semantics remain unchanged.
+- `v1.0.2`: authorized PATCH publication candidate for ChatGPT execution-surface onboarding reliability. It makes persistent ChatGPT Project Instructions locator-only while retaining the full Project-owned activation chain and continuity semantics. Core `1.0` + `repository-filesystem/1.0` remain unchanged.
 
 ## v1 acceptance receipts
 
@@ -46,3 +47,17 @@ The `1.0.1` patch was accepted after all of the following held:
 - full conformance is green on the exact candidate.
 
 Publication of `v1.0.1` was a distinct authoritative-main transaction and did not follow automatically from implementation or PR acceptance.
+
+## v1.0.2 publication candidate
+
+The Principal explicitly authorized `v1.0.2` publication on 2026-09-18 after accepting the locator-only ChatGPT Project handoff.
+
+Accepted implementation inputs:
+
+- PR `#58` merged at `2c62d026c48405c3e299f0f57d6a674b3f6f9e1c`;
+- implementation post-merge conformance `35353464865` — success;
+- acceptance checkpoint merged at `4fde39128e5edf3fba3d7906a279918b1c38b7c2`;
+- acceptance post-merge conformance `35353700740`, repository job `105627739027` — success;
+- persistent ChatGPT handoff is conformance-locked to the canonical Project/ref plus root `AGENTS.md` locator.
+
+Publication remains a separate authoritative-main transaction. Until it succeeds, `v1.0.1` remains latest stable.
