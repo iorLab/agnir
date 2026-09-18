@@ -126,12 +126,14 @@ Ask the Principal to append or merge the block; do not overwrite unrelated exist
 
 Upgrade is **not re-initialization**. Activate the existing Project first through its currently valid activation route. Preserve Project identity, memory locators/content, unrelated README/`AGENTS.md`/`AGNIR.md` content, unrelated extensions, and still-valid surface locators unless another authorized operation changes them.
 
+Agnir `1.0.2` is a locator-only execution-surface packaging patch over `1.0.1`: it does not change Core `1.0`, `repository-filesystem/1.0`, Project identity, logical lineage identity, checkpoint semantics, or Project-owned activation. For a ChatGPT Project that needs persistent instructions, upgrade/configuration must converge on the two-line locator-only handoff above rather than preserving or generating a duplicated Agnir procedure in Project Instructions.
+
 Agnir `1.0.1` is an activation/packaging reliability patch over `1.0.0`: it does not change Core `1.0`, `repository-filesystem/1.0`, Project identity, logical lineage identity, or checkpoint semantics. For a `1.0.0` Project, migrate the activation packaging by creating canonical `AGNIR.md`, upgrading the Agnir locator in `AGENTS.md`, and reducing the README Agnir instruction section to a compatibility locator. Reconcile this as an operational upgrade, not a Core/profile promotion.
 
 ### Classify before mutating
 
 - **no-op** — same operational package and no material drift;
-- **compatible operational upgrade** — Core/profile compatibility lines unchanged, including `1.0.0` → `1.0.1` activation packaging;
+- **compatible operational upgrade** — Core/profile compatibility lines unchanged, including `1.0.0` → `1.0.1` activation packaging and `1.0.1` → `1.0.2` locator-only execution-surface packaging;
 - **migration or promotion required** — Core/profile compatibility identifiers change. Surface `AGNIR_UPGRADE_MIGRATION_REQUIRED`-class semantics and do not silently rewrite compatibility.
 
 A newer Agnir distribution may continue to operate a supported older compatibility line. In particular, a `1.0.x` distribution may resolve a valid `0.2` Project through its `0.2` compatibility path; merely installing the newer distribution is not authorization to rewrite the Project to Core/profile `1.0`.
