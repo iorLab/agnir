@@ -113,8 +113,9 @@ agnir/
 
 ## 当前版本职责
 
-- **Latest published stable:** `v1.0.0` remains the latest published non-prerelease release until a separately authorized `v1.0.1` publication succeeds.
-- **v1.0.1 patch scope:** dedicated `AGNIR.md` Project activation/operation surface, direct locator from `AGENTS.md`, legacy README activation compatibility for pre-upgrade Projects, short commit-intent checkpoint interception, and associated Skill/conformance/packaging hardening. Core `1.0` and `repository-filesystem/1.0` do not change.
+- **Latest published stable:** `v1.0.1` remains the latest published non-prerelease release until the separately authorized `v1.0.2` publication succeeds.
+- **v1.0.2 patch scope:** persistent ChatGPT Project configuration is locator-only: canonical Project/ref plus a fresh-context locator to root `AGENTS.md`; the Project-owned `AGENTS.md → AGNIR.md → AGNIR.yaml` path retains discovery, authority, checkpoint, and operation semantics. Core `1.0` and `repository-filesystem/1.0` do not change.
+- **v1.0.1 patch scope:** dedicated `AGNIR.md` Project activation/operation surface, direct locator from `AGENTS.md`, legacy README activation compatibility for pre-upgrade Projects, short commit-intent checkpoint interception, and associated Skill/conformance/packaging hardening.
 - **Accepted RC evidence for the stable 1.0 compatibility line:** immutable `v1.0.0-rc.1` at `092945289f1a0a9803e4fe0583104aa380ceaadc`; it remains prerelease evidence and must not be moved.
 - **Historical compatibility:** Core/profile `0.1` and `0.2` normative/schema/reference/tests remain supported. A `1.0.x` distribution dispatches according to the Project compatibility identifiers actually declared.
 - **Stable 0.2 -> 1.0 promotion contract:** `spec/CORE_0_2_TO_1_0_PROMOTION.md` plus `conformance/repository_filesystem_1_0_promotion_reference.py` and `conformance/test_repository_filesystem_1_0_promotion.py`.
