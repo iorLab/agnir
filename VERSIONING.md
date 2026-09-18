@@ -1,6 +1,6 @@
 # Agnir Versioning
 
-Status: active versioning policy. Repository source `1.0.2` is an accepted PATCH publication candidate. Published non-prerelease tag `v1.0.1` remains the current latest stable until the separate `v1.0.2` publication transaction succeeds. Both use Core `1.0` + `repository-filesystem/1.0`.
+Status: active versioning policy. Published non-prerelease tag `v1.0.2` is the current latest stable repository/distribution release. It uses the same Core `1.0` + `repository-filesystem/1.0` compatibility line as `v1.0.1` and `v1.0.0`.
 
 Agnir distinguishes **repository release version** from **Core compatibility version** and profile/extension compatibility versions.
 
@@ -16,7 +16,7 @@ A repository prerelease-to-stable promotion such as `1.0.0-rc.1` â†’ `1.0.0` doe
 
 ## v1.0.2 execution-surface locator patch
 
-Repository `1.0.2` is a PATCH-level distribution evolution over `1.0.1`. Its scope is deliberately narrow:
+Repository `1.0.2` is a published PATCH-level distribution evolution over `1.0.1`. Its scope is deliberately narrow:
 
 - make the persistent ChatGPT Project handoff locator-only and intentionally small;
 - use exactly the canonical Project/ref plus a first-substantive-turn instruction to read root `AGENTS.md`;
@@ -24,7 +24,7 @@ Repository `1.0.2` is a PATCH-level distribution evolution over `1.0.1`. Its sco
 - add conformance that rejects reintroduction of those duplicated semantics into the ChatGPT handoff;
 - preserve separate repository activation and execution-surface activation status/verification.
 
-This patch does **not** introduce Core `1.1`, `repository-filesystem/1.1`, new continuity semantics, or a new checkpoint model. Until publication succeeds, `v1.0.1` remains latest stable.
+This patch does **not** introduce Core `1.1`, `repository-filesystem/1.1`, new continuity semantics, or a new checkpoint model. Published stable source: `v1.0.2` -> `b5626394ec40a5cb7a28c01892acde07cc0adc8e`.
 
 ## v1.0.1 activation/packaging patch
 
@@ -105,7 +105,7 @@ A Core/profile `0.1` Project reaches `1.0` through the existing explicit `0.1` â
 
 The accepted `v1.0.0-rc.1` is release evidence and remains immutable prerelease history; it never substitutes for stable resolution.
 
-Publication created the non-prerelease `v1.0.1` tag/Release at exact stable source revision `f56d25b22997c259c660651e7357334b063093e1`; stable resolution continues to select `v1.0.1` while repository `1.0.2` is only a candidate. A successful `v1.0.2` publication will advance stable resolution; it must not move `v1.0.1` or earlier tags. Previous stable `v1.0.0` remains immutable history at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`. Published release tags are immutable by Project policy.
+Publication created the non-prerelease `v1.0.2` tag/Release at exact stable source revision `b5626394ec40a5cb7a28c01892acde07cc0adc8e`; stable resolution now selects `v1.0.2`. Previous stable `v1.0.1` remains immutable history at `f56d25b22997c259c660651e7357334b063093e1`, and `v1.0.0` remains immutable at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`. Published release tags are immutable by Project policy.
 
 ## Meaning of the 1.0 line
 
