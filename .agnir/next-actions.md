@@ -1,17 +1,16 @@
 # Agnir Next Actions
 
-Agnir `v1.0.1` remains the published latest stable release while repository source `1.0.2` is staged as an explicitly authorized PATCH publication candidate. Core/profile remain `1.0` / `repository-filesystem/1.0`.
+Agnir `v1.0.2` is published and verified as the latest stable repository/distribution release. Core/profile remain `1.0` / `repository-filesystem/1.0`.
 
-1. **Complete and publish the v1.0.2 candidate.** Require green candidate conformance, merge/reconcile onto authoritative `main`, require green post-merge conformance, then create an exact empty publication-arm commit `release: publish v1.0.2 stable`. Accept publication only after tag/Release/latest readback and immutable earlier-tag checks pass.
-2. **After successful publication, reconcile stable metadata.** Update `AGNIR.yaml`, RELEASE/versioning/README surfaces, State/Next Actions, and publication Evidence so `v1.0.2` becomes the recorded latest stable while the immutable release tag continues to point to the exact publication-arm revision.
-3. **Observe the accepted locator-only handoff in the next genuine fresh ChatGPT Project initialization.** Treat a future verbose handoff as a packaging regression; do not solve it by duplicating Agnir operational semantics back into Project Instructions.
-4. **Optionally repair the v1.0.1 GitHub Release-body wording.** One historical cosmetic sentence omitted the literal `AGNIR.md`; any repair must update host metadata only and must not move/recreate `v1.0.1`.
-5. **Complete human visual review of the refined Install-section two-session preview.** PR `#55` is published. Confirm the live install area now reads unmistakably as two different Agent sessions: Session A above, Fresh Session B below, with the “open a fresh session” divider, consistent four-point Agent icon, clean desktop/mobile balance, and usable dark/light plus English / Simplified Chinese / Japanese / Korean presentation. Also confirm the hero comparison caption now reads **“两个新会话都只收到一句：‘继续。’ 但大有不同。”** in Simplified Chinese. This is public-surface polish, not a Core or adoption gate.
-6. **Recruit the first external design users and collect material adoption evidence.** The synchronized split-screen fresh-session demo v3 has passed Principal human visual review and is the primary first-contact proof surface. Prioritize genuine external cold-start resumes, second-session value, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
-7. **Keep brand/public-surface truth locked.** README, website, adoption/demo and social materials may consume approved brand assets/deterministic derivatives but must not reinterpret approved identity or Core semantics.
-8. **Keep merged-head cleanup enabled.** `main` remains the sole intended long-lived authoritative branch; completed staging branches should remain retired after their material result and evidence are durably represented.
-9. **Shift active product execution back to Svif where appropriate.** Svif owns its own canonical continuity and ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
-10. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
+1. **Operate the 1.0 line in stable-maintenance mode.** Preserve Core/profile 1.0 semantics and historical 0.1/0.2 compatibility/migration surfaces. Future patch releases must not silently expand or redefine the stable contract.
+2. **Observe the accepted locator-only handoff in the next genuine fresh ChatGPT Project initialization.** Treat a future verbose handoff as a packaging regression; do not solve it by duplicating Agnir operational semantics back into Project Instructions.
+3. **Optionally repair the historical v1.0.1 GitHub Release-body wording.** One cosmetic sentence omitted the literal `AGNIR.md`; any repair must update host metadata only and must not move/recreate `v1.0.1`.
+4. **Complete human visual review of the refined Install-section two-session preview.** PR `#55` is published. Confirm the live install area now reads unmistakably as two different Agent sessions: Session A above, Fresh Session B below, with the “open a fresh session” divider, consistent four-point Agent icon, clean desktop/mobile balance, and usable dark/light plus English / Simplified Chinese / Japanese / Korean presentation. Also confirm the hero comparison caption now reads **“两个新会话都只收到一句：‘继续。’ 但大有不同。”** in Simplified Chinese. This is public-surface polish, not a Core or adoption gate.
+5. **Recruit the first external design users and collect material adoption evidence.** The synchronized split-screen fresh-session demo v3 has passed Principal human visual review and is the primary first-contact proof surface. Prioritize genuine external cold-start resumes, second-session value, cross-Executor cases, new execution surfaces, repeat use, and independently built integrations.
+6. **Keep brand/public-surface truth locked.** README, website, adoption/demo and social materials may consume approved brand assets/deterministic derivatives but must not reinterpret approved identity or Core semantics.
+7. **Keep merged-head cleanup enabled.** `main` remains the sole intended long-lived authoritative branch; completed staging/checkpoint branches should remain retired after their material result and evidence are durably represented.
+8. **Shift active product execution back to Svif where appropriate.** Svif owns its own canonical continuity and ChatGPT/Plugins publication path; do not smuggle Svif changes into Agnir maintenance.
+9. **Keep FishUp production publication separate.** No FishUp main advancement without separate authorization.
 
 ## Install preview split-session refinement receipts
 
@@ -98,6 +97,24 @@ Agnir `v1.0.1` remains the published latest stable release while repository sour
 - artifact digest: `sha256:15bd2907feec1ab772f7484fe040f42fb0b717db0e6c91c45240f013050b1fab`;
 - initial publication evidence: `.agnir/evidence/2026-09-14-canonical-fresh-session-demo.md`.
 
+## v1.0.2 stable publication receipts
+
+- locator simplification implementation PR: `#58`, merge `2c62d026c48405c3e299f0f57d6a674b3f6f9e1c`;
+- Principal acceptance checkpoint: `4fde39128e5edf3fba3d7906a279918b1c38b7c2`;
+- release candidate PR: `#60`, authoritative merge `72177afbbe4e36945366faaa9096b6d9bbb04d88`;
+- authoritative pre-publication conformance: run `35354894720`, repository job `105631729092` — success;
+- publication arm / stable source: `b5626394ec40a5cb7a28c01892acde07cc0adc8e`;
+- publication workflow: `35354941029` — success;
+- publication repository job: `105631886209` — success;
+- stable publication job: `105631955191` — success;
+- stable tag: `v1.0.2` -> `b5626394ec40a5cb7a28c01892acde07cc0adc8e`;
+- GitHub Release id: `391529372`;
+- published at: `2026-09-18T14:14:18Z`;
+- latest stable readback: `v1.0.2`;
+- previous `v1.0.1`: unchanged at `f56d25b22997c259c660651e7357334b063093e1`;
+- `v1.0.0`: unchanged at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
+- accepted RC `v1.0.0-rc.1`: unchanged at `092945289f1a0a9803e4fe0583104aa380ceaadc`;
+- publication evidence: `.agnir/evidence/2026-09-18-v1.0.2-stable-publication.md`.
 ## v1.0.1 stable publication receipts
 
 - implementation PR: `#50` — merged;
