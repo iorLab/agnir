@@ -1,6 +1,6 @@
 # Agnir 1.0.x Stable Release Package
 
-**Current repository version:** `1.0.1`
+**Current repository version:** `1.0.2`
 
 **Latest published stable:** `v1.0.1`
 
@@ -10,7 +10,7 @@
 
 ## Status
 
-Agnir `v1.0.1` is the **published latest stable** repository/distribution release.
+Agnir repository source `1.0.2` is the **accepted publication candidate**. The latest published stable remains `v1.0.1` until the separate authoritative publication transaction succeeds.
 
 Accepted stable publication receipts:
 
@@ -25,9 +25,34 @@ Accepted stable publication receipts:
 - previous stable `v1.0.0` remains exactly `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - accepted `v1.0.0-rc.1` remains exactly `092945289f1a0a9803e4fe0583104aa380ceaadc`.
 
-Repository `1.0.1` is a backward-compatible PATCH for activation/packaging reliability. It **does not change Core `1.0`**, `repository-filesystem/1.0`, the Project identity model, Continuity Lineage semantics, checkpoint semantics, or historical compatibility lines.
+Repository `1.0.2` is a backward-compatible PATCH for execution-surface onboarding/packaging reliability. It **does not change Core `1.0`**, `repository-filesystem/1.0`, the Project identity model, Continuity Lineage semantics, checkpoint semantics, or historical compatibility lines. Published `v1.0.1` remains the current stable release until `v1.0.2` publication succeeds.
 
-`latest stable` is a publication property, not a moving-branch property. Stable resolution now selects the published non-prerelease `v1.0.1` release, not later untagged `main` commits.
+`latest stable` is a publication property, not a moving-branch property. During the `1.0.2` candidate stage, stable resolution continues to select the published non-prerelease `v1.0.1` release, not the release branch or untagged `main` commits.
+
+## v1.0.2 patch scope
+
+The `1.0.2` candidate publishes the Principal-accepted **locator-only ChatGPT Project handoff**:
+
+```text
+Canonical Project: <owner/repository> (<ref>)
+At the first substantive turn of every new conversation, open it, read root AGENTS.md, and follow it before doing Project work.
+```
+
+For ChatGPT Projects that need persistent workspace instructions, the execution surface stores only the canonical Project/ref plus the fresh-context locator to root `AGENTS.md`. It must not duplicate `AGNIR.yaml` loading, durable-truth authority, checkpoint semantics, or repository-operation semantics into Project Instructions when those are already reachable through the Project-owned activation route.
+
+Continuity remains:
+
+`AGENTS.md -> AGNIR.md -> AGNIR.yaml -> selected durable continuity`
+
+Accepted implementation receipts before the release cycle:
+
+- implementation PR: `#58`;
+- implementation merge: `2c62d026c48405c3e299f0f57d6a674b3f6f9e1c`;
+- implementation post-merge conformance: `35353464865` — success;
+- acceptance/checkpoint merge: `4fde39128e5edf3fba3d7906a279918b1c38b7c2`;
+- acceptance post-merge conformance: `35353700740`, repository job `105627739027` — success.
+
+This patch is distribution/onboarding hardening only. Core/profile remain `1.0` / `repository-filesystem/1.0`.
 
 ## v1.0.1 patch scope
 
@@ -147,7 +172,7 @@ Implementation, a green PR, or an authoritative-main merge does **not** by itsel
 
 `v1.0.1` was published only through the separately armed authoritative-main transaction `release: publish v1.0.1 stable`. The publication path verified the exact source candidate, created/validated immutable `refs/tags/v1.0.1`, created/validated a non-draft/non-prerelease GitHub Release, verified `releases/latest == v1.0.1`, and verified the existing `v1.0.0` tag remained exactly at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`.
 
-Published tags are immutable by Project policy.
+`v1.0.2` may be published only by the exact authoritative-main trigger `release: publish v1.0.2 stable` after the repository source is `1.0.2` and conformance is green. Published tags are immutable by Project policy.
 
 ## Activation and Skill boundary
 
