@@ -2,9 +2,42 @@
 
 Durable continuity belongs to the Project.
 
-## Stable v1.0.1 publication
+## Stable v1.0.2 publication
 
-Agnir `v1.0.1` is now **published, verified, and the latest stable repository/distribution release**.
+Agnir `v1.0.2` is **published, verified, and the latest stable repository/distribution release**.
+
+Accepted stable publication receipts:
+
+- publication authorization: Principal command `发布v1.0.2` / `那就发布v1.0.2`;
+- publication-arm / immutable stable tag revision: `b5626394ec40a5cb7a28c01892acde07cc0adc8e`;
+- immutable stable tag: `v1.0.2` -> `b5626394ec40a5cb7a28c01892acde07cc0adc8e`;
+- GitHub Release id: `391529372`;
+- Release state: non-draft, non-prerelease;
+- published at: `2026-09-18T14:14:18Z`;
+- publication workflow: `35354941029` — success;
+- repository/conformance job: `105631886209` — success;
+- stable publication job: `105631955191` — success;
+- GitHub `releases/latest`: `v1.0.2`;
+- previous stable `v1.0.1` remains exactly `f56d25b22997c259c660651e7357334b063093e1`;
+- `v1.0.0` remains exactly `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
+- accepted `v1.0.0-rc.1` remains exactly `092945289f1a0a9803e4fe0583104aa380ceaadc`.
+
+Repository/distribution `1.0.2` is a PATCH-level execution-surface onboarding/packaging hardening over `1.0.1`. It publishes the Principal-accepted locator-only ChatGPT Project handoff while leaving Core `1.0`, `repository-filesystem/1.0`, Project identity, Continuity Lineage, checkpoint semantics, and historical compatibility lines unchanged.
+
+The accepted persistent ChatGPT Project handoff is:
+
+```text
+Canonical Project: <owner/repository> (<ref>)
+At the first substantive turn of every new conversation, open it, read root AGENTS.md, and follow it before doing Project work.
+```
+
+Continuity remains Project-owned behind `AGENTS.md -> AGNIR.md -> AGNIR.yaml -> selected durable continuity`; the surface instruction is only the durable locator into that route.
+
+`VERSION`, `AGNIR.yaml extensions.agnir/release.repository_version`, and `agnir/operations.release` reconcile to repository/distribution `1.0.2`; `agnir/operations.applied_revision` records the immutable stable source revision `b5626394ec40a5cb7a28c01892acde07cc0adc8e`.
+
+## Previous stable v1.0.1 publication
+
+Agnir `v1.0.1` remains an **immutable previous stable release**. Its publication receipts remain historical evidence for the 1.0 line.
 
 Accepted stable publication receipts:
 
@@ -42,20 +75,17 @@ The GitHub Release body has one cosmetic omission: the intended literal `` `AGNI
 
 This is a repository-host presentation defect, not a package-integrity or protocol defect. It must not be repaired by moving/recreating the published tag. A future authorized metadata repair may update only the Release body while preserving release identity.
 
-## v1.0.2 publication candidate
+## v1.0.2 publication acceptance
 
-On 2026-09-18, the Principal explicitly authorized **publish `v1.0.2`** after accepting the locator-only ChatGPT Project bootstrap contract.
+The authorized PATCH release cycle is closed.
 
-The release scope is intentionally PATCH-only:
+Release preparation PR `#60` merged to authoritative `main` at `72177afbbe4e36945366faaa9096b6d9bbb04d88`. Post-merge conformance run `35354894720`, repository job `105631729092`, succeeded while the v1.0.2 publication job was correctly skipped.
 
-- publish the already accepted two-line ChatGPT Project locator handoff;
-- keep Project continuity behind `AGENTS.md -> AGNIR.md -> AGNIR.yaml -> selected durable continuity`;
-- add exact `v1.0.2` release packaging, conformance, and an authoritative-main publication gate;
-- preserve Core `1.0`, `repository-filesystem/1.0`, Project identity, Continuity Lineage, checkpoint semantics, and historical `0.1`/`0.2` compatibility.
+The separate zero-tree-change publication arm `b5626394ec40a5cb7a28c01892acde07cc0adc8e` used the exact commit message `release: publish v1.0.2 stable`. Workflow `35354941029` re-ran exact-source repository/full conformance, then publication job `105631955191` created and verified tag/Release/latest state.
 
-Candidate staging branch: `release/v1.0.2`. Repository source version is `1.0.2`; **latest stable remains `v1.0.1` until publication actually succeeds**. Publication is allowed only through an exact `main` commit message `release: publish v1.0.2 stable`, after candidate and authoritative-main conformance are green.
+Host readback confirms `refs/tags/v1.0.2` and Release `391529372` both target the exact arm revision, the Release is non-draft/non-prerelease, and `releases/latest == v1.0.2`. Immutable `v1.0.1`, `v1.0.0`, and `v1.0.0-rc.1` receipts remain unchanged.
 
-Accepted implementation inputs are PR `#58` / merge `2c62d026c48405c3e299f0f57d6a674b3f6f9e1c` and acceptance checkpoint `4fde39128e5edf3fba3d7906a279918b1c38b7c2`, with authoritative conformance run `35353700740` success.
+The release branch has been retired after merge. Post-publication metadata/document reconciliation may advance authoritative `main`, but it does not change the immutable source published as `v1.0.2`.
 
 ## Public product state
 
