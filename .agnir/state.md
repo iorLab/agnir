@@ -68,6 +68,14 @@ The PR `#55` source head is `3c073e80ad87db9a11d2beb89f9e90d4d92f6482`; it merge
 
 Svif remains the first accepted real-project post-1.0 adoption case. External cold-start resumes, external design users, cross-Executor cases, and independently built integrations are now the highest-value next adoption evidence.
 
+## ChatGPT Project bootstrap simplification candidate
+
+On 2026-09-18, a real ChatGPT web initialization trial reported that Agnir repeatedly produced overly verbose persistent Project Instructions before the user manually drove the result down to a simple instruction. Review of the stable packaging found a concrete inconsistency: the README requires execution-surface bootstrap to append **Project locator only**, while the `SKILL.md` ChatGPT example duplicated `AGNIR.yaml` loading, durable-truth authority, and checkpoint semantics.
+
+The current fix direction is therefore locator-only: canonical Project/ref plus a fresh-context instruction to read root `AGENTS.md` and follow it. Agnir operational semantics remain Project-owned behind `AGENTS.md -> AGNIR.md`; ChatGPT Project Instructions must not become a second procedure copy.
+
+Candidate branch: `fix/chatgpt-project-locator-minimal`. This is packaging/onboarding hardening only; Core `1.0` and `repository-filesystem/1.0` remain unchanged. Acceptance requires conformance plus a fresh ChatGPT Project initialization trial showing that the Agent offers the short locator without iterative manual simplification.
+
 ## Invariants
 
 - Durable continuity belongs to the Project.

@@ -111,22 +111,16 @@ Repository activation and execution-surface activation are separate completion d
 5. Report repository activation status and execution-surface activation status separately.
 6. Verify from a genuinely fresh context when possible.
 
-For a ChatGPT Project that needs a persistent locator, provide a block equivalent to:
+For a ChatGPT Project that needs a persistent locator, keep the handoff **locator-only and intentionally small**. Do not restate Agnir discovery, continuity-authority, checkpoint, or repository-operation semantics in ChatGPT Project Instructions; those semantics remain Project-owned behind the repository activation path.
+
+Provide a block equivalent to:
 
 ```text
-Agnir Project bootstrap
-
-Canonical Project: <owner/repository>
-Authoritative ref: <ref>
-
-At the first substantive turn of every new conversation, open the canonical Project repository, read root AGENTS.md, and follow its Agnir activation locator before doing Project work.
-
-Load the Project continuity declared by AGNIR.yaml. Treat repository-managed Agnir state as canonical durable Project truth; ChatGPT Project memory and conversation context are working memory only.
-
-When Project work materially changes durable continuity, follow the Project's Agnir checkpoint instructions before finishing, committing, or pushing.
+Canonical Project: <owner/repository> (<ref>)
+At the first substantive turn of every new conversation, open it, read root AGENTS.md, and follow it before doing Project work.
 ```
 
-Ask the Principal to append or merge the block; do not overwrite unrelated existing Project Instructions. This is an execution-surface adapter, not Core or a second Project memory store.
+Ask the Principal to append or merge the block; do not overwrite unrelated existing Project Instructions. The persistent surface instruction is only a locator into the Project's own activation route, not a compact copy of Agnir and not a second Project memory store.
 
 ## Upgrade an existing Agnir Project
 
