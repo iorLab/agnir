@@ -30,7 +30,7 @@ extensions:
       kind: "vcs-ref"
       selector: "refs/heads/main"
   agnir/release:
-    phase: "stable-v1.0.2-implemented-publication-pending"
+    phase: "stable-v1.0.2-published"
     repository_version: "1.0.2"
     core_contract: "spec/AGNIR_CORE_1_0.md"
     profile_contract: "profiles/REPOSITORY_FILESYSTEM_1_0.md"
@@ -42,28 +42,28 @@ extensions:
     implementation_verification_run: 34255207555
     implementation_verification_job: 102159143123
     staging_ref_retired: true
-    publication_arm_revision: "f56d25b22997c259c660651e7357334b063093e1"
-    stable_tag: "v1.0.1"
-    stable_revision: "f56d25b22997c259c660651e7357334b063093e1"
-    stable_release_id: 385176185
-    stable_published_at: "2026-09-09T02:02:14Z"
-    publication_run: 34301559338
-    publication_repository_job: 102309347343
-    publication_job: 102309386242
-    previous_stable_tag: "v1.0.0"
-    previous_stable_revision: "6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3"
-    previous_stable_release_id: 383612171
-    previous_stable_published_at: "2026-09-06T14:23:58Z"
-    previous_publication_run: 34039014354
-    previous_publication_repository_job: 101502237380
-    previous_publication_job: 101502271312
+    publication_arm_revision: "b5626394ec40a5cb7a28c01892acde07cc0adc8e"
+    stable_tag: "v1.0.2"
+    stable_revision: "b5626394ec40a5cb7a28c01892acde07cc0adc8e"
+    stable_release_id: 391529372
+    stable_published_at: "2026-09-18T14:14:18Z"
+    publication_run: 35354941029
+    publication_repository_job: 105631886209
+    publication_job: 105631955191
+    previous_stable_tag: "v1.0.1"
+    previous_stable_revision: "f56d25b22997c259c660651e7357334b063093e1"
+    previous_stable_release_id: 385176185
+    previous_stable_published_at: "2026-09-09T02:02:14Z"
+    previous_publication_run: 34301559338
+    previous_publication_repository_job: 102309347343
+    previous_publication_job: 102309386242
     accepted_rc_tag: "v1.0.0-rc.1"
     accepted_rc_revision: "092945289f1a0a9803e4fe0583104aa380ceaadc"
     accepted_rc_release_id: 383536840
     accepted_rc_publication_run: 34026167762
     accepted_rc_fresh_attempt: 2
     accepted_rc_acceptance_checkpoint: "afc07d062b957e8dbfe3f859834c787e64aa52be"
-    previous_latest_stable: "v1.0.0"
+    previous_latest_stable: "v1.0.2"
     latest_stable: "v1.0.1"
     candidate_scope: "chatgpt-project-locator-only"
     candidate_implementation_pr: 58
@@ -72,10 +72,10 @@ extensions:
     candidate_acceptance_checkpoint: "4fde39128e5edf3fba3d7906a279918b1c38b7c2"
     candidate_acceptance_verification_run: 35353700740
     candidate_acceptance_verification_job: 105627739027
-    publication_status: "v1.0.1-published-v1.0.2-candidate"
+    publication_status: "published-verified"
     target_ref: "refs/heads/main"
   agnir/operations:
     distribution: "agnir-agent-skill"
-    release: "1.0.1"
+    release: "1.0.2"
     source: "iorLab/agnir"
-    applied_revision: "f56d25b22997c259c660651e7357334b063093e1"
+    applied_revision: "b5626394ec40a5cb7a28c01892acde07cc0adc8e"

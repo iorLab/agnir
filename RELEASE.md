@@ -2,7 +2,7 @@
 
 **Current repository version:** `1.0.2`
 
-**Latest published stable:** `v1.0.1`
+**Latest published stable:** `v1.0.2`
 
 **Core compatibility line:** `1.0`
 
@@ -10,28 +10,29 @@
 
 ## Status
 
-Agnir repository source `1.0.2` is the **accepted publication candidate**. The latest published stable remains `v1.0.1` until the separate authoritative publication transaction succeeds.
+Agnir `v1.0.2` is the **published latest stable** repository/distribution release.
 
 Accepted stable publication receipts:
 
-- tag: `v1.0.1`;
-- exact authoritative source revision: `f56d25b22997c259c660651e7357334b063093e1`;
-- GitHub Release id: `385176185`;
-- published at: `2026-09-09T02:02:14Z`;
-- publication workflow: `34301559338` — success;
-- repository/conformance job: `102309347343` — success;
-- stable publication job: `102309386242` — success;
-- `releases/latest == v1.0.1`;
-- previous stable `v1.0.0` remains exactly `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
+- tag: `v1.0.2`;
+- exact authoritative source revision: `b5626394ec40a5cb7a28c01892acde07cc0adc8e`;
+- GitHub Release id: `391529372`;
+- published at: `2026-09-18T14:14:18Z`;
+- publication workflow: `35354941029` — success;
+- repository/conformance job: `105631886209` — success;
+- stable publication job: `105631955191` — success;
+- `releases/latest == v1.0.2`;
+- previous stable `v1.0.1` remains exactly `f56d25b22997c259c660651e7357334b063093e1`;
+- `v1.0.0` remains exactly `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - accepted `v1.0.0-rc.1` remains exactly `092945289f1a0a9803e4fe0583104aa380ceaadc`.
 
-Repository `1.0.2` is a backward-compatible PATCH for execution-surface onboarding/packaging reliability. It **does not change Core `1.0`**, `repository-filesystem/1.0`, the Project identity model, Continuity Lineage semantics, checkpoint semantics, or historical compatibility lines. Published `v1.0.1` remains the current stable release until `v1.0.2` publication succeeds.
+Repository `1.0.2` is a backward-compatible PATCH for execution-surface onboarding/packaging reliability. It **does not change Core `1.0`**, `repository-filesystem/1.0`, the Project identity model, Continuity Lineage semantics, checkpoint semantics, or historical compatibility lines.
 
-`latest stable` is a publication property, not a moving-branch property. During the `1.0.2` candidate stage, stable resolution continues to select the published non-prerelease `v1.0.1` release, not the release branch or untagged `main` commits.
+`latest stable` is a publication property, not a moving-branch property. Stable resolution now selects the published non-prerelease `v1.0.2` release, not later untagged `main` commits.
 
 ## v1.0.2 patch scope
 
-The `1.0.2` candidate publishes the Principal-accepted **locator-only ChatGPT Project handoff**:
+The published `1.0.2` patch contains the Principal-accepted **locator-only ChatGPT Project handoff**:
 
 ```text
 Canonical Project: <owner/repository> (<ref>)
@@ -53,6 +54,8 @@ Accepted implementation receipts before the release cycle:
 - acceptance post-merge conformance: `35353700740`, repository job `105627739027` — success.
 
 This patch is distribution/onboarding hardening only. Core/profile remain `1.0` / `repository-filesystem/1.0`.
+
+Publication receipts: tag/revision `v1.0.2` → `b5626394ec40a5cb7a28c01892acde07cc0adc8e`; workflow `35354941029`; repository job `105631886209`; publication job `105631955191`; Release id `391529372`; `releases/latest == v1.0.2`.
 
 ## v1.0.1 patch scope
 
@@ -172,7 +175,7 @@ Implementation, a green PR, or an authoritative-main merge does **not** by itsel
 
 `v1.0.1` was published only through the separately armed authoritative-main transaction `release: publish v1.0.1 stable`. The publication path verified the exact source candidate, created/validated immutable `refs/tags/v1.0.1`, created/validated a non-draft/non-prerelease GitHub Release, verified `releases/latest == v1.0.1`, and verified the existing `v1.0.0` tag remained exactly at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`.
 
-`v1.0.2` may be published only by the exact authoritative-main trigger `release: publish v1.0.2 stable` after the repository source is `1.0.2` and conformance is green. Published tags are immutable by Project policy.
+`v1.0.2` was published only by the exact authoritative-main trigger `release: publish v1.0.2 stable` after exact-source conformance succeeded. Published tags are immutable by Project policy.
 
 ## Activation and Skill boundary
 

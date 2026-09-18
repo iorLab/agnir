@@ -4,7 +4,7 @@
 - `v0.2.0`: stable pre-1.0 feature release line for Continuity Lineages. Its acceptance gates included Core `0.2` design, explicit `0.1` → `0.2` migration, materially different VCS and non-VCS backend conformance, fresh install/resume, real-Project validation, mount-boundary evidence, and an RC cycle. Historical Core/profile `0.2` remains a supported compatibility surface after 1.0 rather than being renamed in place.
 - `v1.0.0`: published stability milestone. Core `1.0` + `repository-filesystem/1.0` deliberately promote the independently validated `0.2` behavior into the first long-term stable compatibility identifiers. Existing `0.2` Projects remain supported and are not forcibly rewritten; explicit semantics-preserving `0.2` → `1.0` Project promotion remains separately authorized and conformance-tested.
 - `v1.0.1`: published PATCH maintenance milestone for activation/packaging reliability. It introduces dedicated `AGNIR.md` Project instructions, direct `AGENTS.md → AGNIR.md` activation, a backward-compatible README locator for `1.0.0` Projects, and explicit short commit-intent checkpoint dispatch. Core `1.0` + `repository-filesystem/1.0` remain unchanged; checkpoint no-op semantics remain unchanged.
-- `v1.0.2`: authorized PATCH publication candidate for ChatGPT execution-surface onboarding reliability. It makes persistent ChatGPT Project Instructions locator-only while retaining the full Project-owned activation chain and continuity semantics. Core `1.0` + `repository-filesystem/1.0` remain unchanged.
+- `v1.0.2`: published PATCH maintenance milestone for ChatGPT execution-surface onboarding reliability. It makes persistent ChatGPT Project Instructions locator-only while retaining the full Project-owned activation chain and continuity semantics. Core `1.0` + `repository-filesystem/1.0` remain unchanged.
 
 ## v1 acceptance receipts
 
@@ -22,15 +22,16 @@ The v1 stability milestone reached publication only after:
 
 ## Current publication status
 
-`v1.0.1` is the current published latest stable repository/distribution release.
+`v1.0.2` is the current published latest stable repository/distribution release.
 
-- stable tag/revision: `v1.0.1` -> `f56d25b22997c259c660651e7357334b063093e1`;
-- GitHub Release id: `385176185`;
-- publication workflow: `34301559338` — success;
-- repository/conformance job: `102309347343` — success;
-- stable publication job: `102309386242` — success;
-- `releases/latest == v1.0.1`;
-- previous stable `v1.0.0` remains immutable at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
+- stable tag/revision: `v1.0.2` -> `b5626394ec40a5cb7a28c01892acde07cc0adc8e`;
+- GitHub Release id: `391529372`;
+- publication workflow: `35354941029` — success;
+- repository/conformance job: `105631886209` — success;
+- stable publication job: `105631955191` — success;
+- `releases/latest == v1.0.2`;
+- previous stable `v1.0.1` remains immutable at `f56d25b22997c259c660651e7357334b063093e1`;
+- `v1.0.0` remains immutable at `6d16dcfd17b8e9f22fd25804e22b9f8a516d06c3`;
 - accepted `v1.0.0-rc.1` remains immutable at `092945289f1a0a9803e4fe0583104aa380ceaadc`.
 
 ## v1.0.1 patch acceptance
@@ -48,7 +49,7 @@ The `1.0.1` patch was accepted after all of the following held:
 
 Publication of `v1.0.1` was a distinct authoritative-main transaction and did not follow automatically from implementation or PR acceptance.
 
-## v1.0.2 publication candidate
+## v1.0.2 publication acceptance
 
 The Principal explicitly authorized `v1.0.2` publication on 2026-09-18 after accepting the locator-only ChatGPT Project handoff.
 
@@ -60,4 +61,4 @@ Accepted implementation inputs:
 - acceptance post-merge conformance `35353700740`, repository job `105627739027` — success;
 - persistent ChatGPT handoff is conformance-locked to the canonical Project/ref plus root `AGENTS.md` locator.
 
-Publication remains a separate authoritative-main transaction. Until it succeeds, `v1.0.1` remains latest stable.
+Publication completed through authoritative-main arm `b5626394ec40a5cb7a28c01892acde07cc0adc8e`. Workflow `35354941029`, repository job `105631886209`, and publication job `105631955191` all succeeded; Release id is `391529372`; `releases/latest == v1.0.2`; earlier stable/RC tags remained unchanged.

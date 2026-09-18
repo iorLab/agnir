@@ -113,7 +113,7 @@ agnir/
 
 ## 当前版本职责
 
-- **Latest published stable:** `v1.0.1` remains the latest published non-prerelease release until the separately authorized `v1.0.2` publication succeeds.
+- **Latest published stable:** `v1.0.2` is published at exact immutable source `b5626394ec40a5cb7a28c01892acde07cc0adc8e`.
 - **v1.0.2 patch scope:** persistent ChatGPT Project configuration is locator-only: canonical Project/ref plus a fresh-context locator to root `AGENTS.md`; the Project-owned `AGENTS.md → AGNIR.md → AGNIR.yaml` path retains discovery, authority, checkpoint, and operation semantics. Core `1.0` and `repository-filesystem/1.0` do not change.
 - **v1.0.1 patch scope:** dedicated `AGNIR.md` Project activation/operation surface, direct locator from `AGENTS.md`, legacy README activation compatibility for pre-upgrade Projects, short commit-intent checkpoint interception, and associated Skill/conformance/packaging hardening.
 - **Accepted RC evidence for the stable 1.0 compatibility line:** immutable `v1.0.0-rc.1` at `092945289f1a0a9803e4fe0583104aa380ceaadc`; it remains prerelease evidence and must not be moved.
