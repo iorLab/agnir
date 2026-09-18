@@ -9,6 +9,14 @@ This file records active durable decisions required to operate and evolve Agnir 
 - Required durable semantics remain Current State, Next Actions, Decisions, and Evidence / Checkpoints.
 - Svif is a separate Project orchestration product and may consume Agnir through a Continuity Provider integration. Agnir remains independently usable without Svif.
 
+## Execution-surface bootstrap packaging
+
+- Persistent execution-surface configuration is a **Project locator**, not a compact copy of Agnir operational semantics.
+- For a ChatGPT Project that needs persistent instructions, the default handoff is limited to the canonical Project/ref plus a first-substantive-turn locator to root `AGENTS.md`.
+- ChatGPT Project Instructions must not duplicate `AGNIR.yaml` loading rules, durable-truth authority, checkpoint semantics, or repository-operation semantics when those are already reachable through `AGENTS.md -> AGNIR.md`.
+- Surface activation remains separate from repository activation. A shorter locator does not weaken repository-owned activation or fresh-context verification.
+- This is distribution/onboarding policy around the stable Core/profile contract; it does not redefine Agnir Core.
+
 ## Checkpoint and reconciliation semantics
 
 - A checkpoint is an authoritative continuity transition, not an activity-log append.

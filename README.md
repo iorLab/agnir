@@ -44,7 +44,7 @@ Upgrade Agnir to the latest stable release: https://github.com/iorLab/agnir
 
 Some execution surfaces need a **one-time persistent Project locator** before a fresh context can reach the Project's own activation route. During install or upgrade, the Agnir Skill must configure that surface when authorized and capable, or provide a **copy-ready handoff**. It must report **surface activation separately from repository activation**. This execution-surface configuration is adapter behavior, not Agnir Core or Project memory.
 
-The **Execution-surface bootstrap** must **append Project locator only** and preserve unrelated surface instructions. For install, migration, compatibility promotion, upgrade, or repair, root [`SKILL.md`](SKILL.md) is the canonical Agent-facing distribution procedure.
+The **Execution-surface bootstrap** must **append Project locator only** and preserve unrelated surface instructions. Keep the persistent handoff deliberately small: normally just the canonical Project/ref plus a fresh-context locator to root `AGENTS.md`. Do not copy Agnir discovery, memory-authority, checkpoint, or repository-operation semantics into workspace/Project Instructions; those remain in the Project. For install, migration, compatibility promotion, upgrade, or repair, root [`SKILL.md`](SKILL.md) is the canonical Agent-facing distribution procedure.
 
 A repository Project persists its own activation route:
 

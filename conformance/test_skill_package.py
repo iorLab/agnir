@@ -53,9 +53,8 @@ class SkillPackageTests(unittest.TestCase):
             "pending user configuration",
             "Do not report full fresh activation as passed",
             "ChatGPT Project",
-            "Agnir Project bootstrap",
-            "Canonical Project: <owner/repository>",
-            "Authoritative ref: <ref>",
+            "locator-only and intentionally small",
+            "Canonical Project: <owner/repository> (<ref>)",
             "At the first substantive turn of every new conversation",
             "append or merge",
             "do not overwrite unrelated existing Project Instructions",
@@ -64,12 +63,26 @@ class SkillPackageTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
-        chatgpt_block = text.split("```text\nAgnir Project bootstrap", 1)[1].split("```", 1)[0]
-        self.assertIn("read root AGENTS.md", chatgpt_block)
-        self.assertIn("AGNIR.yaml", chatgpt_block)
-        self.assertIn("canonical durable Project truth", chatgpt_block)
-        self.assertNotIn("Current State", chatgpt_block)
-        self.assertNotIn("Next Actions", chatgpt_block)
+        chatgpt_section = text.split(
+            "For a ChatGPT Project that needs a persistent locator", 1
+        )[1]
+        chatgpt_block = chatgpt_section.split("```text\n", 1)[1].split("```", 1)[0].strip()
+        expected = (
+            "Canonical Project: <owner/repository> (<ref>)\n"
+            "At the first substantive turn of every new conversation, open it, "
+            "read root AGENTS.md, and follow it before doing Project work."
+        )
+        self.assertEqual(expected, chatgpt_block)
+
+        for duplicated_semantics in (
+            "AGNIR.yaml",
+            "canonical durable Project truth",
+            "ChatGPT Project memory",
+            "checkpoint",
+            "Current State",
+            "Next Actions",
+        ):
+            self.assertNotIn(duplicated_semantics, chatgpt_block)
 
     def test_skill_defines_transactional_checkpoint_and_repository_intent(self) -> None:
         text = SKILL.read_text(encoding="utf-8")
