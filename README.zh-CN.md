@@ -74,7 +74,7 @@ Execution-surface bootstrap
 
 `AGNIR.md` 是面向 Executor 的权威激活与项目操作入口。`README.md#Agnir-Project-Instructions` 只作为 Agnir `1.0.0` 旧激活路径的向后兼容定位入口保留。
 
-`latest stable` 永远指实际发布的非预发布 tag / Release，而不是移动中的 `main`、临时 release 分支、RC 或未打 tag 的提交。当前最新已发布稳定包是 `v1.0.1`，精确权威源码修订为 `f56d25b22997c259c660651e7357334b063093e1`。Core `1.0` 与 `repository-filesystem/1.0` 均保持不变；稳定版升级解析现在选择 `v1.0.1`。
+`latest stable` 永远指实际发布的非预发布 tag / Release，而不是移动中的 `main`、临时 release 分支、RC 或未打 tag 的提交。当前最新已发布稳定包是 `v1.0.2`，精确权威源码修订为 `b5626394ec40a5cb7a28c01892acde07cc0adc8e`。Core `1.0` 与 `repository-filesystem/1.0` 均保持不变；稳定版升级解析现在选择 `v1.0.2`。
 
 ## Agnir 项目指令
 <!-- ## Agnir Project Instructions -->
@@ -178,16 +178,19 @@ Agnir 不负责真正的项目工作。它让连续性持久、可发现、归�
 - 已发布 `v0.1.1`：Core `0.1` + `repository-filesystem/0.1`；
 - 已发布 `v0.2.0`：Core `0.2` + `repository-filesystem/0.2`；
 - 已发布 `v1.0.0`：首个 Core `1.0` + `repository-filesystem/1.0` 稳定版，同时继续携带并测试历史 `0.1` / `0.2` 兼容路径；
-- 已发布 `v1.0.1`：继续使用相同 Core `1.0` + `repository-filesystem/1.0`，只加固 activation / packaging 可靠性。
+- 已发布 `v1.0.1`：继续使用相同 Core `1.0` + `repository-filesystem/1.0`，只加固 activation / packaging 可靠性；
+- 已发布 `v1.0.2`：继续使用相同 Core `1.0` + `repository-filesystem/1.0`，只加固 ChatGPT Project 的 locator-only 启动配置。
 
 `0.1` 项目按照 [`spec/CORE_0_1_TO_0_2_MIGRATION.md`](spec/CORE_0_1_TO_0_2_MIGRATION.md) 显式迁移到 `0.2`。Core / profile `1.0` 是**对已经在 `0.2` 下通过独立实现验证的行为进行稳定性晋升**，不是功能驱动的重新设计。已有 `0.2` 项目可以继续保持 `0.2`；把声明改成 `1.0` 是另一项必须单独授权、由项目自己拥有的晋升操作，规范见 [`spec/CORE_0_2_TO_1_0_PROMOTION.md`](spec/CORE_0_2_TO_1_0_PROMOTION.md)。
 
 ## 当前版本与发布状态
-<!-- 机器兼容发布标记，不渲染：Repository stable package：`v1.0.1` | 已接受 release candidate：`v1.0.0-rc.1` -->
+<!-- 机器兼容发布标记，不渲染：Repository stable package：`v1.0.2` | 已接受 release candidate：`v1.0.0-rc.1` -->
 
-**最新已发布稳定包：`v1.0.1`** — Core `1.0` + `repository-filesystem/1.0`，精确稳定源码为 `f56d25b22997c259c660651e7357334b063093e1`。
+**最新已发布稳定包：`v1.0.2`** — Core `1.0` + `repository-filesystem/1.0`，精确稳定源码为 `b5626394ec40a5cb7a28c01892acde07cc0adc8e`。
 
-**已发布 patch：`v1.0.1`** — 仅加固 activation / packaging 可靠性；Core `1.0` 与 `repository-filesystem/1.0` 不变。
+**已发布 patch：`v1.0.2`** — 仅加固 ChatGPT Project 的 locator-only 启动配置；Core `1.0` 与 `repository-filesystem/1.0` 不变。
+
+**上一 patch：`v1.0.1`** — 仅加固 activation / packaging 可靠性；不可变修订为 `f56d25b22997c259c660651e7357334b063093e1`。
 
 **1.0 稳定线已接受的发布候选版：`v1.0.0-rc.1`**，精确修订为 `092945289f1a0a9803e4fe0583104aa380ceaadc`；不可变 RC 周期已经通过首次发布与新鲜源码验证。
 
