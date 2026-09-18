@@ -155,12 +155,12 @@ h3 { margin-bottom: 8px; font-size: 1.08rem; }
 
 .install { padding-bottom: 112px; }
 .copy-block { position: relative; max-width: 930px; margin-top: 30px; }
-.install pre { margin: 0; padding: 20px 72px 20px 22px; overflow-x: auto; border: 1px solid rgba(213, 154, 97, 0.38); border-radius: 16px; background: #0f0d0b; color: var(--cream); }
+.install pre { margin: 0; padding: 20px 22px 20px 72px; overflow-x: auto; border: 1px solid rgba(213, 154, 97, 0.38); border-radius: 16px; background: #0f0d0b; color: var(--cream); }
 .install code { font: 0.88rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .copy-button {
   position: absolute;
   top: 50%;
-  right: 14px;
+  left: 14px;
   width: 42px;
   height: 42px;
   display: grid;
@@ -279,8 +279,8 @@ h3 { margin-bottom: 8px; font-size: 1.08rem; }
   .use-grid, .feature-grid { grid-template-columns: 1fr; }
   .use-grid article { min-height: 0; }
   .step-number { margin-bottom: 28px; }
-  .copy-block pre { padding-right: 62px; }
-  .copy-button { right: 10px; width: 38px; height: 38px; }
+  .copy-block pre { padding-left: 62px; }
+  .copy-button { left: 10px; width: 38px; height: 38px; }
   .site-footer { display: block; }
   .footer-links { margin-top: 16px; }
 }
